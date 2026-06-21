@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lapor Temuan - LostFound Connect</title>
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        /* ============================================================
+                   UTILITY CLASSES
+                   ============================================================ */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .flex {
+            display: flex;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flex-between {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .gap-4 {
+            gap: 16px;
+        }
+        .gap-6 {
+            gap: 24px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-left {
+            text-align: left;
+        }
+        .relative {
+            position: relative;
+        }
+        .mt-2 {
+            margin-top: 8px;
+        }
+        .mt-4 {
+            margin-top: 16px;
+        }
+        .mt-6 {
+            margin-top: 24px;
+        }
+        .mt-8 {
+            margin-top: 32px;
+        }
+        .mt-12 {
+            margin-top: 48px;
+        }
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+        .mb-6 {
+            margin-bottom: 24px;
+        }
+        .mb-8 {
+            margin-bottom: 32px;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .max-w-2xl {
+            max-width: 672px;
+        }
+        .max-w-3xl {
+            max-width: 768px;
+        }
+        .max-w-4xl {
+            max-width: 896px;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* ============================================================
+                   NAVBAR
+                   ============================================================ */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            height: 64px;
+        }
+        .navbar .container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .logo {
+            color: #a33900;
+            font-weight: 600;
+            font-size: 20px;
+            letter-spacing: 0.3px;
+        }
+        .navbar .logo a {
+            color: #a33900;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .navbar .nav-links a {
+            color: #5a4138;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            padding-bottom: 4px;
+        }
+        .navbar .nav-links a:hover {
+            color: #a33900;
+        }
+        .navbar .nav-links a.active {
+            color: #a33900;
+            font-weight: 600;
+            border-bottom: 2px solid #a33900;
+        }
+        .navbar .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .navbar .auth-buttons .login-link {
+            color: #a33900;
+            font-weight: 600;
+            font-size: 14px;
+            transition: text-decoration 0.3s ease;
+        }
+        .navbar .auth-buttons .login-link:hover {
+            text-decoration: underline;
+        }
+        .navbar .auth-buttons .register-btn {
+            background: #a33900;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .navbar .auth-buttons .register-btn:hover {
+            background: #8a2f00;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #4b5563;
+        }
+        .menu-toggle svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ============================================================
+                   BREADCRUMB
+                   ============================================================ */
+        .breadcrumb {
+            padding: 16px 0 24px 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .breadcrumb a {
+            color: #a33900;
+            transition: text-decoration 0.3s ease;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .separator {
+            margin: 0 8px;
+            color: #9ca3af;
+        }
+        .breadcrumb .current {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   FORM PAGE
+                   ============================================================ */
+        .form-page {
+            flex: 1;
+            padding: 0 24px 64px;
+        }
+
+        .form-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #eaedff;
+            padding: 32px 36px;
+            max-width: 768px;
+            margin: 0 auto;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Back Button */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #6b7280;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        .back-link:hover {
+            color: #a33900;
+        }
+
+        /* Title */
+        .form-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #131b2e;
+            margin-bottom: 4px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        /* Steps */
+        .steps {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .steps .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            background: #d1d5db;
+            transition: all 0.3s ease;
+        }
+
+        .steps .step-number.active {
+            background: #a33900;
+        }
+
+        .steps .step-number.done {
+            background: #10b981;
+        }
+
+        .steps .step-line {
+            flex: 1;
+            height: 2px;
+            background: #d1d5db;
+            max-width: 40px;
+        }
+
+        .steps .step-line.active {
+            background: #a33900;
+        }
+
+        .steps .step-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .steps .step-label.active {
+            color: #a33900;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .form-group label .required {
+            color: #ef4444;
+        }
+
+        .form-group .hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #eaedff;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            outline: none;
+            background: #ffffff;
+            color: #131b2e;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #a33900;
+        }
+
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: #ef4444;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* File Upload */
+        .upload-area {
+            border: 2px dashed #eaedff;
+            border-radius: 8px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: #a33900;
+            background: #faf8f7;
+        }
+
+        .upload-area .icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .upload-area p {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .upload-area .file-name {
+            font-size: 13px;
+            color: #a33900;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #a33900;
+            color: #ffffff;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-primary:hover {
+            background: #8a2f00;
+        }
+
+        .btn-outline {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: transparent;
+            color: #a33900;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 2px solid #a33900;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-outline:hover {
+            background: #a33900;
+            color: #ffffff;
+        }
+
+        .btn-success {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #10b981;
+            color: #ffffff;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn-actions .btn-primary,
+        .btn-actions .btn-outline {
+            flex: 1;
+        }
+
+        /* Step 2 - Scan Barcode */
+        .scan-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+            border: 2px dashed #eaedff;
+            margin: 16px 0;
+        }
+
+        .scan-box .scan-icon {
+            font-size: 64px;
+            margin-bottom: 12px;
+        }
+
+        .scan-box p {
+            font-size: 14px;
+            color: #6b7280;
+            line-height: 24px;
+        }
+
+        .scan-box .highlight {
+            color: #a33900;
+            font-weight: 600;
+        }
+
+        .btn-scan {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #a33900;
+            color: #ffffff;
+            padding: 14px 40px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+        .btn-scan:hover {
+            background: #8a2f00;
+        }
+
+        /* Step 3 - Match Found */
+        .match-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px 24px;
+            border: 1px solid #eaedff;
+            margin: 16px 0;
+        }
+
+        .match-card .match-id {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .match-card .match-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #131b2e;
+            margin: 4px 0;
+        }
+
+        .match-card .match-detail {
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 22px;
+        }
+
+        /* Success Page */
+        .success-icon {
+            font-size: 64px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .success-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #131b2e;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .success-message {
+            font-size: 15px;
+            color: #4b5563;
+            line-height: 26px;
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
+
+        .secured-badge {
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            letter-spacing: 1px;
+            margin-top: 12px;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            background: #eaedff;
+            padding: 24px;
+            margin-top: auto;
+        }
+        .footer .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .footer .footer-content .brand {
+            font-weight: 600;
+            color: #131b2e;
+            font-size: 14px;
+        }
+        .footer .footer-content .footer-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .footer .footer-content .footer-links a {
+            font-size: 13px;
+            color: #5a4138;
+            transition: color 0.3s ease;
+        }
+        .footer .footer-content .footer-links a:hover {
+            color: #a33900;
+        }
+        .footer .footer-content .copyright {
+            font-size: 13px;
+            color: #5a4138;
+        }
+
+        /* ============================================================
+                   MOBILE NAV
+                   ============================================================ */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background: #ffffff;
+            padding: 16px 24px;
+            gap: 12px;
+            border-top: 1px solid #eaedff;
+        }
+        .mobile-nav.open {
+            display: flex;
+        }
+        .mobile-nav a {
+            color: #5a4138;
+            font-size: 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .mobile-nav a.active {
+            color: #a33900;
+            font-weight: 600;
+        }
+        .mobile-nav a:last-child {
+            border-bottom: none;
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+            .menu-toggle {
+                display: block;
+            }
+
+            .form-card {
+                padding: 24px 20px;
+            }
+
+            .form-title {
+                font-size: 20px;
+            }
+
+            .steps .step-label {
+                font-size: 11px;
+            }
+
+            .btn-actions {
+                flex-direction: column;
+            }
+
+            .footer .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            .footer .footer-content .footer-links {
+                justify-content: center;
+            }
+
+            .upload-area {
+                padding: 20px;
+            }
+            .upload-area .icon {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .auth-buttons .login-link {
+                font-size: 13px;
+            }
+            .navbar .auth-buttons .register-btn {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+            .form-page {
+                padding: 0 16px 40px;
+            }
+
+            .breadcrumb {
+                font-size: 12px;
+                padding: 12px 0 16px 0;
+            }
+
+            .form-card {
+                padding: 16px;
+            }
+
+            .form-title {
+                font-size: 18px;
+            }
+
+            .steps .step-number {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+
+            .scan-box {
+                padding: 20px;
+            }
+            .scan-box .scan-icon {
+                font-size: 48px;
+            }
+            .btn-scan {
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+
+            .success-icon {
+                font-size: 48px;
+            }
+            .success-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- NAVBAR -->
+    <!-- ============================================================ -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">LostFound Connect</a>
+            </div>
+
+            <nav class="nav-links">
+                <a href="index.html">Beranda</a>
+                <a href="tentangkami.html">Tentang Kami</a>
+                <a href="pusatbantuan.html">Pusat Bantuan</a>
+            </nav>
+
+            <div class="auth-buttons">
+                <a href="login.html" class="login-link">Masuk</a>
+                <button class="register-btn" onclick="window.location.href='login.html?mode=register'">Daftar Akun</button>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="mobile-nav" id="mobileNav">
+            <a href="index.html">Beranda</a>
+            <a href="tentangkami.html">Tentang Kami</a>
+            <a href="pusatbantuan.html">Pusat Bantuan</a>
+            <a href="login.html">Masuk</a>
+            <a href="login.html?mode=register" style="color:#a33900;font-weight:600;">Daftar Akun</a>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- FORM PAGE -->
+    <!-- ============================================================ -->
+    <main class="form-page">
+
+        <div class="container max-w-3xl mx-auto">
+
+            <!-- ============================================================ -->
+            <!-- BREADCRUMB -->
+            <!-- ============================================================ -->
+            <nav class="breadcrumb">
+                <a href="index.html">Beranda</a>
+                <span class="separator">›</span>
+                <span class="current">Lapor Temuan</span>
+            </nav>
+
+            <!-- ============================================================ -->
+            <!-- FORM CARD -->
+            <!-- ============================================================ -->
+            <div class="form-card">
+
+                <!-- Back Button -->
+                <a href="index.html" class="back-link">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Kembali
+                </a>
+
+                <!-- ============================================================ -->
+                <!-- STEP 1: Formulir -->
+                <!-- ============================================================ -->
+                <div id="step1">
+                    <h1 class="form-title">Formulir Laporan Penemuan Barang</h1>
+                    <p class="form-subtitle">Langkah 1 dari 3: Pengisian Formulir</p>
+
+                    <!-- Steps -->
+                    <div class="steps">
+                        <span class="step-number active">1</span>
+                        <span class="step-line active"></span>
+                        <span class="step-number">2</span>
+                        <span class="step-line"></span>
+                        <span class="step-number">3</span>
+                    </div>
+
+                    <form id="formTemuan" onsubmit="submitStep1(event)">
+                        <div class="form-group">
+                            <label for="namaBarang">Nama/Judul Barang Temuan <span class="required">*</span></label>
+                            <input type="text" id="namaBarang" placeholder="Contoh: Kunci Motor Honda" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="kategori">Kategori Barang <span class="required">*</span></label>
+                            <select id="kategori" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="elektronik">Elektronik</option>
+                                <option value="dompet">Dompet / Tas</option>
+                                <option value="aksesoris">Aksesoris</option>
+                                <option value="kendaraan">Kendaraan</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lokasi">Lokasi Penemuan Spesifik (Kampus UNPER) <span class="required">*</span></label>
+                            <select id="lokasi" required>
+                                <option value="">Pilih Lokasi</option>
+                                <option value="gedung-a">Gedung A</option>
+                                <option value="gedung-b">Gedung B</option>
+                                <option value="gedung-c">Gedung C</option>
+                                <option value="perpustakaan">Perpustakaan</option>
+                                <option value="kantin">Kantin</option>
+                                <option value="parkir">Area Parkir</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tanggal">Tanggal & Estimasi Waktu Ditemukan <span class="required">*</span></label>
+                            <input type="datetime-local" id="tanggal" required />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ciri">Ciri Spesifik Barang <span class="required">*</span></label>
+                            <textarea id="ciri" rows="3" placeholder="Contoh: Gantungan kunci berbentuk dompet kecil warna hitam, ada lepet pada bagian ring besi" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Unggah Foto Barang Fisik (1 Foto)</label>
+                            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                                <div class="icon">📷</div>
+                                <p>Klik untuk pilih file atau seret foto fisik barang di sini</p>
+                                <div class="file-name" id="fileName"></div>
+                            </div>
+                            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)" />
+                            <div class="hint">Format: JPG, PNG, JPEG (Maks 5MB)</div>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Simpan Laporan & Lanjutkan</button>
+                    </form>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- STEP 2: Scan Barcode -->
+                <!-- ============================================================ -->
+                <div id="step2" class="hidden">
+                    <h1 class="form-title">Langkah 2 dari 3: Scan Barcode Validasi</h1>
+                    <p class="form-subtitle">Verifikasi laporan Anda di Pos Satpam</p>
+
+                    <!-- Steps -->
+                    <div class="steps">
+                        <span class="step-number done">✓</span>
+                        <span class="step-line active"></span>
+                        <span class="step-number active">2</span>
+                        <span class="step-line"></span>
+                        <span class="step-number">3</span>
+                    </div>
+
+                    <a href="#" class="back-link" onclick="goToStep(1)">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Kembali ke Langkah 1
+                    </a>
+
+                    <div class="scan-box">
+                        <div class="scan-icon">📱</div>
+                        <p>
+                            <strong>Laporan Anda Berhasil Disimpan sebagai Draft!</strong><br /><br />
+                            Untuk mengaktifkan laporan ini, Anda diwajibkan segera membawa <span class="highlight">barang fisik temuan</span> ke Pos Satpam / Pusat Keamanan Kampus, lalu pindai <span class="highlight">Barcode Validasi Fisik</span> yang tertera di meja petugas.
+                        </p>
+                        <button class="btn-scan" onclick="simulateScan()">
+                            📷 Buka Kamera & Scan Barcode Pos
+                        </button>
+                        <p style="margin-top:12px;font-size:13px;color:#6b7280;">
+                            <a href="#" onclick="goToStep(3)" style="color:#a33900;font-weight:600;">Saya butuh bantuan petugas</a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- STEP 3: Match / Cocokkan -->
+                <!-- ============================================================ -->
+                <div id="step3" class="hidden">
+                    <h1 class="form-title">Laporan Diproses</h1>
+                    <p class="form-subtitle">Sistem sedang memverifikasi laporan Anda dengan database kami.</p>
+
+                    <!-- Steps -->
+                    <div class="steps">
+                        <span class="step-number done">✓</span>
+                        <span class="step-line active"></span>
+                        <span class="step-number done">✓</span>
+                        <span class="step-line active"></span>
+                        <span class="step-number active">3</span>
+                    </div>
+
+                    <div style="margin:16px 0;padding:12px 16px;background:#f0fdf4;border-radius:8px;border-left:4px solid #10b981;">
+                        <p style="font-size:14px;color:#16a34a;font-weight:500;">✅ Sistem Mendeteksi Postingan Kehilangan yang Mirip!</p>
+                        <p style="font-size:13px;color:#4b5563;margin-top:4px;">Harap verifikasi apakah barang yang Anda temukan sesuai dengan laporan kehilangan di bawah ini.</p>
+                    </div>
+
+                    <div class="match-card">
+                        <div class="match-id">Laporan Kehilangan • ID: LF-2024-0524</div>
+                        <div class="match-title">Dompet Kulit Cokelat</div>
+                        <div class="match-detail">
+                            📍 Gedung Rektorat, Lantai 1<br />
+                            📅 24 Mei 2024
+                        </div>
+                    </div>
+
+                    <div class="btn-actions">
+                        <button class="btn-success" onclick="confirmMatch(true)">
+                            ✅ Ya, Ini Barang yang Sama
+                        </button>
+                        <button class="btn-outline" onclick="confirmMatch(false)">
+                            ❌ Bukan, Ini Barang Berbeda
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- STEP 4: Konfirmasi Berhasil (Match) -->
+                <!-- ============================================================ -->
+                <div id="step4" class="hidden">
+                    <div class="success-icon">🎉</div>
+                    <h1 class="success-title">Konfirmasi Berhasil Disimpan!</h1>
+                    <p class="success-message">
+                        Terima kasih banyak! Laporan pencocokan Anda telah diteruskan langsung ke komputer petugas Satpam di loket utama. Petugas akan melakukan validasi fisik terakhir sebelum menghubungi pemilik asli barang tersebut.
+                    </p>
+                    <div style="background:#f0fdf4;border-radius:8px;padding:16px;margin:16px 0;border-left:4px solid #10b981;">
+                        <p style="font-size:14px;color:#16a34a;font-weight:500;">✅ Status Anda Saat Ini:</p>
+                        <p style="font-size:14px;color:#4b5563;line-height:22px;">
+                            Tugas Anda sebagai penemu telah selesai. Anda diperbolehkan meninggalkan posko keamanan. Terima kasih telah menjadi pahlawan kampus hari ini!
+                        </p>
+                    </div>
+                    <div class="btn-actions">
+                        <a href="index.html" class="btn-primary">🏠 Kembali ke Beranda</a>
+                    </div>
+                    <div class="secured-badge">🔒 TRANSACTION SECURED BY LOSTFOUND SYSTEM</div>
+                </div>
+
+                <!-- ============================================================ -->
+                <!-- STEP 5: Laporan Berhasil Disimpan (Mandiri) -->
+                <!-- ============================================================ -->
+                <div id="step5" class="hidden">
+                    <div class="success-icon">📋</div>
+                    <h1 class="success-title">Laporan Berhasil Disimpan!</h1>
+                    <p class="success-message">
+                        Terima kasih! Karena barang ini berbeda dengan laporan kehilangan saat ini, sistem telah mendaftarkan laporan Anda secara mandiri. Petugas Satpam akan melakukan konfirmasi fisik barang terlebih dahulu di loket posko sebelum menerbitkannya ke beranda umum ("Found Feed").
+                    </p>
+                    <div style="background:#f0fdf4;border-radius:8px;padding:16px;margin:16px 0;border-left:4px solid #10b981;">
+                        <p style="font-size:14px;color:#16a34a;font-weight:500;">✅ Status Anda Saat Ini:</p>
+                        <p style="font-size:14px;color:#4b5563;line-height:22px;">
+                            Tugas Anda sebagai penemu telah selesai. Anda diperbolehkan meninggalkan posko keamanan. Terima kasih telah membantu sesama warga kampus Universitas Perjuangan!
+                        </p>
+                    </div>
+                    <div class="btn-actions">
+                        <a href="index.html" class="btn-primary">🏠 Kembali ke Beranda</a>
+                        <a href="#" class="btn-outline">📋 Lihat Detail Laporan Saya</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================================ -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span class="brand">LostFound Connect</span>
+            <div class="footer-links">
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat &amp; Ketentuan</a>
+                <a href="#">Kontak Kampus</a>
+            </div>
+            <span class="copyright">© 2026 Universitas Perjuangan Tasikmalaya</span>
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // MOBILE MENU TOGGLE
+            // ============================================================
+            var menuToggle = document.getElementById('menuToggle');
+            var mobileNav = document.getElementById('mobileNav');
+
+            if (menuToggle && mobileNav) {
+                menuToggle.addEventListener('click', function() {
+                    mobileNav.classList.toggle('open');
+                });
+            }
+
+            var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
+            mobileLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    mobileNav.classList.remove('open');
+                });
+            });
+
+            // ============================================================
+            // FILE UPLOAD
+            // ============================================================
+            window.handleFileSelect = function(event) {
+                var file = event.target.files[0];
+                var fileName = document.getElementById('fileName');
+                if (file) {
+                    fileName.textContent = '📎 ' + file.name;
+                }
+            };
+
+            // ============================================================
+            // STEP NAVIGATION
+            // ============================================================
+            function goToStep(step) {
+                var steps = ['step1', 'step2', 'step3', 'step4', 'step5'];
+                steps.forEach(function(id) {
+                    document.getElementById(id).classList.add('hidden');
+                });
+                document.getElementById('step' + step).classList.remove('hidden');
+
+                // Scroll to top
+                document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            window.goToStep = goToStep;
+
+            // ============================================================
+            // STEP 1: Submit Form
+            // ============================================================
+            window.submitStep1 = function(e) {
+                e.preventDefault();
+
+                var nama = document.getElementById('namaBarang').value.trim();
+                var kategori = document.getElementById('kategori').value;
+                var lokasi = document.getElementById('lokasi').value;
+                var tanggal = document.getElementById('tanggal').value;
+                var ciri = document.getElementById('ciri').value.trim();
+
+                // Validasi
+                if (!nama || !kategori || !lokasi || !tanggal || !ciri) {
+                    alert('❌ Semua field wajib diisi!');
+                    return;
+                }
+
+                // Simpan data ke localStorage (simulasi)
+                var reportData = {
+                    nama: nama,
+                    kategori: kategori,
+                    lokasi: lokasi,
+                    tanggal: tanggal,
+                    ciri: ciri,
+                    status: 'draft'
+                };
+                localStorage.setItem('laporanTemuan', JSON.stringify(reportData));
+
+                // Pindah ke step 2
+                goToStep(2);
+            };
+
+            // ============================================================
+            // STEP 2: Scan Barcode
+            // ============================================================
+            window.simulateScan = function() {
+                // Simulasi scan barcode berhasil
+                var btn = document.querySelector('.btn-scan');
+                var originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Scan Berhasil!';
+                btn.style.background = '#10b981';
+                btn.disabled = true;
+
+                setTimeout(function() {
+                    goToStep(3);
+                }, 1500);
+            };
+
+            // ============================================================
+            // STEP 3: Confirm Match
+            // ============================================================
+            window.confirmMatch = function(isMatch) {
+                if (isMatch) {
+                    // Barang cocok -> Step 4 (Konfirmasi Berhasil)
+                    goToStep(4);
+                } else {
+                    // Barang berbeda -> Step 5 (Laporan Mandiri)
+                    goToStep(5);
+                }
+            };
+
+            // ============================================================
+            // NAV LINK ACTIVE STATE
+            // ============================================================
+            var navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    if (this.id === 'mobileLogout' || this.id === 'mobileLogin' ||
+                        this.id === 'mobileRegister' || this.id === 'mobileProfile') {
+                        return;
+                    }
+                    navLinks.forEach(function(l) {
+                        l.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            console.log('✅ Lapor Temuan page loaded successfully!');
+
+        })();
+    </script>
+
+</body>
+</html>

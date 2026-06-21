@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Riwayat Aktivitas - LostFound Connect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .flex {
+            display: flex;
+        }
+        .flex-between {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .gap-4 {
+            gap: 16px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .mt-2 {
+            margin-top: 8px;
+        }
+        .mt-4 {
+            margin-top: 16px;
+        }
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .max-w-4xl {
+            max-width: 896px;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            height: 64px;
+        }
+        .navbar .container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .logo {
+            color: #a33900;
+            font-weight: 600;
+            font-size: 20px;
+        }
+        .navbar .logo a {
+            color: #a33900;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .navbar .nav-links a {
+            color: #5a4138;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            padding-bottom: 4px;
+        }
+        .navbar .nav-links a:hover {
+            color: #a33900;
+        }
+        .navbar .nav-links a.active {
+            color: #a33900;
+            font-weight: 600;
+            border-bottom: 2px solid #a33900;
+        }
+        .navbar .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .navbar .auth-buttons .login-link {
+            color: #a33900;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .navbar .auth-buttons .login-link:hover {
+            text-decoration: underline;
+        }
+        .navbar .auth-buttons .register-btn {
+            background: #a33900;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .navbar .auth-buttons .register-btn:hover {
+            background: #8a2f00;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #4b5563;
+        }
+        .menu-toggle svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* BREADCRUMB */
+        .breadcrumb {
+            padding: 16px 0 24px 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .breadcrumb a {
+            color: #a33900;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .separator {
+            margin: 0 8px;
+            color: #9ca3af;
+        }
+        .breadcrumb .current {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        /* SIDEBAR */
+        .riwayat-layout {
+            display: flex;
+            gap: 32px;
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        .sidebar {
+            width: 200px;
+            flex-shrink: 0;
+        }
+        .sidebar .sidebar-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        .sidebar .sidebar-menu {
+            list-style: none;
+        }
+        .sidebar .sidebar-menu li {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #5a4138;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2px;
+        }
+        .sidebar .sidebar-menu li:hover {
+            background: #f3f4f6;
+            color: #a33900;
+        }
+        .sidebar .sidebar-menu li.active {
+            background: #fff4ed;
+            color: #a33900;
+            font-weight: 600;
+        }
+        .sidebar .sidebar-menu li .icon {
+            margin-right: 10px;
+        }
+        .sidebar .sidebar-divider {
+            height: 1px;
+            background: #eaedff;
+            margin: 12px 0;
+        }
+        .sidebar .sidebar-menu li.danger {
+            color: #dc2626;
+        }
+        .sidebar .sidebar-menu li.danger:hover {
+            background: #fef2f2;
+        }
+
+        .riwayat-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        /* RIWAYAT PAGE */
+        .riwayat-page {
+            flex: 1;
+            padding: 0 24px 64px;
+        }
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #131b2e;
+            margin-bottom: 4px;
+        }
+        .page-subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stats-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 18px 20px;
+            border: 1px solid #eaedff;
+            text-align: center;
+        }
+        .stats-card .stats-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #131b2e;
+        }
+        .stats-card .stats-label {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        /* Filter Tabs */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .filter-tabs .filter-btn {
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6b7280;
+            background: #ffffff;
+            border: 1.5px solid #eaedff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .filter-tabs .filter-btn:hover {
+            border-color: #a33900;
+            color: #a33900;
+        }
+        .filter-tabs .filter-btn.active {
+            background: #a33900;
+            color: #ffffff;
+            border-color: #a33900;
+        }
+
+        /* Riwayat Item */
+        .riwayat-item {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #eaedff;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .riwayat-item:hover {
+            border-color: #fcd5c4;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .riwayat-item .item-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 12px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        .riwayat-item .item-badge.lost {
+            background: #f43f5e;
+        }
+        .riwayat-item .item-badge.found {
+            background: #10b981;
+        }
+        .riwayat-item .item-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #131b2e;
+        }
+        .riwayat-item .item-detail {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        .riwayat-item .item-date {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+        .riwayat-item .item-status {
+            font-size: 13px;
+            color: #10b981;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+        .riwayat-item .item-action {
+            font-size: 13px;
+            color: #a33900;
+            font-weight: 500;
+            margin-top: 6px;
+            cursor: pointer;
+        }
+        .riwayat-item .item-action:hover {
+            text-decoration: underline;
+        }
+
+        /* Detail Card */
+        .detail-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #eaedff;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+        .detail-card .detail-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #131b2e;
+        }
+        .detail-card .detail-id {
+            font-size: 13px;
+            color: #9ca3af;
+            font-weight: 500;
+        }
+        .detail-card .detail-sub {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+        .detail-card .detail-status {
+            font-size: 14px;
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .log-timeline {
+            margin-top: 12px;
+        }
+        .log-item {
+            display: flex;
+            gap: 16px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .log-item:last-child {
+            border-bottom: none;
+        }
+        .log-item .log-date {
+            font-size: 13px;
+            font-weight: 600;
+            color: #131b2e;
+            min-width: 90px;
+            flex-shrink: 0;
+        }
+        .log-item .log-text {
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 22px;
+        }
+        .log-item .log-highlight {
+            color: #a33900;
+            font-weight: 600;
+        }
+
+        .info-digital {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 12px;
+            border-left: 3px solid #a33900;
+        }
+        .info-digital p {
+            font-size: 14px;
+            color: #4b5563;
+            line-height: 24px;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            border: 2px solid #a33900;
+            color: #a33900;
+            background: transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-back:hover {
+            background: #a33900;
+            color: #ffffff;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #eaedff;
+            padding: 24px;
+            margin-top: auto;
+        }
+        .footer .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .footer .footer-content .brand {
+            font-weight: 600;
+            color: #131b2e;
+            font-size: 14px;
+        }
+        .footer .footer-content .footer-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .footer .footer-content .footer-links a {
+            font-size: 13px;
+            color: #5a4138;
+            transition: color 0.3s ease;
+        }
+        .footer .footer-content .footer-links a:hover {
+            color: #a33900;
+        }
+        .footer .footer-content .copyright {
+            font-size: 13px;
+            color: #5a4138;
+        }
+
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background: #ffffff;
+            padding: 16px 24px;
+            gap: 12px;
+            border-top: 1px solid #eaedff;
+        }
+        .mobile-nav.open {
+            display: flex;
+        }
+        .mobile-nav a {
+            color: #5a4138;
+            font-size: 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .mobile-nav a.active {
+            color: #a33900;
+            font-weight: 600;
+        }
+        .mobile-nav a:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .riwayat-layout {
+                flex-direction: column;
+                gap: 24px;
+            }
+            .sidebar {
+                width: 100%;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .sidebar .sidebar-title {
+                width: 100%;
+                margin-bottom: 4px;
+            }
+            .sidebar .sidebar-menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .sidebar .sidebar-menu li {
+                padding: 6px 12px;
+                font-size: 13px;
+                margin-bottom: 0;
+            }
+            .sidebar .sidebar-divider {
+                display: none;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .stats-card .stats-number {
+                font-size: 22px;
+            }
+            .log-item {
+                flex-direction: column;
+                gap: 4px;
+            }
+            .log-item .log-date {
+                min-width: auto;
+            }
+            .footer .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            .footer .footer-content .footer-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .riwayat-page {
+                padding: 0 16px 40px;
+            }
+            .breadcrumb {
+                font-size: 12px;
+                padding: 12px 0 16px 0;
+            }
+            .page-title {
+                font-size: 20px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            .stats-card .stats-number {
+                font-size: 18px;
+            }
+            .stats-card .stats-label {
+                font-size: 12px;
+            }
+            .detail-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo"><a href="index.html">LostFound Connect</a></div>
+            <nav class="nav-links">
+                <a href="index.html">Beranda</a>
+                <a href="tentangkami.html">Tentang Kami</a>
+                <a href="pusatbantuan.html">Pusat Bantuan</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="#" class="login-link active">Profil</a>
+                <button class="register-btn" onclick="logout()">Keluar</button>
+            </div>
+            <button class="menu-toggle" id="menuToggle">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="index.html">Beranda</a>
+            <a href="tentangkami.html">Tentang Kami</a>
+            <a href="pusatbantuan.html">Pusat Bantuan</a>
+            <a href="#" class="active">Profil</a>
+            <a href="#" onclick="logout()" style="color:#dc2626;">Keluar</a>
+        </div>
+    </header>
+
+    <!-- RIWAYAT PAGE -->
+    <main class="riwayat-page">
+        <div class="container">
+            <nav class="breadcrumb">
+                <a href="index.html">Beranda</a>
+                <span class="separator">›</span>
+                <span class="current">Riwayat</span>
+            </nav>
+
+            <div class="riwayat-layout">
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <div class="sidebar-title">Menu</div>
+                    <ul class="sidebar-menu">
+                        <li onclick="window.location.href='ringkasan.html'"><span class="icon">📊</span> Ringkasan</li>
+                        <li onclick="window.location.href='status.html'"><span class="icon">📋</span> Klaim Saya</li>
+                        <li class="active"><span class="icon">📜</span> Riwayat</li>
+                    </ul>
+                    <div class="sidebar-divider"></div>
+                    <ul class="sidebar-menu">
+                        <li class="danger"><span class="icon">⚙️</span> Pengaturan</li>
+                        <li class="danger" onclick="logout()"><span class="icon">🚪</span> Keluar</li>
+                    </ul>
+                </aside>
+
+                <!-- Main Content -->
+                <div class="riwayat-main">
+                    <h1 class="page-title">Riwayat Aktivitas</h1>
+                    <p class="page-subtitle">Daftar seluruh laporan kehilangan dan penemuan barang Anda yang telah selesai.</p>
+
+                    <!-- Stats -->
+                    <div class="stats-grid">
+                        <div class="stats-card"><div class="stats-number">2</div><div class="stats-label">Total Selesai</div></div>
+                        <div class="stats-card"><div class="stats-number">1</div><div class="stats-label">Kehilangan</div></div>
+                        <div class="stats-card"><div class="stats-number">1</div><div class="stats-label">Penemuan</div></div>
+                    </div>
+
+                    <!-- Filter Tabs -->
+                    <div class="filter-tabs">
+                        <button class="filter-btn active" onclick="filterRiwayat('all', this)">Semua</button>
+                        <button class="filter-btn" onclick="filterRiwayat('lost', this)">Kehilangan</button>
+                        <button class="filter-btn" onclick="filterRiwayat('found', this)">Penemuan</button>
+                    </div>
+
+                    <!-- Riwayat Item 1 - Kehilangan -->
+                    <div class="riwayat-item" data-type="lost" onclick="showDetail('lost')">
+                        <div>
+                            <span class="item-badge lost">KEHILANGAN</span>
+                            <div class="item-title">Dompet Kulit Coklat Levi's</div>
+                            <div class="item-detail">📍 Lokasi Terakhir: Kantin Pusat</div>
+                            <div class="item-date">📅 12 Feb 2024</div>
+                            <div class="item-status">✅ Selesai</div>
+                            <div class="item-action">🔍 Lihat Detail →</div>
+                        </div>
+                    </div>
+
+                    <!-- Riwayat Item 2 - Penemuan -->
+                    <div class="riwayat-item" data-type="found" onclick="showDetail('found')">
+                        <div>
+                            <span class="item-badge found">PENEMUAN</span>
+                            <div class="item-title">Kunci Motor Honda (Gantungan Merah)</div>
+                            <div class="item-detail">📍 Ditemukan di: Area Parkir Gedung B</div>
+                            <div class="item-date">📅 05 Jan 2024</div>
+                            <div class="item-status">✅ Berhasil Diambil</div>
+                            <div class="item-action">🔍 Lihat Detail →</div>
+                        </div>
+                    </div>
+
+                    <!-- Detail Kehilangan -->
+                    <div id="detailLost" class="hidden">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                            <button class="btn-back" onclick="showList()">← Kembali ke Daftar</button>
+                        </div>
+                        <div class="detail-card">
+                            <div>
+                                <div class="detail-id">ID: B-UP-2024-399</div>
+                                <div class="detail-title">Dompet Kulit Coklat Levi's</div>
+                                <div class="detail-sub">📍 Lokasi Terakhir: Kantin Pusat</div>
+                                <div class="detail-status">✅ Status: Diteruskan</div>
+                            </div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-title" style="font-size:16px;">📋 Log Rekam Jejak Verifikasi Fisik</div>
+                            <div class="log-timeline">
+                                <div class="log-item"><span class="log-date">13 Des 2024</span><div><div class="log-text">📝 Laporan Kehilangan dibuat oleh <span class="log-highlight">Ahmad D.</span></div><div class="log-text">Dokumentasi awal dan pengiriman foto digital berhasil diisi.</div></div></div>
+                                <div class="log-item"><span class="log-date">10 Des 2024</span><div><div class="log-text">✅ Status Berhasil: Sistem Verifikasi Laporan (Data Digital Lolos)</div><div class="log-text">Data diverifikasi terhadap informasi yang telah dijelaskan.</div></div></div>
+                                <div class="log-item"><span class="log-date">14 Des 2024</span><div><div class="log-text">📍 <span class="log-highlight">Ahmad D.</span> mendatangi Posko Satpam Utama</div><div class="log-text">Melakukan Surat Pernyataan Kepemilikan Resmi di atas Materai Rp10.000.</div></div></div>
+                                <div class="log-item"><span class="log-date">14 Des 2024</span><div><div class="log-text">✅ Validasi &amp; Penyerahan Berhasil</div><div class="log-text">Petugas memverifikasi fisik KTP, mencatatkan <span class="log-highlight">tiket LP-CRIME-002</span>.</div></div></div>
+                            </div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-title" style="font-size:16px;">📄 Informasi Pengiriman Digital</div>
+                            <div class="info-digital">
+                                <p>Seluruh dokumen fisik telah dipindai dan diunggah secara digital ke dalam sistem portal <strong>LostFound Connect</strong>. Dokumen ini sah secara hukum dan dapat digunakan sebagai bukti jika diperlukan di masa mendatang.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detail Penemuan -->
+                    <div id="detailFound" class="hidden">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+                            <button class="btn-back" onclick="showList()">← Kembali ke Daftar</button>
+                        </div>
+                        <div class="detail-card">
+                            <div>
+                                <div class="detail-id">ID: KND-2024-K02</div>
+                                <div class="detail-title">Kunci Motor Honda (Gantungan Merah)</div>
+                                <div class="detail-sub">📍 Ditemukan di: Area Parkir Gedung B</div>
+                                <div class="detail-status">✅ Status: Berhasil Diambil</div>
+                            </div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-title" style="font-size:16px;">📋 Log Katalog Penyerahan Barang Temuan</div>
+                            <div class="log-timeline">
+                                <div class="log-item"><span class="log-date">05 Jan 2024</span><div><div class="log-text">📍 Barang ditemukan oleh <span class="log-highlight">Ahmad D.</span> di Area Parkir Gedung B.</div></div></div>
+                                <div class="log-item"><span class="log-date">05 Jan 2024</span><div><div class="log-text">📦 <span class="log-highlight">Ahmad D.</span> membawa fisik kunci ke Pos Satpam Utama dan sukses memindai Barcode Validasi Fisik.</div></div></div>
+                                <div class="log-item"><span class="log-date">08 Jan 2024</span><div><div class="log-text">📱 Pemilik sah mengajukan klaim verifikasi kepemilikan melalui aplikasi.</div></div></div>
+                                <div class="log-item"><span class="log-date">07 Jan 2024</span><div><div class="log-text">✅ Pemilik sah mendatangi posko, melakukan verifikasi kecocokan data, dan mengambil barang temuan Anda.</div></div></div>
+                            </div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-title" style="font-size:16px;">🙏 Ucapan Terima Kasih</div>
+                            <div class="info-digital" style="background:#f0fdf4;border-left-color:#10b981;">
+                                <p><strong>Terima kasih, Ahmad D.</strong> Berkat kejujuran Anda membawa barang temuan ini ke posko satpam, barang berharga ini telah kembali ke tangan pemiliknya yang sah.</p>
+                                <p style="margin-top:8px;font-style:italic;color:#065f46;">⭐ Laporan ini tidak dapat diubah dan telah ditutup.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span class="brand">LostFound Connect</span>
+            <div class="footer-links">
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat &amp; Ketentuan</a>
+                <a href="#">Campus Safety</a>
+                <a href="#">Kontak Kampus</a>
+            </div>
+            <span class="copyright">© 2024 Universitas Perjuangan Tasikmalaya</span>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            var menuToggle = document.getElementById('menuToggle');
+            var mobileNav = document.getElementById('mobileNav');
+            if (menuToggle && mobileNav) {
+                menuToggle.addEventListener('click', function() {
+                    mobileNav.classList.toggle('open');
+                });
+            }
+            var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
+            mobileLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    mobileNav.classList.remove('open');
+                });
+            });
+
+            function showList() {
+                document.querySelectorAll('.riwayat-item').forEach(function(el) { el.style.display = 'block'; });
+                document.getElementById('detailLost').classList.add('hidden');
+                document.getElementById('detailFound').classList.add('hidden');
+            }
+            window.showList = showList;
+
+            window.showDetail = function(type) {
+                document.querySelectorAll('.riwayat-item').forEach(function(el) { el.style.display = 'none'; });
+                if (type === 'lost') {
+                    document.getElementById('detailLost').classList.remove('hidden');
+                    document.getElementById('detailFound').classList.add('hidden');
+                } else if (type === 'found') {
+                    document.getElementById('detailFound').classList.remove('hidden');
+                    document.getElementById('detailLost').classList.add('hidden');
+                }
+            };
+
+            window.filterRiwayat = function(type, btn) {
+                var items = document.querySelectorAll('.riwayat-item');
+                var btns = document.querySelectorAll('.filter-btn');
+                btns.forEach(function(b) { b.classList.remove('active'); });
+                if (btn) btn.classList.add('active');
+                items.forEach(function(item) {
+                    var itemType = item.getAttribute('data-type');
+                    item.style.display = (type === 'all' || itemType === type) ? 'block' : 'none';
+                });
+                document.getElementById('detailLost').classList.add('hidden');
+                document.getElementById('detailFound').classList.add('hidden');
+            };
+
+            var menuItems = document.querySelectorAll('.sidebar-menu li');
+            menuItems.forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var text = this.textContent.trim();
+                    menuItems.forEach(function(li) { li.classList.remove('active'); });
+                    this.classList.add('active');
+                    if (text.includes('Ringkasan')) { window.location.href = 'ringkasan.html'; }
+                    else if (text.includes('Klaim Saya')) { window.location.href = 'status.html'; }
+                    else if (text.includes('Riwayat')) {}
+                    else if (text.includes('Pengaturan')) { alert('⚙️ Buka halaman pengaturan...'); }
+                    else if (text.includes('Keluar')) { logout(); }
+                });
+            });
+
+            window.logout = function() {
+                if (confirm('Apakah Anda yakin ingin keluar?')) {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userName');
+                    window.location.href = 'index.html';
+                }
+            };
+
+            var navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    if (this.textContent.trim() === 'Keluar') return;
+                    navLinks.forEach(function(l) { l.classList.remove('active'); });
+                    this.classList.add('active');
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
