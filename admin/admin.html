@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Admin - LostFound Connect</title>
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        /* ============================================================
+                   UTILITY CLASSES
+                   ============================================================ */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .flex {
+            display: flex;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flex-between {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .gap-4 {
+            gap: 16px;
+        }
+        .gap-6 {
+            gap: 24px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-left {
+            text-align: left;
+        }
+        .relative {
+            position: relative;
+        }
+        .mt-2 {
+            margin-top: 8px;
+        }
+        .mt-4 {
+            margin-top: 16px;
+        }
+        .mt-6 {
+            margin-top: 24px;
+        }
+        .mt-8 {
+            margin-top: 32px;
+        }
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+        .mb-6 {
+            margin-bottom: 24px;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .max-w-4xl {
+            max-width: 1024px;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* ============================================================
+                   NAVBAR
+                   ============================================================ */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            height: 64px;
+        }
+        .navbar .container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .logo {
+            color: #a33900;
+            font-weight: 600;
+            font-size: 20px;
+            letter-spacing: 0.3px;
+        }
+        .navbar .logo a {
+            color: #a33900;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .navbar .nav-links a {
+            color: #5a4138;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            padding-bottom: 4px;
+        }
+        .navbar .nav-links a:hover {
+            color: #a33900;
+        }
+        .navbar .nav-links a.active {
+            color: #a33900;
+            font-weight: 600;
+            border-bottom: 2px solid #a33900;
+        }
+        .navbar .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .navbar .auth-buttons .admin-badge {
+            background: #a33900;
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .navbar .auth-buttons .admin-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #131b2e;
+        }
+        .navbar .auth-buttons .logout-btn {
+            font-size: 13px;
+            color: #dc2626;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .navbar .auth-buttons .logout-btn:hover {
+            color: #b91c1c;
+            text-decoration: underline;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #4b5563;
+        }
+        .menu-toggle svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ============================================================
+                   BREADCRUMB
+                   ============================================================ */
+        .breadcrumb {
+            padding: 16px 0 24px 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .breadcrumb a {
+            color: #a33900;
+            transition: text-decoration 0.3s ease;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .separator {
+            margin: 0 8px;
+            color: #9ca3af;
+        }
+        .breadcrumb .current {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   DASHBOARD PAGE
+                   ============================================================ */
+        .dashboard-page {
+            flex: 1;
+            padding: 0 24px 64px;
+        }
+
+        .dashboard-page .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #131b2e;
+            margin-bottom: 4px;
+        }
+
+        .dashboard-page .page-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        /* ============================================================
+                   STATS CARDS
+                   ============================================================ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stats-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #eaedff;
+            padding: 20px 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .stats-card .stats-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #131b2e;
+        }
+
+        .stats-card .stats-label {
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .stats-card .stats-change {
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .stats-card .stats-change.up {
+            color: #10b981;
+        }
+
+        .stats-card .stats-change.down {
+            color: #ef4444;
+        }
+
+        .stats-card .stats-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* ============================================================
+                   TOKEN VALIDATION
+                   ============================================================ */
+        .token-section {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #eaedff;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .token-section .token-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #131b2e;
+            margin-bottom: 4px;
+        }
+
+        .token-section .token-desc {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .token-input-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .token-input-group input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 14px;
+            border: 2px solid #eaedff;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            outline: none;
+            background: #ffffff;
+            color: #131b2e;
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        .token-input-group input:focus {
+            border-color: #a33900;
+        }
+
+        .token-input-group .btn-verify {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            background: #a33900;
+            color: #ffffff;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .token-input-group .btn-verify:hover {
+            background: #8a2f00;
+        }
+
+        /* ============================================================
+                   VALIDASI SECTION
+                   ============================================================ */
+        .validation-section {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #eaedff;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .validation-section .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #131b2e;
+            margin-bottom: 8px;
+        }
+
+        .validation-section .section-desc {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .validation-list {
+            list-style: none;
+            margin-bottom: 12px;
+        }
+
+        .validation-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 14px;
+            color: #4b5563;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .validation-list li:last-child {
+            border-bottom: none;
+        }
+
+        .validation-list li .check {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            border: 2px solid #d1d5db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .validation-list li .check.checked {
+            background: #a33900;
+            border-color: #a33900;
+            color: #ffffff;
+        }
+
+        .validation-list li .check.checked::after {
+            content: '✓';
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .btn-process {
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            background: #a33900;
+            color: #ffffff;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-process:hover {
+            background: #8a2f00;
+        }
+
+        /* ============================================================
+                   ACTIVITY TABLE
+                   ============================================================ */
+        .activity-section {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #eaedff;
+            padding: 20px 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .activity-section .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #131b2e;
+            margin-bottom: 12px;
+        }
+
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .activity-table thead th {
+            text-align: left;
+            padding: 10px 12px;
+            font-weight: 600;
+            color: #6b7280;
+            border-bottom: 2px solid #eaedff;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .activity-table tbody td {
+            padding: 12px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #4b5563;
+        }
+
+        .activity-table tbody tr:hover {
+            background: #faf8f7;
+        }
+
+        .activity-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 12px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-badge.pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-badge.failed {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            background: #eaedff;
+            padding: 24px;
+            margin-top: auto;
+        }
+        .footer .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .footer .footer-content .brand {
+            font-weight: 600;
+            color: #131b2e;
+            font-size: 14px;
+        }
+        .footer .footer-content .footer-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .footer .footer-content .footer-links a {
+            font-size: 13px;
+            color: #5a4138;
+            transition: color 0.3s ease;
+        }
+        .footer .footer-content .footer-links a:hover {
+            color: #a33900;
+        }
+        .footer .footer-content .copyright {
+            font-size: 13px;
+            color: #5a4138;
+        }
+
+        /* ============================================================
+                   MOBILE NAV
+                   ============================================================ */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background: #ffffff;
+            padding: 16px 24px;
+            gap: 12px;
+            border-top: 1px solid #eaedff;
+        }
+        .mobile-nav.open {
+            display: flex;
+        }
+        .mobile-nav a {
+            color: #5a4138;
+            font-size: 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .mobile-nav a.active {
+            color: #a33900;
+            font-weight: 600;
+        }
+        .mobile-nav a:last-child {
+            border-bottom: none;
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+            .menu-toggle {
+                display: block;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .token-input-group {
+                flex-direction: column;
+            }
+            .token-input-group input {
+                width: 100%;
+            }
+            .token-input-group .btn-verify {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .activity-table {
+                font-size: 12px;
+                display: block;
+                overflow-x: auto;
+            }
+
+            .dashboard-page .page-title {
+                font-size: 22px;
+            }
+
+            .footer .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            .footer .footer-content .footer-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-page {
+                padding: 0 16px 40px;
+            }
+
+            .breadcrumb {
+                font-size: 12px;
+                padding: 12px 0 16px 0;
+            }
+
+            .dashboard-page .page-title {
+                font-size: 18px;
+            }
+
+            .validation-list li {
+                font-size: 13px;
+            }
+
+            .navbar .auth-buttons .admin-name {
+                font-size: 13px;
+            }
+            .navbar .auth-buttons .logout-btn {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- NAVBAR -->
+    <!-- ============================================================ -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="dashboard-admin.html">LostFound ADMIN</a>
+            </div>
+
+            <nav class="nav-links">
+                <a href="dashboard-admin.html" class="active">Dashboard</a>
+                <a href="#">Verifikasi</a>
+                <a href="#">Laporan</a>
+                <a href="#">Pengguna</a>
+            </nav>
+
+            <div class="auth-buttons">
+                <span class="admin-badge">Admin</span>
+                <span class="admin-name">Petugas</span>
+                <button class="logout-btn" onclick="logout()">Keluar</button>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="mobile-nav" id="mobileNav">
+            <a href="dashboard-admin.html" class="active">Dashboard</a>
+            <a href="#">Verifikasi</a>
+            <a href="#">Laporan</a>
+            <a href="#">Pengguna</a>
+            <a href="#" onclick="logout()" style="color:#dc2626;">Keluar</a>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- DASHBOARD PAGE -->
+    <!-- ============================================================ -->
+    <main class="dashboard-page">
+
+        <div class="container max-w-4xl mx-auto">
+
+            <!-- ============================================================ -->
+            <!-- BREADCRUMB -->
+            <!-- ============================================================ -->
+            <nav class="breadcrumb">
+                <a href="index.html">Beranda</a>
+                <span class="separator">›</span>
+                <span class="current">Dashboard Admin</span>
+            </nav>
+
+            <!-- ============================================================ -->
+            <!-- HEADER -->
+            <!-- ============================================================ -->
+            <h1 class="page-title">📊 Dashboard Overview</h1>
+            <p class="page-subtitle">
+                Selamat datang, <strong>Petugas!</strong> Hari ini ada <strong>8</strong> laporan baru yang memerlukan perhatian Anda.
+            </p>
+
+            <!-- ============================================================ -->
+            <!-- STATS CARDS -->
+            <!-- ============================================================ -->
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <div class="stats-icon">📋</div>
+                    <div class="stats-number">5</div>
+                    <div class="stats-label">Klaim Pending</div>
+                    <div class="stats-change up">↑ 12% dari minggu lalu</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-icon">⏳</div>
+                    <div class="stats-number">3</div>
+                    <div class="stats-label">Total Aktif</div>
+                    <div class="stats-change">Arsitektur</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-icon">✅</div>
+                    <div class="stats-number">12</div>
+                    <div class="stats-label">Tersedia</div>
+                    <div class="stats-change up">↑ 3 hari ini</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-icon">🎉</div>
+                    <div class="stats-number">8</div>
+                    <div class="stats-label">Sukses</div>
+                    <div class="stats-change up">↑ 5 minggu ini</div>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- TOKEN VALIDATION -->
+            <!-- ============================================================ -->
+            <div class="token-section">
+                <div class="token-title">🔑 Input Token Validasi</div>
+                <div class="token-desc">
+                    Token bersifat unik untuk setiap transaksi pengambilan barang.
+                </div>
+                <div class="token-input-group">
+                    <input type="text" id="tokenInput" placeholder="Masukkan token 12-digit (contoh: LF-ORANGE-992)" maxlength="20" />
+                    <button class="btn-verify" onclick="verifyToken()">🔍 Verifikasi Token</button>
+                </div>
+                <div id="tokenResult" style="margin-top:12px;display:none;"></div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- VALIDASI SECTION -->
+            <!-- ============================================================ -->
+            <div class="validation-section">
+                <div class="section-title">✅ Validasi Serah Terima</div>
+                <div class="section-desc">
+                    Pastikan mahasiswa menunjukkan kode token yang sesuai dengan laporan. Proses ini akan mencatat log digital secara otomatis untuk keamanan hukum.
+                </div>
+
+                <ul class="validation-list">
+                    <li>
+                        <span class="check" onclick="toggleCheck(this)"></span>
+                        Verifikasi identitas fisik mahasiswa
+                    </li>
+                    <li>
+                        <span class="check" onclick="toggleCheck(this)"></span>
+                        Cek kecocokan deskripsi barang
+                    </li>
+                    <li>
+                        <span class="check" onclick="toggleCheck(this)"></span>
+                        Input token validasi 12-digit
+                    </li>
+                </ul>
+
+                <button class="btn-process" onclick="processSerahTerima()">📦 PROSES SERAH TERIMA</button>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- ACTIVITY TABLE -->
+            <!-- ============================================================ -->
+            <div class="activity-section">
+                <div class="section-title">🕐 Aktivitas Terbaru</div>
+
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Item/Barang</th>
+                            <th>Status</th>
+                            <th>Mahasiswa</th>
+                            <th>Waktu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>MacBook Air M2 Silver</strong></td>
+                            <td><span class="status-badge success">✅ Diterima</span></td>
+                            <td>Budi Santoso (20210041)</td>
+                            <td>10:45 WIB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dompet Kulit Coklat</strong></td>
+                            <td><span class="status-badge success">✅ Diterima</span></td>
+                            <td>Siti Aminah (20220192)</td>
+                            <td>09:12 WIB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Kunci Motor Honda</strong></td>
+                            <td><span class="status-badge pending">⏳ Proses</span></td>
+                            <td>Andi Pratama (20210234)</td>
+                            <td>08:30 WIB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dompet Kulit Hitam</strong></td>
+                            <td><span class="status-badge success">✅ Diterima</span></td>
+                            <td>Rina Sari (20210345)</td>
+                            <td>Kemarin</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Botol Minum Silver</strong></td>
+                            <td><span class="status-badge pending">⏳ Proses</span></td>
+                            <td>Doni Hermawan (20210456)</td>
+                            <td>Kemarin</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================================ -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span class="brand">LostFound ADMIN</span>
+            <div class="footer-links">
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat &amp; Ketentuan</a>
+                <a href="#">Kontak Kampus</a>
+            </div>
+            <span class="copyright">© 2024 Universitas Perjuangan Tasikmalaya</span>
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // MOBILE MENU TOGGLE
+            // ============================================================
+            var menuToggle = document.getElementById('menuToggle');
+            var mobileNav = document.getElementById('mobileNav');
+
+            if (menuToggle && mobileNav) {
+                menuToggle.addEventListener('click', function() {
+                    mobileNav.classList.toggle('open');
+                });
+            }
+
+            var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
+            mobileLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    mobileNav.classList.remove('open');
+                });
+            });
+
+            // ============================================================
+            // TOGGLE CHECKLIST
+            // ============================================================
+            window.toggleCheck = function(element) {
+                element.classList.toggle('checked');
+            };
+
+            // ============================================================
+            // VERIFY TOKEN
+            // ============================================================
+            window.verifyToken = function() {
+                var input = document.getElementById('tokenInput');
+                var result = document.getElementById('tokenResult');
+                var token = input.value.trim();
+
+                if (!token) {
+                    result.style.display = 'block';
+                    result.innerHTML = '<div style="padding:10px 14px;border-radius:8px;background:#fef2f2;color:#dc2626;border-left:3px solid #dc2626;">⚠️ Silakan masukkan token terlebih dahulu.</div>';
+                    return;
+                }
+
+                if (token.length < 6) {
+                    result.style.display = 'block';
+                    result.innerHTML = '<div style="padding:10px 14px;border-radius:8px;background:#fef2f2;color:#dc2626;border-left:3px solid #dc2626;">⚠️ Token minimal 6 karakter.</div>';
+                    return;
+                }
+
+                // Simulasi verifikasi token
+                result.style.display = 'block';
+                result.innerHTML = '<div style="padding:10px 14px;border-radius:8px;background:#f0fdf4;color:#16a34a;border-left:3px solid #10b981;">✅ Token "' + token + '" valid! Silakan lanjutkan proses serah terima.</div>';
+
+                // Auto clear after 5 seconds
+                setTimeout(function() {
+                    result.style.display = 'none';
+                }, 5000);
+            };
+
+            // ============================================================
+            // PROCESS SERAH TERIMA
+            // ============================================================
+            window.processSerahTerima = function() {
+                var checks = document.querySelectorAll('.validation-list .check');
+                var allChecked = true;
+
+                checks.forEach(function(check) {
+                    if (!check.classList.contains('checked')) {
+                        allChecked = false;
+                    }
+                });
+
+                if (!allChecked) {
+                    alert('⚠️ Silakan centang semua checklist verifikasi terlebih dahulu!');
+                    return;
+                }
+
+                if (confirm('Apakah Anda yakin ingin memproses serah terima ini?')) {
+                    alert('✅ Proses serah terima berhasil! Log digital telah tercatat.');
+                    // Reset checks
+                    checks.forEach(function(check) {
+                        check.classList.remove('checked');
+                    });
+                }
+            };
+
+            // ============================================================
+            // LOGOUT
+            // ============================================================
+            window.logout = function() {
+                if (confirm('Apakah Anda yakin ingin keluar?')) {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userName');
+                    window.location.href = 'index.html';
+                }
+            };
+
+            // ============================================================
+            // NAV LINK ACTIVE STATE
+            // ============================================================
+            var navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    if (this.textContent.trim() === 'Keluar') return;
+                    navLinks.forEach(function(l) {
+                        l.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            // ============================================================
+            // ENTER KEY ON TOKEN INPUT
+            // ============================================================
+            document.getElementById('tokenInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    verifyToken();
+                }
+            });
+
+            console.log('✅ Dashboard Admin loaded successfully!');
+
+        })();
+    </script>
+
+</body>
+</html>
