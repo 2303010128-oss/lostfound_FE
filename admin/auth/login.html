@@ -744,7 +744,10 @@
                         setLoading(false);
 
                         setTimeout(function() {
-                            window.location.href = 'dashboard-admin.html';
+                            // ============================================================
+                            // REDIRECT KE ../dashboard/index.html (dari admin/auth/ ke admin/dashboard/)
+                            // ============================================================
+                            window.location.href = '../dashboard/index.html';
                         }, 1500);
 
                     } else {
@@ -758,14 +761,17 @@
             };
 
             // ============================================================
-            // LOGOUT
+            // LOGOUT - LANGSUNG KE HALAMAN LOGIN
             // ============================================================
             window.logout = function() {
                 if (confirm('Apakah Anda yakin ingin keluar?')) {
                     localStorage.removeItem('isAdminLoggedIn');
                     localStorage.removeItem('adminEmail');
                     localStorage.removeItem('adminRememberMe');
-                    window.location.href = 'index.html';
+                    // ============================================================
+                    // REDIRECT KE login.html (admin/auth/login.html)
+                    // ============================================================
+                    window.location.href = 'login.html';
                 }
             };
 
@@ -784,7 +790,10 @@
             // CHECK IF ALREADY LOGGED IN
             // ============================================================
             if (localStorage.getItem('isAdminLoggedIn') === 'true') {
-                window.location.href = 'dashboard-admin.html';
+                // ============================================================
+                // REDIRECT KE ../dashboard/index.html
+                // ============================================================
+                window.location.href = '../dashboard/index.html';
             }
 
             // ============================================================
@@ -818,6 +827,7 @@
             console.log('📝 Demo admin credentials:');
             console.log('   Email: ' + DEMO_EMAIL);
             console.log('   Password: ' + DEMO_PASSWORD);
+            console.log('📍 Redirect ke: ../dashboard/index.html');
 
         })();
     </script>
