@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Admin - LostFound Connect</title>
+    <title>Manajemen Klaim - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
                    RESET & BASE STYLES
@@ -15,10 +16,12 @@
         }
 
         body {
-            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
             min-height: 100vh;
             display: flex;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
         }
 
         a {
@@ -31,1277 +34,706 @@
             font-family: inherit;
             border: none;
             background: none;
-        }
-
-        input {
-            font-family: inherit;
+            outline: none;
         }
 
         /* ============================================================
-                   SIDEBAR - WARNA #0F172A
+                   SIDEBAR STYLE (WARNA GELAP FIGMA)
                    ============================================================ */
         .sidebar {
-            width: 240px;
+            width: 260px;
             height: 100vh;
-            background: #0F172A;
+            background: #111c2e;
             position: fixed;
             top: 0;
             left: 0;
             z-index: 100;
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease;
+            padding: 24px 16px;
         }
 
-        .sidebar .sidebar-header {
-            padding: 24px 20px 20px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 12px 32px 12px;
         }
-
-        .sidebar .sidebar-header .logo {
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #ea580c;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: #ffffff;
             font-weight: 700;
             font-size: 18px;
         }
 
-        .sidebar .sidebar-header .logo span {
-            font-weight: 300;
-            color: #64748b;
+        .logo-text {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.3px;
         }
 
-        .sidebar .sidebar-header .subtitle {
+        .logo-text span {
             font-size: 11px;
-            color: #475569;
-            margin-top: 2px;
+            color: #64748b;
+            font-weight: 500;
+            margin-left: 4px;
         }
 
-        .sidebar .sidebar-menu {
+        .sidebar-menu {
             flex: 1;
-            padding: 16px 12px;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .sidebar .sidebar-menu .menu-label {
+        .menu-label {
             font-size: 10px;
-            font-weight: 600;
+            font-weight: 700;
             color: #475569;
             text-transform: uppercase;
             letter-spacing: 0.8px;
-            padding: 12px 12px 8px 12px;
+            padding: 16px 12px 8px 12px;
         }
-
-        .sidebar .sidebar-menu .menu-item {
+        
+        .menu-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 9px 12px;
+            padding: 12px 14px;
             border-radius: 8px;
-            font-size: 13px;
-            color: #94a3b8;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            margin-bottom: 2px;
-        }
-
-        .sidebar .sidebar-menu .menu-item:hover {
-            background: rgba(255, 255, 255, 0.06);
-            color: #ffffff;
-        }
-
-        .sidebar .sidebar-menu .menu-item.active {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
+            font-size: 13.5px;
             font-weight: 500;
+            color: #94a3b8;
+            transition: 0.2s;
         }
 
-        .sidebar .sidebar-menu .menu-item .icon {
-            font-size: 17px;
-            width: 22px;
-            text-align: center;
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #f1f5f9;
         }
 
-        .sidebar .sidebar-menu .menu-item .badge {
-            margin-left: auto;
-            background: #ef4444;
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.08);
             color: #ffffff;
-            font-size: 9px;
             font-weight: 600;
-            padding: 1px 8px;
-            border-radius: 10px;
         }
-
-        .sidebar .sidebar-footer {
-            padding: 14px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .sidebar .sidebar-footer .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar .sidebar-footer .user-info .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #a33900, #cc4900);
+        
+        .menu-item .badge {
+            margin-left: auto;
+            background: #ea580c;
             color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
-            font-weight: 600;
         }
 
-        .sidebar .sidebar-footer .user-info .user-details .name {
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 12px;
+            margin-bottom: 16px;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .user-meta .name {
             font-size: 13px;
             font-weight: 600;
             color: #ffffff;
         }
 
-        .sidebar .sidebar-footer .user-info .user-details .role {
+        .user-meta .role {
             font-size: 11px;
             color: #64748b;
         }
-
-        .sidebar .sidebar-footer .logout-btn {
+        
+        .logout-link {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 7px 12px;
-            border-radius: 8px;
-            font-size: 12px;
+            gap: 10px;
             color: #f87171;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            margin-top: 8px;
-            width: 100%;
-            background: none;
-            border: none;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: 0.2s;
         }
 
-        .sidebar .sidebar-footer .logout-btn:hover {
-            background: rgba(248, 113, 113, 0.1);
+        .logout-link:hover {
+            background: rgba(248, 113, 113, 0.08);
         }
 
         /* ============================================================
-                   MAIN CONTENT
+                   MAIN CONTENT AREA
                    ============================================================ */
         .main-content {
-            margin-left: 240px;
+            margin-left: 260px;
             flex: 1;
+            padding: 32px 40px;
+            background: #f8fafc;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* ============================================================
-                   TOPBAR
-                   ============================================================ */
-        .topbar {
-            background: #ffffff;
-            padding: 14px 28px;
-            border-bottom: 1px solid #e2e8f0;
+        /* TOP BAR */
+        .topbar-section {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .topbar-left {
-            display: flex;
             align-items: center;
-            gap: 12px;
+            margin-bottom: 28px;
         }
 
-        .topbar .page-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .topbar .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        /* SEARCH BAR */
-        .search-wrapper {
-            display: flex;
-            align-items: center;
-            background: #f1f5f9;
-            border-radius: 8px;
-            padding: 6px 14px;
-            gap: 8px;
-            border: 1px solid #e2e8f0;
-            transition: border-color 0.3s ease;
-            min-width: 200px;
-        }
-
-        .search-wrapper:focus-within {
-            border-color: #a33900;
-            background: #ffffff;
-        }
-
-        .search-wrapper .search-icon {
-            color: #94a3b8;
-            font-size: 14px;
-        }
-
-        .search-wrapper input {
-            border: none;
-            outline: none;
-            background: transparent;
-            font-size: 13px;
-            color: #0f172a;
-            width: 100%;
-            font-family: inherit;
-        }
-
-        .search-wrapper input::placeholder {
-            color: #94a3b8;
-        }
-
-        /* NOTIFICATION */
-        .topbar .topbar-right .notification {
-            font-size: 18px;
-            cursor: pointer;
-            position: relative;
-            padding: 4px;
-        }
-
-        .topbar .topbar-right .notification .dot {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            width: 8px;
-            height: 8px;
-            background: #ef4444;
-            border-radius: 50%;
-            border: 2px solid #ffffff;
-        }
-
-        /* ============================================================
-                   BREADCRUMB
-                   ============================================================ */
-        .breadcrumb {
-            padding: 14px 28px 0 28px;
-            font-size: 13px;
-            color: #64748b;
-        }
-        .breadcrumb a {
-            color: #a33900;
-        }
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-        .breadcrumb .separator {
-            margin: 0 8px;
-            color: #94a3b8;
-        }
-        .breadcrumb .current {
-            color: #0f172a;
-            font-weight: 500;
-        }
-
-        /* ============================================================
-                   DASHBOARD CONTENT
-                   ============================================================ */
-        .dashboard-content {
-            padding: 20px 28px 32px 28px;
-            flex: 1;
-        }
-
-        /* ============================================================
-                   WELCOME SECTION
-                   ============================================================ */
-        .welcome-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .welcome-section .welcome-text {
-            font-size: 14px;
-            color: #64748b;
-            line-height: 1.6;
-        }
-
-        .welcome-section .welcome-text .highlight {
-            color: #a33900;
-            font-weight: 600;
-        }
-
-        .welcome-section .welcome-text .gray {
-            color: #0f172a;
-            font-weight: 600;
-        }
-
-        .welcome-section .date-badge {
-            background: #ffffff;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #0f172a;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* ============================================================
-                   STATS GRID - 3 KARTU
-                   ============================================================ */
-        .stats-grid-main {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .stats-card {
-            background: #ffffff;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            padding: 18px 20px;
-            transition: all 0.3s ease;
-        }
-
-        .stats-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        }
-
-        .stats-card .stats-label {
-            font-size: 13px;
-            color: #64748b;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-
-        .stats-card .stats-row {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-        }
-
-        .stats-card .stats-number {
-            font-size: 28px;
+        .page-title-group h1 {
+            font-size: 22px;
             font-weight: 700;
             color: #0f172a;
-        }
-
-        .stats-card .stats-change {
-            font-size: 13px;
-            font-weight: 600;
-            padding: 2px 10px;
-            border-radius: 20px;
-        }
-
-        .stats-card .stats-change.up {
-            background: #dcfce7;
-            color: #16a34a;
-        }
-
-        .stats-card .stats-change.down {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-
-        .stats-card .stats-change.neutral {
-            background: #f1f5f9;
-            color: #64748b;
-        }
-
-        /* ============================================================
-                   VALIDASI & TOKEN
-                   ============================================================ */
-        .validation-token-section {
-            background: #ffffff;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            padding: 20px 24px;
-            margin-bottom: 18px;
-        }
-
-        .validation-token-section .section-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #0f172a;
+            letter-spacing: -0.3px;
             margin-bottom: 4px;
         }
 
-        .validation-token-section .section-desc {
+        .page-title-group p {
             font-size: 13px;
             color: #64748b;
-            margin-bottom: 14px;
-            line-height: 1.6;
         }
-
-        .validation-token-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        .validation-left .validation-list {
-            list-style: none;
-        }
-
-        .validation-left .validation-list li {
+        
+        .search-container {
             display: flex;
             align-items: center;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 16px;
+            width: 280px;
             gap: 10px;
-            padding: 8px 0;
+        }
+
+        .search-container input {
+            border: none;
+            outline: none;
+            font-size: 13px;
+            color: #0f172a;
+            width: 100%;
+        }
+
+        .search-container input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* SUB-NAVIGASI TABS (Perlu Ditinjau, Butuh Klarifikasi, Siap Diambil) */
+        .sub-tabs-row {
+            display: flex;
+            gap: 24px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 24px;
+            padding-left: 8px;
+        }
+
+        .tab-link-btn {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #64748b;
+            padding-bottom: 14px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .tab-link-btn:hover {
+            color: #334155;
+        }
+
+        .tab-link-btn.active {
+            color: #ea580c;
+        }
+
+        .tab-link-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #ea580c;
+        }
+
+        /* Mini Badge Angka di Tab */
+        .tab-link-btn .tab-count-badge {
+            font-size: 11px;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        .tab-link-btn.active .tab-count-badge {
+            color: #ea580c;
+            font-weight: 600;
+        }
+
+        /* ============================================================
+                   TABLE AREA
+                   ============================================================ */
+        .table-responsive-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+            margin-bottom: 24px;
+        }
+
+        .custom-admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .custom-admin-table th {
+            background: #f8fafc;
+            padding: 14px 24px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .custom-admin-table td {
+            padding: 18px 24px;
             font-size: 13px;
             color: #334155;
             border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
         }
 
-        .validation-left .validation-list li:last-child {
+        .custom-admin-table tr:last-child td {
             border-bottom: none;
         }
 
-        .validation-left .validation-list li .check {
-            width: 18px;
-            height: 18px;
-            border-radius: 5px;
-            border: 2px solid #cbd5e1;
+        /* Layout Barang */
+        .item-cell-content {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .item-main-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .item-icon-wrapper {
+            background: #f1f5f9;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-            cursor: pointer;
-        }
-
-        .validation-left .validation-list li .check.checked {
-            background: #a33900;
-            border-color: #a33900;
-            color: #ffffff;
-        }
-
-        .validation-left .validation-list li .check.checked::after {
-            content: '✓';
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        .token-right .token-desc-small {
             font-size: 13px;
             color: #64748b;
-            margin-bottom: 10px;
         }
 
-        .token-display {
-            background: #f8fafc;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 10px 14px;
-            margin-bottom: 10px;
+        .item-text-bold {
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        /* Subtitle hijau "Sesuai Fisik" di Tab Siap Diambil */
+        .item-sub-status {
+            font-size: 11px;
+            font-weight: 500;
+            color: #16a34a;
+            margin-left: 38px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            transition: border-color 0.3s ease;
+            gap: 4px;
         }
 
-        .token-display:hover {
-            border-color: #a33900;
+        .id-claim-text {
+            color: #64748b;
+            font-family: monospace;
+            font-size: 12px;
         }
 
-        .token-display .token-code {
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f172a;
-            letter-spacing: 2px;
-        }
-
-        .token-display .token-copy {
-            color: #94a3b8;
-            font-size: 13px;
-            cursor: pointer;
-            transition: color 0.3s ease;
-            background: none;
-            border: none;
-        }
-
-        .token-display .token-copy:hover {
-            color: #a33900;
-        }
-
-        .token-features {
+        /* Desain Label Token di bawah Tanggal */
+        .token-date-wrapper {
             display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .token-features .feature {
-            flex: 1;
-            text-align: center;
-            padding: 6px 4px;
-            background: #f1f5f9;
-            border-radius: 6px;
-            font-size: 10px;
+        .token-badge-lbl {
+            font-family: monospace;
+            font-size: 10.5px;
             font-weight: 600;
             color: #475569;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .token-features .feature .icon {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 2px;
-        }
-
-        .btn-process {
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 13px;
-            background: #a33900;
-            color: #ffffff;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-process:hover {
-            background: #8a2f00;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            align-self: flex-start;
         }
 
         /* ============================================================
-                   ACTIVITY SECTION
+                   LENCANA STATUS BADGES
                    ============================================================ */
-        .activity-section {
-            background: #ffffff;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            padding: 18px 22px;
-            margin-bottom: 18px;
-        }
-
-        .activity-section .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .activity-section .section-title {
-            font-size: 15px;
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .activity-section .view-all {
-            font-size: 12px;
-            color: #a33900;
-            font-weight: 500;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 6px;
-        }
-
-        .activity-section .view-all:hover {
-            background: #fef3ee;
-            text-decoration: underline;
-        }
-
-        .activity-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-
-        .activity-table thead th {
-            text-align: left;
-            padding: 8px 10px;
-            font-weight: 600;
-            color: #64748b;
-            border-bottom: 2px solid #e2e8f0;
+        .status-pill {
             font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .activity-table tbody td {
-            padding: 10px;
-            border-bottom: 1px solid #f1f5f9;
-            color: #334155;
-            font-size: 12px;
-        }
-
-        .activity-table tbody tr:hover {
-            background: #f8fafc;
-        }
-
-        .activity-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .status-badge {
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            letter-spacing: 0.3px;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 3px 12px;
-            border-radius: 9999px;
-            font-size: 10px;
-            font-weight: 600;
+            gap: 6px;
+            text-transform: uppercase;
         }
 
-        .status-badge.success {
-            background: #dcfce7;
-            color: #16a34a;
-        }
-
-        .status-badge.pending {
-            background: #fef3c7;
+        /* 1. Pending */
+        .status-pill.pending {
+            background: #fff7ed;
             color: #d97706;
         }
+        .status-pill.pending::before { content: '●'; color: #d97706; font-size: 8px; }
 
-        .status-badge.verified {
-            background: #dbeafe;
+        /* 2. Clarification */
+        .status-pill.clarification {
+            background: #eff6ff;
             color: #2563eb;
         }
+        .status-pill.clarification::before { content: '●'; color: #2563eb; font-size: 8px; }
 
-        .status-badge .dot {
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            display: inline-block;
+        /* 3. Siap Ambil */
+        .status-pill.ready {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+        .status-pill.ready::before { content: '●'; color: #16a34a; font-size: 8px; }
+
+        /* ============================================================
+                   TOMBOL-TOMBOL AKSI TINDAKAN
+                   ============================================================ */
+        .btn-action {
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s, transform 0.1s;
         }
 
-        .status-badge.success .dot {
-            background: #16a34a;
+        .btn-action:active {
+            transform: scale(0.98);
         }
-        .status-badge.pending .dot {
-            background: #d97706;
+
+        /* Hitam - Periksa Berkas */
+        .btn-action.examine {
+            background: #111827;
         }
-        .status-badge.verified .dot {
-            background: #2563eb;
+        .btn-action.examine:hover {
+            background: #1f2937;
+        }
+
+        /* Biru Gelap/Hitam - Proses Tatap Muka */
+        .btn-action.onsite {
+            background: #0f172a;
+        }
+        .btn-action.onsite:hover {
+            background: #1e293b;
+        }
+
+        /* Oranye - Validasi Token */
+        .btn-action.token-val {
+            background: #ea580c;
+            box-shadow: 0 2px 4px rgba(234, 88, 12, 0.15);
+        }
+        .btn-action.token-val:hover {
+            background: #d94e06;
         }
 
         /* ============================================================
-                   FOOTER ADMIN
+                   PAGINATION INFO
                    ============================================================ */
-        .footer-admin {
-            background: #ffffff;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            padding: 14px 22px;
+        .table-footer-pagination {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: #ffffff;
+            border-top: 1px solid #f1f5f9;
         }
 
-        .footer-admin .footer-left {
+        .entries-info-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pagination-controls {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
         }
 
-        .footer-admin .footer-left .label {
+        .page-nav-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 12px;
             color: #64748b;
-            font-weight: 500;
+            transition: 0.2s;
         }
 
-        .footer-admin .footer-left .value {
-            font-size: 13px;
-            color: #0f172a;
+        .page-nav-btn:hover:not(.active) {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .page-nav-btn.active {
+            background: #111c2e;
+            color: #ffffff;
+            border-color: #111c2e;
             font-weight: 600;
         }
 
-        /* ============================================================
-                   RESPONSIVE
-                   ============================================================ */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #0f172a;
-            font-size: 22px;
-            padding: 4px;
-        }
-
-        .menu-toggle svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 23, 42, 0.5);
-            z-index: 99;
-        }
-
-        .sidebar-overlay.active {
-            display: block;
-        }
-
-        @media (max-width: 1024px) {
-            .stats-grid-main {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                width: 280px;
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .sidebar-overlay.active {
-                display: block;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .topbar {
-                padding: 10px 16px;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .topbar .page-title {
-                font-size: 16px;
-            }
-
-            .topbar .topbar-right {
-                width: 100%;
-                flex-wrap: wrap;
-            }
-
-            .search-wrapper {
-                flex: 1;
-                min-width: 150px;
-            }
-
-            .breadcrumb {
-                padding: 10px 16px 0 16px;
-                font-size: 12px;
-            }
-
-            .dashboard-content {
-                padding: 14px 16px 24px 16px;
-            }
-
-            .welcome-section {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .stats-grid-main {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-            }
-
-            .stats-card .stats-number {
-                font-size: 22px;
-            }
-
-            .validation-token-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .token-features {
-                flex-wrap: wrap;
-            }
-            .token-features .feature {
-                flex: 1 1 30%;
-                min-width: 80px;
-            }
-
-            .activity-table {
-                font-size: 11px;
-                display: block;
-                overflow-x: auto;
-            }
-
-            .activity-table thead th,
-            .activity-table tbody td {
-                padding: 6px 8px;
-                font-size: 11px;
-            }
-
-            .validation-token-section {
-                padding: 14px 16px;
-            }
-            .activity-section {
-                padding: 14px 16px;
-            }
-            .footer-admin {
-                padding: 12px 16px;
-                flex-direction: column;
-                text-align: center;
-                gap: 6px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .topbar .page-title {
-                font-size: 14px;
-            }
-
-            .search-wrapper {
-                min-width: 100px;
-            }
-            .search-wrapper input {
-                font-size: 12px;
-            }
-
-            .stats-grid-main {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
-            .stats-card {
-                padding: 12px 14px;
-            }
-
-            .stats-card .stats-number {
-                font-size: 18px;
-            }
-            .stats-card .stats-label {
-                font-size: 11px;
-            }
-            .stats-card .stats-change {
-                font-size: 10px;
-                padding: 1px 8px;
-            }
-
-            .breadcrumb {
-                font-size: 11px;
-            }
-
-            .validation-left .validation-list li {
-                font-size: 12px;
-            }
-
-            .footer-admin .footer-left {
-                flex-direction: column;
-                gap: 2px;
-            }
-
-            .token-display .token-code {
-                font-size: 13px;
-                letter-spacing: 1px;
-            }
-
-            .token-features .feature {
-                flex: 1 1 100%;
-                font-size: 9px;
-            }
-
-            .welcome-section .welcome-text {
-                font-size: 13px;
-            }
-            .welcome-section .date-badge {
-                font-size: 12px;
-                padding: 4px 12px;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================ -->
-    <!-- SIDEBAR OVERLAY (Mobile) -->
-    <!-- ============================================================ -->
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-    <!-- ============================================================ -->
-    <!-- SIDEBAR - WARNA #0F172A -->
-    <!-- ============================================================ -->
-    <aside class="sidebar" id="sidebar">
+    <!-- SIDEBAR LEFT PANEL -->
+    <aside class="sidebar">
         <div class="sidebar-header">
-            <div class="logo">LostFound <span>ADMIN</span></div>
-            <div class="subtitle">Panel Administrator</div>
+            <div class="logo-icon">L</div>
+            <div class="logo-text">LostFound <span>ADMIN</span></div>
         </div>
 
         <nav class="sidebar-menu">
             <div class="menu-label">Main Menu</div>
+            <a href="../dashboard/index.html" class="menu-item">
+                <span>📊</span> Dashboard
+            </a>
+            <a href="../antrean/index.html" class="menu-item">
+                <span>📦</span> Antrean Temuan <span class="badge">3</span>
+            </a>
             <a href="index.html" class="menu-item active">
-                <span class="icon">📊</span>
-                Dashboard
+                <span>📝</span> Verifikasi Klaim
             </a>
-            <a href="../verifikasi/index.html" class="menu-item">
-                <span class="icon">⏳</span>
-                Verifikasi
-                <span class="badge">3</span>
-            </a>
-            <a href="laporan/index.html" class="menu-item">
-                <span class="icon">📋</span>
-                Laporan
-                <span class="badge">5</span>
-            </a>
-            <a href="arsip/index.html" class="menu-item">
-                <span class="icon">📄</span>
-                Arsip
+            <a href="../arsip/index.html" class="menu-item">
+                <span>📁</span> Arsip Laporan
             </a>
 
-            <div class="menu-label" style="margin-top:16px;">Pengaturan</div>
-            <a href="pengguna/index.html" class="menu-item">
-                <span class="icon">👥</span>
-                Pengguna
+            <div class="menu-label" style="margin-top: 20px;">Settings</div>
+            <a href="#" class="menu-item">
+                <span>👤</span> Manajemen User
             </a>
-            <a href="pengaturan/index.html" class="menu-item">
-                <span class="icon">⚙️</span>
-                Pengaturan
+            <a href="#" class="menu-item">
+                <span>⚙️</span> Konfigurasi Sistem
             </a>
         </nav>
 
         <div class="sidebar-footer">
-            <div class="user-info">
-                <div class="avatar">SP</div>
-                <div class="user-details">
-                    <div class="name">Super Admin</div>
-                    <div class="role">Petugas Posko</div>
+            <div class="user-profile">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Petugas" class="user-avatar">
+                <div class="user-meta">
+                    <div class="name">Petugas Posko</div>
+                    <div class="role">Super Admin</div>
                 </div>
             </div>
-            <button class="logout-btn" onclick="logout()">
-                🚪 Keluar Sesi
-            </button>
+            <a href="../auth/login.html" class="logout-link" onclick="alert('Keluar dari sesi admin.')">
+                <span>🚪</span> Keluar Sesi
+            </a>
         </div>
     </aside>
 
-    <!-- ============================================================ -->
-    <!-- MAIN CONTENT -->
-    <!-- ============================================================ -->
+    <!-- MAIN CONTENT AREA -->
     <main class="main-content">
-
-        <!-- TOPBAR -->
-        <header class="topbar">
-            <div class="topbar-left">
-                <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-                <h1 class="page-title">Dashboard Overview</h1>
+        
+        <header class="topbar-section">
+            <div class="page-title-group">
+                <h1>Manajemen Klaim</h1>
+                <p>Kelola verifikasi berkas dan pantau pengambilan barang.</p>
             </div>
-
-            <div class="topbar-right">
-                <!-- SEARCH BAR -->
-                <div class="search-wrapper">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="searchInput" placeholder="Cari Nama atau ID Klaim..." oninput="searchData()" />
-                </div>
-
-                <!-- NOTIFICATION -->
-                <span class="notification" onclick="showNotification()">
-                    🔔
-                    <span class="dot"></span>
-                </span>
+            
+            <div class="search-container">
+                <span>🔍</span>
+                <input type="text" id="tableSearchInput" placeholder="Cari Nama atau ID Klaim..." onkeyup="searchTableData()">
             </div>
         </header>
 
-        <!-- DASHBOARD CONTENT -->
-        <div class="dashboard-content">
+        <!-- SUB-NAVIGASI TABS INTERAKTIF -->
+        <nav class="sub-tabs-row">
+            <button class="tab-link-btn active" onclick="switchClaimTab(this, 'perlu-ditinjau')">
+                Perlu Ditinjau <span class="tab-count-badge" id="count-ditinjau">3</span>
+            </button>
+            <button class="tab-link-btn" onclick="switchClaimTab(this, 'butuh-klarifikasi')">
+                Butuh Klarifikasi <span class="tab-count-badge" id="count-klarifikasi">1</span>
+            </button>
+            <button class="tab-link-btn" onclick="switchClaimTab(this, 'siap-diambil')">
+                Siap Diambil <span class="tab-count-badge" id="count-diambil">2</span>
+            </button>
+        </nav>
 
-            <!-- WELCOME SECTION -->
-            <div class="welcome-section">
-                <div class="welcome-text">
-                    <strong><span class="gray">Selamat datang,</span> <span class="highlight">Petugas!</span></strong><br />
-                    Hari ini ada <strong>8</strong> antrean baru yang memerlukan perhatian Anda.
-                </div>
-                <span class="date-badge">
-                    📅 <span id="currentDate">Mei 22, 2026</span>
-                </span>
-            </div>
+        <!-- DATA CONTAINER TABEL -->
+        <div class="table-responsive-box">
+            <table class="custom-admin-table">
+                <thead>
+                    <tr>
+                        <th>ID Klaim</th>
+                        <th>Nama Barang</th>
+                        <th>Nama Pengklaim</th>
+                        <th>Tgl Update</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="claimTableBody">
+                    <!-- Data di-render dinamis oleh JavaScript -->
+                </tbody>
+            </table>
 
-            <!-- STATS GRID - 3 KARTU -->
-            <div class="stats-grid-main">
-                <div class="stats-card">
-                    <div class="stats-label">Klaim Pending</div>
-                    <div class="stats-row">
-                        <span class="stats-number">5</span>
-                        <span class="stats-change up">↑12%</span>
-                    </div>
-                </div>
-                <div class="stats-card">
-                    <div class="stats-label">Antrean Temuan</div>
-                    <div class="stats-row">
-                        <span class="stats-number">3</span>
-                        <span class="stats-change neutral">Total Aktif</span>
-                    </div>
-                </div>
-                <div class="stats-card">
-                    <div class="stats-label">Kasus Selesai</div>
-                    <div class="stats-row">
-                        <span class="stats-number">142</span>
-                        <span class="stats-change down">↓24%</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- VALIDASI & TOKEN -->
-            <div class="validation-token-section">
-                <div class="section-title">✅ Validasi Serah Terima</div>
-                <div class="section-desc">
-                    Pastikan mahasiswa menunjukkan kode token yang sesuai dengan laporan. Proses ini akan mencatat log digital secara otomatis untuk keamanan hukum.
-                </div>
-
-                <div class="validation-token-grid">
-                    <!-- KIRI: Validasi Checklist -->
-                    <div class="validation-left">
-                        <ul class="validation-list">
-                            <li>
-                                <span class="check" onclick="toggleCheck(this)"></span>
-                                Verifikasi identitas fisik mahasiswa
-                            </li>
-                            <li>
-                                <span class="check" onclick="toggleCheck(this)"></span>
-                                Cek kecocokan deskripsi barang
-                            </li>
-                            <li>
-                                <span class="check" onclick="toggleCheck(this)"></span>
-                                Input token validasi 12-digit
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- KANAN: Token -->
-                    <div class="token-right">
-                        <div class="token-desc-small">Token bersifat unik untuk setiap transaksi pengambilan.</div>
-
-                        <div class="token-display">
-                            <span class="token-code" id="tokenDisplay">LF-ORANGE-992</span>
-                            <button class="token-copy" onclick="copyToken()">📋 Salin</button>
-                        </div>
-
-                        <div class="token-features">
-                            <div class="feature">
-                                <span class="icon">🔒</span>
-                                ENCRYPTED
-                            </div>
-                            <div class="feature">
-                                <span class="icon">⚡</span>
-                                REAL-TIME
-                            </div>
-                            <div class="feature">
-                                <span class="icon">⚖️</span>
-                                DIGITAL LAW
-                            </div>
-                        </div>
-
-                        <button class="btn-process" onclick="window.location.href='verifikasi/cek.html'">
-                            📦 PROSES SERAH TERIMA
-                        </button>
-
-                        <div id="tokenResult" style="margin-top:10px;display:none;"></div>
-                    </div>
+            <!-- FOOTER TABEL INFO -->
+            <div class="table-footer-pagination">
+                <div class="entries-info-text" id="entriesInfoLabel">Showing 1-3 of 3 entries</div>
+                <div class="pagination-controls">
+                    <button class="page-nav-btn">&lt;</button>
+                    <button class="page-nav-btn active">1</button>
+                    <button class="page-nav-btn">&gt;</button>
                 </div>
             </div>
-
-            <!-- ACTIVITY SECTION -->
-            <div class="activity-section">
-                <div class="section-header">
-                    <div class="section-title">🕐 Aktivitas Terbaru</div>
-                    <button class="view-all" onclick="viewAll()">Lihat Semua →</button>
-                </div>
-
-                <table class="activity-table">
-                    <thead>
-                        <tr>
-                            <th>Item/Barang</th>
-                            <th>Status</th>
-                            <th>Mahasiswa</th>
-                            <th>Waktu</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>MacBook Air M2 Silver</strong></td>
-                            <td><span class="status-badge success"><span class="dot"></span> DISERAHKAN</span></td>
-                            <td>Budi Santoso (20210041)</td>
-                            <td>10:45 WIB</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Dompet Kulit Cokelat</strong></td>
-                            <td><span class="status-badge verified"><span class="dot"></span> DIVERIFIKASI</span></td>
-                            <td>Siti Aminah (20220192)</td>
-                            <td>09:12 WIB</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Kunci Motor Honda</strong></td>
-                            <td><span class="status-badge pending"><span class="dot"></span> PROSES</span></td>
-                            <td>Andi Pratama (20210234)</td>
-                            <td>08:30 WIB</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- FOOTER -->
-            <div class="footer-admin">
-                <div class="footer-left">
-                    <span class="label">👤 Petugas Posko:</span>
-                    <span class="value">Super Admin</span>
-                </div>
-                <div class="footer-right">1920 FII x 1200 HUG</div>
-            </div>
-
         </div>
+
     </main>
 
+    <!-- LOGIC JAVASCRIPT TAB FILTERING & DATA MOCKUP FIGMA -->
     <script>
-        (function() {
-            'use strict';
+        // Data Set Sesuai 3 Keadaan Frame Figma Anda (image_8a4802, image_8a4821, image_8a4841)
+        const claimDataset = {
+            'perlu-ditinjau': [
+                { id: '#CLM-98231', icon: '💳', item: 'Dompet Kulit Cokelat', sub: '', user: 'Ahmad Dahlan', date: '12 Nov 2024', token: '', status: 'pending', actionTxt: '📄 Periksa Berkas', actionClass: 'examine', targetUrl: 'cek.html' },
+                { id: '#CLM-98235', icon: '📱', item: 'iPhone 13 Pro Max Blue', sub: '', user: 'Siti Aminah', date: '13 Nov 2024', token: '', status: 'pending', actionTxt: '📄 Periksa Berkas', actionClass: 'examine', targetUrl: 'cek.html' },
+                { id: '#CLM-98240', icon: '🔑', item: 'Kunci Mobil Honda', sub: '', user: 'Rizky Febrian', date: '14 Nov 2024', token: '', status: 'pending', actionTxt: '📄 Periksa Berkas', actionClass: 'examine', targetUrl: 'cek.html' }
+            ],
+            'butuh-klarifikasi': [
+                { id: '#CLM-98231', icon: '💳', item: 'Dompet Kulit Cokelat', sub: '', user: 'Diana Putri', date: '15 Nov 2024', token: '', status: 'clarification', actionTxt: '👤 Proses Tatap Muka', actionClass: 'onsite', targetUrl: 'fisik.html' }
+            ],
+            'siap-diambil': [
+                { id: '#CLM-98231', icon: '💳', item: 'Dompet Kulit Cokelat', sub: '● Sesuai Fisik', user: 'Budi Setiawan', date: '10 Nov 2024', token: 'TOKEN: LF-SILVER-902', status: 'ready', actionTxt: '🎟️ Validasi Token', actionClass: 'token-val', targetUrl: 'token.html' },
+                { id: '#CLM-96112', icon: '🎧', item: 'Sony WH-1000XM4', sub: '● Sesuai Fisik', user: 'Andi Wijaya', date: '11 Nov 2024', token: 'TOKEN: LF-BLUE-552', status: 'ready', actionTxt: '🎟️ Validasi Token', actionClass: 'token-val', targetUrl: 'token.html' }
+            ]
+        };
 
-            // ============================================================
-            // DATE
-            // ============================================================
-            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-            var now = new Date();
-            var dateStr = months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
-            document.getElementById('currentDate').textContent = dateStr;
+        let currentActiveTab = 'perlu-ditinjau';
 
-            // ============================================================
-            // SIDEBAR TOGGLE (Mobile)
-            // ============================================================
-            var sidebar = document.getElementById('sidebar');
-            var sidebarOverlay = document.getElementById('sidebarOverlay');
-            var menuToggle = document.getElementById('menuToggle');
+        // Fungsi Render Baris Tabel Berdasarkan Tab
+        function renderClaimTable(tabKey) {
+            currentActiveTab = tabKey;
+            const tbody = document.getElementById('claimTableBody');
+            const dataList = claimDataset[tabKey];
+            tbody.innerHTML = '';
 
-            window.toggleSidebar = function() {
-                sidebar.classList.toggle('open');
-                sidebarOverlay.classList.toggle('active');
-            };
-
-            if (menuToggle) {
-                menuToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    toggleSidebar();
-                });
-            }
-
-            if (sidebarOverlay) {
-                sidebarOverlay.addEventListener('click', function() {
-                    toggleSidebar();
-                });
-            }
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-                    toggleSidebar();
-                }
+            dataList.forEach(data => {
+                let subStatusHtml = data.sub ? `<div class="item-sub-status">${data.sub}</div>` : '';
+                let tokenHtml = data.token ? `<div class="token-badge-lbl">${data.token}</div>` : '';
+                
+                let row = `
+                    <tr>
+                        <td><span class="id-claim-text">${data.id}</span></td>
+                        <td>
+                            <div class="item-cell-content">
+                                <div class="item-main-row">
+                                    <div class="item-icon-wrapper">${data.icon}</div>
+                                    <span class="item-text-bold">${data.item}</span>
+                                </div>
+                                ${subStatusHtml}
+                            </div>
+                        </td>
+                        <td>${data.user}</td>
+                        <td>
+                            <div class="token-date-wrapper">
+                                <span>${data.date}</span>
+                                ${tokenHtml}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="status-pill ${data.status}">${data.status}</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <button class="btn-action ${data.actionClass}" onclick="location.href='${data.targetUrl}'">
+                                ${data.actionTxt}
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML('beforeend', row);
             });
 
-            // ============================================================
-            // TOGGLE CHECKLIST
-            // ============================================================
-            window.toggleCheck = function(element) {
-                element.classList.toggle('checked');
-            };
+            // Update Info Baris Bawah Tabel
+            const total = dataList.length;
+            document.getElementById('entriesInfoLabel').textContent = `Showing 1-${total} of ${total} entries`;
+        }
 
-            // ============================================================
-            // COPY TOKEN
-            // ============================================================
-            window.copyToken = function() {
-                var token = document.getElementById('tokenDisplay').textContent;
-                navigator.clipboard.writeText(token).then(function() {
-                    var btn = document.querySelector('.token-copy');
-                    var originalText = btn.textContent;
-                    btn.textContent = '✅ Tersalin!';
-                    setTimeout(function() {
-                        btn.textContent = originalText;
-                    }, 2000);
-                }).catch(function() {
-                    alert('Salin token: ' + token);
-                });
-            };
+        // Fungsi Tukar State Tab Aktif Sesuai Klik Menu
+        function switchClaimTab(element, tabKey) {
+            document.querySelectorAll('.tab-link-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            renderClaimTable(tabKey);
+        }
 
-            // ============================================================
-            // NOTIFICATION
-            // ============================================================
-            window.showNotification = function() {
-                alert('📬 Tidak ada notifikasi baru.');
-            };
+        // Fungsi Fitur Pencarian / Kolom Cari Laporan Atas
+        function searchTableData() {
+            const input = document.getElementById('tableSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#claimTableBody tr');
 
-            // ============================================================
-            // SEARCH
-            // ============================================================
-            window.searchData = function() {
-                var keyword = document.getElementById('searchInput').value.toLowerCase().trim();
-                if (keyword === '') {
-                    alert('🔍 Silakan masukkan kata kunci pencarian.');
-                } else {
-                    alert('🔍 Mencari: "' + keyword + '"');
-                }
-            };
-
-            // ============================================================
-            // VIEW ALL
-            // ============================================================
-            window.viewAll = function() {
-                alert('📋 Menampilkan semua aktivitas...');
-            };
-
-            // ============================================================
-            // LOGOUT
-            // ============================================================
-            window.logout = function() {
-                if (confirm('Apakah Anda yakin ingin keluar?')) {
-                    localStorage.removeItem('isAdminLoggedIn');
-                    localStorage.removeItem('adminEmail');
-                    localStorage.removeItem('adminRememberMe');
-                    window.location.href = '../auth/login.html';
-                }
-            };
-
-            // ============================================================
-            // SIDEBAR MENU ACTIVE STATE
-            // ============================================================
-            var menuItems = document.querySelectorAll('.sidebar-menu .menu-item');
-            menuItems.forEach(function(item) {
-                item.addEventListener('click', function(e) {
-                    if (this.href && this.href.includes('index.html')) {
-                        return;
-                    }
-                    menuItems.forEach(function(li) {
-                        li.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(input) ? '' : 'none';
             });
+        }
 
-            console.log('✅ Dashboard Admin loaded successfully!');
-
-        })();
+        // Load Pertama Kali Saat Halaman Diakses
+        window.addEventListener('DOMContentLoaded', () => {
+            renderClaimTable('perlu-ditinjau');
+        });
     </script>
 
 </body>
