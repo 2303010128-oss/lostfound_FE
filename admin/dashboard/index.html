@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Admin - LostFound Connect</title>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            color: #1e293b;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        input {
+            font-family: inherit;
+        }
+
+        /* ============================================================
+                   SIDEBAR - MODERN DARK NAV
+                   ============================================================ */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #0F172A;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar .sidebar-header {
+            padding: 28px 24px 20px 24px;
+        }
+
+        .sidebar .sidebar-header .logo {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Ikon box oranye sesuai figma */
+        .sidebar .sidebar-header .logo-icon {
+            background: #ea580c;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /* Garis detail laci putih di dalam box */
+        .sidebar .sidebar-header .logo-icon .box-line {
+            width: 14px;
+            height: 2px;
+            background: #ffffff;
+            border-radius: 1px;
+            position: relative;
+        }
+        
+        .sidebar .sidebar-header .logo-icon .box-line::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 2px;
+            background: #ffffff;
+            top: 4px;
+            left: 5px;
+            border-radius: 1px;
+        }
+
+        .sidebar .sidebar-header .logo span {
+            font-weight: 400;
+            color: #64748b;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+
+        .sidebar .sidebar-menu {
+            flex: 1;
+            padding: 16px 16px;
+            overflow-y: auto;
+        }
+
+        .sidebar .sidebar-menu .menu-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 12px 12px 6px 12px;
+        }
+
+        .sidebar .sidebar-menu .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 11px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .sidebar .sidebar-menu .menu-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+        }
+
+        .sidebar .sidebar-menu .menu-item.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-weight: 500;
+            border-left: 3px solid #ea580c;
+        }
+
+        .sidebar .sidebar-menu .menu-item .icon {
+            font-size: 16px;
+            width: 20px;
+            opacity: 0.8;
+        }
+
+        .sidebar .sidebar-menu .menu-item .badge {
+            margin-left: auto;
+            background: #ea580c;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .sidebar .sidebar-menu .menu-item .badge.blue {
+            background: #3b82f6;
+        }
+
+        .sidebar .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: #0b1120;
+        }
+
+        .sidebar .sidebar-footer .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .sidebar .sidebar-footer .user-info .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: #334155;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .sidebar .sidebar-footer .user-info .user-details .name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .sidebar .sidebar-footer .user-info .user-details .role {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .sidebar .sidebar-footer .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #f87171;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .sidebar .sidebar-footer .logout-btn:hover {
+            background: rgba(248, 113, 113, 0.08);
+        }
+
+        /* ============================================================
+                   MAIN CONTENT AREA
+                   ============================================================ */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============================================================
+                   TOPBAR
+                   ============================================================ */
+        .topbar {
+            background: #ffffff;
+            padding: 16px 40px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar .page-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .topbar .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* SEARCH BAR */
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 8px 14px;
+            gap: 8px;
+            width: 240px;
+        }
+
+        .search-wrapper input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 12px;
+            color: #0f172a;
+            width: 100%;
+        }
+
+        .search-wrapper input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* NOTIFICATION */
+        .topbar .topbar-right .notification {
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            color: #64748b;
+        }
+
+        /* ============================================================
+                   DASHBOARD CONTENT
+                   ============================================================ */
+        .dashboard-content {
+            padding: 32px 40px;
+            flex: 1;
+        }
+
+        /* WELCOME SECTION */
+        .welcome-section {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 28px;
+        }
+
+        .welcome-section .welcome-text h2 {
+            font-size: 20px;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .welcome-section .welcome-text h2 span {
+            color: #ea580c;
+        }
+
+        .welcome-section .welcome-text p {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .welcome-section .date-badge {
+            background: #ffffff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ============================================================
+                   STATS GRID
+                   ============================================================ */
+        .stats-grid-main {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .stats-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card .stats-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-card .stats-tag.orange { background: #fff7ed; color: #ea580c; }
+        .stats-card .stats-tag.blue { background: #eff6ff; color: #2563eb; }
+        .stats-card .stats-tag.green { background: #f0fdf4; color: #16a34a; }
+
+        .stats-card .stats-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 14px;
+        }
+        .stats-card .stats-icon-box.orange { background: #fff7ed; color: #ea580c; }
+        .stats-card .stats-icon-box.blue { background: #eff6ff; color: #2563eb; }
+        .stats-card .stats-icon-box.green { background: #f0fdf4; color: #16a34a; }
+
+        .stats-card .stats-label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .stats-card .stats-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .stats-card .stats-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .stats-card .stats-change {
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .stats-card .stats-change.up { color: #16a34a; }
+        .stats-card .stats-change.down { color: #dc2626; }
+        .stats-card .stats-change.neutral { color: #64748b; }
+
+        /* ============================================================
+                   VALIDASI & TOKEN (SPLIT GRID)
+                   ============================================================ */
+        .validation-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+
+        .validation-left {
+            padding: 32px;
+            border-right: 1px solid #f1f5f9;
+        }
+
+        .validation-left .val-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #fff7ed;
+            color: #ea580c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+
+        .validation-left h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .validation-left p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .validation-list {
+            list-style: none;
+        }
+
+        .validation-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #334155;
+            margin-bottom: 12px;
+        }
+
+        .validation-list li .check-icon {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        /* Kanan: Bagian Token Input */
+        .token-right {
+            padding: 32px;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .token-right h4 {
+            font-size: 14px;
+            color: #0f172a;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .token-right .token-subtitle {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .token-box {
+            width: 100%;
+            max-width: 320px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #334155;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .btn-submit-token {
+            width: 100%;
+            max-width: 320px;
+            background: #ea580c;
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
+            transition: background 0.2s;
+        }
+
+        .btn-submit-token:hover {
+            background: #d94e06;
+        }
+
+        .token-features-mini {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .token-features-mini .feat-item {
+            font-size: 9px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ============================================================
+                   ACTIVITY TABLE SECTION
+                   ============================================================ */
+        .activity-section {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 24px;
+        }
+
+        .activity-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .activity-header h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .activity-header .btn-view-all {
+            font-size: 12px;
+            color: #ea580c;
+            font-weight: 600;
+        }
+
+        .activity-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .activity-table th {
+            text-align: left;
+            padding: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .activity-table td {
+            padding: 14px 12px;
+            font-size: 13px;
+            color: #334155;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .activity-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .status-pill.diserahkan { background: #f0fdf4; color: #16a34a; }
+        .status-pill.diverifikasi { background: #fff7ed; color: #ea580c; }
+
+        /* ============================================================
+                   RESPONSIVE DESIGN
+                   ============================================================ */
+        @media (max-width: 1024px) {
+            .validation-card { grid-template-columns: 1fr; }
+            .validation-left { border-right: none; border-bottom: 1px solid #f1f5f9; }
+            .stats-grid-main { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR LEFT -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <!-- Kotak Oranye dengan detail laci sesuai figma -->
+                <span class="logo-icon">
+                    <span class="box-line"></span>
+                </span>
+                LostFound <span>ADMIN</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-label">Main Menu</div>
+            <a href="index.html" class="menu-item active">
+                <span class="icon">📊</span> Dashboard
+            </a>
+            <a href="../antrean/index.html" class="menu-item">
+                <span class="icon">📦</span> Antrean Temuan
+                <span class="badge">2</span>
+            </a>
+            <a href="../verifikasi/index.html" class="menu-item">
+                <span class="icon">⏳</span> Verifikasi Klaim
+                <span class="badge blue">5</span>
+            </a>
+            <a href="../arsip/index.html" class="menu-item">
+                <span class="icon">📁</span> Arsip Laporan
+            </a>
+
+            <div class="menu-label" style="margin-top:20px;">Settings</div>
+            <a href="#" class="menu-item">
+                <span class="icon">👤</span> Manajemen User
+            </a>
+            <a href="#" class="menu-item">
+                <span class="icon">⚙️</span> Konfigurasi Sistem
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="avatar">PA</div>
+                <div class="user-details">
+                    <div class="name">Petugas Posko</div>
+                    <div class="role">Super Admin</div>
+                </div>
+            </div>
+            <button class="logout-btn" onclick="alert('Keluar Sesi')">
+                🚪 Keluar Sesi
+            </button>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+        
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <h1 class="page-title">Dashboard Overview</h1>
+            <div class="topbar-right">
+                <div class="search-wrapper">
+                    <span>🔍</span>
+                    <input type="text" placeholder="Cari laporan atau token..." />
+                </div>
+                <span class="notification">🔔</span>
+            </div>
+        </header>
+
+        <!-- DASHBOARD CONTAINER -->
+        <div class="dashboard-content">
+            
+            <!-- WELCOME HEADER -->
+            <div class="welcome-section">
+                <div class="welcome-text">
+                    <h2>Selamat datang, <span>Petugas!</span></h2>
+                    <p>Hari ini ada 8 antrean baru yang memerlukan perhatian Anda.</p>
+                </div>
+                <div class="date-badge">
+                    📅 <span id="currentDate">Mei 22, 2026</span>
+                </div>
+            </div>
+
+            <!-- STATS GRID -->
+            <div class="stats-grid-main">
+                <div class="stats-card">
+                    <span class="stats-tag orange">Perlu Verifikasi</span>
+                    <div class="stats-icon-box orange">📦</div>
+                    <div class="stats-label">Klaim Pending</div>
+                    <div class="stats-row">
+                        <span class="stats-number">5</span>
+                        <span class="stats-change up">+ 12%</span>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <span class="stats-tag blue">Tersedia</span>
+                    <div class="stats-icon-box blue">🕒</div>
+                    <div class="stats-label">Antrean Temuan</div>
+                    <div class="stats-row">
+                        <span class="stats-number">3</span>
+                        <span class="stats-change neutral">Total Aktif</span>
+                    </div>
+                </div>
+                <div class="stats-card">
+                    <span class="stats-tag green">Sukses</span>
+                    <div class="stats-icon-box green">✅</div>
+                    <div class="stats-label">Kasus Selesai</div>
+                    <div class="stats-row">
+                        <span class="stats-number">142</span>
+                        <span class="stats-change down">↘ 24%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VALIDATION SPLIT SECTION -->
+            <div class="validation-card">
+                <div class="validation-left">
+                    <div class="val-icon">🛡️</div>
+                    <h3>Validasi Serah Terima</h3>
+                    <p>Pastikan mahasiswa menunjukkan kode token yang sesuai dengan laporan. Proses ini akan mencatat log digital secara otomatis untuk keamanan hukum.</p>
+                    
+                    <ul class="validation-list">
+                        <li><span class="check-icon">✓</span> Verifikasi identitas fisik mahasiswa</li>
+                        <li><span class="check-icon">✓</span> Cek kecocokan deskripsi barang</li>
+                        <li><span class="check-icon">✓</span> Input token validasi 12-digit</li>
+                    </ul>
+                </div>
+                
+                <div class="token-right">
+                    <h4>Input Token Validasi</h4>
+                    <div class="token-subtitle">Token bersifat unik untuk setiap transaksi pengambilan.</div>
+                    
+                    <div class="token-box">LF-ORANGE-992</div>
+                    
+                    <button class="btn-submit-token">
+                        ⚡ PROSES SERAH TERIMA
+                    </button>
+                    
+                    <div class="token-features-mini">
+                        <div class="feat-item">🔒 <span>Encrypted</span></div>
+                        <div class="feat-item">⚡ <span>Real-Time</span></div>
+                        <div class="feat-item">⚖️ <span>Digital Law</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVITY TABLE SECTION -->
+            <div class="activity-section">
+                <div class="activity-header">
+                    <h3>Aktivitas Terbaru</h3>
+                    <a href="#" class="btn-view-all">Lihat Semua</a>
+                </div>
+
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Item/Barang</th>
+                            <th>Status</th>
+                            <th>Mahasiswa</th>
+                            <th>Waktu</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>MacBook Air M2 Silver</strong></td>
+                            <td><span class="status-pill diserahkan">Diserahkan</span></td>
+                            <td>Budi Santoso (20210041)</td>
+                            <td>10:45 WIB</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dompet Kulit Cokelat</strong></td>
+                            <td><span class="status-pill diverifikasi">Diverifikasi</span></td>
+                            <td>Siti Aminah (20220192)</td>
+                            <td>09:12 WIB</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Real-time Date handling sederhana
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        const now = new Date();
+        document.getElementById('currentDate').textContent = months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
+    </script>
+</body>
+</html>
