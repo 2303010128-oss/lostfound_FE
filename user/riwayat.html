@@ -4,615 +4,179 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Riwayat Aktivitas - LostFound Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; color: #131b2e; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; width: 100%; }
 
-        body {
-            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        /* ============================================================
+                   NAVBAR (GRID TENGAH)
+                   ============================================================ */
+        .navbar { height: 72px; border-bottom: 1px solid #f1f5f9; background: #ffffff; position: sticky; top: 0; z-index: 100; }
+        .navbar .container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 100%; }
+        .navbar .logo { color: #a33900; font-weight: 700; font-size: 18px; justify-self: start; letter-spacing: -0.2px; }
+        
+        .navbar .nav-center { display: flex; align-items: center; gap: 32px; justify-self: center; }
+        .navbar .nav-center a { color: #64748b; font-size: 14.5px; font-weight: 500; padding: 6px 0; transition: color 0.2s; }
+        .navbar .nav-center a:hover { color: #a33900; }
+        
+        .navbar .nav-right { display: flex; align-items: center; gap: 24px; justify-self: end; }
+        .notification-bell { font-size: 18px; color: #64748b; cursor: pointer; position: relative; display: flex; align-items: center; }
+        .notification-bell::after { content: ''; position: absolute; top: 0; right: -2px; width: 7px; height: 7px; background: #ef4444; border-radius: 50%; border: 1.5px solid #fff; }
+        
+        .user-btn { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: 0.2s; }
+        .user-btn:hover { background: #f8fafc; }
+        .user-btn .avatar { width: 34px; height: 34px; border-radius: 50%; background: #d94e06; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; }
+        .user-btn .user-name { font-size: 14px; font-weight: 600; color: #131b2e; display: flex; align-items: center; gap: 4px; }
+        .user-btn .user-name span { font-size: 10px; color: #64748b; }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            cursor: pointer;
-            font-family: inherit;
-            border: none;
-            background: none;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .flex {
-            display: flex;
-        }
-        .flex-between {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .gap-2 {
-            gap: 8px;
-        }
-        .gap-4 {
-            gap: 16px;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .hidden {
-            display: none !important;
-        }
-        .mt-2 {
-            margin-top: 8px;
-        }
-        .mt-4 {
-            margin-top: 16px;
-        }
-        .mb-2 {
-            margin-bottom: 8px;
-        }
-        .mb-4 {
-            margin-bottom: 16px;
-        }
-        .w-full {
-            width: 100%;
-        }
-        .max-w-4xl {
-            max-width: 896px;
-        }
-        .mx-auto {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* NAVBAR */
-        .navbar {
-            background: #ffffff;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            height: 64px;
-        }
-        .navbar .container {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .navbar .logo {
-            color: #a33900;
-            font-weight: 600;
-            font-size: 20px;
-        }
-        .navbar .logo a {
-            color: #a33900;
-        }
-        .navbar .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-        .navbar .nav-links a {
-            color: #5a4138;
-            font-size: 16px;
-            transition: color 0.3s ease;
-            padding-bottom: 4px;
-        }
-        .navbar .nav-links a:hover {
-            color: #a33900;
-        }
-        .navbar .nav-links a.active {
-            color: #a33900;
-            font-weight: 600;
-            border-bottom: 2px solid #a33900;
-        }
-        .navbar .auth-buttons {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .navbar .auth-buttons .login-link {
-            color: #a33900;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .navbar .auth-buttons .login-link:hover {
-            text-decoration: underline;
-        }
-        .navbar .auth-buttons .register-btn {
-            background: #a33900;
-            color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .navbar .auth-buttons .register-btn:hover {
-            background: #8a2f00;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #4b5563;
-        }
-        .menu-toggle svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* BREADCRUMB */
-        .breadcrumb {
-            padding: 16px 0 24px 0;
-            font-size: 14px;
-            color: #6b7280;
-        }
-        .breadcrumb a {
-            color: #a33900;
-        }
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-        .breadcrumb .separator {
-            margin: 0 8px;
-            color: #9ca3af;
-        }
-        .breadcrumb .current {
-            color: #374151;
-            font-weight: 500;
-        }
-
+        /* ============================================================
+                   LAYOUT MAIN & SIDEBAR
+                   ============================================================ */
+        .dashboard-layout { display: flex; gap: 48px; padding: 48px 0 80px 0; flex: 1; }
+        
         /* SIDEBAR */
-        .riwayat-layout {
-            display: flex;
-            gap: 32px;
-            max-width: 1024px;
-            margin: 0 auto;
-        }
+        .sidebar { width: 240px; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .sidebar-menu li { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 10px; font-size: 14.5px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.2s ease; }
+        .sidebar-menu li:hover { background: #f8fafc; color: #131b2e; }
+        
+        .sidebar-menu li.active { background: #eef2ff; color: #a33900; }
+        .sidebar-menu li.danger { color: #dc2626; margin-top: auto; }
+        .sidebar-menu li.danger:hover { background: #fef2f2; }
+        .sidebar-menu .icon { font-size: 18px; width: 22px; display: flex; align-items: center; justify-content: center; }
+        
+        .bottom-menu { margin-top: 80px; border-top: 1px solid #f1f5f9; padding-top: 24px; }
 
-        .sidebar {
-            width: 200px;
-            flex-shrink: 0;
-        }
-        .sidebar .sidebar-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-        .sidebar .sidebar-menu {
-            list-style: none;
-        }
-        .sidebar .sidebar-menu li {
-            padding: 10px 14px;
-            border-radius: 8px;
-            font-size: 14px;
-            color: #5a4138;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 2px;
-        }
-        .sidebar .sidebar-menu li:hover {
-            background: #f3f4f6;
-            color: #a33900;
-        }
-        .sidebar .sidebar-menu li.active {
-            background: #fff4ed;
-            color: #a33900;
-            font-weight: 600;
-        }
-        .sidebar .sidebar-menu li .icon {
-            margin-right: 10px;
-        }
-        .sidebar .sidebar-divider {
-            height: 1px;
-            background: #eaedff;
-            margin: 12px 0;
-        }
-        .sidebar .sidebar-menu li.danger {
-            color: #dc2626;
-        }
-        .sidebar .sidebar-menu li.danger:hover {
-            background: #fef2f2;
-        }
+        /* MAIN CONTENT */
+        .dashboard-main { flex: 1; min-width: 0; }
 
-        .riwayat-main {
-            flex: 1;
-            min-width: 0;
-        }
+        /* ============================================================
+                   HALAMAN 1: DAFTAR RIWAYAT
+                   ============================================================ */
+        .page-header { margin-bottom: 28px; }
+        .page-header h1 { font-size: 26px; font-weight: 700; color: #131b2e; margin-bottom: 8px; letter-spacing: -0.5px; }
+        .page-header p { font-size: 14.5px; color: #64748b; line-height: 1.6; }
 
-        /* RIWAYAT PAGE */
-        .riwayat-page {
-            flex: 1;
-            padding: 0 24px 64px;
-        }
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #131b2e;
-            margin-bottom: 4px;
-        }
-        .page-subtitle {
-            font-size: 14px;
-            color: #6b7280;
-            margin-bottom: 24px;
-        }
-
-        /* Stats */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        .stats-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 18px 20px;
-            border: 1px solid #eaedff;
-            text-align: center;
-        }
-        .stats-card .stats-number {
-            font-size: 28px;
-            font-weight: 700;
-            color: #131b2e;
-        }
-        .stats-card .stats-label {
-            font-size: 14px;
-            color: #6b7280;
-            font-weight: 500;
-        }
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
+        .stat-card { background: #ffffff; border: 1px solid #f1f5f9; border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; gap: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .stat-icon { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .stat-icon.blue { background: #e0e7ff; color: #3730a3; }
+        .stat-icon.red { background: #fee2e2; color: #b91c1c; }
+        .stat-icon.green { background: #d1fae5; color: #047857; }
+        .stat-info .stat-label { font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .stat-info .stat-value { font-size: 20px; font-weight: 700; color: #131b2e; }
 
         /* Filter Tabs */
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
-        }
-        .filter-tabs .filter-btn {
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            color: #6b7280;
-            background: #ffffff;
-            border: 1.5px solid #eaedff;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .filter-tabs .filter-btn:hover {
-            border-color: #a33900;
-            color: #a33900;
-        }
-        .filter-tabs .filter-btn.active {
-            background: #a33900;
-            color: #ffffff;
-            border-color: #a33900;
-        }
+        .filter-tabs { display: flex; gap: 12px; margin-bottom: 24px; }
+        .filter-btn { padding: 8px 24px; border-radius: 20px; font-size: 13.5px; font-weight: 600; color: #64748b; border: 1px solid #e2e8f0; transition: 0.2s; }
+        .filter-btn.active { background: #a33900; color: #ffffff; border-color: #a33900; }
+        .filter-btn:hover:not(.active) { background: #f8fafc; color: #131b2e; }
 
-        /* Riwayat Item */
-        .riwayat-item {
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #eaedff;
-            padding: 18px 20px;
-            margin-bottom: 12px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .riwayat-item:hover {
-            border-color: #fcd5c4;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-        .riwayat-item .item-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 12px;
-            border-radius: 9999px;
-            font-size: 11px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 4px;
-        }
-        .riwayat-item .item-badge.lost {
-            background: #f43f5e;
-        }
-        .riwayat-item .item-badge.found {
-            background: #10b981;
-        }
-        .riwayat-item .item-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #131b2e;
-        }
-        .riwayat-item .item-detail {
-            font-size: 14px;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-        .riwayat-item .item-date {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 4px;
-        }
-        .riwayat-item .item-status {
-            font-size: 13px;
-            color: #10b981;
-            font-weight: 500;
-            margin-top: 4px;
-        }
-        .riwayat-item .item-action {
-            font-size: 13px;
-            color: #a33900;
-            font-weight: 500;
-            margin-top: 6px;
-            cursor: pointer;
-        }
-        .riwayat-item .item-action:hover {
-            text-decoration: underline;
-        }
+        /* Item List */
+        .riwayat-item { display: flex; align-items: center; background: #ffffff; border: 1px solid #f1f5f9; border-radius: 12px; padding: 16px; margin-bottom: 16px; gap: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+        .riwayat-item:hover { border-color: #cbd5e1; box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+        
+        .riwayat-img { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; flex-shrink: 0; border: 1px solid #f1f5f9; }
+        
+        .riwayat-info { flex: 1; }
+        .riwayat-type-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+        .type-badge { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .type-badge.lost { background: #fee2e2; color: #dc2626; }
+        .type-badge.found { background: #d1fae5; color: #059669; }
+        .riwayat-date { font-size: 12px; color: #64748b; font-weight: 500; }
+        
+        .riwayat-title { font-size: 16px; font-weight: 700; color: #131b2e; margin-bottom: 4px; }
+        .riwayat-loc { font-size: 13px; color: #64748b; }
+        
+        .riwayat-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; justify-content: center; gap: 8px; }
+        .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .status-pill.success { background: #ecfdf5; color: #059669; }
+        .link-detail { font-size: 13px; color: #a33900; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .link-detail:hover { text-decoration: underline; }
 
-        /* Detail Card */
-        .detail-card {
-            background: #ffffff;
-            border-radius: 12px;
-            border: 1px solid #eaedff;
-            padding: 24px 28px;
-            margin-bottom: 20px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-        }
-        .detail-card .detail-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #131b2e;
-        }
-        .detail-card .detail-id {
-            font-size: 13px;
-            color: #9ca3af;
-            font-weight: 500;
-        }
-        .detail-card .detail-sub {
-            font-size: 14px;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-        .detail-card .detail-status {
-            font-size: 14px;
-            color: #10b981;
-            font-weight: 600;
-            margin-top: 4px;
-        }
+        /* Pagination */
+        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 32px; }
+        .page-btn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #64748b; transition: 0.2s; }
+        .page-btn.active { background: #a33900; color: #ffffff; border-color: #a33900; }
+        .page-btn:hover:not(.active) { background: #f8fafc; color: #131b2e; }
 
-        .log-timeline {
-            margin-top: 12px;
-        }
-        .log-item {
-            display: flex;
-            gap: 16px;
-            padding: 10px 0;
-            border-bottom: 1px solid #f3f4f6;
-        }
-        .log-item:last-child {
-            border-bottom: none;
-        }
-        .log-item .log-date {
-            font-size: 13px;
-            font-weight: 600;
-            color: #131b2e;
-            min-width: 90px;
-            flex-shrink: 0;
-        }
-        .log-item .log-text {
-            font-size: 14px;
-            color: #4b5563;
-            line-height: 22px;
-        }
-        .log-item .log-highlight {
-            color: #a33900;
-            font-weight: 600;
-        }
+        /* ============================================================
+                   HALAMAN 2 & 3: DETAIL (LOST & FOUND)
+                   ============================================================ */
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: #64748b; font-size: 13.5px; font-weight: 600; margin-bottom: 24px; transition: 0.2s; cursor: pointer; }
+        .back-link:hover { color: #131b2e; }
 
-        .info-digital {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 16px 20px;
-            margin-top: 12px;
-            border-left: 3px solid #a33900;
-        }
-        .info-digital p {
-            font-size: 14px;
-            color: #4b5563;
-            line-height: 24px;
-        }
+        /* Detail Item Card */
+        .detail-item-card { display: flex; gap: 32px; background: #ffffff; border: 1px solid #f1f5f9; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        
+        /* Gambar Dompet (Besar/Kotak) */
+        .img-dompet { width: 180px; height: 180px; border-radius: 12px; object-fit: cover; border: 1px solid #e2e8f0; }
+        /* Gambar Kunci (Kecil/Memanjang) */
+        .img-kunci { width: 160px; height: 100px; border-radius: 10px; object-fit: cover; border: 1px solid #e2e8f0; }
+        
+        .detail-item-info { flex: 1; display: flex; flex-direction: column; }
+        .detail-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .detail-item-header h2 { font-size: 22px; font-weight: 700; color: #131b2e; margin-bottom: 4px; }
+        .detail-item-header .id { font-size: 13px; color: #64748b; font-weight: 500; }
+        
+        .grid-info { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: #f8fafc; border-radius: 8px; padding: 16px; margin-top: auto; }
+        .grid-info-box .label { font-size: 11px; color: #64748b; font-weight: 600; margin-bottom: 4px; }
+        .grid-info-box .value { font-size: 13px; color: #131b2e; font-weight: 500; }
 
-        .btn-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 2px solid #a33900;
-            color: #a33900;
-            background: transparent;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .btn-back:hover {
-            background: #a33900;
-            color: #ffffff;
-        }
+        /* Banner Kejujuran (Khusus Penemuan) */
+        .honor-banner { background: #fff7ed; border: 1px solid #fed7aa; border-left: 4px solid #c2410c; border-radius: 12px; padding: 24px; display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .honor-icon { background: #c2410c; color: #ffffff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .honor-text { font-size: 14px; color: #78350f; line-height: 1.6; }
 
-        /* FOOTER */
-        .footer {
-            background: #eaedff;
-            padding: 24px;
-            margin-top: auto;
-        }
-        .footer .footer-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .footer .footer-content .brand {
-            font-weight: 600;
-            color: #131b2e;
-            font-size: 14px;
-        }
-        .footer .footer-content .footer-links {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .footer .footer-content .footer-links a {
-            font-size: 13px;
-            color: #5a4138;
-            transition: color 0.3s ease;
-        }
-        .footer .footer-content .footer-links a:hover {
-            color: #a33900;
-        }
-        .footer .footer-content .copyright {
-            font-size: 13px;
-            color: #5a4138;
-        }
+        /* Log / Timeline Box */
+        .timeline-box { background: #ffffff; border: 1px solid #f1f5f9; border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .timeline-title { font-size: 16px; font-weight: 700; color: #131b2e; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+        
+        .timeline-list { position: relative; padding-left: 20px; }
+        .timeline-list::before { content: ''; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 2px; background: #e2e8f0; }
+        
+        .timeline-item { position: relative; padding-left: 24px; margin-bottom: 28px; }
+        .timeline-item:last-child { margin-bottom: 0; }
+        
+        /* Bulatan Status di garis */
+        .tl-dot { position: absolute; left: -21px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: #e2e8f0; border: 2px solid #ffffff; box-shadow: 0 0 0 1px #cbd5e1; }
+        .tl-dot.orange { background: #f59e0b; box-shadow: 0 0 0 1px #f59e0b; }
+        .tl-dot.green { background: #10b981; box-shadow: 0 0 0 1px #10b981; }
+        
+        .tl-date { font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 6px; }
+        .tl-title { font-size: 14.5px; font-weight: 600; color: #131b2e; margin-bottom: 4px; }
+        .tl-desc { font-size: 13.5px; color: #475569; line-height: 1.6; }
+        .tl-desc .highlight { color: #a33900; font-weight: 600; }
 
-        .mobile-nav {
-            display: none;
-            flex-direction: column;
-            background: #ffffff;
-            padding: 16px 24px;
-            gap: 12px;
-            border-top: 1px solid #eaedff;
-        }
-        .mobile-nav.open {
-            display: flex;
-        }
-        .mobile-nav a {
-            color: #5a4138;
-            font-size: 16px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .mobile-nav a.active {
-            color: #a33900;
-            font-weight: 600;
-        }
-        .mobile-nav a:last-child {
-            border-bottom: none;
-        }
+        /* Kotak Info Arsip */
+        .archive-info { background: #f8fafc; border: 1px solid #eef2ff; border-radius: 12px; padding: 20px; display: flex; gap: 12px; align-items: flex-start; }
+        .archive-info .icon { font-size: 18px; color: #4f46e5; margin-top: 2px; }
+        .archive-info .text h4 { font-size: 13px; font-weight: 700; color: #131b2e; margin-bottom: 4px; }
+        .archive-info .text p { font-size: 13px; color: #64748b; line-height: 1.6; }
 
-        @media (max-width: 768px) {
-            .navbar .nav-links {
-                display: none;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .riwayat-layout {
-                flex-direction: column;
-                gap: 24px;
-            }
-            .sidebar {
-                width: 100%;
-                display: flex;
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-            .sidebar .sidebar-title {
-                width: 100%;
-                margin-bottom: 4px;
-            }
-            .sidebar .sidebar-menu {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-            .sidebar .sidebar-menu li {
-                padding: 6px 12px;
-                font-size: 13px;
-                margin-bottom: 0;
-            }
-            .sidebar .sidebar-divider {
-                display: none;
-            }
-            .stats-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .stats-card .stats-number {
-                font-size: 22px;
-            }
-            .log-item {
-                flex-direction: column;
-                gap: 4px;
-            }
-            .log-item .log-date {
-                min-width: auto;
-            }
-            .footer .footer-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 12px;
-            }
-            .footer .footer-content .footer-links {
-                justify-content: center;
-            }
-        }
+        /* Footer Aksi Bawah */
+        .bottom-action-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; border-top: 1px solid #f1f5f9; padding-top: 24px; }
+        .bottom-note { font-size: 12px; color: #94a3b8; display: flex; align-items: center; gap: 6px; }
 
-        @media (max-width: 480px) {
-            .riwayat-page {
-                padding: 0 16px 40px;
-            }
-            .breadcrumb {
-                font-size: 12px;
-                padding: 12px 0 16px 0;
-            }
-            .page-title {
-                font-size: 20px;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-            .stats-card .stats-number {
-                font-size: 18px;
-            }
-            .stats-card .stats-label {
-                font-size: 12px;
-            }
-            .detail-card {
-                padding: 16px;
-            }
-        }
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer { background: #f8fafc; padding: 32px 0; font-size: 13px; color: #5a4138; margin-top: auto; border-top: 1px solid #f1f5f9; }
+        .footer .container { display: flex; justify-content: space-between; align-items: center; }
+        .footer .brand-txt { font-weight: 700; color: #a33900; font-size: 14px; }
+        .footer-links { display: flex; gap: 32px; }
+        .footer-links a { color: #64748b; font-weight: 500; transition: color 0.2s; }
+        .footer-links a:hover { color: #131b2e; }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -620,256 +184,292 @@
     <!-- NAVBAR -->
     <header class="navbar">
         <div class="container">
-            <div class="logo"><a href="index.html">LostFound Connect</a></div>
-            <nav class="nav-links">
+            <div class="logo">LostFound Connect</div>
+            <nav class="nav-center">
                 <a href="index.html">Beranda</a>
                 <a href="tentangkami.html">Tentang Kami</a>
                 <a href="pusatbantuan.html">Pusat Bantuan</a>
             </nav>
-            <div class="auth-buttons">
-                <a href="#" class="login-link active">Profil</a>
-                <button class="register-btn" onclick="logout()">Keluar</button>
+            <div class="nav-right">
+                <div class="notification-bell">🔔</div>
+                <div class="user-btn">
+                    <div class="avatar">AD</div>
+                    <div class="user-name">Ahmad D. <span>▼</span></div>
+                </div>
             </div>
-            <button class="menu-toggle" id="menuToggle">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-            </button>
-        </div>
-        <div class="mobile-nav" id="mobileNav">
-            <a href="index.html">Beranda</a>
-            <a href="tentangkami.html">Tentang Kami</a>
-            <a href="pusatbantuan.html">Pusat Bantuan</a>
-            <a href="#" class="active">Profil</a>
-            <a href="#" onclick="logout()" style="color:#dc2626;">Keluar</a>
         </div>
     </header>
 
-    <!-- RIWAYAT PAGE -->
-    <main class="riwayat-page">
-        <div class="container">
-            <nav class="breadcrumb">
-                <a href="index.html">Beranda</a>
-                <span class="separator">›</span>
-                <span class="current">Riwayat</span>
-            </nav>
+    <!-- DASHBOARD LAYOUT -->
+    <main class="container dashboard-layout">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li onclick="window.location.href='ringkasan.html'"><span class="icon">📊</span> Ringkasan</li>
+                <li onclick="window.location.href='status.html'"><span class="icon">📋</span> Klaim Saya</li>
+                <li class="active"><span class="icon">⏳</span> Riwayat</li>
+            </ul>
+            <ul class="sidebar-menu bottom-menu">
+                <li><span class="icon">⚙️</span> Pengaturan</li>
+                <li class="danger" onclick="logout()"><span class="icon">🚪</span> Keluar</li>
+            </ul>
+        </aside>
 
-            <div class="riwayat-layout">
-                <!-- Sidebar -->
-                <aside class="sidebar">
-                    <div class="sidebar-title">Menu</div>
-                    <ul class="sidebar-menu">
-                        <li onclick="window.location.href='ringkasan.html'"><span class="icon">📊</span> Ringkasan</li>
-                        <li onclick="window.location.href='status.html'"><span class="icon">📋</span> Klaim Saya</li>
-                        <li class="active"><span class="icon">📜</span> Riwayat</li>
-                    </ul>
-                    <div class="sidebar-divider"></div>
-                    <ul class="sidebar-menu">
-                        <li class="danger"><span class="icon">⚙️</span> Pengaturan</li>
-                        <li class="danger" onclick="logout()"><span class="icon">🚪</span> Keluar</li>
-                    </ul>
-                </aside>
+        <div class="dashboard-main">
+            
+            <!-- ========================================== -->
+            <!-- TAMPILAN 1: DAFTAR RIWAYAT                 -->
+            <!-- ========================================== -->
+            <div id="viewList">
+                <div class="page-header">
+                    <h1>Riwayat Aktivitas</h1>
+                    <p>Daftar seluruh laporan kehilangan dan penemuan barang Anda yang telah selesai.</p>
+                </div>
 
-                <!-- Main Content -->
-                <div class="riwayat-main">
-                    <h1 class="page-title">Riwayat Aktivitas</h1>
-                    <p class="page-subtitle">Daftar seluruh laporan kehilangan dan penemuan barang Anda yang telah selesai.</p>
-
-                    <!-- Stats -->
-                    <div class="stats-grid">
-                        <div class="stats-card"><div class="stats-number">2</div><div class="stats-label">Total Selesai</div></div>
-                        <div class="stats-card"><div class="stats-number">1</div><div class="stats-label">Kehilangan</div></div>
-                        <div class="stats-card"><div class="stats-number">1</div><div class="stats-label">Penemuan</div></div>
-                    </div>
-
-                    <!-- Filter Tabs -->
-                    <div class="filter-tabs">
-                        <button class="filter-btn active" onclick="filterRiwayat('all', this)">Semua</button>
-                        <button class="filter-btn" onclick="filterRiwayat('lost', this)">Kehilangan</button>
-                        <button class="filter-btn" onclick="filterRiwayat('found', this)">Penemuan</button>
-                    </div>
-
-                    <!-- Riwayat Item 1 - Kehilangan -->
-                    <div class="riwayat-item" data-type="lost" onclick="showDetail('lost')">
-                        <div>
-                            <span class="item-badge lost">KEHILANGAN</span>
-                            <div class="item-title">Dompet Kulit Coklat Levi's</div>
-                            <div class="item-detail">📍 Lokasi Terakhir: Kantin Pusat</div>
-                            <div class="item-date">📅 12 Feb 2024</div>
-                            <div class="item-status">✅ Selesai</div>
-                            <div class="item-action">🔍 Lihat Detail →</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">✓</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Total Selesai</div>
+                            <div class="stat-value">2</div>
                         </div>
                     </div>
-
-                    <!-- Riwayat Item 2 - Penemuan -->
-                    <div class="riwayat-item" data-type="found" onclick="showDetail('found')">
-                        <div>
-                            <span class="item-badge found">PENEMUAN</span>
-                            <div class="item-title">Kunci Motor Honda (Gantungan Merah)</div>
-                            <div class="item-detail">📍 Ditemukan di: Area Parkir Gedung B</div>
-                            <div class="item-date">📅 05 Jan 2024</div>
-                            <div class="item-status">✅ Berhasil Diambil</div>
-                            <div class="item-action">🔍 Lihat Detail →</div>
+                    <div class="stat-card">
+                        <div class="stat-icon red">🔍</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Kehilangan</div>
+                            <div class="stat-value">1</div>
                         </div>
                     </div>
-
-                    <!-- Detail Kehilangan -->
-                    <div id="detailLost" class="hidden">
-                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-                            <button class="btn-back" onclick="showList()">← Kembali ke Daftar</button>
-                        </div>
-                        <div class="detail-card">
-                            <div>
-                                <div class="detail-id">ID: B-UP-2024-399</div>
-                                <div class="detail-title">Dompet Kulit Coklat Levi's</div>
-                                <div class="detail-sub">📍 Lokasi Terakhir: Kantin Pusat</div>
-                                <div class="detail-status">✅ Status: Diteruskan</div>
-                            </div>
-                        </div>
-                        <div class="detail-card">
-                            <div class="detail-title" style="font-size:16px;">📋 Log Rekam Jejak Verifikasi Fisik</div>
-                            <div class="log-timeline">
-                                <div class="log-item"><span class="log-date">13 Des 2024</span><div><div class="log-text">📝 Laporan Kehilangan dibuat oleh <span class="log-highlight">Ahmad D.</span></div><div class="log-text">Dokumentasi awal dan pengiriman foto digital berhasil diisi.</div></div></div>
-                                <div class="log-item"><span class="log-date">10 Des 2024</span><div><div class="log-text">✅ Status Berhasil: Sistem Verifikasi Laporan (Data Digital Lolos)</div><div class="log-text">Data diverifikasi terhadap informasi yang telah dijelaskan.</div></div></div>
-                                <div class="log-item"><span class="log-date">14 Des 2024</span><div><div class="log-text">📍 <span class="log-highlight">Ahmad D.</span> mendatangi Posko Satpam Utama</div><div class="log-text">Melakukan Surat Pernyataan Kepemilikan Resmi di atas Materai Rp10.000.</div></div></div>
-                                <div class="log-item"><span class="log-date">14 Des 2024</span><div><div class="log-text">✅ Validasi &amp; Penyerahan Berhasil</div><div class="log-text">Petugas memverifikasi fisik KTP, mencatatkan <span class="log-highlight">tiket LP-CRIME-002</span>.</div></div></div>
-                            </div>
-                        </div>
-                        <div class="detail-card">
-                            <div class="detail-title" style="font-size:16px;">📄 Informasi Pengiriman Digital</div>
-                            <div class="info-digital">
-                                <p>Seluruh dokumen fisik telah dipindai dan diunggah secara digital ke dalam sistem portal <strong>LostFound Connect</strong>. Dokumen ini sah secara hukum dan dapat digunakan sebagai bukti jika diperlukan di masa mendatang.</p>
-                            </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">📦</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Penemuan</div>
+                            <div class="stat-value">1</div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Detail Penemuan -->
-                    <div id="detailFound" class="hidden">
-                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-                            <button class="btn-back" onclick="showList()">← Kembali ke Daftar</button>
+                <div class="filter-tabs">
+                    <button class="filter-btn active">Semua</button>
+                    <button class="filter-btn">Kehilangan</button>
+                    <button class="filter-btn">Penemuan</button>
+                </div>
+
+                <!-- Item 1 (Kehilangan) -->
+                <div class="riwayat-item" onclick="switchView('viewLostDetail')">
+                    <!-- GAMBAR DOMPET KULIT COKLAT -->
+                    <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=300&q=80" alt="Dompet Kulit Coklat" class="riwayat-img">
+                    <div class="riwayat-info">
+                        <div class="riwayat-type-row">
+                            <span class="type-badge lost">KEHILANGAN</span>
+                            <span class="riwayat-date">• 12 Feb 2024</span>
                         </div>
-                        <div class="detail-card">
-                            <div>
-                                <div class="detail-id">ID: KND-2024-K02</div>
-                                <div class="detail-title">Kunci Motor Honda (Gantungan Merah)</div>
-                                <div class="detail-sub">📍 Ditemukan di: Area Parkir Gedung B</div>
-                                <div class="detail-status">✅ Status: Berhasil Diambil</div>
-                            </div>
-                        </div>
-                        <div class="detail-card">
-                            <div class="detail-title" style="font-size:16px;">📋 Log Katalog Penyerahan Barang Temuan</div>
-                            <div class="log-timeline">
-                                <div class="log-item"><span class="log-date">05 Jan 2024</span><div><div class="log-text">📍 Barang ditemukan oleh <span class="log-highlight">Ahmad D.</span> di Area Parkir Gedung B.</div></div></div>
-                                <div class="log-item"><span class="log-date">05 Jan 2024</span><div><div class="log-text">📦 <span class="log-highlight">Ahmad D.</span> membawa fisik kunci ke Pos Satpam Utama dan sukses memindai Barcode Validasi Fisik.</div></div></div>
-                                <div class="log-item"><span class="log-date">08 Jan 2024</span><div><div class="log-text">📱 Pemilik sah mengajukan klaim verifikasi kepemilikan melalui aplikasi.</div></div></div>
-                                <div class="log-item"><span class="log-date">07 Jan 2024</span><div><div class="log-text">✅ Pemilik sah mendatangi posko, melakukan verifikasi kecocokan data, dan mengambil barang temuan Anda.</div></div></div>
-                            </div>
-                        </div>
-                        <div class="detail-card">
-                            <div class="detail-title" style="font-size:16px;">🙏 Ucapan Terima Kasih</div>
-                            <div class="info-digital" style="background:#f0fdf4;border-left-color:#10b981;">
-                                <p><strong>Terima kasih, Ahmad D.</strong> Berkat kejujuran Anda membawa barang temuan ini ke posko satpam, barang berharga ini telah kembali ke tangan pemiliknya yang sah.</p>
-                                <p style="margin-top:8px;font-style:italic;color:#065f46;">⭐ Laporan ini tidak dapat diubah dan telah ditutup.</p>
-                            </div>
-                        </div>
+                        <div class="riwayat-title">Dompet Kulit Coklat Levi's</div>
+                        <div class="riwayat-loc">Lokasi Terakhir: Kantin Pusat</div>
                     </div>
+                    <div class="riwayat-right">
+                        <div class="status-pill success">✓ Selesai</div>
+                        <div class="link-detail">Lihat Detail ➔</div>
+                    </div>
+                </div>
 
+                <!-- Item 2 (Penemuan) -->
+                <div class="riwayat-item" onclick="switchView('viewFoundDetail')">
+                    <!-- GAMBAR KUNCI MOTOR -->
+                    <img src="https://images.unsplash.com/photo-1582136456018-090c238b725c?w=300&q=80" alt="Kunci Motor" class="riwayat-img">
+                    <div class="riwayat-info">
+                        <div class="riwayat-type-row">
+                            <span class="type-badge found">PENEMUAN</span>
+                            <span class="riwayat-date">• 05 Jan 2024</span>
+                        </div>
+                        <div class="riwayat-title">Kunci Motor Honda (Gantungan Merah)</div>
+                        <div class="riwayat-loc">Ditemukan di: Area Parkir Gedung B</div>
+                    </div>
+                    <div class="riwayat-right">
+                        <div class="status-pill success">✓ Berhasil Diambil</div>
+                        <div class="link-detail">Lihat Detail ➔</div>
+                    </div>
+                </div>
+
+                <div class="pagination">
+                    <button class="page-btn">&lt;</button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">&gt;</button>
                 </div>
             </div>
+
+            <!-- ========================================== -->
+            <!-- TAMPILAN 2: DETAIL KEHILANGAN (DOMPET)     -->
+            <!-- ========================================== -->
+            <div id="viewLostDetail" class="hidden">
+                <div class="back-link" onclick="switchView('viewList')">← Kembali ke Riwayat</div>
+                
+                <div class="page-header">
+                    <h1>Detail Riwayat Kehilangan</h1>
+                    <p>Arsip resmi pelaporan dan serah terima pengembalian barang berharga Anda.</p>
+                </div>
+
+                <div class="detail-item-card">
+                    <!-- GAMBAR DOMPET KULIT COKLAT -->
+                    <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80" alt="Dompet Kulit Coklat Levi's" class="img-dompet">
+                    <div class="detail-item-info">
+                        <div class="detail-item-header">
+                            <div>
+                                <h2>Dompet Kulit Coklat Levi's</h2>
+                                <div class="id">ID #LF-2024-089</div>
+                            </div>
+                            <div class="status-pill success" style="background:#d1fae5; color:#047857;">● Selesai / Dikembalikan</div>
+                        </div>
+                        <div class="grid-info">
+                            <div class="grid-info-box">
+                                <div class="label">Lokasi Terakhir</div>
+                                <div class="value">Area Parkir Basement 2</div>
+                            </div>
+                            <div class="grid-info-box">
+                                <div class="label">Waktu Lapor</div>
+                                <div class="value">12 Okt 2024, 09:45 WIB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-box">
+                    <div class="timeline-title">📋 Log Rekam Jejak Verifikasi Fisik</div>
+                    <div class="timeline-list">
+                        <div class="timeline-item">
+                            <div class="tl-dot"></div>
+                            <div class="tl-date">12 Okt 2024</div>
+                            <div class="tl-title">Laporan Kehilangan dibuat oleh <span class="highlight">Ahmad D.</span></div>
+                            <div class="tl-desc">Dokumentasi awal dan pengisian form digital berhasil diverifikasi sistem.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="tl-dot orange"></div>
+                            <div class="tl-date">13 Okt 2024</div>
+                            <div class="tl-title">Status Berubah: <span class="highlight">Butuh Klarifikasi Lapangan (Bukti Digital Lemah)</span></div>
+                            <div class="tl-desc">Sistem mendeteksi inkonsistensi minor pada foto referensi. Diperlukan kehadiran fisik.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="tl-dot"></div>
+                            <div class="tl-date">14 Okt 2024</div>
+                            <div class="tl-title">Ahmad D. mendatangi Posko Satpam Utama</div>
+                            <div class="tl-desc">Menandatangani Surat Pernyataan Kepemilikan Resmi di atas Materai Rp10.000 sebagai bentuk tanggung jawab hukum.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="tl-dot green"></div>
+                            <div class="tl-date">14 Okt 2024</div>
+                            <div class="tl-title">Validasi & Penyerahan Barang</div>
+                            <div class="tl-desc">Petugas Satpam memvalidasi fisik KTP, mencocokkan <span class="highlight">Token LF-ORANGE-992</span>, dan menyerahkan barang fisik dompet.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="archive-info">
+                    <div class="icon">🛡️</div>
+                    <div class="text">
+                        <h4>Informasi Pengarsipan Digital</h4>
+                        <p>Dokumen fisik bertanda tangan dan bermaterai telah dipindai (scanned) dan diarsipkan secara digital ke dalam sistem pusat LostFound Connect. Dokumen ini sah di mata hukum dan dapat digunakan sebagai bukti jika terjadi sengketa di masa mendatang.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- TAMPILAN 3: DETAIL PENEMUAN (KUNCI)        -->
+            <!-- ========================================== -->
+            <div id="viewFoundDetail" class="hidden">
+                <div class="back-link" onclick="switchView('viewList')">← Kembali ke Riwayat</div>
+                
+                <div class="page-header">
+                    <h1>Detail Riwayat Penemuan</h1>
+                    <p>Arsip resmi pelaporan dan serah terima pengembalian barang berharga Anda.</p>
+                </div>
+
+                <div class="detail-item-card" style="align-items: center;">
+                    <!-- GAMBAR KUNCI MOTOR MEMANJANG -->
+                    <img src="https://images.unsplash.com/photo-1582136456018-090c238b725c?w=400&q=80" alt="Kunci Motor Honda" class="img-kunci">
+                    <div class="detail-item-info">
+                        <div class="detail-item-header" style="margin-bottom:0;">
+                            <div>
+                                <h2 style="font-size:18px;">Kunci Motor Honda</h2>
+                                <div class="id" style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+                                    <span style="background:#f1f5f9;padding:4px 8px;border-radius:4px;font-size:11px;">#FND-2024-102</span>
+                                    <span>• Lantai 1, Parkir Gedung B</span>
+                                </div>
+                            </div>
+                            <div class="status-pill success" style="background:#d1fae5; color:#047857;">✓ Berhasil Diambil Pemilik</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="honor-banner">
+                    <div class="honor-icon">🏆</div>
+                    <div class="honor-text">
+                        <strong>Penghargaan Kejujuran: Terima kasih Ahmad D.!</strong> Berkat kejujuran Anda membawa barang temuan ini ke posko satpam dan melakukan validasi barcode sistem, barang berharga ini telah kembali ke tangan pemiliknya yang sah dengan aman.
+                    </div>
+                </div>
+
+                <div class="timeline-box">
+                    <div class="timeline-title">📈 Log Kronologi Penyerahan Barang Temuan:</div>
+                    <div class="timeline-list">
+                        <div class="timeline-item">
+                            <div class="tl-dot orange" style="background:#ffffff; border:2px solid #c2410c; box-shadow:none;"></div>
+                            <div class="tl-desc"><strong>05 Jan 2024</strong> - Barang ditemukan oleh Ahmad D. di <span class="highlight">Area Parkir Gedung B.</span></div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="tl-dot orange" style="background:#ffffff; border:2px solid #c2410c; box-shadow:none;"></div>
+                            <div class="tl-desc"><strong>05 Jan 2024</strong> - Ahmad D. membawa fisik kunci ke <span class="highlight">Pos Satpam Utama</span> dan sukses memindai Barcode Validasi Fisik (Status Laporan Aktif).</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="tl-dot orange" style="background:#ffffff; border:2px solid #c2410c; box-shadow:none;"></div>
+                            <div class="tl-desc"><strong>06 Jan 2024</strong> - Pemilik sah (korban) mengajukan klaim verifikasi mendalam via aplikasi.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="tl-dot green" style="background:#10b981; border:none; box-shadow:none; left:-20px; width:14px; height:14px;"></div>
+                            <div class="tl-desc"><strong>07 Jan 2024</strong> - Pemilik sah mendatangi posko, melakukan verifikasi kecocokan data, dan <span style="color:#059669; font-weight:600;">mengambil barang temuan Anda.</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-action-bar">
+                    <div class="bottom-note">ⓘ Laporan ini telah diarsipkan dan tidak dapat diubah lagi.</div>
+                    <button class="filter-btn" style="background:#f1f5f9;border:none;padding:12px 24px;" onclick="window.location.href='ringkasan.html'">⌂ Kembali ke Ringkasan</button>
+                </div>
+            </div>
+
         </div>
     </main>
 
     <!-- FOOTER -->
     <footer class="footer">
-        <div class="footer-content">
-            <span class="brand">LostFound Connect</span>
+        <div class="container">
+            <span class="brand-txt">LostFound Connect</span>
             <div class="footer-links">
                 <a href="#">Kebijakan Privasi</a>
-                <a href="#">Syarat &amp; Ketentuan</a>
+                <a href="#">Syarat & Ketentuan</a>
                 <a href="#">Campus Safety</a>
                 <a href="#">Kontak Kampus</a>
             </div>
-            <span class="copyright">© 2024 Universitas Perjuangan Tasikmalaya</span>
+            <span>© 2024 Universitas Perjuangan Tasikmalaya</span>
         </div>
     </footer>
 
     <script>
-        (function() {
-            var menuToggle = document.getElementById('menuToggle');
-            var mobileNav = document.getElementById('mobileNav');
-            if (menuToggle && mobileNav) {
-                menuToggle.addEventListener('click', function() {
-                    mobileNav.classList.toggle('open');
-                });
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin keluar dari sesi mahasiswa?')) {
+                window.location.href = 'index.html';
             }
-            var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
-            mobileLinks.forEach(function(link) {
-                link.addEventListener('click', function() {
-                    mobileNav.classList.remove('open');
-                });
-            });
+        }
 
-            function showList() {
-                document.querySelectorAll('.riwayat-item').forEach(function(el) { el.style.display = 'block'; });
-                document.getElementById('detailLost').classList.add('hidden');
-                document.getElementById('detailFound').classList.add('hidden');
-            }
-            window.showList = showList;
-
-            window.showDetail = function(type) {
-                document.querySelectorAll('.riwayat-item').forEach(function(el) { el.style.display = 'none'; });
-                if (type === 'lost') {
-                    document.getElementById('detailLost').classList.remove('hidden');
-                    document.getElementById('detailFound').classList.add('hidden');
-                } else if (type === 'found') {
-                    document.getElementById('detailFound').classList.remove('hidden');
-                    document.getElementById('detailLost').classList.add('hidden');
-                }
-            };
-
-            window.filterRiwayat = function(type, btn) {
-                var items = document.querySelectorAll('.riwayat-item');
-                var btns = document.querySelectorAll('.filter-btn');
-                btns.forEach(function(b) { b.classList.remove('active'); });
-                if (btn) btn.classList.add('active');
-                items.forEach(function(item) {
-                    var itemType = item.getAttribute('data-type');
-                    item.style.display = (type === 'all' || itemType === type) ? 'block' : 'none';
-                });
-                document.getElementById('detailLost').classList.add('hidden');
-                document.getElementById('detailFound').classList.add('hidden');
-            };
-
-            var menuItems = document.querySelectorAll('.sidebar-menu li');
-            menuItems.forEach(function(item) {
-                item.addEventListener('click', function() {
-                    var text = this.textContent.trim();
-                    menuItems.forEach(function(li) { li.classList.remove('active'); });
-                    this.classList.add('active');
-                    if (text.includes('Ringkasan')) { window.location.href = 'ringkasan.html'; }
-                    else if (text.includes('Klaim Saya')) { window.location.href = 'status.html'; }
-                    else if (text.includes('Riwayat')) {}
-                    else if (text.includes('Pengaturan')) { alert('⚙️ Buka halaman pengaturan...'); }
-                    else if (text.includes('Keluar')) { logout(); }
-                });
-            });
-
-            window.logout = function() {
-                if (confirm('Apakah Anda yakin ingin keluar?')) {
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('userEmail');
-                    localStorage.removeItem('userName');
-                    window.location.href = 'index.html';
-                }
-            };
-
-            var navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
-            navLinks.forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    if (this.textContent.trim() === 'Keluar') return;
-                    navLinks.forEach(function(l) { l.classList.remove('active'); });
-                    this.classList.add('active');
-                });
-            });
-        })();
+        // Fungsi Sederhana untuk pindah antar tampilan di 1 file
+        function switchView(viewId) {
+            document.getElementById('viewList').classList.add('hidden');
+            document.getElementById('viewLostDetail').classList.add('hidden');
+            document.getElementById('viewFoundDetail').classList.add('hidden');
+            
+            document.getElementById(viewId).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
     </script>
 </body>
 </html>

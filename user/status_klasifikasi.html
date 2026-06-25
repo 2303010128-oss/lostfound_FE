@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ringkasan Aktivitas Kampus - LostFound Connect</title>
+    <title>Status Klaim - Butuh Klarifikasi - LostFound Connect</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
@@ -12,7 +12,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; color: #131b2e; -webkit-font-smoothing: antialiased; }
         a { text-decoration: none; color: inherit; }
-        button { cursor: pointer; font-family: inherit; border: none; background: none; outline: none; }
+        button { cursor: pointer; font-family: inherit; border: none; outline: none; }
         .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; width: 100%; }
 
         /* ============================================================
@@ -20,7 +20,6 @@
                    ============================================================ */
         .navbar { height: 72px; border-bottom: 1px solid #f1f5f9; background: #ffffff; position: sticky; top: 0; z-index: 100; }
         .navbar .container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 100%; }
-        
         .navbar .logo { color: #a33900; font-weight: 700; font-size: 18px; justify-self: start; letter-spacing: -0.2px; }
         
         .navbar .nav-center { display: flex; align-items: center; gap: 32px; justify-self: center; }
@@ -48,6 +47,7 @@
         .sidebar-menu li { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 10px; font-size: 14.5px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.2s ease; }
         .sidebar-menu li:hover { background: #f8fafc; color: #131b2e; }
         
+        /* Sidebar Active State sesuai desain (Bg biru muda, Text/Icon Oranye) */
         .sidebar-menu li.active { background: #eef2ff; color: #a33900; }
         .sidebar-menu li.danger { color: #dc2626; margin-top: auto; }
         .sidebar-menu li.danger:hover { background: #fef2f2; }
@@ -58,47 +58,47 @@
         /* MAIN CONTENT */
         .dashboard-main { flex: 1; min-width: 0; }
         
-        .page-header { margin-bottom: 32px; }
-        .page-header h1 { font-size: 26px; font-weight: 700; color: #131b2e; margin-bottom: 8px; letter-spacing: -0.5px; }
-        .page-header p { font-size: 14.5px; color: #64748b; line-height: 1.6; }
+        /* ============================================================
+                   KARTU ITEM (DOMPET COKELAT)
+                   ============================================================ */
+        .item-card { display: flex; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; margin-bottom: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .item-card img { width: 280px; height: 100%; object-fit: cover; flex-shrink: 0; background: #e2e8f0; }
+        
+        .item-card-content { padding: 32px; flex: 1; display: flex; flex-direction: column; }
+        .item-title-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; gap: 16px; }
+        .item-title { font-size: 22px; font-weight: 700; color: #131b2e; letter-spacing: -0.3px; }
+        
+        /* Badge Status */
+        .badge-warning { background: #fff7ed; color: #c2410c; padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        
+        .item-meta { display: flex; gap: 24px; color: #64748b; font-size: 13.5px; font-weight: 500; margin-bottom: 32px; }
+        .item-meta span { display: flex; align-items: center; gap: 8px; }
+        
+        .item-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 20px; margin-top: auto; }
+        .item-id { font-size: 13px; color: #64748b; }
+        .item-link { font-size: 13.5px; font-weight: 600; color: #2563eb; transition: 0.2s; cursor: pointer; }
+        .item-link:hover { text-decoration: underline; color: #1d4ed8; }
 
-        /* STATS GRID */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
-        .stat-card { border-radius: 16px; padding: 24px 28px; display: flex; align-items: center; gap: 20px; transition: 0.2s; }
+        /* ============================================================
+                   KOTAK KLARIFIKASI BIRU
+                   ============================================================ */
+        .clarification-box { background: #eef2ff; border-radius: 16px; padding: 40px; margin-bottom: 40px; }
+        .clarification-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .clarification-icon { background: #1d4ed8; color: #ffffff; width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 16px; }
+        .clarification-header h3 { font-size: 18px; font-weight: 700; color: #1e3a8a; }
         
-        .stat-card.klaim { background: #fff7ed; border: 1px solid #ffedd5; }
-        .stat-card.riwayat { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .clarification-desc { font-size: 14.5px; color: #475569; line-height: 1.6; margin-bottom: 24px; max-width: 95%; }
         
-        .stat-icon { width: 56px; height: 56px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-        .stat-card.klaim .stat-icon { background: #ffedd5; color: #c2410c; }
-        .stat-card.riwayat .stat-icon { background: #f1f5f9; color: #64748b; }
+        .clarification-inner { background: #ffffff; border: 1px solid #fed7aa; border-radius: 8px; padding: 24px 28px; font-size: 14px; color: #475569; line-height: 1.6; margin-bottom: 32px; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+        
+        .btn-action { background: #a33900; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 10px; transition: 0.2s; border: none; }
+        .btn-action:hover { background: #8a2f00; transform: translateY(-1px); box-shadow: 0 4px 6px rgba(163, 57, 0, 0.15); }
 
-        .stat-info { display: flex; flex-direction: column; }
-        .stat-label { font-size: 11px; font-weight: 700; color: #c2410c; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
-        .stat-card.riwayat .stat-label { color: #64748b; }
-        .stat-value { font-size: 22px; font-weight: 700; color: #131b2e; margin-bottom: 4px; }
-        .stat-desc { font-size: 13px; color: #64748b; }
-
-        /* URGENT ACTION BOX */
-        .urgent-card { display: flex; align-items: stretch; border: 1px solid #3b82f6; border-radius: 16px; overflow: hidden; margin-bottom: 32px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.08); }
-        .urgent-left { flex: 1; background: #eff6ff; padding: 36px 40px; position: relative; display: flex; flex-direction: column; justify-content: center; }
-        
-        .urgent-right { width: 340px; flex-shrink: 0; background: #131b2e; position: relative; }
-        .urgent-right img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
-        
-        .urgent-badge-row { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .urgent-icon-box { background: #ffffff; border: 1.5px solid #bfdbfe; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #1d4ed8; font-weight: 800; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .urgent-badge { background: #1d4ed8; color: #ffffff; font-size: 10.5px; font-weight: 700; padding: 6px 12px; border-radius: 20px; letter-spacing: 0.5px; text-transform: uppercase; }
-        
-        .urgent-left h3 { font-size: 17px; font-weight: 700; color: #1e3a8a; margin-bottom: 12px; line-height: 1.4; letter-spacing: -0.2px; }
-        .urgent-left p { font-size: 14px; color: #334155; line-height: 1.6; margin-bottom: 28px; max-width: 95%; }
-        
-        .btn-urgent { background: #a33900; color: #ffffff; padding: 14px 28px; border-radius: 8px; font-size: 13.5px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; width: fit-content; }
-        .btn-urgent:hover { background: #8a2f00; transform: translateY(-1px); box-shadow: 0 4px 6px rgba(163, 57, 0, 0.2); }
-
-        /* BOTTOM CARDS (OPERASIONAL & KONTAK) */
+        /* ============================================================
+                   BOTTOM CARDS (OPERASIONAL & KONTAK)
+                   ============================================================ */
         .info-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-        .info-card-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px; display: flex; gap: 16px; align-items: flex-start; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.01); }
+        .info-card-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 28px; display: flex; gap: 16px; align-items: flex-start; transition: 0.2s; }
         .info-card-box:hover { border-color: #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.03); }
         .info-card-box .ic-icon { font-size: 22px; color: #a33900; background: #fff5f0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; flex-shrink: 0; }
         .info-card-box h4 { font-size: 14.5px; font-weight: 700; color: #131b2e; margin-bottom: 8px; }
@@ -107,12 +107,26 @@
         /* ============================================================
                    FOOTER
                    ============================================================ */
-        .footer { background: #f8fafc; padding: 32px 0; font-size: 13px; color: #5a4138; margin-top: auto; border-top: 1px solid #f1f5f9; }
+        .footer { background: #eef2ff; padding: 32px 0; font-size: 13px; color: #5a4138; margin-top: auto; border-top: 1px solid #e2e8f0; }
         .footer .container { display: flex; justify-content: space-between; align-items: center; }
         .footer .brand-txt { font-weight: 700; color: #a33900; font-size: 14px; }
         .footer-links { display: flex; gap: 32px; }
-        .footer-links a { color: #64748b; font-weight: 500; transition: color 0.2s; }
-        .footer-links a:hover { color: #131b2e; }
+        .footer-links a { color: #64748b; font-weight: 500; transition: color 0.2s; text-decoration: underline; text-decoration-color: transparent; }
+        .footer-links a:hover { color: #131b2e; text-decoration-color: #131b2e; }
+        
+        /* RESPONSIVE STYLES */
+        @media (max-width: 768px) {
+            .dashboard-layout { flex-direction: column; padding: 32px 0; gap: 32px; }
+            .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; gap: 8px; }
+            .sidebar-menu { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+            .sidebar-menu li { padding: 8px 16px; font-size: 13px; }
+            .bottom-menu { margin-top: 0; border-top: none; padding-top: 0; }
+            .item-card { flex-direction: column; }
+            .item-card img { width: 100%; height: 200px; }
+            .item-meta { flex-direction: column; gap: 12px; }
+            .info-cards-grid { grid-template-columns: 1fr; }
+            .footer .container { flex-direction: column; gap: 16px; text-align: center; }
+        }
 
     </style>
 </head>
@@ -143,8 +157,8 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <ul class="sidebar-menu">
-                <li class="active"><span class="icon">📊</span> Ringkasan</li>
-                <li onclick="window.location.href='status.html'"><span class="icon">📋</span> Klaim Saya</li>
+                <li onclick="window.location.href='ringkasan.html'"><span class="icon">🪪</span> Ringkasan</li>
+                <li class="active"><span class="icon">📋</span> Klaim Saya</li>
                 <li onclick="window.location.href='riwayat.html'"><span class="icon">⏳</span> Riwayat</li>
             </ul>
             <ul class="sidebar-menu bottom-menu">
@@ -156,67 +170,64 @@
         <!-- MAIN CONTENT -->
         <div class="dashboard-main">
             
-            <!-- HEADER -->
-            <div class="page-header">
-                <h1>Ringkasan Aktivitas Kampus</h1>
-                <p>Selamat datang kembali, Ahmad. Berikut adalah rangkuman pelaporan barang hilang dan temuan Anda.</p>
+            <!-- KARTU ITEM UTAMA -->
+            <div class="item-card">
+                <!-- Gunakan gambar dompet dari Unsplash -->
+                <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80" alt="Dompet Kulit Cokelat">
+                
+                <div class="item-card-content">
+                    <div class="item-title-row">
+                        <h2 class="item-title">Dompet Kulit Cokelat</h2>
+                        <div class="badge-warning">MENUNGGU KLARIFIKASI</div>
+                    </div>
+                    
+                    <div class="item-meta">
+                        <span>📅 12 Nov 2024</span>
+                        <span>📍 Area Kantin Pusat</span>
+                        <span>🧳 Aksesoris Pribadi</span>
+                    </div>
+
+                    <div class="item-bottom">
+                        <span class="item-id">Nomor Pengajuan: #CLM-98231-UP</span>
+                        <a href="#" class="item-link">Lihat Detail Item</a>
+                    </div>
+                </div>
             </div>
 
-            <!-- STATS GRID -->
-            <div class="stats-grid">
-                <!-- Klaim Berjalan -->
-                <div class="stat-card klaim">
-                    <div class="stat-icon">🗂️</div>
-                    <div class="stat-info">
-                        <div class="stat-label">Klaim Berjalan</div>
-                        <div class="stat-value">1 Klaim</div>
-                        <div class="stat-desc">Menunggu verifikasi atau klarifikasi</div>
-                    </div>
+            <!-- KOTAK STATUS KLARIFIKASI -->
+            <div class="clarification-box">
+                <div class="clarification-header">
+                    <div class="clarification-icon">!</div>
+                    <h3>Status: Butuh Klarifikasi di Posko</h3>
                 </div>
                 
-                <!-- Total Riwayat -->
-                <div class="stat-card riwayat">
-                    <div class="stat-icon">⏳</div>
-                    <div class="stat-info">
-                        <div class="stat-label">Total Riwayat</div>
-                        <div class="stat-value">2 Selesai</div>
-                        <div class="stat-desc">Total laporan yang telah berhasil</div>
-                    </div>
+                <p class="clarification-desc">
+                    Bukti digital (struk/foto) yang Anda unggah dinilai kurang kuat oleh petugas keamanan untuk proses pencocokan otomatis. Namun, pengajuan klaim Anda TIDAK ditolak oleh sistem.
+                </p>
+
+                <div class="clarification-inner">
+                    Silakan datang langsung ke Posko Satpam Universitas Perjuangan untuk berbicara langsung dengan petugas loket. Jika Anda tidak memiliki dokumen fisik tambahan, Anda diperbolehkan membuat perjanjian formal berupa Surat Pernyataan Kepemilikan Resmi bertanda tangan di atas materai Rp10.000 di lokasi posko sebagai jaminan legalitas hukum kampus.
                 </div>
+
+                <!-- Tombol ini diarahkan ke detail prosedur lapangan -->
+                <button class="btn-action" onclick="window.location.href='detailprosedur.html'">
+                    <span>📘</span> Lihat Panduan Prosedur
+                </button>
             </div>
 
-            <!-- URGENT ACTION BOX -->
-            <div class="urgent-card">
-                <div class="urgent-left">
-                    <div class="urgent-badge-row">
-                        <div class="urgent-icon-box">!</div>
-                        <div class="urgent-badge">URGENT ACTION</div>
-                    </div>
-                    <h3>Tindakan Diperlukan: Klaim Dompet Kulit Coklat Levi's (#FD-2024-089)</h3>
-                    <p>Klaim Anda memerlukan klarifikasi di lapangan. Petugas meminta Anda datang ke Posko Satpam Utama membawa Materai Rp10.000 untuk jaminan legalitas resmi.</p>
-                    <!-- Link tombol diarahkan ke detail.html -->
-                    <button class="btn-urgent" onclick="window.location.href='detailprosedur.html'">Lihat Detail Prosedur &rarr;</button>
-                </div>
-                
-                <!-- Gambar Dompet -->
-                <div class="urgent-right">
-                    <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=600&q=80" alt="Dompet Kulit Coklat Levi's">
-                </div>
-            </div>
-
-            <!-- BOTTOM CARDS -->
+            <!-- BOTTOM CARDS (OPERASIONAL & BANTUAN) -->
             <div class="info-cards-grid">
                 <div class="info-card-box">
                     <div class="ic-icon">🕒</div>
                     <div>
-                        <h4>Jam Operasional Pos Satpam</h4>
+                        <h4>Jam Operasional Posko</h4>
                         <p>Senin - Jumat: 08.00 - 16.00 WIB</p>
                     </div>
                 </div>
                 <div class="info-card-box">
-                    <div class="ic-icon">📞</div>
+                    <div class="ic-icon">❔</div>
                     <div>
-                        <h4>Hubungi Kami</h4>
+                        <h4>Pusat Bantuan</h4>
                         <p>Hubungi tim administrasi kami melalui WhatsApp atau Email resmi kampus.</p>
                     </div>
                 </div>
@@ -230,10 +241,10 @@
         <div class="container">
             <span class="brand-txt">LostFound Connect</span>
             <div class="footer-links">
-                <a href="#">Kebijakan Privasi</a>
-                <a href="#">Syarat & Ketentuan</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
                 <a href="#">Campus Safety</a>
-                <a href="#">Kontak Kampus</a>
+                <a href="#">Contact Support</a>
             </div>
             <span>© 2024 Universitas Perjuangan Tasikmalaya</span>
         </div>
