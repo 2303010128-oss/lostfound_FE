@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manajemen User - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           RESET & BASE STYLES
+           ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafc; min-height: 100vh; display: flex; color: #1e293b; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; font-family: inherit; border: none; background: none; outline: none; }
+
+        /* Font khusus agar Emoji 3D Apple/Windows muncul sempurna */
+        .emoji { 
+            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+
+        /* ============================================================
+           SIDEBAR STYLE 
+           ============================================================ */
+        .sidebar { width: 260px; height: 100vh; background: #111c2e; position: fixed; top: 0; left: 0; z-index: 100; display: flex; flex-direction: column; padding: 32px 16px 24px 16px; }
+        .sidebar-header { display: flex; align-items: center; gap: 12px; padding: 0 12px 36px 12px; }
+        
+        /* LOGO UTAMA TETAP SVG */
+        .logo-icon { width: 34px; height: 34px; background: #ea580c; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .logo-text { color: #ffffff; font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
+        
+        .sidebar-menu { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .menu-label { font-size: 10px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1.2px; padding: 20px 12px 10px 12px; }
+        
+        .menu-item { display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 10px; font-size: 13.5px; font-weight: 500; color: #94a3b8; transition: all 0.2s ease; }
+        .menu-item:hover { background: rgba(255, 255, 255, 0.03); color: #f1f5f9; }
+        
+        /* EMOJI MENU (TIDAK ADA EFEK GRAYSCALE, FULL WARNA!) */
+        .menu-item .emoji { font-size: 18px; width: 22px; opacity: 0.85; transition: 0.2s; }
+        .menu-item:hover .emoji { opacity: 1; transform: scale(1.1); }
+        .menu-item.active { background: rgba(255, 255, 255, 0.06); color: #ffffff; font-weight: 600; border-left: 3px solid #ea580c; border-radius: 0 10px 10px 0; padding-left: 11px; }
+        .menu-item.active .emoji { opacity: 1; transform: scale(1.1); }
+
+        .sidebar-footer { margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 24px; display: flex; flex-direction: column; gap: 20px; }
+        .user-profile { display: flex; align-items: center; gap: 12px; padding: 0 12px; }
+        .user-avatar-box { position: relative; width: 38px; height: 38px; }
+        .user-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .active-dot { position: absolute; bottom: 1px; right: 1px; width: 9px; height: 9px; background: #10b981; border: 1.5px solid #111c2e; border-radius: 50%; }
+        .user-meta .name { font-size: 13.5px; font-weight: 600; color: #ffffff; }
+        .user-meta .role { font-size: 11px; color: #64748b; }
+        
+        .logout-link { display: flex; align-items: center; justify-content: center; gap: 8px; color: #f87171; font-size: 13px; font-weight: 600; padding: 10px; width: 100%; }
+        .logout-link .emoji { font-size: 14px; }
+
+        /* ============================================================
+           MAIN CONTENT AREA
+           ============================================================ */
+        .main-content { margin-left: 260px; flex: 1; padding: 40px; width: calc(100% - 260px); }
+
+        .page-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+        .page-title-block h1 { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; }
+        .page-title-block p { font-size: 13px; color: #64748b; margin-top: 4px; }
+        
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .search-bar { display: flex; align-items: center; background: #f1f5f9; border-radius: 8px; padding: 10px 16px; width: 260px; gap: 10px; }
+        .search-bar svg { width: 16px; height: 16px; stroke: #64748b; stroke-width: 2; fill: none; }
+        .search-bar input { border: none; background: transparent; outline: none; font-size: 13px; color: #0f172a; width: 100%; }
+        .icon-btn { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; transition: 0.2s; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; color: #475569; }
+        .icon-btn:hover { background: #f8fafc; color: #0f172a; }
+
+        /* ============================================================
+           STATS CARDS (EMOJI 3D)
+           ============================================================ */
+        .stats-row { display: flex; gap: 16px; margin-bottom: 32px; }
+        .stat-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 16px; min-width: 200px; }
+        .stat-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .stat-icon.orange { background: #ffedd5; }
+        .stat-icon.blue { background: #e0f2fe; }
+        .stat-icon .emoji { font-size: 24px; }
+        
+        .stat-info .label { font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 4px; display: block; }
+        .stat-info .value { font-size: 20px; font-weight: 700; color: #0f172a; }
+
+        /* ============================================================
+           TABLE AREA
+           ============================================================ */
+        .data-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; padding: 16px 24px; border-bottom: 1px solid #f1f5f9; }
+        td { padding: 16px 24px; font-size: 13px; color: #475569; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        
+        .user-id { color: #64748b; }
+        
+        .user-name-col { display: flex; align-items: center; gap: 12px; }
+        .user-initial { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+        .initial-sa { background: #f1f5f9; color: #475569; }
+        .initial-bk { background: #ffedd5; color: #ea580c; }
+        .initial-dr { background: #f1f5f9; color: #475569; }
+        .initial-ep { background: #e0f2fe; color: #0284c7; }
+        .user-name-text { font-weight: 500; color: #0f172a; }
+
+        .role-badge { background: #f1f5f9; color: #475569; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; display: inline-block; }
+
+        .status-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .status-nonaktif { color: #94a3b8; }
+        .status-nonaktif .status-dot { background: #cbd5e1; }
+        .status-aktif { color: #16a34a; }
+        .status-aktif .status-dot { background: #16a34a; }
+
+        .btn-delete { color: #cbd5e1; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; }
+        .btn-delete:hover { color: #ef4444; background: #fee2e2; }
+
+        /* Pagination Footer */
+        .table-footer { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; font-size: 12px; color: #64748b; }
+        .pagination { display: flex; gap: 4px; }
+        .page-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: 600; font-size: 12px; color: #475569; transition: 0.2s; }
+        .page-btn:hover:not(.active) { background: #f1f5f9; }
+        .page-btn.active { background: #c2410c; color: #ffffff; }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <!-- LOGO ASLI (KOTAK PUTIH DI DALAM ORANYE) -->
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#ffffff" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 10H7v-2h7v2zm3-4H7V7h10v2zm0 8H7v-2h10v2z"/></svg>
+            </div>
+            <div class="logo-text">LostFound ADMIN</div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-label">Main Menu</div>
+            <a href="../dashboard/index.html" class="menu-item"><span class="emoji">📊</span> Dashboard</a>
+            <a href="../antrean/index.html" class="menu-item"><span class="emoji">📦</span> Antrean Temuan</a>
+            <a href="../verifikasi/index.html" class="menu-item"><span class="emoji">📝</span> Verifikasi Klaim</a>
+            <a href="../arsip/index.html" class="menu-item"><span class="emoji">📁</span> Arsip Laporan</a>
+
+            <div class="menu-label">Settings</div>
+            <!-- MANAJEMEN USER ACTIVE -->
+            <a href="index.html" class="menu-item active"><span class="emoji">👥</span> Manajemen User</a>
+            <a href="../konfigurasi/index.html" class="menu-item"><span class="emoji">⚙️</span> Konfigurasi Sistem</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar-box">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Petugas" class="user-avatar">
+                    <span class="active-dot"></span>
+                </div>
+                <div class="user-meta"><div class="name">Petugas Posko</div><div class="role">Super Admin</div></div>
+            </div>
+            <a href="../auth/login.html" class="logout-link"><span class="emoji">🚪</span> Keluar Sesi</a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <header class="page-header-row">
+            <div class="page-title-block">
+                <h1>Manajemen User</h1>
+                <p>Kelola akses, peran, dan status pengguna platform LostFound.</p>
+            </div>
+            <div class="header-actions">
+                <div class="search-bar">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#64748b" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" placeholder="Cari Nama atau Email...">
+                </div>
+                <button class="icon-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#475569" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                </button>
+                <button class="icon-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#475569" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- KARTU STATISTIK DENGAN EMOJI 3D BERWARNA -->
+        <section class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon orange"><span class="emoji">👥</span></div>
+                <div class="stat-info">
+                    <span class="label">Total User Umum</span>
+                    <span class="value">144</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon blue"><span class="emoji">👤</span></div>
+                <div class="stat-info">
+                    <span class="label">User Aktif</span>
+                    <span class="value">132</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TABEL DATA -->
+        <section class="data-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID USER</th>
+                        <th>NAMA</th>
+                        <th>ROLE</th>
+                        <th>EMAIL</th>
+                        <th>STATUS</th>
+                        <th>AKSI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="user-id">USR-88212</td>
+                        <td>
+                            <div class="user-name-col">
+                                <div class="user-initial initial-sa">SA</div>
+                                <span class="user-name-text">Siti Aminah</span>
+                            </div>
+                        </td>
+                        <td><span class="role-badge">USER</span></td>
+                        <td>siti.aminah@gmail.com</td>
+                        <td><span class="status-indicator status-nonaktif"><span class="status-dot"></span> NONAKTIF</span></td>
+                        <td>
+                            <button class="btn-delete"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="user-id">USR-88216</td>
+                        <td>
+                            <div class="user-name-col">
+                                <div class="user-initial initial-bk">BK</div>
+                                <span class="user-name-text">Bambang Kusuma</span>
+                            </div>
+                        </td>
+                        <td><span class="role-badge">USER</span></td>
+                        <td>bambang.k@outlook.com</td>
+                        <td><span class="status-indicator status-aktif"><span class="status-dot"></span> AKTIF</span></td>
+                        <td>
+                            <button class="btn-delete"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="user-id">USR-88217</td>
+                        <td>
+                            <div class="user-name-col">
+                                <div class="user-initial initial-dr">DR</div>
+                                <span class="user-name-text">Dewi Ratna</span>
+                            </div>
+                        </td>
+                        <td><span class="role-badge">USER</span></td>
+                        <td>dewiratna.99@gmail.com</td>
+                        <td><span class="status-indicator status-aktif"><span class="status-dot"></span> AKTIF</span></td>
+                        <td>
+                            <button class="btn-delete"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="user-id">USR-88218</td>
+                        <td>
+                            <div class="user-name-col">
+                                <div class="user-initial initial-ep">EP</div>
+                                <span class="user-name-text">Eko Prasetyo</span>
+                            </div>
+                        </td>
+                        <td><span class="role-badge">USER</span></td>
+                        <td>eko.prasetyo@gmail.com</td>
+                        <td><span class="status-indicator status-aktif"><span class="status-dot"></span> AKTIF</span></td>
+                        <td>
+                            <button class="btn-delete"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- PAGINATION -->
+            <div class="table-footer">
+                <span>Menampilkan 1–4 dari 144 user umum</span>
+                <div class="pagination">
+                    <button class="page-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

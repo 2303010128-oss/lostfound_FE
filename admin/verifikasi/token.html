@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Validasi Token - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #111827; /* Background gelap pekat figma */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ============================================================
+                   TOKEN CARD COMPONENT (image_bfe7c1.png)
+                   ============================================================ */
+        .token-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 520px;
+            border-radius: 32px; /* Melengkung halus sesuai gambar */
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Lingkaran Ikon Kunci */
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: #fff7ed;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+
+        .icon-circle span {
+            font-size: 32px;
+            color: #ea580c;
+        }
+
+        /* Teks Judul */
+        .token-card h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Deskripsi */
+        .token-card p {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.6;
+            max-width: 340px;
+            margin-bottom: 32px;
+        }
+
+        /* Box Input Token Putus-Putus Oranye */
+        .token-input-container {
+            width: 100%;
+            border: 2px dashed #ea580c;
+            border-radius: 16px;
+            background: #fffaf7;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .token-field {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            text-align: center;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 26px;
+            font-weight: 700;
+            color: #ea580c;
+            letter-spacing: 2px;
+            text-transform: uppercase; /* Otomatis huruf besar saat mengetik */
+        }
+
+        /* Badge Status Hijau */
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #16a34a;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        /* ============================================================
+                   BUTTONS LAYOUT (2 KOLOM)
+                   ============================================================ */
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-base {
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        /* Tombol Batal Putih */
+        .btn-cancel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-cancel:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        /* Tombol Verifikasi Gelap (#0F172A) */
+        .btn-verify {
+            background: #0F172A; /* Menyesuaikan warna tema figma admin kamu */
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-verify:hover {
+            background: #1e293b;
+        }
+
+        /* ============================================================
+                   FOOTER VIEWPORT TEXT
+                   ============================================================ */
+        .footer-text {
+            margin-top: 32px;
+            font-size: 11px;
+            color: #475569;
+            letter-spacing: 0.3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CARD UTAMA VALIDASI TOKEN -->
+    <main class="token-card">
+        <!-- Ikon Kunci -->
+        <div class="icon-circle">
+            <span>🔑</span>
+        </div>
+
+        <h1>Validasi Token</h1>
+        <p>Masukkan kode token unik yang dimiliki pelapor untuk memulai proses serah terima fisik.</p>
+
+        <!-- Box Input Kode Token -->
+        <div class="token-input-container">
+            <input type="text" class="token-field" id="tokenInput" value="LF-ORANGE-992" max-length="15">
+        </div>
+
+        <!-- Status Notifikasi Sukses -->
+        <div class="status-badge">
+            <span style="font-size: 13px;">✓</span> TOKEN SIAP DIVALIDASI
+        </div>
+
+        <!-- Tombol Batal & Verifikasi -->
+        <div class="button-group">
+            <button class="btn-base btn-cancel" onclick="goBack()">Batal</button>
+            <button class="btn-base btn-verify" onclick="processVerification()">Verifikasi ➔</button>
+        </div>
+    </main>
+
+
+    <!-- INTERAKSI JAVASCRIPT SIMULASI -->
+    <script>
+        // Fungsi tombol batal (kembali ke halaman pengecekan fisik)
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Fungsi simulasi klik verifikasi
+        function processVerification() {
+            const tokenValue = document.getElementById('tokenInput').value.trim();
+            
+            if(tokenValue === "") {
+                alert("Silakan masukkan token terlebih dahulu!");
+            } else {
+                alert('Token ' + tokenValue + ' Berhasil Diverifikasi!');
+                window.location.href = 'serahterima.html'; // Pindah ke halaman serah terima
+            }
+        }
+    </script>
+</body>
+</html>
