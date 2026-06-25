@@ -4,750 +4,132 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tentang Kami - LostFound Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-                   RESET & BASE STYLES
-                   ============================================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+           BASE STYLES & LAYOUT
+           ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #ffffff; color: #131b2e; line-height: 1.6; }
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; width: 100%; }
 
-        body {
-            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        /* NAVBAR (Diperbaiki: Align Center & Height 72px) */
+        .navbar { height: 72px; border-bottom: 1px solid #f1f5f9; background: #ffffff; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+        .logo { color: #a33900; font-weight: 700; font-size: 18px; }
+        
+        .nav-links { display: flex; gap: 28px; align-items: center; height: 100%; }
+        .nav-links a { color: #64748b; font-size: 14px; font-weight: 500; height: 100%; display: flex; align-items: center; }
+        .nav-links a.active { color: #a33900; font-weight: 700; border-bottom: 3px solid #a33900; }
+        
+        .user-nav { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; height: 100%; }
+        .avatar { width: 32px; height: 32px; border-radius: 50%; background: #d94e06; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+        /* HERO SECTION - (image_29811c.png) */
+        .about-hero { background: #f8fafc; padding: 60px 24px; text-align: center; }
+        .misi-badge { display: inline-block; background: #fff1eb; color: #a33900; font-size: 11px; font-weight: 700; padding: 4px 16px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .about-hero h1 { font-size: 28px; font-weight: 700; color: #131b2e; }
 
-        button {
-            cursor: pointer;
-            font-family: inherit;
-            border: none;
-            background: none;
-        }
+        /* BREADCRUMB */
+        .breadcrumb-row { padding: 24px 0; font-size: 13px; color: #64748b; }
+        .breadcrumb-row span { color: #131b2e; font-weight: 600; }
 
-        /* ============================================================
-                   UTILITY CLASSES
-                   ============================================================ */
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+        /* CONTENT */
+        .main-content { max-width: 900px; margin: 0 auto 80px auto; }
+        .section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #131b2e; }
+        .desc-text { font-size: 14.5px; color: #475569; margin-bottom: 40px; }
+        
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 60px; }
+        .card-box { border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; background: #ffffff; }
+        .card-box .icon { font-size: 24px; margin-bottom: 12px; }
+        .card-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+        .card-box p { font-size: 14px; color: #64748b; line-height: 1.5; }
 
-        .flex {
-            display: flex;
-        }
-        .flex-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .flex-between {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .flex-col {
-            flex-direction: column;
-        }
-        .gap-2 {
-            gap: 8px;
-        }
-        .gap-4 {
-            gap: 16px;
-        }
-        .gap-6 {
-            gap: 24px;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .text-left {
-            text-align: left;
-        }
-        .relative {
-            position: relative;
-        }
-        .mt-2 {
-            margin-top: 8px;
-        }
-        .mt-4 {
-            margin-top: 16px;
-        }
-        .mt-6 {
-            margin-top: 24px;
-        }
-        .mt-8 {
-            margin-top: 32px;
-        }
-        .mt-12 {
-            margin-top: 48px;
-        }
-        .mb-2 {
-            margin-bottom: 8px;
-        }
-        .mb-4 {
-            margin-bottom: 16px;
-        }
-        .mb-6 {
-            margin-bottom: 24px;
-        }
-        .mb-8 {
-            margin-bottom: 32px;
-        }
-        .w-full {
-            width: 100%;
-        }
-        .max-w-3xl {
-            max-width: 768px;
-        }
-        .max-w-4xl {
-            max-width: 896px;
-        }
-        .mx-auto {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .mx-2 {
-            margin-left: 8px;
-            margin-right: 8px;
-        }
+        .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
+        .feature-card { text-align: center; padding: 20px; }
+        .feature-card .icon { font-size: 24px; margin-bottom: 12px; color: #a33900; }
+        .feature-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+        .feature-card p { font-size: 13px; color: #64748b; line-height: 1.4; }
 
-        /* ============================================================
-                   NAVBAR
-                   ============================================================ */
-        .navbar {
-            background: #ffffff;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            height: 64px;
-        }
-        .navbar .container {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .navbar .logo {
-            color: #a33900;
-            font-weight: 600;
-            font-size: 20px;
-            letter-spacing: 0.3px;
-        }
-        .navbar .logo a {
-            color: #a33900;
-        }
-        .navbar .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-        .navbar .nav-links a {
-            color: #5a4138;
-            font-size: 16px;
-            transition: color 0.3s ease;
-            padding-bottom: 4px;
-        }
-        .navbar .nav-links a:hover {
-            color: #a33900;
-        }
-        .navbar .nav-links a.active {
-            color: #a33900;
-            font-weight: 600;
-            border-bottom: 2px solid #a33900;
-        }
-        .navbar .auth-buttons {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .navbar .auth-buttons .login-link {
-            color: #a33900;
-            font-weight: 600;
-            font-size: 14px;
-            transition: text-decoration 0.3s ease;
-        }
-        .navbar .auth-buttons .login-link:hover {
-            text-decoration: underline;
-        }
-        .navbar .auth-buttons .register-btn {
-            background: #a33900;
-            color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .navbar .auth-buttons .register-btn:hover {
-            background: #8a2f00;
-        }
+        .quote-box { background: #fff4ed; border-radius: 12px; padding: 32px; text-align: center; border: 1px solid #ffd3c0; }
+        .quote-text { font-size: 16px; font-style: italic; color: #131b2e; margin-bottom: 16px; line-height: 1.6; font-weight: 500; }
+        .quote-author { font-size: 14px; font-weight: 700; color: #a33900; }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #4b5563;
-        }
-        .menu-toggle svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* ============================================================
-                   BREADCRUMB
-                   ============================================================ */
-        .breadcrumb {
-            padding: 16px 0;
-            font-size: 14px;
-            color: #6b7280;
-        }
-        .breadcrumb a {
-            color: #a33900;
-            transition: text-decoration 0.3s ease;
-        }
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-        .breadcrumb .separator {
-            margin: 0 8px;
-            color: #9ca3af;
-        }
-        .breadcrumb .current {
-            color: #374151;
-            font-weight: 500;
-        }
-
-        /* ============================================================
-                   ABOUT PAGE
-                   ============================================================ */
-        .about-page {
-            flex: 1;
-            padding: 32px 24px 64px;
-        }
-
-        /* Hero Section */
-        .about-hero {
-            background: linear-gradient(135deg, #fff4ed 0%, #f8fafc 100%);
-            border-radius: 16px;
-            padding: 48px 40px;
-            margin-bottom: 40px;
-            border: 1px solid #eaedff;
-            position: relative;
-            overflow: hidden;
-        }
-        .about-hero::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            right: -50px;
-            width: 200px;
-            height: 200px;
-            background: rgba(163, 57, 0, 0.05);
-            border-radius: 50%;
-        }
-        .about-hero::after {
-            content: '';
-            position: absolute;
-            bottom: -80px;
-            left: -80px;
-            width: 250px;
-            height: 250px;
-            background: rgba(163, 57, 0, 0.03);
-            border-radius: 50%;
-        }
-
-        .about-hero .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-        .about-hero .hero-content .badge {
-            display: inline-block;
-            background: #a33900;
-            color: #ffffff;
-            font-size: 12px;
-            font-weight: 600;
-            padding: 4px 16px;
-            border-radius: 20px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-        }
-        .about-hero .hero-content h1 {
-            font-size: 36px;
-            font-weight: 700;
-            color: #131b2e;
-            margin-bottom: 8px;
-        }
-        .about-hero .hero-content .tagline {
-            font-size: 18px;
-            color: #5a4138;
-            font-weight: 500;
-        }
-
-        /* Section Title */
-        .section-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #131b2e;
-            margin-bottom: 16px;
-            position: relative;
-            padding-bottom: 12px;
-        }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 48px;
-            height: 3px;
-            background: #a33900;
-            border-radius: 2px;
-        }
-        .section-title.text-center::after {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        /* Content Cards */
-        .content-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 32px 36px;
-            border: 1px solid #eaedff;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-            transition: box-shadow 0.3s ease;
-        }
-        .content-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        }
-
-        .content-card p {
-            font-size: 15px;
-            line-height: 26px;
-            color: #4b5563;
-        }
-        .content-card p:not(:last-child) {
-            margin-bottom: 12px;
-        }
-
-        /* Feature Grid */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-            margin-top: 8px;
-        }
-
-        .feature-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 28px 24px;
-            border: 1px solid #eaedff;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            border-color: #fcd5c4;
-        }
-
-        .feature-card .icon {
-            width: 56px;
-            height: 56px;
-            background: #fff4ed;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 24px;
-        }
-
-        .feature-card h3 {
-            font-size: 16px;
-            font-weight: 700;
-            color: #131b2e;
-            margin-bottom: 6px;
-        }
-
-        .feature-card p {
-            font-size: 14px;
-            color: #6b7280;
-            line-height: 22px;
-        }
-
-        /* Quote */
-        .quote-block {
-            background: #fff4ed;
-            border-radius: 12px;
-            padding: 32px 40px;
-            border-left: 4px solid #a33900;
-            margin: 8px 0 4px;
-        }
-        .quote-block .quote-text {
-            font-size: 18px;
-            font-style: italic;
-            color: #131b2e;
-            line-height: 30px;
-        }
-        .quote-block .quote-author {
-            margin-top: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #a33900;
-        }
-
-        /* ============================================================
-                   FOOTER
-                   ============================================================ */
-        .footer {
-            background: #eaedff;
-            padding: 24px;
-            margin-top: auto;
-        }
-        .footer .footer-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .footer .footer-content .brand {
-            font-weight: 600;
-            color: #131b2e;
-            font-size: 14px;
-        }
-        .footer .footer-content .copyright {
-            font-size: 14px;
-            color: #5a4138;
-        }
-
-        /* ============================================================
-                   RESPONSIVE
-                   ============================================================ */
-        @media (max-width: 1024px) {
-            .feature-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .navbar .nav-links {
-                display: none;
-            }
-            .menu-toggle {
-                display: block;
-            }
-
-            .about-hero {
-                padding: 32px 24px;
-            }
-            .about-hero .hero-content h1 {
-                font-size: 28px;
-            }
-            .about-hero .hero-content .tagline {
-                font-size: 16px;
-            }
-
-            .content-card {
-                padding: 24px 20px;
-            }
-
-            .feature-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .feature-card {
-                padding: 20px;
-            }
-
-            .quote-block {
-                padding: 24px 20px;
-            }
-            .quote-block .quote-text {
-                font-size: 16px;
-                line-height: 26px;
-            }
-
-            .footer .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar .auth-buttons .login-link {
-                font-size: 13px;
-            }
-            .navbar .auth-buttons .register-btn {
-                font-size: 13px;
-                padding: 6px 12px;
-            }
-
-            .about-hero {
-                padding: 24px 16px;
-            }
-            .about-hero .hero-content h1 {
-                font-size: 22px;
-            }
-            .about-hero .hero-content .tagline {
-                font-size: 14px;
-            }
-
-            .about-page {
-                padding: 16px 12px 40px;
-            }
-
-            .section-title {
-                font-size: 20px;
-            }
-
-            .content-card {
-                padding: 20px 16px;
-            }
-            .content-card p {
-                font-size: 14px;
-                line-height: 24px;
-            }
-
-            .breadcrumb {
-                font-size: 12px;
-            }
-        }
-
-        /* ============================================================
-                   MOBILE NAV
-                   ============================================================ */
-        .mobile-nav {
-            display: none;
-            flex-direction: column;
-            background: #ffffff;
-            padding: 16px 24px;
-            gap: 12px;
-            border-top: 1px solid #eaedff;
-        }
-        .mobile-nav.open {
-            display: flex;
-        }
-        .mobile-nav a {
-            color: #5a4138;
-            font-size: 16px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .mobile-nav a.active {
-            color: #a33900;
-            font-weight: 600;
-        }
-        .mobile-nav a:last-child {
-            border-bottom: none;
-        }
+        .footer { background: #eaedff; padding: 24px; text-align: center; font-size: 13px; color: #5a4138; margin-top: auto; }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================ -->
-    <!-- NAVBAR -->
-    <!-- ============================================================ -->
     <header class="navbar">
         <div class="container">
-            <div class="logo">
-                <a href="index.html">LostFound Connect</a>
-            </div>
-
+            <div class="logo">LostFound Connect</div>
             <nav class="nav-links">
                 <a href="index.html">Beranda</a>
                 <a href="tentangkami.html" class="active">Tentang Kami</a>
                 <a href="pusatbantuan.html">Pusat Bantuan</a>
             </nav>
-
-            <div class="auth-buttons">
-                <a href="login.html" class="login-link">Masuk</a>
-                <button class="register-btn" onclick="window.location.href='login.html?mode=register'">Daftar Akun</button>
+            <div class="user-nav">
+                <div class="notification">🔔</div>
+                <div class="avatar">AD</div>
+                <span>Ahmad D.</span>
             </div>
-
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="mobile-nav" id="mobileNav">
-            <a href="index.html">Beranda</a>
-            <a href="tentangkami.html" class="active">Tentang Kami</a>
-            <a href="pusatbantuan.html">Pusat Bantuan</a>
-            <a href="login.html">Masuk</a>
-            <a href="login.html?mode=register" style="color:#a33900;font-weight:600;">Daftar Akun</a>
         </div>
     </header>
 
-    <!-- ============================================================ -->
-    <!-- ABOUT PAGE -->
-    <!-- ============================================================ -->
-    <main class="about-page">
+    <section class="about-hero">
+        <div class="misi-badge">Misi Keamanan Kampus</div>
+        <h1>Membangun Integritas Lewat Teknologi</h1>
+    </section>
 
-        <div class="container max-w-4xl mx-auto">
+    <main class="container main-content">
+        <!-- Breadcrumb diletakkan di bawah Hero -->
+        <nav class="breadcrumb-row">Beranda › <span>Tentang Kami</span></nav>
 
-            <!-- ============================================================ -->
-            <!-- BREADCRUMB -->
-            <!-- ============================================================ -->
-            <nav class="breadcrumb">
-                <a href="index.html">Beranda</a>
-                <span class="separator">›</span>
-                <span class="current">Tentang Kami</span>
-            </nav>
+        <h2 class="section-title">Tentang LostFound Connect</h2>
+        <p class="desc-text">Sistem Informasi Manajemen Barang Hilang dan Temuan Terintegrasi Universitas Perjuangan Tasikmalaya.</p>
 
-            <!-- ============================================================ -->
-            <!-- HERO -->
-            <!-- ============================================================ -->
-            <div class="about-hero">
-                <div class="hero-content">
-                    <span class="badge">Tentang Kami</span>
-                    <h1>LostFound Connect</h1>
-                    <p class="tagline">Membangun Integritas Lewat Teknologi</p>
-                </div>
+        <div class="info-grid">
+            <div class="card-box">
+                <div class="icon">📂</div>
+                <h3>Latar Belakang</h3>
+                <p>LostFound Connect hadir sebagai solusi digital untuk mengatasi hilangnya barang berharga di lingkungan kampus UNPER. Seringkali, pengumuman kehilangan di grup media sosial tidak efisien, rahasia ciri barang bocor, dan rawan memicu penipuan bermodus tebusan.</p>
             </div>
-
-            <!-- ============================================================ -->
-            <!-- TENTANG LOSTFOUND CONNECT -->
-            <!-- ============================================================ -->
-            <div class="content-card mb-8">
-                <h2 class="section-title">Tentang LostFound Connect</h2>
-                <p>
-                    Sistem Informasi Manajemen Barang Hilang dan Temuan Terintegrasi Universitas Perjuangan Tasikmalaya.
-                </p>
+            <div class="card-box">
+                <div class="icon">🛡️</div>
+                <h3>Aturan Utama</h3>
+                <p>Platform ini menerapkan asas 'Sistem Verifikasi Terpusat'. Kami tidak mempertemukan penemu dan pencari barang secara langsung demi menjaga privasi dan keamanan. Seluruh barang temuan wajib diamankan secara fisik di Pos Satpam Utama Kampus selaku pusat kendali logistik dan hukum.</p>
             </div>
-
-            <!-- ============================================================ -->
-            <!-- LATAR BELAKANG -->
-            <!-- ============================================================ -->
-            <div class="content-card mb-8">
-                <h2 class="section-title">Latar Belakang</h2>
-                <p>
-                    LostFound Connect hadir sebagai solusi digital untuk mengatasi hilangnya barang berharga di lingkungan kampus UNPER. Seringkali, pengumuman kehilangan di grup media sosial tidak efisien, rahasia ciri barang bocor, dan rawan memicu penipuan bermodus tebakan.
-                </p>
-            </div>
-
-            <!-- ============================================================ -->
-            <!-- ATURAN UTAMA -->
-            <!-- ============================================================ -->
-            <div class="content-card mb-8">
-                <h2 class="section-title">Aturan Utama</h2>
-                <p>
-                    Platform ini menerapkan akses Sistem Verifikasi Terpusat. Kami tidak mempertemukan penemu dan pencari barang secara langsung demi menjaga privasi dan keamanan. Seluruh barang temuan wajib diamankan secara fisik di Pos Saptam Utama Kampus sebagai pusat kendali logistik dan hukum.
-                </p>
-            </div>
-
-            <!-- ============================================================ -->
-            <!-- MENGAPA MENGGUNAKAN PLATFORM KAMI? -->
-            <!-- ============================================================ -->
-            <h2 class="section-title text-center mt-12 mb-6" style="text-align:center;">
-                Mengapa Menggunakan Platform Kami?
-            </h2>
-
-            <div class="feature-grid mb-8">
-                <!-- Feature 1: Privasi & Keamanan -->
-                <div class="feature-card">
-                    <div class="icon">🔒</div>
-                    <h3>Privasi &amp; Keamanan</h3>
-                    <p>
-                        Identitas penemu dan pencari dihargai dengan sepenuhnya untuk mencegah penyalahgunaan dan data.
-                    </p>
-                </div>
-
-                <!-- Feature 2: Verifikasi Ketat -->
-                <div class="feature-card">
-                    <div class="icon">✅</div>
-                    <h3>Verifikasi Ketat</h3>
-                    <p>
-                        Hanya petugas berwenang yang dapat memudahkan kepemilikan barang melalui bukti otentik.
-                    </p>
-                </div>
-
-                <!-- Feature 3: Terintegrasi -->
-                <div class="feature-card">
-                    <div class="icon">🏛️</div>
-                    <h3>Terintegrasi</h3>
-                    <p>
-                        Terintegrasi dengan sistem keamanan kampus Universitas Perjuangan Tasikmalaya.
-                    </p>
-                </div>
-            </div>
-
-            <!-- ============================================================ -->
-            <!-- QUOTE -->
-            <!-- ============================================================ -->
-            <div class="quote-block">
-                <p class="quote-text">
-                    "Kejujuran adalah pondasi utama komunitas kita. Platform ini hanyalah alat untuk menjembatani kebaikan hati Anda."
-                </p>
-                <p class="quote-author">— Tim Keamanan Kampus UNPER</p>
-            </div>
-
         </div>
 
+        <h2 class="section-title" style="text-align: center;">Mengapa Menggunakan Platform Kami?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon">❤️</div>
+                <h4>Privasi Terjaga</h4>
+                <p>Identitas penemu dan pencari dirahasiakan sepenuhnya untuk mencegah penyalahgunaan data.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">✅</div>
+                <h4>Verifikasi Ketat</h4>
+                <p>Hanya petugas berwenang yang dapat memvalidasi kepemilikan barang melalui bukti otentik.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🏛️</div>
+                <h4>Legalitas Jelas</h4>
+                <p>Terintegrasi dengan sistem keamanan kampus Universitas Perjuangan Tasikmalaya.</p>
+            </div>
+        </div>
+
+        <div class="quote-box">
+            <p class="quote-text">"Kejujuran adalah pondasi utama komunitas kita. Platform ini hanyalah alat untuk menjembatani kebaikan hati Anda."</p>
+            <p class="quote-author">— Tim Keamanan Kampus UNPER</p>
+        </div>
     </main>
 
-    <!-- ============================================================ -->
-    <!-- FOOTER -->
-    <!-- ============================================================ -->
     <footer class="footer">
-        <div class="footer-content">
-            <span class="brand">LostFound Connect</span>
-            <span class="copyright">© 2024 Universitas Perjuangan Tasikmalaya</span>
+        <div class="container">
+            <span>LostFound Connect &copy; 2026 Universitas Perjuangan Tasikmalaya</span>
         </div>
     </footer>
-
-    <!-- ============================================================ -->
-    <!-- JAVASCRIPT -->
-    <!-- ============================================================ -->
-    <script>
-        (function() {
-            'use strict';
-
-            // ============================================================
-            // MOBILE MENU TOGGLE
-            // ============================================================
-            var menuToggle = document.getElementById('menuToggle');
-            var mobileNav = document.getElementById('mobileNav');
-
-            if (menuToggle && mobileNav) {
-                menuToggle.addEventListener('click', function() {
-                    mobileNav.classList.toggle('open');
-                });
-            }
-
-            var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
-            mobileLinks.forEach(function(link) {
-                link.addEventListener('click', function() {
-                    mobileNav.classList.remove('open');
-                });
-            });
-
-            console.log('✅ About page loaded successfully!');
-
-        })();
-    </script>
-
 </body>
 </html>

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Postingan - LostFound Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #131b2e;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ============================================================
+                   NAVBAR (Sesuai Presisi Figma)
+                   ============================================================ */
+        .navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            height: 72px;
+        }
+
+        .navbar .container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar .logo {
+            color: #a33900;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: -0.2px;
+        }
+
+        .navbar .nav-center {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            margin-left: 40px;
+        }
+
+        .navbar .nav-center a {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            position: relative;
+            padding: 6px 0;
+        }
+
+        .navbar .nav-center a:hover {
+            color: #a33900;
+        }
+
+        /* Nav Right Area */
+        .navbar .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-left: auto;
+        }
+
+        .navbar .nav-right .notification-bell {
+            font-size: 18px;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s;
+        }
+
+        /* User Dropdown Profile Component */
+        .user-dropdown {
+            position: relative;
+        }
+
+        .user-dropdown .user-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            background: transparent;
+            transition: background 0.2s;
+        }
+
+        .user-dropdown .user-btn:hover {
+            background: #f8fafc;
+        }
+
+        .user-dropdown .user-btn .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #d94e06;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .user-dropdown .user-btn .user-name-box {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .user-dropdown .user-btn .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #131b2e;
+            line-height: 1.2;
+        }
+
+        .user-dropdown .user-btn .user-role {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .user-dropdown .user-btn .chevron {
+            font-size: 10px;
+            color: #64748b;
+            margin-left: 2px;
+        }
+
+        /* Dropdown Menu List Overlay */
+        .user-dropdown .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 220px;
+            padding: 8px;
+            display: none;
+            z-index: 100;
+        }
+
+        .user-dropdown .dropdown-menu.open {
+            display: block;
+        }
+
+        .user-dropdown .dropdown-menu .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            font-size: 13.5px;
+            font-weight: 500;
+            color: #475569;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+            margin-bottom: 2px;
+        }
+
+        .user-dropdown .dropdown-menu .menu-item:hover {
+            background: #f8fafc;
+            color: #131b2e;
+        }
+
+        .user-dropdown .dropdown-menu .divider {
+            height: 1px;
+            background: #f1f5f9;
+            margin: 6px 4px;
+        }
+
+        .user-dropdown .dropdown-menu .menu-item.danger {
+            color: #ef4444;
+        }
+        
+        .user-dropdown .dropdown-menu .menu-item.danger:hover {
+            background: #fef2f2;
+        }
+
+        /* ============================================================
+                   BREADCRUMB Component
+                   ============================================================ */
+        .breadcrumb-row {
+            padding: 24px 0;
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .breadcrumb-row span {
+            color: #131b2e;
+            font-weight: 600;
+        }
+
+        /* ============================================================
+                   MAIN SPLIT LAYOUT
+                   ============================================================ */
+        .detail-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        /* LEFT COLUMN: IMAGE SHOWCASE */
+        .image-showcase {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            height: fit-content;
+        }
+
+        .main-img-box {
+            width: 100%;
+            height: 380px;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .thumb-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 2px solid #a33900;
+            cursor: pointer;
+            background: #f1f5f9;
+        }
+
+        .thumb-box.inactive {
+            border-color: #e2e8f0;
+            opacity: 0.6;
+        }
+
+        .thumb-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* RIGHT COLUMN: CONTENT INFO PANEL */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .badge-status {
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        .badge-status.lost { background: #f43f5e; }
+        .badge-status.found { background: #10b981; }
+
+        .share-btn {
+            color: #a33900;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .info-panel h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #131b2e;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .info-panel .post-time {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        /* Pelapor Profile Box Card */
+        .author-box {
+            background: #f4f7fe;
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .author-box .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #a33900;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .author-box .author-info {
+            flex: 1;
+        }
+
+        .author-box .author-info .author-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #131b2e;
+        }
+
+        .author-box .author-info .author-role {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .author-box .mail-icon {
+            color: #a33900;
+            font-size: 18px;
+        }
+
+        /* Detail Blocks Text Label */
+        .section-heading {
+            font-size: 14px;
+            font-weight: 700;
+            color: #131b2e;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .desc-text {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        /* Grid Spec Pill Boxes */
+        .feature-grid-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .spec-pill-box {
+            border: 1.5px solid #eaedff;
+            border-radius: 8px;
+            padding: 12px 16px;
+        }
+
+        .spec-pill-box label {
+            display: block;
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .spec-pill-box span {
+            font-size: 14px;
+            font-weight: 600;
+            color: #131b2e;
+        }
+
+        /* Lists Detail */
+        .bullet-list {
+            padding-left: 20px;
+            margin-bottom: 32px;
+        }
+
+        .bullet-list li {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+
+        /* Action Pill Form Button */
+        .btn-action-submit {
+            width: 100%;
+            background: #a33900;
+            color: #ffffff;
+            padding: 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(163, 57, 0, 0.15);
+            margin-bottom: 8px;
+        }
+
+        .btn-action-submit:hover {
+            background: #873000;
+        }
+
+        .btn-sub-info {
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        /* Alert Warning Banner Box */
+        .alert-tips-box {
+            background: #eef2ff;
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .alert-tips-box .tip-icon {
+            color: #4338ca;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .alert-tips-box p {
+            font-size: 12.5px;
+            color: #4338ca;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   FOOTER (Seragam dengan Beranda Utama)
+                   ============================================================ */
+        .footer {
+            background: #eaedff;
+            color: #5a4138;
+            padding: 24px 0;
+            font-size: 13px;
+            margin-top: auto;
+        }
+
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer .brand-txt {
+            font-weight: 600;
+            color: #131b2e;
+        }
+
+        @media (max-width: 900px) {
+            .detail-layout { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">LostFound Connect</div>
+            <nav class="nav-center">
+                <a href="index.html">Beranda</a>
+                <a href="tentangkami.html">Tentang Kami</a>
+                <a href="pusatbantuan.html">Pusat Bantuan</a>
+            </nav>
+            <div class="nav-right">
+                <div class="notification-bell" onclick="alert('Belum ada notifikasi baru.')">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                </div>
+                
+                <div class="user-dropdown">
+                    <button class="user-btn" onclick="toggleLocalDropdown(event)">
+                        <div class="avatar" id="navAvatar">AD</div>
+                        <div class="user-name-box">
+                            <span class="user-name" id="navName">Ahmad D.</span>
+                            <span class="user-role">Mahasiswa</span>
+                        </div>
+                        <span class="chevron">▼</span>
+                    </button>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="ringkasan.html" class="menu-item">📊 Ringkasan</a>
+                        <a href="status.html" class="menu-item">📋 Klaim Saya</a>
+                        <a href="riwayat.html" class="menu-item">⏳ Riwayat</a>
+                        <div class="divider"></div>
+                        <a href="profil.html" class="menu-item">👤 Profil</a>
+                        <a href="#" class="menu-item danger" onclick="handleLogoutAction(event)">🚪 Keluar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <nav class="breadcrumb-row">
+            Beranda &nbsp;➔&nbsp; <span id="breadTitle">Detail Postingan</span>
+        </nav>
+
+        <div class="detail-layout">
+            
+            <section class="image-showcase" id="imageShowcaseBox">
+                <div class="main-img-box">
+                    <img id="mainImgView" src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500" alt="Main Item Image">
+                </div>
+                <div class="thumbnail-row" id="thumbRow">
+                    <div class="thumb-box"><img id="thumb1" src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500" alt="Thumb 1"></div>
+                    <div class="thumb-box inactive"><img id="thumb2" src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=500" alt="Thumb 2"></div>
+                </div>
+            </section>
+
+            <section class="info-panel">
+                <div class="header-meta">
+                    <span class="badge-status lost" id="statusBadgeTxt">Kehilangan</span>
+                    <a href="#" class="share-btn" onclick="alert('Link laporan disalin ke papan klip!')">🔀 Bagikan</a>
+                </div>
+
+                <h1 id="itemTitleView">Laptop MacBook Pro 13"</h1>
+                <div class="post-time" id="itemSubtitleView">Diposting 2 jam yang lalu</div>
+
+                <div class="author-box">
+                    <div class="avatar" style="width:40px; height:40px; background:#a33900; color:#fff; display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:700;" id="boxAvatar">AD</div>
+                    <div class="author-info">
+                        <div class="author-name" id="boxAuthorName">Ahmad D.</div>
+                        <div class="author-role" id="boxAuthorRole">Pelapor • Informatika '21</div>
+                    </div>
+                    <span class="mail-icon">✉</span>
+                </div>
+
+                <h3 class="section-heading">📍 Lokasi Terakhir</h3>
+                <p class="desc-text" id="itemLocationDesc">
+                    Laptop tertinggal di Gedung A, Ruang 302 (Lab Pemrograman). Terakhir digunakan saat kelas PBO selesai sekitar pukul 11:30 WIB. Saya baru menyadari tertinggal saat sudah berada di kantin.
+                </p>
+
+                <div class="feature-grid-specs">
+                    <div class="spec-pill-box">
+                        <label>Kategori / Warna</label>
+                        <span id="specColor">Space Grey</span>
+                    </div>
+                    <div class="spec-pill-box">
+                        <label>Ciri Khas / Lokasi</label>
+                        <span id="specFeatures">Stiker di cover</span>
+                    </div>
+                </div>
+
+                <h3 class="section-heading">Detail Tambahan</h3>
+                <ul class="bullet-list" id="bulletListContainer">
+                    <li>Ada stiker "Github" dan "React" di pojok kiri atas cover.</li>
+                    <li>Case berwarna hitam transparan terpasang.</li>
+                    <li>Charger tidak terbawa, hanya unit laptop.</li>
+                </ul>
+
+                <button class="btn-action-submit" id="mainActionButton" onclick="triggerClaimSubmit()">
+                    🤝 Saya Menemukan Ini
+                </button>
+                <div class="btn-sub-info" id="subActionTxt">Membuka formulir penyerahan / klaim hak kepemilikan barang.</div>
+
+                <div class="alert-tips-box">
+                    <div class="tip-icon">ℹ️</div>
+                    <p><strong>Tips Keamanan:</strong> Pastikan melakukan serah terima di area publik kampus atau melalui petugas keamanan gedung.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <span class="brand-txt">LostFound Connect</span>
+            <span>© 2026 Universitas Perjuangan Tasikmalaya</span>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Sinkronisasi Sesi Navigasi Profil
+            const sessionUser = localStorage.getItem('userName') || 'Ahmad D.';
+            document.getElementById('navName').textContent = sessionUser;
+            document.getElementById('navAvatar').textContent = sessionUser.substring(0,2).toUpperCase();
+
+            // Ambil ID Data Laporan dari Parameter URL
+            const urlQuery = new URLSearchParams(window.location.search);
+            const itemId = parseInt(urlQuery.get('id')) || 1;
+
+            // Membaca Database globalFeed lokal browser
+            const feed = JSON.parse(localStorage.getItem('globalFeed')) || [];
+            const currentItem = feed.find(x => x.id === itemId);
+
+            if (currentItem) {
+                // Injek Data Dinamis ke UI
+                document.getElementById('breadTitle').textContent = currentItem.title;
+                document.getElementById('itemTitleView').textContent = currentItem.title;
+                document.getElementById('itemSubtitleView').textContent = currentItem.timeLabel || `Diposting pada ${currentItem.date}`;
+                document.getElementById('itemLocationDesc').textContent = currentItem.desc;
+
+                // Penanganan Kondisi Konten Gambar Objek
+                if (currentItem.img) {
+                    document.getElementById('mainImgView').src = currentItem.img;
+                    document.getElementById('thumb1').src = currentItem.img;
+                } else {
+                    document.getElementById('imageShowcaseBox').innerHTML = '<div style="font-size:120px; padding:100px; text-align:center; background:#fafafa; border-radius:12px;">👛</div>';
+                }
+
+                // Pengkondisian Aksen Tombol & Badge Sesuai Type Kehilangan/Penemuan
+                const badge = document.getElementById('statusBadgeTxt');
+                const submitBtn = document.getElementById('mainActionButton');
+                const subTxt = document.getElementById('subActionTxt');
+
+                let authorNameStr = typeof currentItem.author === 'object' ? (currentItem.author.name || 'Mahasiswa UNPER') : (currentItem.author || 'Ahmad D.');
+
+                if (currentItem.type === 'lost') {
+                    badge.textContent = "Kehilangan";
+                    badge.className = "badge-status lost";
+                    submitBtn.innerHTML = "🤝 Saya Menemukan Ini";
+                    submitBtn.style.background = "#a33900";
+                    subTxt.textContent = "Klik untuk membuka formulir klaim/verifikasi barang temuan.";
+                    document.getElementById('boxAuthorRole').textContent = "Pelapor • Informatika '21";
+                } else {
+                    badge.textContent = "Ditemukan";
+                    badge.className = "badge-status found";
+                    submitBtn.innerHTML = "🙋 Ini Barang Saya (Ajukan Klaim)";
+                    submitBtn.style.background = "#10b981";
+                    subTxt.textContent = "Klaim bukti kepemilikan Anda akan diproses oleh tim keamanan.";
+                    document.getElementById('boxAuthorRole').textContent = "Penemu • Civitas Academica";
+                }
+
+                // Tampilkan Profile Pembuat Data
+                document.getElementById('boxAuthorName').textContent = authorNameStr;
+                document.getElementById('boxAvatar').textContent = authorNameStr.substring(0,2).toUpperCase();
+                document.getElementById('specColor').textContent = currentItem.category || "Umum";
+                document.getElementById('specFeatures').textContent = currentItem.location;
+            }
+
+            // Event listener klik di luar untuk menutup menu dropdown profil
+            window.addEventListener('click', () => {
+                document.getElementById('dropdownMenu').classList.remove('open');
+            });
+        });
+
+        function toggleLocalDropdown(e) {
+            e.stopPropagation();
+            document.getElementById('dropdownMenu').classList.toggle('open');
+        }
+
+        function handleLogoutAction(e) {
+            e.preventDefault();
+            if (confirm('Apakah Anda yakin ingin keluar sesi?')) {
+                localStorage.setItem('isLoggedIn', 'false');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userEmail');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // FUNGSI UTAMA: Menyambungkan dan Melempar Navigasi ke Halaman kehilangan.html
+        function triggerClaimSubmit() {
+            const urlQuery = new URLSearchParams(window.location.search);
+            const itemId = urlQuery.get('id') || 1;
+            
+            alert('Mengalihkan Anda ke halaman formulir konfirmasi/klaim kehilangan...');
+            window.location.href = `kehilangan.html?id=${itemId}`;
+        }
+    </script>
+</body>
+</html>

@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LostFound Connect</title>
+    <title>Autentikasi Akun - LostFound Connect</title>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
                    RESET & BASE STYLES
@@ -15,11 +17,12 @@
         }
 
         body {
-            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: #f8fafc;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            color: #1e293b;
         }
 
         a {
@@ -34,1206 +37,469 @@
             background: none;
         }
 
-        input {
-            font-family: inherit;
-        }
-
         /* ============================================================
-                   UTILITY CLASSES
+                   CONTAINER & CARD (Sesuai Layout Figma)
                    ============================================================ */
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .flex {
-            display: flex;
-        }
-        .flex-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .flex-between {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .flex-col {
-            flex-direction: column;
-        }
-        .gap-2 {
-            gap: 8px;
-        }
-        .gap-4 {
-            gap: 16px;
-        }
-        .gap-6 {
-            gap: 24px;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .relative {
-            position: relative;
-        }
-        .hidden {
-            display: none !important;
-        }
-        .mt-1 {
-            margin-top: 4px;
-        }
-        .mt-2 {
-            margin-top: 8px;
-        }
-        .mt-3 {
-            margin-top: 12px;
-        }
-        .mt-4 {
-            margin-top: 16px;
-        }
-        .mt-6 {
-            margin-top: 24px;
-        }
-        .mb-2 {
-            margin-bottom: 8px;
-        }
-        .mb-4 {
-            margin-bottom: 16px;
-        }
-        .w-full {
-            width: 100%;
-        }
-        .max-w-md {
-            max-width: 420px;
-        }
-        .mx-auto {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* ============================================================
-                   BUTTONS
-                   ============================================================ */
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #a33900;
-            color: #ffffff;
-            padding: 14px 32px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        .btn-primary:hover {
-            background: #8a2f00;
-        }
-        .btn-primary:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .btn-outline {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: transparent;
-            color: #a33900;
-            padding: 12px 32px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 2px solid #a33900;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            width: 100%;
-        }
-        .btn-outline:hover {
-            background: #a33900;
-            color: #ffffff;
-        }
-
-        /* ============================================================
-                   NAVBAR
-                   ============================================================ */
-        .navbar {
-            background: #ffffff;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            height: 64px;
-        }
-        .navbar .container {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .navbar .logo {
-            color: #a33900;
-            font-weight: 600;
-            font-size: 20px;
-            letter-spacing: 0.3px;
-        }
-        .navbar .logo a {
-            color: #a33900;
-        }
-        .navbar .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-        .navbar .nav-links a {
-            color: #5a4138;
-            font-size: 16px;
-            transition: color 0.3s ease;
-            padding-bottom: 4px;
-        }
-        .navbar .nav-links a:hover {
-            color: #a33900;
-        }
-        .navbar .nav-links a.active {
-            color: #a33900;
-            font-weight: 600;
-            border-bottom: 2px solid #a33900;
-        }
-        .navbar .auth-buttons {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .navbar .auth-buttons .login-link {
-            color: #a33900;
-            font-weight: 600;
-            font-size: 14px;
-            transition: text-decoration 0.3s ease;
-        }
-        .navbar .auth-buttons .login-link:hover {
-            text-decoration: underline;
-        }
-        .navbar .auth-buttons .register-btn {
-            background: #a33900;
-            color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .navbar .auth-buttons .register-btn:hover {
-            background: #8a2f00;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #4b5563;
-        }
-        .menu-toggle svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* ============================================================
-                   AUTH PAGE
-                   ============================================================ */
-        .auth-page {
+        .auth-container {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 24px;
-            min-height: calc(100vh - 128px);
+            padding: 60px 24px;
         }
 
         .auth-card {
             background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-            border: 1px solid #eaedff;
-            max-width: 420px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+            border: 1px solid #f1f5f9;
             width: 100%;
-            padding: 40px 32px;
+            max-width: 440px;
+            padding: 40px 36px;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        .auth-card .icon-wrapper {
+        /* Top Border Aksen Khusus Register View */
+        .auth-card.register-border {
+            border-top: 4px solid #a33900;
+        }
+
+        /* Header Icons (Gembok / Sukses Bulat) */
+        .header-icon-box {
             width: 56px;
             height: 56px;
-            background: #fff4ed;
             border-radius: 50%;
+            margin: 0 auto 20px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 16px;
-            font-size: 28px;
-            transition: all 0.3s ease;
+        }
+        
+        .header-icon-box.orange-bg {
+            background: #fff4ed;
+            color: #a33900;
+        }
+
+        .header-icon-box.green-bg {
+            background: #e6f4ea;
+            color: #10b981;
         }
 
         .auth-card h2 {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            color: #131b2e;
-            text-align: center;
-            margin-bottom: 4px;
-            transition: all 0.3s ease;
+            color: #1e293b;
+            margin-bottom: 8px;
         }
 
         .auth-card .subtitle {
-            font-size: 14px;
-            color: #9ca3af;
-            text-align: center;
-            margin-bottom: 24px;
-            transition: all 0.3s ease;
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 28px;
         }
 
         /* ============================================================
-                   FORMS
+                   INPUTS FIELDS (Border Oranye Terang Khas Figma)
                    ============================================================ */
-        .auth-form {
-            display: block;
-        }
-
-        .auth-form.hidden {
-            display: none !important;
-        }
-
-        .auth-form .form-group {
-            margin-bottom: 16px;
-        }
-
-        .auth-form .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 6px;
-        }
-
-        .auth-form .form-group label .required {
-            color: #ef4444;
-        }
-
-        .auth-form .form-group input {
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
             width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #fcd5c4;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #f97316; /* Border warna oranye terang figma */
+            border-radius: 25px; /* Pill-shaped input figma */
             outline: none;
+            font-size: 14px;
+            color: #0f172a;
             background: #ffffff;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
 
-        .auth-form .form-group input:focus {
+        .form-group input:focus {
             border-color: #a33900;
+            box-shadow: 0 0 0 4px rgba(163, 57, 0, 0.08);
         }
 
-        .auth-form .form-group input.error {
-            border-color: #ef4444;
+        /* Icon Mata Sembunyikan Sandi */
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1e293b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
         }
 
-        .auth-form .form-group .hint {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 4px;
-        }
-
-        .auth-form .form-options {
+        /* ============================================================
+                   WIDGET OPTIONS (Ingat Saya / Lupa Sandi)
+                   ============================================================ */
+        .form-options-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 13px;
-            color: #6b7280;
-            margin: 4px 0 20px;
+            font-size: 12.5px;
+            color: #64748b;
+            margin: -4px 4px 24px 4px;
         }
 
-        .auth-form .form-options .remember-me {
+        .form-options-row .checkbox-label {
             display: flex;
             align-items: center;
             gap: 6px;
             cursor: pointer;
-        }
-
-        .auth-form .form-options .remember-me input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            accent-color: #a33900;
-            cursor: pointer;
-        }
-
-        .auth-form .form-options .forgot-link {
-            color: #a33900;
             font-weight: 500;
-            transition: text-decoration 0.3s ease;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .auth-form .form-options .forgot-link:hover {
-            text-decoration: underline;
         }
 
-        .auth-form .terms {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 16px;
-        }
-
-        .auth-form .terms input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
+        .form-options-row .checkbox-label input {
             accent-color: #a33900;
-            margin-top: 2px;
-            flex-shrink: 0;
+            width: 15px;
+            height: 15px;
         }
 
-        .auth-form .terms a {
+        .form-options-row .forgot-link {
             color: #a33900;
-            font-weight: 500;
-            transition: text-decoration 0.3s ease;
-        }
-        .auth-form .terms a:hover {
-            text-decoration: underline;
+            font-weight: 600;
         }
 
-        /* Messages */
-        .message {
-            padding: 10px 14px;
+        /* Tip Keamanan Box */
+        .security-tip-box {
+            background: #eef2ff;
             border-radius: 8px;
-            font-size: 13px;
-            margin-bottom: 16px;
-            display: none;
-            border-left: 3px solid;
-        }
-        .message.show {
-            display: block;
-        }
-        .message.error {
-            background: #fef2f2;
-            color: #dc2626;
-            border-color: #dc2626;
-        }
-        .message.success {
-            background: #f0fdf4;
-            color: #16a34a;
-            border-color: #16a34a;
-        }
-        .message.info {
-            background: #eff6ff;
-            color: #2563eb;
-            border-color: #2563eb;
+            padding: 12px 16px;
+            text-align: left;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 8px;
         }
 
-        .auth-form .bottom-link {
+        .security-tip-box span {
+            font-size: 11px;
+            color: #4338ca;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   BUTTONS & NAVIGATION FOOTER TEXT
+                   ============================================================ */
+        .btn-submit {
+            width: 100%;
+            background: #a33900; /* Warna deep burnt-orange figma */
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 25px; /* Pill-shaped button */
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background: #873000;
+        }
+
+        .switch-footer-txt {
             text-align: center;
             font-size: 13px;
-            color: #6b7280;
-            margin-top: 20px;
+            color: #64748b;
+            margin-top: 24px;
+            font-weight: 500;
         }
 
-        .auth-form .bottom-link a,
-        .auth-form .bottom-link button {
+        .switch-footer-txt span {
             color: #a33900;
-            font-weight: 600;
-            transition: text-decoration 0.3s ease;
-            background: none;
-            border: none;
+            font-weight: 700;
             cursor: pointer;
-            font-size: 13px;
         }
-        .auth-form .bottom-link a:hover,
-        .auth-form .bottom-link button:hover {
-            text-decoration: underline;
+
+        .hidden {
+            display: none !important;
         }
 
         /* ============================================================
-                   SPINNER
+                   FOOTER KAMPUS UTAMA
                    ============================================================ */
-        .spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid #ffffff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* ============================================================
-                   FOOTER
-                   ============================================================ */
-        .footer {
+        .footer-bar {
             background: #eaedff;
-            padding: 24px;
-            margin-top: auto;
-        }
-        .footer .footer-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .footer .footer-content .brand {
-            font-weight: 600;
-            color: #131b2e;
-            font-size: 14px;
-        }
-        .footer .footer-content .copyright {
-            font-size: 14px;
             color: #5a4138;
-        }
-
-        /* ============================================================
-                   RESPONSIVE
-                   ============================================================ */
-        @media (max-width: 768px) {
-            .navbar .nav-links {
-                display: none;
-            }
-            .menu-toggle {
-                display: block;
-            }
-
-            .auth-card {
-                padding: 32px 24px;
-            }
-            .auth-card h2 {
-                font-size: 20px;
-            }
-
-            .auth-form .form-options {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-
-            .footer .footer-content {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar .auth-buttons .login-link {
-                font-size: 13px;
-            }
-            .navbar .auth-buttons .register-btn {
-                font-size: 13px;
-                padding: 6px 12px;
-            }
-            .auth-card {
-                padding: 24px 16px;
-            }
-        }
-
-        /* ============================================================
-                   MOBILE NAV
-                   ============================================================ */
-        .mobile-nav {
-            display: none;
-            flex-direction: column;
-            background: #ffffff;
-            padding: 16px 24px;
-            gap: 12px;
-            border-top: 1px solid #eaedff;
-        }
-        .mobile-nav.open {
-            display: flex;
-        }
-        .mobile-nav a {
-            color: #5a4138;
-            font-size: 16px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .mobile-nav a.active {
-            color: #a33900;
-            font-weight: 600;
-        }
-        .mobile-nav a:last-child {
-            border-bottom: none;
-        }
-
-        /* Divider */
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin: 16px 0;
-        }
-        .divider .line {
-            flex: 1;
-            height: 1px;
-            background: #eaedff;
-        }
-        .divider .text {
+            padding: 24px 0;
             font-size: 12px;
-            color: #9ca3af;
-            white-space: nowrap;
+            border-top: 1px solid #e2e8f0;
+            font-weight: 500;
+        }
+
+        .footer-bar .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-bar .brand-txt {
+            font-weight: 700;
+            color: #131b2e;
+        }
+
+        .footer-bar .footer-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-bar .footer-links a {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================ -->
-    <!-- NAVBAR -->
-    <!-- ============================================================ -->
-    <header class="navbar">
-        <div class="container">
-            <div class="logo">
-                <a href="index.html">LostFound Connect</a>
-            </div>
-
-            <nav class="nav-links">
-                <a href="index.html">Beranda</a>
-                <a href="tentangkami.html">Tentang Kami</a>
-                <a href="pusatbantuan.html">Pusat Bantuan</a>
-            </nav>
-
-            <div class="auth-buttons">
-                <a href="#" class="login-link active">Masuk</a>
-                <button class="register-btn" onclick="switchMode('register')">Daftar Akun</button>
-            </div>
-
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    <!-- CONTAINER AUTHENTICATION MAIN -->
+    <div class="auth-container">
+        
+        <!-- ============================================================ -->
+        <!-- VIEW 1: FORM LOGIN MASUK (image_25e560.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card" id="viewLogin">
+            <div class="header-icon-box orange-bg">
+                <!-- Icon Gembok Terkunci -->
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
-            </button>
-        </div>
-
-        <div class="mobile-nav" id="mobileNav">
-            <a href="index.html">Beranda</a>
-            <a href="tentangkami.html">Tentang Kami</a>
-            <a href="pusatbantuan.html">Pusat Bantuan</a>
-            <a href="#" class="active">Masuk</a>
-            <a href="#" onclick="switchMode('register')" style="color:#a33900;font-weight:600;">Daftar Akun</a>
-        </div>
-    </header>
-
-    <!-- ============================================================ -->
-    <!-- AUTH PAGE -->
-    <!-- ============================================================ -->
-    <main class="auth-page">
-        <div class="auth-card">
-
-            <!-- Dynamic Icon -->
-            <div class="icon-wrapper" id="pageIcon">🔓</div>
-
-            <!-- Dynamic Title -->
-            <h2 id="pageTitle">Selamat Datang Kembali</h2>
-            <p class="subtitle" id="pageSubtitle">Silakan masuk menggunakan akun Anda.</p>
-
-            <!-- ============================================================ -->
-            <!-- MESSAGE -->
-            <!-- ============================================================ -->
-            <div class="message" id="message">
-                <span id="messageText"></span>
             </div>
-
-            <!-- ============================================================ -->
-            <!-- FORM LOGIN -->
-            <!-- ============================================================ -->
-            <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)" novalidate>
-
+            <h2>Selamat Datang Kembali</h2>
+            <div class="subtitle">Silakan masuk menggunakan akun Anda[cite: 4].</div>
+            
+            <form onsubmit="onLoginAction(event)">
                 <div class="form-group">
-                    <label for="loginEmail">Email <span class="required">*</span></label>
-                    <input type="email" id="loginEmail" placeholder="Masukkan email Anda" required autocomplete="email" />
+                    <input type="email" id="logEmail" placeholder="Email" required autocomplete="email">
                 </div>
-
                 <div class="form-group">
-                    <label for="loginPassword">Kata Sandi <span class="required">*</span></label>
-                    <input type="password" id="loginPassword" placeholder="Masukkan kata sandi" required autocomplete="current-password" minlength="6" />
+                    <input type="password" id="logPass" placeholder="Kata Sandi" required autocomplete="current-password">
+                    <div class="password-toggle" onclick="toggleInputType('logPass')">👁</div>
                 </div>
-
-                <div class="form-options">
-                    <label class="remember-me">
-                        <input type="checkbox" id="rememberMe" />
-                        Ingat Saya
+                
+                <div class="form-options-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe"> Ingat Saya
                     </label>
-                    <button type="button" class="forgot-link" onclick="switchMode('reset')">Lupa Kata Sandi?</button>
+                    <a href="#" class="forgot-link" onclick="navigateAuthView('forgot')">Lupa Kata Sandi?</a>
                 </div>
-
-                <button type="submit" class="btn-primary" id="loginBtn">
-                    <span id="loginBtnText">Masuk ke Aplikasi</span>
-                    <span class="spinner hidden" id="loginSpinner"></span>
-                </button>
-
-                <div class="bottom-link">
-                    Belum punya akun?
-                    <button type="button" onclick="switchMode('register')">Daftar di sini</button>
-                </div>
+                
+                <button type="submit" class="btn-submit">Masuk ke Aplikasi</button>
             </form>
-
-            <!-- ============================================================ -->
-            <!-- FORM REGISTER -->
-            <!-- ============================================================ -->
-            <form class="auth-form hidden" id="registerForm" onsubmit="handleRegister(event)" novalidate>
-
-                <div class="form-group">
-                    <label for="regName">Nama Lengkap <span class="required">*</span></label>
-                    <input type="text" id="regName" placeholder="Masukkan nama lengkap" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="regEmail">Email <span class="required">*</span></label>
-                    <input type="email" id="regEmail" placeholder="Masukkan email Anda" required autocomplete="email" />
-                </div>
-
-                <div class="form-group">
-                    <label for="regNim">NIM</label>
-                    <input type="text" id="regNim" placeholder="Masukkan NIM (opsional)" />
-                </div>
-
-                <div class="form-group">
-                    <label for="regPhone">Nomor Telepon <span class="required">*</span></label>
-                    <input type="tel" id="regPhone" placeholder="Masukkan nomor telepon" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="regPassword">Kata Sandi <span class="required">*</span></label>
-                    <input type="password" id="regPassword" placeholder="Minimal 8 karakter" required minlength="8" />
-                    <div class="hint">Minimal 8 karakter</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="regConfirmPassword">Konfirmasi Kata Sandi <span class="required">*</span></label>
-                    <input type="password" id="regConfirmPassword" placeholder="Masukkan ulang kata sandi" required />
-                </div>
-
-                <div class="terms">
-                    <input type="checkbox" id="regTerms" required />
-                    <label for="regTerms">
-                        Saya setuju dengan
-                        <a href="#">Syarat &amp; Ketentuan</a>
-                        dan
-                        <a href="#">Kebijakan Privasi</a>
-                    </label>
-                </div>
-
-                <button type="submit" class="btn-primary" id="registerBtn">
-                    <span id="registerBtnText">Daftar Akun Baru</span>
-                    <span class="spinner hidden" id="registerSpinner"></span>
-                </button>
-
-                <div class="bottom-link">
-                    Sudah punya akun?
-                    <button type="button" onclick="switchMode('login')">Masuk di sini</button>
-                </div>
-            </form>
-
-            <!-- ============================================================ -->
-            <!-- FORM RESET PASSWORD - Langkah 1: Kirim Email -->
-            <!-- ============================================================ -->
-            <form class="auth-form hidden" id="resetForm" onsubmit="handleResetEmail(event)" novalidate>
-
-                <div class="form-group">
-                    <label for="resetEmail">Email <span class="required">*</span></label>
-                    <input type="email" id="resetEmail" placeholder="Masukkan email Anda" required autocomplete="email" />
-                </div>
-
-                <button type="submit" class="btn-primary" id="resetBtn">
-                    <span id="resetBtnText">Kirim Link Reset</span>
-                    <span class="spinner hidden" id="resetSpinner"></span>
-                </button>
-
-                <div class="bottom-link" style="margin-top:12px;">
-                    <button type="button" onclick="switchMode('login')">← Kembali ke Login</button>
-                </div>
-            </form>
-
-            <!-- ============================================================ -->
-            <!-- FORM SET NEW PASSWORD - Langkah 2: Atur Ulang Kata Sandi -->
-            <!-- ============================================================ -->
-            <form class="auth-form hidden" id="setPasswordForm" onsubmit="handleSetPassword(event)" novalidate>
-
-                <div class="form-group">
-                    <label for="newPassword">Kata Sandi Baru <span class="required">*</span></label>
-                    <input type="password" id="newPassword" placeholder="Minimal 8 karakter" required minlength="8" />
-                    <div class="hint">Minimal 8 karakter</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmNewPassword">Konfirmasi Kata Sandi Baru <span class="required">*</span></label>
-                    <input type="password" id="confirmNewPassword" placeholder="Masukkan ulang kata sandi baru" required />
-                </div>
-
-                <button type="submit" class="btn-primary" id="setPasswordBtn">
-                    <span id="setPasswordBtnText">Simpan Kata Sandi</span>
-                    <span class="spinner hidden" id="setPasswordSpinner"></span>
-                </button>
-
-                <div class="bottom-link" style="margin-top:12px;">
-                    <button type="button" onclick="switchMode('login')">← Kembali ke Login</button>
-                </div>
-            </form>
-
+            <div class="switch-footer-txt">Belum punya akun? <span onclick="navigateAuthView('register')">Daftar di sini</span></div>
         </div>
-    </main>
 
-    <!-- ============================================================ -->
-    <!-- FOOTER -->
-    <!-- ============================================================ -->
-    <footer class="footer">
-        <div class="footer-content">
-            <span class="brand">LostFound Connect</span>
-            <span class="copyright">© 2026 Universitas Perjuangan Tasikmalaya</span>
+        <!-- ============================================================ -->
+        <!-- VIEW 2: FORM DAFTAR / MULAI BERGABUNG (image_25742e.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card register-border hidden" id="viewRegister">
+            <h2>Mulai Bergabung</h2>
+            <div class="subtitle">Buat akun untuk melaporkan atau mengklaim barang hilang[cite: 4].</div>
+            
+            <form onsubmit="onRegisterAction(event)">
+                <div class="form-group"><input type="text" id="regName" placeholder="Nama Lengkap" required></div>
+                <div class="form-group"><input type="email" id="regEmail" placeholder="Email" required autocomplete="email"></div>
+                <div class="form-group"><input type="text" id="regNim" placeholder="Nim" required></div>
+                <div class="form-group"><input type="tel" id="regPhone" placeholder="Nomor Telepon" required></div>
+                <div class="form-group">
+                    <input type="password" id="regPass" placeholder="Kata Sandi" required autocomplete="new-password">
+                    <div class="password-toggle" onclick="toggleInputType('regPass')">👁</div>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="regConfirmPass" placeholder="Konfirmasi Kata Sandi" required autocomplete="new-password">
+                    <div class="password-toggle" onclick="toggleInputType('regConfirmPass')">👁</div>
+                </div>
+                
+                <button type="submit" class="btn-submit">Daftar Akun Baru ➔</button>
+            </form>
+            <div class="switch-footer-txt">Sudah punya akun? <span onclick="navigateAuthView('login')">Masuk di sini</span></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 3: LUPA KATA SANDI / ATUR ULANG (image_25e529.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card hidden" id="viewForgot">
+            <div class="header-icon-box orange-bg">
+                <!-- Icon Padlock Reset Gembok Panah Memutar -->
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 2a10 10 0 1 0 10 10H22"></path>
+                    <path d="M12 7v5l3 3"></path>
+                </svg>
+            </div>
+            <h2>Atur Ulang Kata Sandi</h2>
+            <div class="subtitle">Masukkan email terdaftar Anda. Sistem akan mengirimkan tautan verifikasi untuk mengubah kata sandi Anda.</div>
+            
+            <form onsubmit="onForgotAction(event)">
+                <div class="form-group">
+                    <input type="email" id="forgotEmail" placeholder="Email" required>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Tautan Pemulihan ➔</button>
+            </form>
+            <div class="switch-footer-txt"><span onclick="navigateAuthView('login')" style="font-weight:500; font-size:12.5px; color:#64748b;">← Kembali ke Halaman Masuk</span></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 4: BUAT KATA SANDI BARU (image_25e50b.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card hidden" id="viewNewPassword">
+            <h2>Buat Kata Sandi Baru</h2>
+            <div class="subtitle">Silakan masukkan kata sandi baru yang kuat untuk mengamankan akun Anda.</div>
+            
+            <form onsubmit="onSetNewPasswordAction(event)">
+                <div class="form-group">
+                    <input type="password" id="newPass" placeholder="Kata Sandi Baru" required>
+                    <div class="password-toggle" onclick="toggleInputType('newPass')">👁</div>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="newConfirmPass" placeholder="Konfirmasi Kata Sandi" required>
+                    <div class="password-toggle" onclick="toggleInputType('newConfirmPass')">👁</div>
+                </div>
+                
+                <div class="security-tip-box">
+                    <span>⚠️ Tip Keamanan: Gunakan kombinasi huruf besar, angka, dan simbol agar tidak mudah ditebak.</span>
+                </div>
+                
+                <button type="submit" class="btn-submit">Perbarui Kata Sandi</button>
+            </form>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 5: SUKSES DIUBAH (image_25e4e7.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card hidden" id="viewSuccess">
+            <div class="header-icon-box green-bg">
+                <!-- Icon Centang Sukses -->
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h2>Kata Sandi Berhasil Diperbarui!</h2>
+            <div class="subtitle">Akun Anda telah diamankan dengan kata sandi baru. Silakan masuk kembali ke dalam aplikasi untuk melanjutkan.</div>
+            
+            <button class="btn-submit" onclick="navigateAuthView('login')">Masuk ke Aplikasi ➔</button>
+        </div>
+
+    </div>
+
+    <!-- FOOTER KAMPUS -->
+    <footer class="footer-bar">
+        <div class="container">
+            <span class="brand-txt">LostFound Connect</span>
+            <span>© 2024 University LostFound Connect. Seluruh Hak Cipta Dilindungi.</span>
+            <div class="footer-links">
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat &amp; Ketentuan</a>
+                <a href="#">Kontak Kampus</a>
+            </div>
         </div>
     </footer>
 
     <!-- ============================================================ -->
-    <!-- JAVASCRIPT -->
+    <!-- LOGIC SYSTEM INTEGRATION -->
     <!-- ============================================================ -->
     <script>
-        (function() {
-            'use strict';
+        // Router penunjuk view
+        function navigateAuthView(target) {
+            const views = ['viewLogin', 'viewRegister', 'viewForgot', 'viewNewPassword', 'viewSuccess'];
+            views.forEach(id => document.getElementById(id).classList.add('hidden'));
 
-            // ============================================================
-            // MOBILE MENU TOGGLE
-            // ============================================================
-            var menuToggle = document.getElementById('menuToggle');
-            var mobileNav = document.getElementById('mobileNav');
+            if (target === 'login') document.getElementById('viewLogin').classList.remove('hidden');
+            if (target === 'register') document.getElementById('viewRegister').classList.remove('hidden');
+            if (target === 'forgot') document.getElementById('viewForgot').classList.remove('hidden');
+            if (target === 'newpassword') document.getElementById('viewNewPassword').classList.remove('hidden');
+            if (target === 'success') document.getElementById('viewSuccess').classList.remove('hidden');
+        }
 
-            if (menuToggle && mobileNav) {
-                menuToggle.addEventListener('click', function() {
-                    mobileNav.classList.toggle('open');
-                });
+        // Tampilkan/Sembunyikan password teks
+        function toggleInputType(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        // Action Register Form
+        function onRegisterAction(e) {
+            e.preventDefault();
+            const pass = document.getElementById('regPass').value;
+            const confirm = document.getElementById('regConfirmPass').value;
+
+            if (pass !== confirm) {
+                alert('Konfirmasi kata sandi tidak cocok!');
+                return;
             }
 
-            var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
-            mobileLinks.forEach(function(link) {
-                link.addEventListener('click', function() {
-                    mobileNav.classList.remove('open');
-                });
-            });
+            localStorage.setItem('storedUserEmail', document.getElementById('regEmail').value.trim());
+            localStorage.setItem('storedUserPassword', pass);
+            localStorage.setItem('storedUserName', document.getElementById('regName').value.trim());
 
-            // ============================================================
-            // DOM ELEMENTS
-            // ============================================================
-            var forms = {
-                login: document.getElementById('loginForm'),
-                register: document.getElementById('registerForm'),
-                reset: document.getElementById('resetForm'),
-                setPassword: document.getElementById('setPasswordForm')
-            };
+            alert('Akun berhasil terdaftar! Mengalihkan ke Halaman Masuk.');
+            navigateAuthView('login');
+        }
 
-            var pageIcon = document.getElementById('pageIcon');
-            var pageTitle = document.getElementById('pageTitle');
-            var pageSubtitle = document.getElementById('pageSubtitle');
-            var message = document.getElementById('message');
-            var messageText = document.getElementById('messageText');
+        // Action Login Form
+        function onLoginAction(e) {
+            e.preventDefault();
+            const email = document.getElementById('logEmail').value.trim();
+            const password = document.getElementById('logPass').value;
 
-            // ============================================================
-            // DEMO CREDENTIALS
-            // ============================================================
-            var DEMO_EMAIL = 'admin@lostfound.com';
-            var DEMO_PASSWORD = 'password123';
+            const dbEmail = localStorage.getItem('storedUserEmail') || 'mahasiswa@unper.ac.id';
+            const dbPassword = localStorage.getItem('storedUserPassword') || 'password123';
+            const dbName = localStorage.getItem('storedUserName') || 'Ahmad D.';
 
-            // Simpan email sementara untuk reset
-            var resetEmailTemp = '';
-
-            // ============================================================
-            // MODE SWITCHING (Tanpa Tab/Mode Selector)
-            // ============================================================
-            window.switchMode = function(mode) {
-                // Hide all forms
-                forms.login.classList.add('hidden');
-                forms.register.classList.add('hidden');
-                forms.reset.classList.add('hidden');
-                forms.setPassword.classList.add('hidden');
-
-                // Hide message
-                message.classList.remove('show', 'error', 'success', 'info');
-
-                // Show selected mode
-                if (mode === 'login') {
-                    forms.login.classList.remove('hidden');
-                    pageIcon.textContent = '🔓';
-                    pageTitle.textContent = 'Selamat Datang Kembali';
-                    pageSubtitle.textContent = 'Silakan masuk menggunakan akun Anda.';
-                } else if (mode === 'register') {
-                    forms.register.classList.remove('hidden');
-                    pageIcon.textContent = '📝';
-                    pageTitle.textContent = 'Mulai Bergabung';
-                    pageSubtitle.textContent = 'Buat akun untuk melacak atau mengiklankan barang hilang.';
-                } else if (mode === 'reset') {
-                    forms.reset.classList.remove('hidden');
-                    pageIcon.textContent = '🔑';
-                    pageTitle.textContent = 'Reset Kata Sandi';
-                    pageSubtitle.textContent = 'Masukkan email untuk menerima link reset.';
-                }
-
-                // Clear any error states on inputs
-                document.querySelectorAll('.error').forEach(function(el) {
-                    el.classList.remove('error');
-                });
-
-                // Scroll to top of card
-                var card = document.querySelector('.auth-card');
-                if (card) {
-                    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            };
-
-            // ============================================================
-            // SHOW MESSAGE HELPER
-            // ============================================================
-            function showMessage(text, type) {
-                message.className = 'message show ' + type;
-                messageText.textContent = text;
-            }
-
-            function hideMessage() {
-                message.className = 'message';
-                messageText.textContent = '';
-            }
-
-            // ============================================================
-            // SET LOADING STATE
-            // ============================================================
-            function setLoading(btnId, spinnerId, textId, isLoading, loadingText) {
-                var btn = document.getElementById(btnId);
-                var spinner = document.getElementById(spinnerId);
-                var text = document.getElementById(textId);
-
-                if (isLoading) {
-                    text.textContent = loadingText || 'Memproses...';
-                    spinner.classList.remove('hidden');
-                    btn.disabled = true;
-                } else {
-                    spinner.classList.add('hidden');
-                    btn.disabled = false;
-                }
-            }
-
-            // ============================================================
-            // VALIDATE EMAIL
-            // ============================================================
-            function isValidEmail(email) {
-                var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(email);
-            }
-
-            // ============================================================
-            // HANDLE LOGIN
-            // ============================================================
-            window.handleLogin = function(e) {
-                e.preventDefault();
-                hideMessage();
-
-                var email = document.getElementById('loginEmail').value.trim();
-                var password = document.getElementById('loginPassword').value.trim();
-
-                // Validation
-                if (!email) {
-                    showMessage('Email tidak boleh kosong.', 'error');
-                    document.getElementById('loginEmail').classList.add('error');
-                    document.getElementById('loginEmail').focus();
-                    return;
-                }
-                if (!isValidEmail(email)) {
-                    showMessage('Format email tidak valid. Contoh: nama@domain.com', 'error');
-                    document.getElementById('loginEmail').classList.add('error');
-                    document.getElementById('loginEmail').focus();
-                    return;
-                }
-                if (!password) {
-                    showMessage('Kata sandi tidak boleh kosong.', 'error');
-                    document.getElementById('loginPassword').classList.add('error');
-                    document.getElementById('loginPassword').focus();
-                    return;
-                }
-                if (password.length < 6) {
-                    showMessage('Kata sandi minimal 6 karakter.', 'error');
-                    document.getElementById('loginPassword').classList.add('error');
-                    document.getElementById('loginPassword').focus();
-                    return;
-                }
-
-                // Simulate login
-                setLoading('loginBtn', 'loginSpinner', 'loginBtnText', true, 'Memproses...');
-
-                setTimeout(function() {
-                    if (email === DEMO_EMAIL && password === DEMO_PASSWORD) {
-                        showMessage('✅ Login berhasil! Mengarahkan ke halaman utama...', 'success');
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('userEmail', email);
-                        localStorage.setItem('userName', 'Admin');
-
-                        var rememberMe = document.getElementById('rememberMe');
-                        if (rememberMe.checked) {
-                            localStorage.setItem('rememberMe', 'true');
-                        } else {
-                            localStorage.removeItem('rememberMe');
-                        }
-
-                        setLoading('loginBtn', 'loginSpinner', 'loginBtnText', false);
-                        setTimeout(function() {
-                            window.location.href = 'index.html';
-                        }, 1500);
-                    } else {
-                        showMessage('❌ Email atau kata sandi salah. Silakan coba lagi.', 'error');
-                        document.getElementById('loginPassword').classList.add('error');
-                        document.getElementById('loginPassword').value = '';
-                        document.getElementById('loginPassword').focus();
-                        setLoading('loginBtn', 'loginSpinner', 'loginBtnText', false);
-                    }
-                }, 1200);
-            };
-
-            // ============================================================
-            // HANDLE REGISTER
-            // ============================================================
-            window.handleRegister = function(e) {
-                e.preventDefault();
-                hideMessage();
-
-                var name = document.getElementById('regName').value.trim();
-                var email = document.getElementById('regEmail').value.trim();
-                var nim = document.getElementById('regNim').value.trim();
-                var phone = document.getElementById('regPhone').value.trim();
-                var password = document.getElementById('regPassword').value;
-                var confirmPassword = document.getElementById('regConfirmPassword').value;
-                var terms = document.getElementById('regTerms').checked;
-
-                // Validation
-                if (!name) {
-                    showMessage('Nama lengkap tidak boleh kosong.', 'error');
-                    document.getElementById('regName').classList.add('error');
-                    document.getElementById('regName').focus();
-                    return;
-                }
-                if (!email) {
-                    showMessage('Email tidak boleh kosong.', 'error');
-                    document.getElementById('regEmail').classList.add('error');
-                    document.getElementById('regEmail').focus();
-                    return;
-                }
-                if (!isValidEmail(email)) {
-                    showMessage('Format email tidak valid.', 'error');
-                    document.getElementById('regEmail').classList.add('error');
-                    document.getElementById('regEmail').focus();
-                    return;
-                }
-                if (!phone) {
-                    showMessage('Nomor telepon tidak boleh kosong.', 'error');
-                    document.getElementById('regPhone').classList.add('error');
-                    document.getElementById('regPhone').focus();
-                    return;
-                }
-                if (password.length < 8) {
-                    showMessage('Kata sandi minimal 8 karakter.', 'error');
-                    document.getElementById('regPassword').classList.add('error');
-                    document.getElementById('regPassword').focus();
-                    return;
-                }
-                if (password !== confirmPassword) {
-                    showMessage('Kata sandi tidak cocok!', 'error');
-                    document.getElementById('regConfirmPassword').classList.add('error');
-                    document.getElementById('regConfirmPassword').focus();
-                    return;
-                }
-                if (!terms) {
-                    showMessage('Anda harus menyetujui Syarat & Ketentuan.', 'error');
-                    document.getElementById('regTerms').focus();
-                    return;
-                }
-
-                // Simulate registration
-                setLoading('registerBtn', 'registerSpinner', 'registerBtnText', true, 'Mendaftar...');
-
-                setTimeout(function() {
-                    showMessage('✅ Pendaftaran berhasil! Selamat datang di LostFound Connect!', 'success');
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('userName', name);
-
-                    setLoading('registerBtn', 'registerSpinner', 'registerBtnText', false);
-                    setTimeout(function() {
-                        window.location.href = 'index.html';
-                    }, 1500);
-                }, 1200);
-            };
-
-            // ============================================================
-            // HANDLE RESET EMAIL (Langkah 1)
-            // ============================================================
-            window.handleResetEmail = function(e) {
-                e.preventDefault();
-                hideMessage();
-
-                var email = document.getElementById('resetEmail').value.trim();
-
-                if (!email) {
-                    showMessage('Email tidak boleh kosong.', 'error');
-                    document.getElementById('resetEmail').classList.add('error');
-                    document.getElementById('resetEmail').focus();
-                    return;
-                }
-                if (!isValidEmail(email)) {
-                    showMessage('Format email tidak valid.', 'error');
-                    document.getElementById('resetEmail').classList.add('error');
-                    document.getElementById('resetEmail').focus();
-                    return;
-                }
-
-                // Simpan email untuk langkah berikutnya
-                resetEmailTemp = email;
-
-                setLoading('resetBtn', 'resetSpinner', 'resetBtnText', true, 'Mengirim...');
-
-                setTimeout(function() {
-                    showMessage('📧 Link reset telah dikirim ke ' + email, 'success');
-                    setLoading('resetBtn', 'resetSpinner', 'resetBtnText', false);
-
-                    // Ganti ke form set password setelah 1.5 detik
-                    setTimeout(function() {
-                        // Sembunyikan form reset
-                        forms.reset.classList.add('hidden');
-                        // Tampilkan form set password
-                        forms.setPassword.classList.remove('hidden');
-                        // Update icon, title, subtitle
-                        pageIcon.textContent = '🔐';
-                        pageTitle.textContent = 'Atur Ulang Kata Sandi';
-                        pageSubtitle.textContent = 'Buat kata sandi baru untuk akun ' + email;
-                        // Clear message
-                        hideMessage();
-                    }, 1500);
-                }, 1200);
-            };
-
-            // ============================================================
-            // HANDLE SET NEW PASSWORD (Langkah 2)
-            // ============================================================
-            window.handleSetPassword = function(e) {
-                e.preventDefault();
-                hideMessage();
-
-                var newPassword = document.getElementById('newPassword').value;
-                var confirmPassword = document.getElementById('confirmNewPassword').value;
-
-                // Validation
-                if (newPassword.length < 8) {
-                    showMessage('Kata sandi minimal 8 karakter.', 'error');
-                    document.getElementById('newPassword').classList.add('error');
-                    document.getElementById('newPassword').focus();
-                    return;
-                }
-
-                if (newPassword !== confirmPassword) {
-                    showMessage('Konfirmasi kata sandi tidak cocok!', 'error');
-                    document.getElementById('confirmNewPassword').classList.add('error');
-                    document.getElementById('confirmNewPassword').focus();
-                    return;
-                }
-
-                setLoading('setPasswordBtn', 'setPasswordSpinner', 'setPasswordBtnText', true, 'Menyimpan...');
-
-                setTimeout(function() {
-                    showMessage('✅ Kata sandi berhasil diubah! Silakan login dengan kata sandi baru.', 'success');
-                    setLoading('setPasswordBtn', 'setPasswordSpinner', 'setPasswordBtnText', false);
-
-                    // Reset form
-                    document.getElementById('newPassword').value = '';
-                    document.getElementById('confirmNewPassword').value = '';
-
-                    // Kembali ke login setelah 2 detik
-                    setTimeout(function() {
-                        // Sembunyikan form set password
-                        forms.setPassword.classList.add('hidden');
-                        // Kembali ke mode login
-                        switchMode('login');
-                    }, 2000);
-                }, 1200);
-            };
-
-            // ============================================================
-            // CHECK REMEMBER ME
-            // ============================================================
-            if (localStorage.getItem('rememberMe') === 'true') {
-                document.getElementById('rememberMe').checked = true;
-                var savedEmail = localStorage.getItem('userEmail');
-                if (savedEmail) {
-                    document.getElementById('loginEmail').value = savedEmail;
-                }
-            }
-
-            // ============================================================
-            // CHECK IF ALREADY LOGGED IN
-            // ============================================================
-            if (localStorage.getItem('isLoggedIn') === 'true') {
+            if (email === dbEmail && password === dbPassword) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userName', dbName);
+                localStorage.setItem('userEmail', email);
                 window.location.href = 'index.html';
+            } else {
+                alert('Email atau kata sandi Anda salah.');
             }
+        }
 
-            // ============================================================
-            // CLEAR ERRORS ON INPUT
-            // ============================================================
-            document.querySelectorAll('input').forEach(function(input) {
-                input.addEventListener('input', function() {
-                    this.classList.remove('error');
-                    hideMessage();
-                });
-            });
+        // Action Forgot Recovery
+        function onForgotAction(e) {
+            e.preventDefault();
+            // Jalankan simulasi pengiriman email pemulihan sukses, lalu lempar ke form password baru
+            alert('Tautan pemulihan sandi dikirim ke email!');
+            navigateAuthView('newpassword');
+        }
 
-            // ============================================================
-            // KEYBOARD SHORTCUT: Enter to submit
-            // ============================================================
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    var active = document.activeElement;
-                    if (active && active.closest('.auth-form')) {
-                        var form = active.closest('.auth-form');
-                        if (!form.querySelector('button[type="submit"]:disabled')) {
-                            form.dispatchEvent(new Event('submit'));
-                        }
-                    }
-                }
-            });
+        // Action Simpan Kata Sandi Baru
+        function onSetNewPasswordAction(e) {
+            e.preventDefault();
+            const p1 = document.getElementById('newPass').value;
+            const p2 = document.getElementById('newConfirmPass').value;
 
-            // ============================================================
-            // CHECK URL PARAMS
-            // ============================================================
-            var urlParams = new URLSearchParams(window.location.search);
-            var mode = urlParams.get('mode');
-            if (mode === 'register') {
-                switchMode('register');
-            } else if (mode === 'reset') {
-                switchMode('reset');
+            if (p1 !== p2) {
+                alert('Kata sandi tidak sama!');
+                return;
             }
+            localStorage.setItem('storedUserPassword', p1);
+            navigateAuthView('success');
+        }
 
-            console.log('✅ Auth page loaded successfully!');
-            console.log('📝 Demo credentials:');
-            console.log('   Email: ' + DEMO_EMAIL);
-            console.log('   Password: ' + DEMO_PASSWORD);
-
-        })();
+        // Routing cek parameter awal
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('mode') === 'register') navigateAuthView('register');
+        });
     </script>
-
 </body>
 </html>

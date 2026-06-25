@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Manajemen Klaim - LostFound Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Verifikasi Klaim - LostFound Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
         /* ============================================================
                    RESET & BASE STYLES
@@ -17,11 +20,10 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #ffffff;
+            background: #F8FAFC; /* Latar belakang abu-abu sangat muda sesuai Figma */
             min-height: 100vh;
             display: flex;
-            color: #1e293b;
-            -webkit-font-smoothing: antialiased;
+            color: #1E293B;
         }
 
         a {
@@ -34,159 +36,191 @@
             font-family: inherit;
             border: none;
             background: none;
-            outline: none;
+        }
+
+        input {
+            font-family: inherit;
         }
 
         /* ============================================================
-                   SIDEBAR STYLE (WARNA GELAP FIGMA)
+                   SIDEBAR - WARNA GELAP (#0F172A) DENGAN KAPSUL ORANJE
                    ============================================================ */
         .sidebar {
             width: 260px;
             height: 100vh;
-            background: #111c2e;
+            background: #0F172A; /* Hitam / Dark Navy Asli */
             position: fixed;
             top: 0;
             left: 0;
             z-index: 100;
             display: flex;
             flex-direction: column;
-            padding: 24px 16px;
+            padding: 24px 0;
+            transition: transform 0.3s ease;
         }
 
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 12px 32px 12px;
-        }
-        
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: #ea580c;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .logo-text {
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: -0.3px;
-        }
-
-        .logo-text span {
-            font-size: 11px;
-            color: #64748b;
-            font-weight: 500;
-            margin-left: 4px;
-        }
-
-        .sidebar-menu {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .menu-label {
-            font-size: 10px;
-            font-weight: 700;
-            color: #475569;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            padding: 16px 12px 8px 12px;
-        }
-        
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            border-radius: 8px;
-            font-size: 13.5px;
-            font-weight: 500;
-            color: #94a3b8;
-            transition: 0.2s;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            color: #f1f5f9;
-        }
-
-        .menu-item.active {
-            background: rgba(255, 255, 255, 0.08);
-            color: #ffffff;
-            font-weight: 600;
-        }
-        
-        .menu-item .badge {
-            margin-left: auto;
-            background: #ea580c;
-            color: #ffffff;
-            font-size: 11px;
-            font-weight: 700;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sidebar-footer {
-            margin-top: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            padding-top: 20px;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0 12px;
-            margin-bottom: 16px;
-        }
-
-        .user-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.1);
-        }
-
-        .user-meta .name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .user-meta .role {
-            font-size: 11px;
-            color: #64748b;
-        }
-        
-        .logout-link {
+        .sidebar .sidebar-header {
+            padding: 0 24px 24px 24px;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: #f87171;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: 0.2s;
         }
 
-        .logout-link:hover {
-            background: rgba(248, 113, 113, 0.08);
+        .sidebar .sidebar-header .logo-box {
+            width: 36px;
+            height: 36px;
+            background: #E15B17; /* Oranje ikon koper figma */
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar .sidebar-header .logo-box svg {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .sidebar .sidebar-header .logo {
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .sidebar .sidebar-header .logo span {
+            font-weight: 400;
+            color: #64748B;
+            font-size: 11px;
+            margin-left: 2px;
+        }
+
+        .sidebar .sidebar-menu {
+            flex: 1;
+            padding: 16px 0;
+            overflow-y: auto;
+        }
+
+        .sidebar .sidebar-menu .menu-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 12px 24px 8px 24px;
+        }
+
+        .sidebar .sidebar-menu .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 24px;
+            font-size: 14px;
+            color: #94A3B8; /* Muted abu-abu untuk menu biasa */
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .sidebar .sidebar-menu .menu-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #FFFFFF;
+        }
+
+        /* Menu Aktif: Boks Kapsul Oranje Sesuai Screenshot Figma */
+        .sidebar .sidebar-menu .menu-item.active {
+            background: #E15B17; /* Oranje terang figma */
+            color: #FFFFFF; /* Teks Putih */
+            font-weight: 600;
+            border-radius: 8px;
+            margin: 0 16px;
+            padding: 12px 16px;
+        }
+
+        .sidebar .sidebar-menu .menu-item svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .sidebar .sidebar-menu .menu-item .badge {
+            margin-left: auto;
+            background: #E15B17;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        /* Badge saat berada di dalam menu aktif */
+        .sidebar .sidebar-menu .menu-item.active .badge {
+            background: rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+        }
+
+        .sidebar .sidebar-footer {
+            padding: 16px 16px 0 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .sidebar .sidebar-footer .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 0 8px;
+        }
+
+        /* Avatar Kiri Bawah murni CSS tanpa foto */
+        .sidebar .sidebar-footer .user-info .avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar .sidebar-footer .user-info .avatar-placeholder svg {
+            width: 20px;
+            height: 20px;
+            color: #94A3B8;
+        }
+
+        .sidebar .sidebar-footer .user-info .user-details .name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .sidebar .sidebar-footer .user-info .user-details .role {
+            font-size: 11px;
+            color: #64748B;
+        }
+
+        /* Tombol Keluar Sesi teks Merah Soft */
+        .sidebar .sidebar-footer .logout-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #F87171;
+            font-weight: 500;
+            width: 100%;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar .sidebar-footer .logout-btn:hover {
+            background: rgba(248, 113, 113, 0.1);
         }
 
         /* ============================================================
@@ -195,546 +229,642 @@
         .main-content {
             margin-left: 260px;
             flex: 1;
-            padding: 32px 40px;
-            background: #f8fafc;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding: 32px 40px;
+            gap: 24px;
         }
 
-        /* TOP BAR */
-        .topbar-section {
+        /* Topbar Header */
+        .content-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 28px;
         }
 
-        .page-title-group h1 {
+        .header-title h1 {
             font-size: 22px;
             font-weight: 700;
-            color: #0f172a;
-            letter-spacing: -0.3px;
+            color: #0F172A;
             margin-bottom: 4px;
         }
 
-        .page-title-group p {
+        .header-title p {
             font-size: 13px;
-            color: #64748b;
+            color: #64748B;
         }
-        
-        .search-container {
+
+        .header-actions {
             display: flex;
             align-items: center;
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 8px 16px;
-            width: 280px;
-            gap: 10px;
+            gap: 16px;
         }
 
-        .search-container input {
-            border: none;
-            outline: none;
-            font-size: 13px;
-            color: #0f172a;
-            width: 100%;
-        }
-
-        .search-container input::placeholder {
-            color: #94a3b8;
-        }
-
-        /* SUB-NAVIGASI TABS (Perlu Ditinjau, Butuh Klarifikasi, Siap Diambil) */
-        .sub-tabs-row {
-            display: flex;
-            gap: 24px;
-            border-bottom: 1px solid #e2e8f0;
-            margin-bottom: 24px;
-            padding-left: 8px;
-        }
-
-        .tab-link-btn {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: #64748b;
-            padding-bottom: 14px;
+        /* Search Bar Kapsul Lonjong */
+        .search-box {
             position: relative;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: color 0.2s;
+            width: 320px;
         }
 
-        .tab-link-btn:hover {
+        .search-box svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #94A3B8;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px 10px 40px;
+            border: 1px solid #E2E8F0;
+            border-radius: 20px;
+            font-size: 13px;
+            background: #FFFFFF;
+            outline: none;
             color: #334155;
         }
 
-        .tab-link-btn.active {
-            color: #ea580c;
+        /* Profile Kanan Atas Placeholder CSS murni */
+        .top-profile-box {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
         }
 
-        .tab-link-btn.active::after {
+        .top-avatar-placeholder {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #CBD5E1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .top-avatar-placeholder svg {
+            width: 18px;
+            height: 18px;
+            color: #475569;
+        }
+
+        .dropdown-arrow {
+            font-size: 10px;
+            color: #64748B;
+        }
+
+        /* ============================================================
+                   TABS NAVIGATION (GARIS BAWAH SEPERTI FIGMA)
+                   ============================================================ */
+        .tabs-navigation {
+            display: flex;
+            gap: 32px;
+            border-bottom: 1px solid #E2E8F0;
+            padding-bottom: 1px;
+        }
+
+        .tab-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 4px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748B;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab-item svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .tab-item .count-badge {
+            font-size: 11px;
+            background: #F1F5F9;
+            color: #64748B;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        /* Active Tab (Perlu Ditinjau) dengan garis bawah oranye */
+        .tab-item.active {
+            color: #E15B17;
+            font-weight: 600;
+        }
+
+        .tab-item.active::after {
             content: '';
             position: absolute;
             bottom: -1px;
             left: 0;
             right: 0;
             height: 2px;
-            background: #ea580c;
+            background: #E15B17;
         }
 
-        /* Mini Badge Angka di Tab */
-        .tab-link-btn .tab-count-badge {
-            font-size: 11px;
-            font-weight: 500;
-            color: #94a3b8;
-        }
-
-        .tab-link-btn.active .tab-count-badge {
-            color: #ea580c;
-            font-weight: 600;
+        .tab-item.active .count-badge {
+            background: #FFEDD5;
+            color: #E15B17;
         }
 
         /* ============================================================
-                   TABLE AREA
+                   TABLE CARD CONTAINER
                    ============================================================ */
-        .table-responsive-box {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
+        .data-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.01);
-            margin-bottom: 24px;
         }
 
-        .custom-admin-table {
+        .main-table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
         }
 
-        .custom-admin-table th {
-            background: #f8fafc;
-            padding: 14px 24px;
+        .main-table th {
+            background: #FFFFFF;
+            padding: 18px 24px;
+            text-align: left;
             font-size: 11px;
             font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
+            color: #64748B;
             letter-spacing: 0.5px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #E2E8F0;
         }
 
-        .custom-admin-table td {
-            padding: 18px 24px;
+        .main-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #F1F5F9;
             font-size: 13px;
             color: #334155;
-            border-bottom: 1px solid #f1f5f9;
             vertical-align: middle;
         }
 
-        .custom-admin-table tr:last-child td {
+        .main-table tr:last-child td {
             border-bottom: none;
         }
 
-        /* Layout Barang */
-        .item-cell-content {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .col-id {
+            color: #64748B;
+            font-weight: 500;
         }
 
-        .item-main-row {
+        /* Boks Ikon Pengganti Gambar Produk */
+        .barang-wrapper {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
 
-        .item-icon-wrapper {
-            background: #f1f5f9;
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
+        .icon-container {
+            width: 40px;
+            height: 40px;
+            background: #F1F5F9;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
-            color: #64748b;
         }
 
-        .item-text-bold {
+        .icon-container svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .barang-title {
             font-weight: 600;
-            color: #0f172a;
+            color: #0F172A;
         }
 
-        /* Subtitle hijau "Sesuai Fisik" di Tab Siap Diambil */
-        .item-sub-status {
-            font-size: 11px;
-            font-weight: 500;
-            color: #16a34a;
-            margin-left: 38px;
-            display: flex;
+        /* Badge Status PENDING Krem Bulat */
+        .badge-status {
+            display: inline-flex;
             align-items: center;
             gap: 4px;
-        }
-
-        .id-claim-text {
-            color: #64748b;
-            font-family: monospace;
-            font-size: 12px;
-        }
-
-        /* Desain Label Token di bawah Tanggal */
-        .token-date-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .token-badge-lbl {
-            font-family: monospace;
-            font-size: 10.5px;
-            font-weight: 600;
-            color: #475569;
-            background: #f1f5f9;
-            padding: 2px 6px;
-            border-radius: 4px;
-            display: inline-block;
-            align-self: flex-start;
-        }
-
-        /* ============================================================
-                   LENCANA STATUS BADGES
-                   ============================================================ */
-        .status-pill {
+            background: #FEF3C7;
+            color: #D97706;
             font-size: 10px;
             font-weight: 700;
             padding: 4px 10px;
-            border-radius: 4px;
-            letter-spacing: 0.3px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-status::before {
+            content: '•';
+            font-size: 14px;
+            margin-right: 2px;
+        }
+
+        /* Tombol Periksa Berkas Gelap */
+        .btn-check {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            text-transform: uppercase;
-        }
-
-        /* 1. Pending */
-        .status-pill.pending {
-            background: #fff7ed;
-            color: #d97706;
-        }
-        .status-pill.pending::before { content: '●'; color: #d97706; font-size: 8px; }
-
-        /* 2. Clarification */
-        .status-pill.clarification {
-            background: #eff6ff;
-            color: #2563eb;
-        }
-        .status-pill.clarification::before { content: '●'; color: #2563eb; font-size: 8px; }
-
-        /* 3. Siap Ambil */
-        .status-pill.ready {
-            background: #f0fdf4;
-            color: #16a34a;
-        }
-        .status-pill.ready::before { content: '●'; color: #16a34a; font-size: 8px; }
-
-        /* ============================================================
-                   TOMBOL-TOMBOL AKSI TINDAKAN
-                   ============================================================ */
-        .btn-action {
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
+            background: #0F172A;
+            color: #FFFFFF;
             padding: 8px 16px;
-            font-size: 12.5px;
+            border-radius: 8px;
+            font-size: 12px;
             font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: background 0.2s, transform 0.1s;
+            transition: background 0.2s;
         }
 
-        .btn-action:active {
-            transform: scale(0.98);
+        .btn-check:hover {
+            background: #1E293B;
         }
 
-        /* Hitam - Periksa Berkas */
-        .btn-action.examine {
-            background: #111827;
-        }
-        .btn-action.examine:hover {
-            background: #1f2937;
-        }
-
-        /* Biru Gelap/Hitam - Proses Tatap Muka */
-        .btn-action.onsite {
-            background: #0f172a;
-        }
-        .btn-action.onsite:hover {
-            background: #1e293b;
-        }
-
-        /* Oranye - Validasi Token */
-        .btn-action.token-val {
-            background: #ea580c;
-            box-shadow: 0 2px 4px rgba(234, 88, 12, 0.15);
-        }
-        .btn-action.token-val:hover {
-            background: #d94e06;
+        .btn-check svg {
+            width: 14px;
+            height: 14px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
         }
 
         /* ============================================================
-                   PAGINATION INFO
+                   PAGINATION
                    ============================================================ */
-        .table-footer-pagination {
+        .table-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 24px;
-            background: #ffffff;
-            border-top: 1px solid #f1f5f9;
+            padding: 20px 24px;
+            border-top: 1px solid #E2E8F0;
         }
 
-        .entries-info-text {
+        .showing-text {
             font-size: 11px;
             font-weight: 600;
-            color: #94a3b8;
+            color: #64748B;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .pagination-controls {
+        .pagination-buttons {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 8px;
         }
 
-        .page-nav-btn {
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            background: #FFFFFF;
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748B;
+            cursor: pointer;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #F8FAFC;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .page-indicator {
             width: 28px;
             height: 28px;
-            border: 1px solid #e2e8f0;
+            background: #0F172A;
+            color: #FFFFFF;
             border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 12px;
-            color: #64748b;
-            transition: 0.2s;
-        }
-
-        .page-nav-btn:hover:not(.active) {
-            background: #f1f5f9;
-            color: #334155;
-        }
-
-        .page-nav-btn.active {
-            background: #111c2e;
-            color: #ffffff;
-            border-color: #111c2e;
             font-weight: 600;
         }
 
+        /* Mobile Responsive */
+        .menu-toggle {
+            display: none;
+            color: #FFFFFF;
+            font-size: 22px;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.5);
+            z-index: 99;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); margin: 0; padding: 24px 0; border-radius: 0; }
+            .sidebar.open { transform: translateX(0); }
+            .sidebar-overlay.active { display: block; }
+            .main-content { margin-left: 0; padding: 20px; }
+            .menu-toggle { display: block; margin-right: 12px; color: #0F172A; }
+            .content-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .search-box { width: 100%; }
+            .header-actions { width: 100%; justify-content: space-between; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- SIDEBAR LEFT PANEL -->
-    <aside class="sidebar">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="logo-icon">L</div>
-            <div class="logo-text">LostFound <span>ADMIN</span></div>
+            <div class="logo-box">
+                <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+            </div>
+            <div class="logo">LostFound <span>ADMIN</span></div>
         </div>
 
         <nav class="sidebar-menu">
-            <div class="menu-label">Main Menu</div>
+            <div class="menu-label">MAIN MENU</div>
             <a href="../dashboard/index.html" class="menu-item">
-                <span>📊</span> Dashboard
+                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                Dashboard
             </a>
-            <a href="../antrean/index.html" class="menu-item">
-                <span>📦</span> Antrean Temuan <span class="badge">3</span>
+            <a href="../antrean-temuan/index.html" class="menu-item">
+                <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                Antrean Temuan
+                <span class="badge">3</span>
             </a>
             <a href="index.html" class="menu-item active">
-                <span>📝</span> Verifikasi Klaim
+                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Verifikasi Klaim
+                <span class="badge">5</span>
             </a>
-            <a href="../arsip/index.html" class="menu-item">
-                <span>📁</span> Arsip Laporan
+            <a href="../arsip_laporan/index.html" class="menu-item">
+                <svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                Arsip Laporan
             </a>
-
-            <div class="menu-label" style="margin-top: 20px;">Settings</div>
+            
+            <div class="menu-label">SETTINGS</div>
+            <a href="../manajemen-user/index.html" class="menu-item">
+                <svg viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                Manajemen User
+            </a>
             <a href="#" class="menu-item">
-                <span>👤</span> Manajemen User
-            </a>
-            <a href="#" class="menu-item">
-                <span>⚙️</span> Konfigurasi Sistem
+                <svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+                Konfigurasi Sistem
             </a>
         </nav>
 
         <div class="sidebar-footer">
-            <div class="user-profile">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Petugas" class="user-avatar">
-                <div class="user-meta">
+            <div class="user-info">
+                <div class="avatar-placeholder">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                </div>
+                <div class="user-details">
                     <div class="name">Petugas Posko</div>
                     <div class="role">Super Admin</div>
                 </div>
             </div>
-            <a href="../auth/login.html" class="logout-link" onclick="alert('Keluar dari sesi admin.')">
-                <span>🚪</span> Keluar Sesi
-            </a>
+            <button class="logout-btn" onclick="logout()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                Keluar Sesi
+            </button>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT AREA -->
     <main class="main-content">
         
-        <header class="topbar-section">
-            <div class="page-title-group">
-                <h1>Manajemen Klaim</h1>
-                <p>Kelola verifikasi berkas dan pantau pengambilan barang.</p>
+        <header class="content-header">
+            <div style="display: flex; align-items: center;">
+                <button class="menu-toggle" id="menuToggle">☰</button>
+                <div class="header-title">
+                    <h1>Manajemen Klaim</h1>
+                    <p>Kelola verifikasi berkas dan pantau pengambilan barang.</p>
+                </div>
             </div>
-            
-            <div class="search-container">
-                <span>🔍</span>
-                <input type="text" id="tableSearchInput" placeholder="Cari Nama atau ID Klaim..." onkeyup="searchTableData()">
+            <div class="header-actions">
+                <div class="search-box">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" id="searchInput" placeholder="Cari Nama atau ID Klaim..." oninput="searchData()" />
+                </div>
+                <div class="top-profile-box" onclick="showNotification()">
+                    <div class="top-avatar-placeholder">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                    </div>
+                    <span class="dropdown-arrow">▼</span>
+                </div>
             </div>
         </header>
 
-        <!-- SUB-NAVIGASI TABS INTERAKTIF -->
-        <nav class="sub-tabs-row">
-            <button class="tab-link-btn active" onclick="switchClaimTab(this, 'perlu-ditinjau')">
-                Perlu Ditinjau <span class="tab-count-badge" id="count-ditinjau">3</span>
-            </button>
-            <button class="tab-link-btn" onclick="switchClaimTab(this, 'butuh-klarifikasi')">
-                Butuh Klarifikasi <span class="tab-count-badge" id="count-klarifikasi">1</span>
-            </button>
-            <button class="tab-link-btn" onclick="switchClaimTab(this, 'siap-diambil')">
-                Siap Diambil <span class="tab-count-badge" id="count-diambil">2</span>
-            </button>
+        <nav class="tabs-navigation">
+            <div class="tab-item active">
+                <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                Perlu Ditinjau
+                <span class="count-badge" id="countPending">3</span>
+            </div>
+            <div class="tab-item">
+                <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Butuh Klarifikasi
+                <span class="count-badge" id="countClarification">1</span>
+            </div>
+            <div class="tab-item">
+                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                Siap Diambil
+                <span class="count-badge" id="countReady">2</span>
+            </div>
         </nav>
 
-        <!-- DATA CONTAINER TABEL -->
-        <div class="table-responsive-box">
-            <table class="custom-admin-table">
+        <div class="data-card">
+            <table class="main-table">
                 <thead>
                     <tr>
-                        <th>ID Klaim</th>
-                        <th>Nama Barang</th>
-                        <th>Nama Pengklaim</th>
-                        <th>Tgl Update</th>
-                        <th>Status</th>
-                        <th style="text-align: right;">Tindakan</th>
+                        <th style="width: 15%;">ID KLAIM</th>
+                        <th style="width: 35%;">NAMA BARANG</th>
+                        <th style="width: 20%;">NAMA PENGKLAIM</th>
+                        <th style="width: 15%;">TGL UPDATE</th>
+                        <th style="width: 15%;">STATUS</th>
+                        <th style="text-align: right; width: 15px;">TINDAKAN</th>
                     </tr>
                 </thead>
-                <tbody id="claimTableBody">
-                    <!-- Data di-render dinamis oleh JavaScript -->
-                </tbody>
+                <tbody id="tableBody"></tbody>
             </table>
 
-            <!-- FOOTER TABEL INFO -->
-            <div class="table-footer-pagination">
-                <div class="entries-info-text" id="entriesInfoLabel">Showing 1-3 of 3 entries</div>
-                <div class="pagination-controls">
-                    <button class="page-nav-btn">&lt;</button>
-                    <button class="page-nav-btn active">1</button>
-                    <button class="page-nav-btn">&gt;</button>
+            <div class="table-footer">
+                <div class="showing-text">
+                    SHOWING <span id="startEntry">1</span>-<span id="endEntry">3</span> OF <span id="totalEntries">3</span> ENTRIES
+                </div>
+                <div class="pagination-buttons">
+                    <button class="nav-btn" id="prevPage">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
+                        Prev
+                    </button>
+                    <div class="page-indicator" id="pageNumber">1</div>
+                    <button class="nav-btn" id="nextPage">
+                        Next
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
+                    </button>
                 </div>
             </div>
         </div>
-
     </main>
 
-    <!-- LOGIC JAVASCRIPT TAB FILTERING & DATA MOCKUP FIGMA -->
     <script>
-        // Data Set Sesuai 3 Keadaan Frame Figma Anda (image_8a4802, image_8a4821, image_8a4841)
-        const claimDataset = {
-            'perlu-ditinjau': [
-                { id: '#CLM-98231', icon: '💳', item: 'Dompet Kulit Cokelat', sub: '', user: 'Ahmad Dahlan', date: '12 Nov 2024', token: '', status: 'pending', actionTxt: '📄 Periksa Berkas', actionClass: 'examine', targetUrl: 'cek.html' },
-                { id: '#CLM-98235', icon: '📱', item: 'iPhone 13 Pro Max Blue', sub: '', user: 'Siti Aminah', date: '13 Nov 2024', token: '', status: 'pending', actionTxt: '📄 Periksa Berkas', actionClass: 'examine', targetUrl: 'cek.html' },
-                { id: '#CLM-98240', icon: '🔑', item: 'Kunci Mobil Honda', sub: '', user: 'Rizky Febrian', date: '14 Nov 2024', token: '', status: 'pending', actionTxt: '📄 Periksa Berkas', actionClass: 'examine', targetUrl: 'cek.html' }
-            ],
-            'butuh-klarifikasi': [
-                { id: '#CLM-98231', icon: '💳', item: 'Dompet Kulit Cokelat', sub: '', user: 'Diana Putri', date: '15 Nov 2024', token: '', status: 'clarification', actionTxt: '👤 Proses Tatap Muka', actionClass: 'onsite', targetUrl: 'fisik.html' }
-            ],
-            'siap-diambil': [
-                { id: '#CLM-98231', icon: '💳', item: 'Dompet Kulit Cokelat', sub: '● Sesuai Fisik', user: 'Budi Setiawan', date: '10 Nov 2024', token: 'TOKEN: LF-SILVER-902', status: 'ready', actionTxt: '🎟️ Validasi Token', actionClass: 'token-val', targetUrl: 'token.html' },
-                { id: '#CLM-96112', icon: '🎧', item: 'Sony WH-1000XM4', sub: '● Sesuai Fisik', user: 'Andi Wijaya', date: '11 Nov 2024', token: 'TOKEN: LF-BLUE-552', status: 'ready', actionTxt: '🎟️ Validasi Token', actionClass: 'token-val', targetUrl: 'token.html' }
-            ]
-        };
+        (function() {
+            'use strict';
 
-        let currentActiveTab = 'perlu-ditinjau';
+            var sidebar = document.getElementById('sidebar');
+            var sidebarOverlay = document.getElementById('sidebarOverlay');
+            var menuToggle = document.getElementById('menuToggle');
 
-        // Fungsi Render Baris Tabel Berdasarkan Tab
-        function renderClaimTable(tabKey) {
-            currentActiveTab = tabKey;
-            const tbody = document.getElementById('claimTableBody');
-            const dataList = claimDataset[tabKey];
-            tbody.innerHTML = '';
+            window.toggleSidebar = function() {
+                sidebar.classList.toggle('open');
+                sidebarOverlay.classList.toggle('active');
+            };
 
-            dataList.forEach(data => {
-                let subStatusHtml = data.sub ? `<div class="item-sub-status">${data.sub}</div>` : '';
-                let tokenHtml = data.token ? `<div class="token-badge-lbl">${data.token}</div>` : '';
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleSidebar();
+                });
+            }
+
+            window.logout = function() {
+                if (confirm('Apakah Anda yakin ingin keluar?')) {
+                    localStorage.removeItem('isAdminLoggedIn');
+                    window.location.href = '../auth/login.html';
+                }
+            };
+
+            window.showNotification = function() {
+                alert('📬 Tidak ada notifikasi baru.');
+            };
+
+            var claimData = [
+                { id: '#CLM-98231', item: 'Dompet Kulit Cokelat', claimant: 'Ahmad Dahlan', date: '12 Nov 2024', status: 'pending' },
+                { id: '#CLM-98235', item: 'iPhone 13 Pro Max Blue', claimant: 'Siti Aminah', date: '13 Nov 2024', status: 'pending' },
+                { id: '#CLM-90240', item: 'Kunci Mobil Honda', claimant: 'Rizky Febrian', date: '14 Nov 2024', status: 'pending' },
+                { id: '#CLM-98245', item: 'Jam Tangan Rolex', claimant: 'Budi Santoso', date: '15 Nov 2024', status: 'clarification' },
+                { id: '#CLM-98250', item: 'Laptop ASUS ROG', claimant: 'Dewi Lestari', date: '16 Nov 2024', status: 'ready' },
+                { id: '#CLM-98255', item: 'Kacamata Ray-Ban', claimant: 'Putri Amelia', date: '17 Nov 2024', status: 'ready' },
+            ];
+
+            var filteredData = claimData.slice();
+            var currentPage = 1;
+            var rowsPerPage = 3;
+
+            function updateStats() {
+                var pending = claimData.filter(function(item) { return item.status === 'pending'; }).length;
+                var clarification = claimData.filter(function(item) { return item.status === 'clarification'; }).length;
+                var ready = claimData.filter(function(item) { return item.status === 'ready'; }).length;
+                document.getElementById('countPending').textContent = pending;
+                document.getElementById('countClarification').textContent = clarification;
+                document.getElementById('countReady').textContent = ready;
+            }
+
+            function renderTable() {
+                var start = (currentPage - 1) * rowsPerPage;
+                var end = Math.min(start + rowsPerPage, filteredData.length);
+                var pageItems = filteredData.slice(start, end);
+
+                var tbody = document.getElementById('tableBody');
+                var html = '';
                 
-                let row = `
-                    <tr>
-                        <td><span class="id-claim-text">${data.id}</span></td>
-                        <td>
-                            <div class="item-cell-content">
-                                <div class="item-main-row">
-                                    <div class="item-icon-wrapper">${data.icon}</div>
-                                    <span class="item-text-bold">${data.item}</span>
+                for (var i = 0; i < pageItems.length; i++) {
+                    var item = pageItems[i];
+                    
+                    var iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M19 5H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2z"/><path d="M16 11h4v2h-4z"/></svg>`; 
+                    var bgColor = '#F1F5F9';
+
+                    if(item.item.toLowerCase().includes('iphone') || item.item.toLowerCase().includes('hp')) {
+                        iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#1E4A8A" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>`;
+                        bgColor = '#EFF6FF';
+                    } else if(item.item.toLowerCase().includes('kunci')) {
+                        iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M21 3l-6 6M17 5l2 2M14 8l2 2"/></svg>`;
+                        bgColor = '#F0FDF4';
+                    }
+
+                    html += `
+                        <tr>
+                            <td class="col-id">${item.id}</td>
+                            <td>
+                                <div class="barang-wrapper">
+                                    <div class="icon-container" style="background-color: ${bgColor};">
+                                        ${iconSvg}
+                                    </div>
+                                    <span class="barang-title">${item.item}</span>
                                 </div>
-                                ${subStatusHtml}
-                            </div>
-                        </td>
-                        <td>${data.user}</td>
-                        <td>
-                            <div class="token-date-wrapper">
-                                <span>${data.date}</span>
-                                ${tokenHtml}
-                            </div>
-                        </td>
-                        <td>
-                            <span class="status-pill ${data.status}">${data.status}</span>
-                        </td>
-                        <td style="text-align: right;">
-                            <button class="btn-action ${data.actionClass}" onclick="location.href='${data.targetUrl}'">
-                                ${data.actionTxt}
-                            </button>
-                        </td>
-                    </tr>
-                `;
-                tbody.insertAdjacentHTML('beforeend', row);
+                            </td>
+                            <td>${item.claimant}</td>
+                            <td>${item.date}</td>
+                            <td><span class="badge-status">PENDING</span></td>
+                            <td style="text-align: right;">
+                                <a href="cek.html?id=${item.id}" class="btn-check">
+                                    <svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    Periksa Berkas
+                                </a>
+                            </td>
+                        </tr>
+                    `;
+                }
+                tbody.innerHTML = html;
+
+                var total = filteredData.length;
+                var totalPages = Math.ceil(total / rowsPerPage) || 1;
+                
+                document.getElementById('startEntry').textContent = total === 0 ? 0 : start + 1;
+                document.getElementById('endEntry').textContent = total === 0 ? 0 : end;
+                document.getElementById('totalEntries').textContent = total;
+                document.getElementById('pageNumber').textContent = currentPage;
+
+                document.getElementById('prevPage').disabled = (currentPage === 1);
+                document.getElementById('nextPage').disabled = (currentPage === totalPages);
+
+                updateStats();
+            }
+
+            window.searchData = function() {
+                var keyword = document.getElementById('searchInput').value.toLowerCase().trim();
+                if (keyword === '') {
+                    filteredData = claimData.slice();
+                } else {
+                    filteredData = claimData.filter(function(item) {
+                        return item.id.toLowerCase().includes(keyword) ||
+                            item.item.toLowerCase().includes(keyword) ||
+                            item.claimant.toLowerCase().includes(keyword);
+                    });
+                }
+                currentPage = 1;
+                renderTable();
+            };
+
+            document.getElementById('prevPage').addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable();
+                }
             });
 
-            // Update Info Baris Bawah Tabel
-            const total = dataList.length;
-            document.getElementById('entriesInfoLabel').textContent = `Showing 1-${total} of ${total} entries`;
-        }
-
-        // Fungsi Tukar State Tab Aktif Sesuai Klik Menu
-        function switchClaimTab(element, tabKey) {
-            document.querySelectorAll('.tab-link-btn').forEach(btn => btn.classList.remove('active'));
-            element.classList.add('active');
-            renderClaimTable(tabKey);
-        }
-
-        // Fungsi Fitur Pencarian / Kolom Cari Laporan Atas
-        function searchTableData() {
-            const input = document.getElementById('tableSearchInput').value.toLowerCase();
-            const rows = document.querySelectorAll('#claimTableBody tr');
-
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(input) ? '' : 'none';
+            document.getElementById('nextPage').addEventListener('click', function() {
+                var totalPages = Math.ceil(filteredData.length / rowsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable();
+                }
             });
-        }
 
-        // Load Pertama Kali Saat Halaman Diakses
-        window.addEventListener('DOMContentLoaded', () => {
-            renderClaimTable('perlu-ditinjau');
-        });
+            renderTable();
+        })();
     </script>
-
 </body>
 </html>
