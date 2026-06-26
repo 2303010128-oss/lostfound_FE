@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Laporan Temuan - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+
+        /* ============================================================
+                   SIDEBAR STYLE VISUAL FIGMA (COLOR #0F172A)
+                   ============================================================ */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #0F172A;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px 28px 12px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #ea580c;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 20px 12px 8px 12px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item span {
+            font-size: 16px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: #f1f5f9;
+        }
+
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            font-weight: 600;
+            border-left: 3px solid #ea580c;
+            border-radius: 4px 8px 8px 4px;
+            padding-left: 9px;
+        }
+        
+        .badge-orange {
+            margin-left: auto;
+            background: #ea580c;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-dark {
+            margin-left: auto;
+            background: #1e293b;
+            color: #94a3b8;
+            font-size: 10px;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 8px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #334155;
+        }
+
+        .user-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-meta .name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+
+        .user-meta .role {
+            font-size: 10px;
+            color: #475569;
+        }
+        
+        .logout-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #f87171;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px;
+        }
+
+        /* ============================================================
+                   MAIN CONTENT LAYOUT
+                   ============================================================ */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Navigation Header */
+        .detail-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .topbar-left-flex {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-back-arrow {
+            font-size: 18px;
+            color: #334155;
+            background: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-back-arrow:hover {
+            transform: translateX(-2px);
+        }
+
+        .topbar-title-block h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .topbar-title-block p {
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        .status-validation-badge {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #d97706;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        /* TWO COLUMN GRID LAYOUT */
+        .detail-grid-layout {
+            display: grid;
+            grid-template-columns: 1.8fr 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .column-left, .column-right {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .premium-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.01);
+            overflow: hidden;
+        }
+
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 24px 28px 20px 28px;
+        }
+
+        .card-header-row .card-icon {
+            font-size: 16px;
+            color: #ea580c;
+        }
+
+        .card-header-row h2 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        /* LEFT COLUMN COMPONENTS */
+        .info-data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            padding: 0 28px 24px 28px;
+        }
+
+        .data-block-item .label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .data-block-item .value {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .description-sub-section {
+            border-top: 1px solid #f1f5f9;
+            padding: 24px 28px;
+        }
+
+        .description-sub-section .sub-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .description-sub-section .quote-paragraph {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .photo-display-box {
+            padding: 0 28px 24px 28px;
+            text-align: center;
+        }
+
+        .showcase-image-frame {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            background: #f1f5f9;
+        }
+
+        .image-filename-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 12px;
+            display: block;
+        }
+
+        /* RIGHT COLUMN COMPONENTS */
+        .reporter-profile-block {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin: 0 24px 20px 24px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .avatar-initial-box {
+            width: 40px;
+            height: 40px;
+            background: #ffedd5;
+            color: #ea580c;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reporter-meta h3 {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .reporter-meta p {
+            font-size: 11.5px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .reporter-status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .reporter-status-row .row-label {
+            font-size: 12.5px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .pill-verified-green {
+            background: #ecfdf5;
+            color: #059669;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .report-count-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .actions-card-body {
+            padding: 0 24px 24px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-action-block {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-block.approve {
+            background: #10b981;
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
+        }
+
+        .btn-action-block.approve:hover {
+            background: #059669;
+        }
+
+        .btn-action-block.reject {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #cbd5e1; /* Default Abu-abu redup pasif figma */
+            transition: 0.2s;
+        }
+
+        .btn-action-block.reject:hover {
+            background: #fff5f5;
+            color: #dc2626;
+            border-color: #fca5a5;
+        }
+
+        .action-card-subtext {
+            font-size: 11px;
+            color: #94a3b8;
+            line-height: 1.5;
+            text-align: center;
+            padding: 4px 12px 0 12px;
+        }
+
+        /* ============================================================
+                   MODALS BASE SYSTEM (SUKSES & BATAL)
+                   ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6); /* Backdrop gelap figma */
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 28px;
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            animation: modalPop 0.25s ease-out;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.96); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon-circle {
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px auto;
+        }
+
+        .modal-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 14px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-card p {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        /* --- STYLE KHAS MODAL SUKSES (image_cd8783.png) --- */
+        .modal-icon-circle.success-icon {
+            background: #ecfdf5;
+            color: #10b981;
+            font-size: 32px;
+        }
+
+        .inline-pill-published {
+            background: #ecfdf5;
+            color: #059669;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .btn-modal-primary {
+            width: 100%;
+            background: #0f172a; /* Navy gelap figma */
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            transition: background 0.2s;
+        }
+
+        .btn-modal-primary:hover {
+            background: #1e293b;
+        }
+
+        .link-modal-secondary {
+            color: #64748b;
+            font-size: 13.5px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* --- STYLE KHAS MODAL PEMBATALKAN (image_cde89e.png) --- */
+        .modal-card.cancel-card {
+            border-bottom: 5px solid #dc2626; /* Aksen bawah merah tebal */
+            padding-bottom: 32px;
+        }
+
+        .modal-icon-circle.cancel-icon {
+            background: #fef2f2;
+            color: #dc2626;
+            font-size: 30px;
+        }
+
+        .modal-form-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+        }
+
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .modal-select {
+            width: 100%;
+            padding: 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 13.5px;
+            color: #334155;
+            font-weight: 500;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .select-wrapper::after {
+            content: '▼';
+            font-size: 9px;
+            color: #94a3b8;
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .modal-btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn-modal-secondary {
+            flex: 1;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-modal-secondary:hover {
+            background: #f8fafc;
+        }
+
+        .btn-modal-danger {
+            flex: 1;
+            background: #dc2626;
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">L</div>
+            <div class="logo-text">LostFound</div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-label">Main Menu</div>
+            <a href="../dashboard/index.html" class="menu-item">
+                <span>📊</span> Dashboard
+            </a>
+            <a href="index.html" class="menu-item active">
+                <span>📦</span> Antrean Temuan <span class="badge-orange">3</span>
+            </a>
+            <a href="../verifikasi/index.html" class="menu-item">
+                <span>📝</span> Verifikasi Klaim <span class="badge-dark">5</span>
+            </a>
+            <a href="../arsip/index.html." class="menu-item">
+                <span>📁</span> Arsip Laporan
+            </a>
+
+            <div class="menu-label">Settings</div>
+            <a href="../manajemen/index.html" class="menu-item">
+                <span>👥</span> Manajemen User
+            </a>
+            <a href="../konfigurasi/index.html" class="menu-item">
+                <span>⚙️</span> Konfigurasi Sistem
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Petugas" class="user-avatar">
+                <div class="user-meta">
+                    <div class="name">Petugas Posko</div>
+                    <div class="role">Super Admin</div>
+                </div>
+            </div>
+            <a href="../auth/login.html" class="logout-link">
+                <span>🚪</span> Keluar Sesi
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <header class="detail-topbar">
+            <div class="topbar-left-flex">
+                <button class="btn-back-arrow" onclick="window.location.href='index.html'">←</button>
+                <div class="topbar-title-block">
+                    <h1>Detail Laporan Temuan</h1>
+                    <p>ID Laporan: #FND-106</p>
+                </div>
+            </div>
+            <span class="status-validation-badge">MENUNGGU VALIDASI</span>
+        </header>
+
+        <div class="detail-grid-layout">
+            
+            <div class="column-left">
+                <section class="premium-card">
+                    <div class="card-header-row">
+                        <span class="card-icon">ⓘ</span>
+                        <h2>Informasi Utama</h2>
+                    </div>
+
+                    <div class="info-data-grid">
+                        <div class="data-block-item">
+                            <div class="label">Nama Barang</div>
+                            <div class="value">Kunci Motor Honda</div>
+                        </div>
+                        <div class="data-block-item">
+                            <div class="label">Kategori</div>
+                            <div class="value">🔑 Kunci</div>
+                        </div>
+                        <div class="data-block-item">
+                            <div class="label">Lokasi Penemuan</div>
+                            <div class="value">📍 Parkir Gedung C</div>
+                        </div>
+                        <div class="data-block-item">
+                            <div class="label">Waktu Ditemukan</div>
+                            <div class="value">📅 23 Mei 2026, 14:30 WIB</div>
+                        </div>
+                    </div>
+
+                    <div class="description-sub-section">
+                        <span class="sub-label">Ciri Spesifik / Deskripsi</span>
+                        <p class="quote-paragraph">
+                            "Gantungan kunci berbentuk dompet kecil warna hitam, ada lecet pada bagian ring besi. Di dalam dompet kecil tersebut tidak ada isinya, hanya gantungan saja."
+                        </p>
+                    </div>
+                </section>
+
+                <section class="premium-card">
+                    <div class="card-header-row">
+                        <span class="card-icon">🖼️</span>
+                        <h2>Dokumentasi Foto</h2>
+                    </div>
+                    <div class="photo-display-box">
+                        <img src="https://images.unsplash.com/photo-1582139329536-e7284fece509?w=800&q=80" alt="Dokumentasi Foto Kunci" class="showcase-image-frame">
+                        <span class="image-filename-text">FOTO_BARANG_1.JPG</span>
+                    </div>
+                </section>
+            </div>
+
+            <div class="column-right">
+                <section class="premium-card">
+                    <div class="card-header-row">
+                        <span class="card-icon">👤</span>
+                        <h2>Pelapor (Penemu)</h2>
+                    </div>
+
+                    <div class="reporter-profile-block">
+                        <div class="avatar-initial-box">BS</div>
+                        <div class="reporter-meta">
+                            <h3>Budi Santoso</h3>
+                            <p>Mahasiswa • 230301012</p>
+                        </div>
+                    </div>
+
+                    <div class="reporter-status-row">
+                        <span class="row-label">Status Akun</span>
+                        <span class="pill-verified-green">TERVERIFIKASI</span>
+                    </div>
+
+                    <div class="reporter-status-row">
+                        <span class="row-label">Total Laporan</span>
+                        <span class="report-count-value">2 Laporan</span>
+                    </div>
+                </section>
+
+                <section class="premium-card">
+                    <div class="card-header-row">
+                        <span class="card-icon">⚡</span>
+                        <h2>Tindakan Petugas</h2>
+                    </div>
+
+                    <div class="actions-card-body">
+                        <button class="btn-action-block approve" onclick="handleApprove()">
+                            ✓ Terima & Rilis
+                        </button>
+                        <button class="btn-action-block reject" onclick="handleReject()">
+                            ✕ Batalkan Laporan
+                        </button>
+                        <p class="action-card-subtext">
+                            Menyetujui laporan akan menerbitkan barang ini ke feed publik agar bisa dicari oleh pemiliknya.
+                        </p>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="successModal">
+        <div class="modal-card">
+            <div class="modal-icon-circle success-icon">✓</div>
+            <h2>Barang Diterbitkan!</h2>
+            <p>
+                Laporan fisik untuk Kunci Motor Honda <strong>(#FND-106)</strong> resmi diverifikasi. Status barang kini menjadi <span class="inline-pill-published">Published</span>.
+            </p>
+            <button class="btn-modal-primary" onclick="closeModalAndRedirect()">
+                Selesai & Tutup
+            </button>
+            <br>
+            <a href="#" class="link-modal-secondary" onclick="closeModalOnly(event)">
+                Lihat Detail Laporan
+            </a>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="cancelModal">
+        <div class="modal-card cancel-card">
+            <div class="modal-icon-circle cancel-icon">⚠️</div>
+            <h2>Batalkan Laporan?</h2>
+            <p style="font-size: 13.5px; color: #475569; margin-bottom: 24px;">
+                Anda akan membatalkan laporan temuan dari <strong>Andi Wijaya</strong>. <span style="color: #94a3b8;">Tindakan ini tidak dapat dibatalkan.</span>
+            </p>
+            
+            <div style="text-align: left; margin-bottom: 24px;">
+                <label class="modal-form-label">Alasan Pembatalan</label>
+                <div class="select-wrapper">
+                    <select class="modal-select">
+                        <option value="invalid">Informasi Tidak Valid</option>
+                        <option value="spam">Laporan Palsu / Spam</option>
+                        <option value="duplicate">Laporan Duplikat</option>
+                        <option value="other">Alasan Lainnya</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="modal-btn-group">
+                <button class="btn-modal-secondary" onclick="closeCancelModal()">Tidak</button>
+                <button class="btn-modal-danger" onclick="executeCancellation()">Ya, Batalkan</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- KONTROL MODAL SUKSES ---
+        function handleApprove() {
+            document.getElementById('successModal').style.display = 'flex';
+        }
+
+        function closeModalAndRedirect() {
+            window.location.href = 'index.html';
+        }
+
+        function closeModalOnly(event) {
+            event.preventDefault();
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        // --- KONTROL MODAL PEMBATALAN ---
+        function handleReject() {
+            document.getElementById('cancelModal').style.display = 'flex';
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').style.display = 'none';
+        }
+
+        function executeCancellation() {
+            alert('Laporan sukses dibatalkan dan dihapus dari antrean loket.');
+            window.location.href = 'detail.html';
+        }
+
+        // Penutup otomatis jika mengeklik area hitam luar modal
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

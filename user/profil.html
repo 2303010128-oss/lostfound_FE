@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pusat Bantuan - LostFound Connect</title>
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        /* ============================================================
+                   UTILITY CLASSES
+                   ============================================================ */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .flex {
+            display: flex;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flex-between {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .gap-4 {
+            gap: 16px;
+        }
+        .gap-6 {
+            gap: 24px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-left {
+            text-align: left;
+        }
+        .relative {
+            position: relative;
+        }
+        .mt-2 {
+            margin-top: 8px;
+        }
+        .mt-4 {
+            margin-top: 16px;
+        }
+        .mt-6 {
+            margin-top: 24px;
+        }
+        .mt-8 {
+            margin-top: 32px;
+        }
+        .mt-12 {
+            margin-top: 48px;
+        }
+        .mb-2 {
+            margin-bottom: 8px;
+        }
+        .mb-4 {
+            margin-bottom: 16px;
+        }
+        .mb-6 {
+            margin-bottom: 24px;
+        }
+        .mb-8 {
+            margin-bottom: 32px;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .max-w-3xl {
+            max-width: 768px;
+        }
+        .max-w-4xl {
+            max-width: 896px;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ============================================================
+                   NAVBAR
+                   ============================================================ */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            height: 64px;
+        }
+        .navbar .container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .logo {
+            color: #a33900;
+            font-weight: 600;
+            font-size: 20px;
+            letter-spacing: 0.3px;
+        }
+        .navbar .logo a {
+            color: #a33900;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .navbar .nav-links a {
+            color: #5a4138;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            padding-bottom: 4px;
+        }
+        .navbar .nav-links a:hover {
+            color: #a33900;
+        }
+        .navbar .nav-links a.active {
+            color: #a33900;
+            font-weight: 600;
+            border-bottom: 2px solid #a33900;
+        }
+        .navbar .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .navbar .auth-buttons .login-link {
+            color: #a33900;
+            font-weight: 600;
+            font-size: 14px;
+            transition: text-decoration 0.3s ease;
+        }
+        .navbar .auth-buttons .login-link:hover {
+            text-decoration: underline;
+        }
+        .navbar .auth-buttons .register-btn {
+            background: #a33900;
+            color: #ffffff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        .navbar .auth-buttons .register-btn:hover {
+            background: #8a2f00;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #4b5563;
+        }
+        .menu-toggle svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ============================================================
+                   BREADCRUMB
+                   ============================================================ */
+        .breadcrumb {
+            padding: 16px 0 24px 0;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .breadcrumb a {
+            color: #a33900;
+            transition: text-decoration 0.3s ease;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .separator {
+            margin: 0 8px;
+            color: #9ca3af;
+        }
+        .breadcrumb .current {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   HELP PAGE
+                   ============================================================ */
+        .help-page {
+            flex: 1;
+            padding: 0 24px 64px;
+        }
+
+        /* ============================================================
+                   HERO - Seperti di Figma
+                   ============================================================ */
+        .help-hero {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 48px 40px;
+            margin-bottom: 32px;
+            border: 1px solid #eaedff;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .help-hero .hero-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .help-hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #131b2e;
+            margin-bottom: 8px;
+        }
+
+        .help-hero p {
+            font-size: 16px;
+            color: #6b7280;
+            max-width: 580px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+                   SEARCH BOX
+                   ============================================================ */
+        .search-wrapper {
+            max-width: 580px;
+            margin: 0 auto 32px auto;
+        }
+
+        .search-box {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 4px 4px 4px 20px;
+            border: 2px solid #eaedff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: border-color 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .search-box:focus-within {
+            border-color: #a33900;
+            box-shadow: 0 2px 12px rgba(163, 57, 0, 0.1);
+        }
+
+        .search-box .search-icon {
+            font-size: 18px;
+            color: #9ca3af;
+            flex-shrink: 0;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: transparent;
+            color: #131b2e;
+        }
+
+        .search-box input::placeholder {
+            color: #9ca3af;
+        }
+
+        .search-box .search-btn {
+            background: #a33900;
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .search-box .search-btn:hover {
+            background: #8a2f00;
+        }
+
+        /* ============================================================
+                   CATEGORIES - Chip/Pill Style
+                   ============================================================ */
+        .categories-section {
+            margin-bottom: 32px;
+        }
+
+        .category-grid {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            background: #ffffff;
+            border: 1.5px solid #eaedff;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .category-btn:hover {
+            border-color: #a33900;
+            color: #a33900;
+        }
+
+        .category-btn.active {
+            background: #a33900;
+            color: #ffffff;
+            border-color: #a33900;
+        }
+
+        /* ============================================================
+                   FAQ - Accordion
+                   ============================================================ */
+        .faq-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #eaedff;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: #fcd5c4;
+        }
+
+        .faq-item .faq-question {
+            padding: 18px 24px;
+            background: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s ease;
+            user-select: none;
+        }
+
+        .faq-item .faq-question:hover {
+            background: #faf8f7;
+        }
+
+        .faq-item .faq-question h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #131b2e;
+            padding-right: 16px;
+        }
+
+        .faq-item .faq-question .arrow {
+            font-size: 18px;
+            color: #a33900;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-item .faq-question .arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .faq-item .faq-answer {
+            padding: 0 24px 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+        }
+
+        .faq-item .faq-answer.open {
+            max-height: 500px;
+            padding: 0 24px 20px 24px;
+        }
+
+        .faq-item .faq-answer p {
+            font-size: 15px;
+            line-height: 26px;
+            color: #4b5563;
+        }
+
+        .faq-item .faq-answer p:not(:last-child) {
+            margin-bottom: 10px;
+        }
+
+        .faq-item .faq-answer .highlight {
+            background: #fff4ed;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #a33900;
+        }
+
+        .faq-item .faq-answer .token-box {
+            display: inline-block;
+            background: #f8fafc;
+            padding: 4px 16px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: #a33900;
+            border: 1px dashed #a33900;
+            margin: 4px 0;
+        }
+
+        .faq-item .faq-answer ul {
+            padding-left: 24px;
+            margin: 8px 0;
+        }
+
+        .faq-item .faq-answer ul li {
+            font-size: 15px;
+            line-height: 26px;
+            color: #4b5563;
+            list-style-type: disc;
+        }
+
+        /* ============================================================
+                   NO RESULTS
+                   ============================================================ */
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+        .no-results .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .no-results h3 {
+            font-size: 18px;
+            color: #131b2e;
+            margin-bottom: 4px;
+        }
+
+        .no-results p {
+            font-size: 14px;
+        }
+
+        /* ============================================================
+                   CONTACT SECTION
+                   ============================================================ */
+        .contact-section {
+            max-width: 800px;
+            margin: 40px auto 0;
+            padding-top: 32px;
+            border-top: 2px solid #eaedff;
+        }
+
+        .contact-box {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 32px 36px;
+            border: 1px solid #eaedff;
+            text-align: center;
+        }
+
+        .contact-box .contact-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .contact-box h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #131b2e;
+            margin-bottom: 4px;
+        }
+
+        .contact-box p {
+            font-size: 15px;
+            color: #6b7280;
+            margin-bottom: 16px;
+        }
+
+        .contact-box .contact-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .contact-box .contact-buttons .btn-contact {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .contact-box .contact-buttons .btn-whatsapp {
+            background: #25d366;
+            color: #ffffff;
+        }
+
+        .contact-box .contact-buttons .btn-whatsapp:hover {
+            background: #1da851;
+            transform: scale(1.02);
+        }
+
+        .contact-box .contact-buttons .btn-email {
+            background: #eaedff;
+            color: #a33900;
+        }
+
+        .contact-box .contact-buttons .btn-email:hover {
+            background: #dde0f0;
+            transform: scale(1.02);
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            background: #eaedff;
+            padding: 24px;
+            margin-top: auto;
+        }
+
+        .footer .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .footer .footer-content .brand {
+            font-weight: 600;
+            color: #131b2e;
+            font-size: 14px;
+        }
+
+        .footer .footer-content .copyright {
+            font-size: 14px;
+            color: #5a4138;
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+            .menu-toggle {
+                display: block;
+            }
+
+            .help-hero {
+                padding: 32px 24px;
+            }
+            .help-hero h1 {
+                font-size: 24px;
+            }
+            .help-hero p {
+                font-size: 15px;
+            }
+
+            .search-box {
+                padding: 4px 4px 4px 16px;
+                flex-wrap: wrap;
+            }
+            .search-box input {
+                font-size: 14px;
+                padding: 10px 0;
+            }
+            .search-box .search-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .category-grid {
+                gap: 8px;
+            }
+            .category-btn {
+                font-size: 13px;
+                padding: 6px 14px;
+            }
+
+            .faq-item .faq-question {
+                padding: 14px 18px;
+            }
+            .faq-item .faq-question h3 {
+                font-size: 14px;
+            }
+            .faq-item .faq-answer.open {
+                padding: 0 18px 16px 18px;
+            }
+            .faq-item .faq-answer p,
+            .faq-item .faq-answer ul li {
+                font-size: 14px;
+                line-height: 24px;
+            }
+
+            .contact-box {
+                padding: 24px 20px;
+            }
+            .contact-box h3 {
+                font-size: 18px;
+            }
+            .contact-box .contact-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            .contact-box .contact-buttons .btn-contact {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .auth-buttons .login-link {
+                font-size: 13px;
+            }
+            .navbar .auth-buttons .register-btn {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+
+            .help-hero {
+                padding: 24px 16px;
+            }
+            .help-hero h1 {
+                font-size: 20px;
+            }
+            .help-hero p {
+                font-size: 14px;
+            }
+
+            .help-page {
+                padding: 0 16px 40px;
+            }
+
+            .breadcrumb {
+                font-size: 12px;
+                padding: 12px 0 16px 0;
+            }
+
+            .category-btn {
+                font-size: 12px;
+                padding: 5px 12px;
+            }
+
+            .search-box {
+                padding: 4px;
+            }
+            .search-box input {
+                font-size: 13px;
+                padding: 10px 12px;
+            }
+            .search-box .search-btn {
+                font-size: 13px;
+                padding: 8px 16px;
+            }
+        }
+
+        /* ============================================================
+                   MOBILE NAV
+                   ============================================================ */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background: #ffffff;
+            padding: 16px 24px;
+            gap: 12px;
+            border-top: 1px solid #eaedff;
+        }
+
+        .mobile-nav.open {
+            display: flex;
+        }
+
+        .mobile-nav a {
+            color: #5a4138;
+            font-size: 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .mobile-nav a.active {
+            color: #a33900;
+            font-weight: 600;
+        }
+
+        .mobile-nav a:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- NAVBAR -->
+    <!-- ============================================================ -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">LostFound Connect</a>
+            </div>
+
+            <nav class="nav-links">
+                <a href="index.html">Beranda</a>
+                <a href="tentangkami.html">Tentang Kami</a>
+                <a href="pusatbantuan.html" class="active">Pusat Bantuan</a>
+            </nav>
+
+            <div class="auth-buttons">
+                <a href="login.html" class="login-link">Masuk</a>
+                <button class="register-btn" onclick="window.location.href='login.html?mode=register'">Daftar Akun</button>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="mobile-nav" id="mobileNav">
+            <a href="index.html">Beranda</a>
+            <a href="tentangkami.html">Tentang Kami</a>
+            <a href="pusatbantuan.html" class="active">Pusat Bantuan</a>
+            <a href="login.html">Masuk</a>
+            <a href="login.html?mode=register" style="color:#a33900;font-weight:600;">Daftar Akun</a>
+        </div>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- HELP PAGE -->
+    <!-- ============================================================ -->
+    <main class="help-page">
+
+        <div class="container max-w-4xl mx-auto">
+
+            <!-- ============================================================ -->
+            <!-- BREADCRUMB -->
+            <!-- ============================================================ -->
+            <nav class="breadcrumb">
+                <a href="index.html">Beranda</a>
+                <span class="separator">›</span>
+                <span class="current">Pusat Bantuan</span>
+            </nav>
+
+            <!-- ============================================================ -->
+            <!-- HERO -->
+            <!-- ============================================================ -->
+            <div class="help-hero">
+                <div class="hero-icon">❓</div>
+                <h1>Ada yang bisa kami bantu?</h1>
+                <p>Temukan jawaban atas pertanyaan umum mengenai penggunaan platform LostFound Connect secara cepat dan efisien.</p>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- SEARCH BOX -->
+            <!-- ============================================================ -->
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Cari pertanyaan Anda di sini..." />
+                    <button class="search-btn" onclick="searchFaq()">Cari</button>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- CATEGORIES -->
+            <!-- ============================================================ -->
+            <div class="categories-section">
+                <div class="category-grid">
+                    <button class="category-btn active" data-category="all" onclick="filterCategory('all', this)">Semua</button>
+                    <button class="category-btn" data-category="laporan" onclick="filterCategory('laporan', this)">📝 Laporan</button>
+                    <button class="category-btn" data-category="keamanan" onclick="filterCategory('keamanan', this)">🔒 Keamanan</button>
+                    <button class="category-btn" data-category="pengambilan" onclick="filterCategory('pengambilan', this)">📦 Pengambilan</button>
+                    <button class="category-btn" data-category="akun" onclick="filterCategory('akun', this)">👤 Akun</button>
+                </div>
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- FAQ SECTION -->
+            <!-- ============================================================ -->
+            <div class="faq-section">
+
+                <div id="faqContainer">
+
+                    <!-- FAQ 1 -->
+                    <div class="faq-item" data-category="laporan">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Bagaimana cara mengaktifkan Laporan Penemuan Barang?</h3>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>
+                                Setelah mengisi formulir Laporan Temuan, status laporan Anda akan tersimpan sebagai <strong>Draft</strong>. Anda wajib membawa barang fisik tersebut ke <strong>Pos Satpam Utama</strong>, lalu pindai (scan) <strong>Barcode Validasi Fisik</strong> yang tertera di meja petugas posko untuk mengaktifkan postingan di beranda publik.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 2 -->
+                    <div class="faq-item" data-category="keamanan">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Mengapa foto barang temuan di beranda terlihat buram (blur)?</h3>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>
+                                Hal ini merupakan <strong>fitur keamanan</strong> kami. Foto barang sengaja disamarkan agar tidak ada oknum yang berusaha mengklaim barang secara tidak sah. Hanya pemilik asli yang dapat melihat detail penuh setelah verifikasi.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 3 -->
+                    <div class="faq-item" data-category="laporan">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Apa yang terjadi jika bukti digital saya dinilai kurang kuat?</h3>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>
+                                Pengajuan Anda <strong>tidak akan ditolak</strong>. Sistem kami menyediakan jalur penyelamat kemanusiaan. Anda akan diarahkan untuk melengkapi bukti tambahan atau melakukan verifikasi langsung di Pos Satpam Utama.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 4 -->
+                    <div class="faq-item" data-category="pengambilan">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Bagaimana proses akhir pengambilan barang di Pos Satpam?</h3>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Jika klaim Anda disetujui, Anda akan menerima <strong>Token Pengambilan Unik</strong>:</p>
+                            <div class="token-box">LF-XXXX-XXXX</div>
+                            <p>Token ini harus ditunjukkan kepada petugas Pos Satpam Utama bersama dengan KTP/KTM untuk pengambilan barang.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 5 -->
+                    <div class="faq-item" data-category="keamanan">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Apakah data pribadi saya aman di platform ini?</h3>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>
+                                Ya, data pribadi Anda dilindungi dengan enkripsi tingkat tinggi. Kami tidak membagikan informasi Anda kepada pihak ketiga tanpa izin. Sistem kami juga tidak mempertemukan penemu dan pencari secara langsung untuk menjaga privasi.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 6 -->
+                    <div class="faq-item" data-category="pengambilan">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Berapa lama proses verifikasi barang berlangsung?</h3>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>
+                                Proses verifikasi biasanya berlangsung <strong>1-2 hari kerja</strong> setelah barang fisik diserahkan ke Pos Satpam Utama. Anda akan mendapatkan notifikasi melalui email atau WhatsApp setelah status verifikasi selesai.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ 7 -->
+                    <div class="faq-item" data-category="akun">
+                        <div class="faq-question" onclick="toggleFaq(this)">
+                            <h3>Bagaimana cara reset kata sandi jika lupa?</h3>
+                            <span class="arrow">▼</span>
+                        </div>
+                        <div class="faq-answer">
+                            <p>Untuk mereset kata sandi, ikuti langkah-langkah berikut:</p>
+                            <ul>
+                                <li>Klik <strong>"Lupa Kata Sandi?"</strong> pada halaman login</li>
+                                <li>Masukkan alamat email yang terdaftar</li>
+                                <li>Kami akan mengirimkan link reset ke email Anda</li>
+                                <li>Klik link tersebut dan buat kata sandi baru</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- No Results -->
+                <div class="no-results" id="noResults" style="display:none;">
+                    <div class="icon">🔍</div>
+                    <h3>Tidak ada hasil ditemukan</h3>
+                    <p>Coba gunakan kata kunci lain atau pilih kategori yang berbeda.</p>
+                </div>
+
+            </div>
+
+            <!-- ============================================================ -->
+            <!-- CONTACT SECTION -->
+            <!-- ============================================================ -->
+            <div class="contact-section">
+                <div class="contact-box">
+                    <div class="contact-icon">💬</div>
+                    <h3>Masih bingung?</h3>
+                    <p>Hubungi tim administratif kami melalui WhatsApp atau Email kami.</p>
+                    <div class="contact-buttons">
+                        <a href="#" class="btn-contact btn-whatsapp">
+                            💬 WhatsApp
+                        </a>
+                        <a href="#" class="btn-contact btn-email">
+                            ✉️ Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================================ -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span class="brand">LostFound Connect</span>
+            <span class="copyright">© 2024 Universitas Perjuangan Tasikmalaya</span>
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // MOBILE MENU TOGGLE
+            // ============================================================
+            var menuToggle = document.getElementById('menuToggle');
+            var mobileNav = document.getElementById('mobileNav');
+
+            if (menuToggle && mobileNav) {
+                menuToggle.addEventListener('click', function() {
+                    mobileNav.classList.toggle('open');
+                });
+            }
+
+            var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
+            mobileLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    mobileNav.classList.remove('open');
+                });
+            });
+
+            // ============================================================
+            // FAQ ACCORDION
+            // ============================================================
+            window.toggleFaq = function(element) {
+                var answer = element.nextElementSibling;
+                var arrow = element.querySelector('.arrow');
+
+                // If clicking on already open item, close it
+                if (answer.classList.contains('open')) {
+                    answer.classList.remove('open');
+                    arrow.classList.remove('open');
+                    return;
+                }
+
+                // Close all others
+                var allAnswers = document.querySelectorAll('.faq-answer');
+                var allArrows = document.querySelectorAll('.faq-question .arrow');
+
+                allAnswers.forEach(function(item) {
+                    item.classList.remove('open');
+                });
+                allArrows.forEach(function(item) {
+                    item.classList.remove('open');
+                });
+
+                // Open clicked item
+                answer.classList.add('open');
+                arrow.classList.add('open');
+            };
+
+            // ============================================================
+            // SEARCH FAQ
+            // ============================================================
+            window.searchFaq = function() {
+                var input = document.getElementById('searchInput');
+                var query = input.value.toLowerCase().trim();
+                var faqItems = document.querySelectorAll('.faq-item');
+                var noResults = document.getElementById('noResults');
+                var hasResults = false;
+
+                if (!query) {
+                    faqItems.forEach(function(item) {
+                        item.style.display = 'block';
+                    });
+                    noResults.style.display = 'none';
+                    return;
+                }
+
+                faqItems.forEach(function(item) {
+                    var question = item.querySelector('.faq-question h3');
+                    var answer = item.querySelector('.faq-answer');
+                    var text = question ? question.textContent.toLowerCase() : '';
+                    var answerText = answer ? answer.textContent.toLowerCase() : '';
+
+                    if (text.includes(query) || answerText.includes(query)) {
+                        item.style.display = 'block';
+                        hasResults = true;
+                        // Auto-open the matching FAQ
+                        var q = item.querySelector('.faq-question');
+                        if (q && !answer.classList.contains('open')) {
+                            toggleFaq(q);
+                        }
+                    } else {
+                        item.style.display = 'none';
+                        // Close if hidden
+                        var q = item.querySelector('.faq-question');
+                        if (q) {
+                            var ans = q.nextElementSibling;
+                            var arr = q.querySelector('.arrow');
+                            if (ans) ans.classList.remove('open');
+                            if (arr) arr.classList.remove('open');
+                        }
+                    }
+                });
+
+                noResults.style.display = hasResults ? 'none' : 'block';
+            };
+
+            // ============================================================
+            // FILTER BY CATEGORY
+            // ============================================================
+            window.filterCategory = function(category, btn) {
+                var faqItems = document.querySelectorAll('.faq-item');
+                var searchInput = document.getElementById('searchInput');
+                var noResults = document.getElementById('noResults');
+                var hasResults = false;
+
+                // Reset search
+                searchInput.value = '';
+
+                // Update active button
+                var allBtns = document.querySelectorAll('.category-btn');
+                allBtns.forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                if (btn) {
+                    btn.classList.add('active');
+                } else {
+                    allBtns.forEach(function(b) {
+                        if (b.getAttribute('data-category') === category) {
+                            b.classList.add('active');
+                        }
+                    });
+                }
+
+                faqItems.forEach(function(item) {
+                    var itemCategory = item.getAttribute('data-category');
+                    if (category === 'all' || itemCategory === category) {
+                        item.style.display = 'block';
+                        hasResults = true;
+                    } else {
+                        item.style.display = 'none';
+                        // Close if hidden
+                        var q = item.querySelector('.faq-question');
+                        if (q) {
+                            var ans = q.nextElementSibling;
+                            var arr = q.querySelector('.arrow');
+                            if (ans) ans.classList.remove('open');
+                            if (arr) arr.classList.remove('open');
+                        }
+                    }
+                });
+
+                noResults.style.display = hasResults ? 'none' : 'block';
+            };
+
+            // ============================================================
+            // SEARCH ON ENTER KEY
+            // ============================================================
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    searchFaq();
+                }
+            });
+
+            // ============================================================
+            // CLEAR SEARCH ON INPUT EMPTY
+            // ============================================================
+            document.getElementById('searchInput').addEventListener('input', function() {
+                if (this.value === '') {
+                    var faqItems = document.querySelectorAll('.faq-item');
+                    faqItems.forEach(function(item) {
+                        item.style.display = 'block';
+                    });
+                    document.getElementById('noResults').style.display = 'none';
+                    // Reset to "Semua" category
+                    var allBtns = document.querySelectorAll('.category-btn');
+                    allBtns.forEach(function(b) {
+                        b.classList.remove('active');
+                        if (b.getAttribute('data-category') === 'all') {
+                            b.classList.add('active');
+                        }
+                    });
+                }
+            });
+
+            console.log('✅ Help page loaded successfully!');
+
+        })();
+    </script>
+
+</body>
+</html>

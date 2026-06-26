@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tentang Kami - LostFound Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           BASE STYLES & LAYOUT
+           ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #ffffff; color: #131b2e; line-height: 1.6; }
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+        /* NAVBAR (Diperbaiki: Align Center & Height 72px) */
+        .navbar { height: 72px; border-bottom: 1px solid #f1f5f9; background: #ffffff; position: sticky; top: 0; z-index: 100; display: flex; align-items: center; }
+        .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+        .logo { color: #a33900; font-weight: 700; font-size: 18px; }
+        
+        .nav-links { display: flex; gap: 28px; align-items: center; height: 100%; }
+        .nav-links a { color: #64748b; font-size: 14px; font-weight: 500; height: 100%; display: flex; align-items: center; }
+        .nav-links a.active { color: #a33900; font-weight: 700; border-bottom: 3px solid #a33900; }
+        
+        .user-nav { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; height: 100%; }
+        .avatar { width: 32px; height: 32px; border-radius: 50%; background: #d94e06; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+
+        /* HERO SECTION - (image_29811c.png) */
+        .about-hero { background: #f8fafc; padding: 60px 24px; text-align: center; }
+        .misi-badge { display: inline-block; background: #fff1eb; color: #a33900; font-size: 11px; font-weight: 700; padding: 4px 16px; border-radius: 20px; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .about-hero h1 { font-size: 28px; font-weight: 700; color: #131b2e; }
+
+        /* BREADCRUMB */
+        .breadcrumb-row { padding: 24px 0; font-size: 13px; color: #64748b; }
+        .breadcrumb-row span { color: #131b2e; font-weight: 600; }
+
+        /* CONTENT */
+        .main-content { max-width: 900px; margin: 0 auto 80px auto; }
+        .section-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #131b2e; }
+        .desc-text { font-size: 14.5px; color: #475569; margin-bottom: 40px; }
+        
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 60px; }
+        .card-box { border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; background: #ffffff; }
+        .card-box .icon { font-size: 24px; margin-bottom: 12px; }
+        .card-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+        .card-box p { font-size: 14px; color: #64748b; line-height: 1.5; }
+
+        .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
+        .feature-card { text-align: center; padding: 20px; }
+        .feature-card .icon { font-size: 24px; margin-bottom: 12px; color: #a33900; }
+        .feature-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+        .feature-card p { font-size: 13px; color: #64748b; line-height: 1.4; }
+
+        .quote-box { background: #fff4ed; border-radius: 12px; padding: 32px; text-align: center; border: 1px solid #ffd3c0; }
+        .quote-text { font-size: 16px; font-style: italic; color: #131b2e; margin-bottom: 16px; line-height: 1.6; font-weight: 500; }
+        .quote-author { font-size: 14px; font-weight: 700; color: #a33900; }
+
+        .footer { background: #eaedff; padding: 24px; text-align: center; font-size: 13px; color: #5a4138; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">LostFound Connect</div>
+            <nav class="nav-links">
+                <a href="index.html">Beranda</a>
+                <a href="tentangkami.html" class="active">Tentang Kami</a>
+                <a href="pusatbantuan.html">Pusat Bantuan</a>
+            </nav>
+            <div class="user-nav">
+                <div class="notification">🔔</div>
+                <div class="avatar">AD</div>
+                <span>Ahmad D.</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="about-hero">
+        <div class="misi-badge">Misi Keamanan Kampus</div>
+        <h1>Membangun Integritas Lewat Teknologi</h1>
+    </section>
+
+    <main class="container main-content">
+        <!-- Breadcrumb diletakkan di bawah Hero -->
+        <nav class="breadcrumb-row">Beranda › <span>Tentang Kami</span></nav>
+
+        <h2 class="section-title">Tentang LostFound Connect</h2>
+        <p class="desc-text">Sistem Informasi Manajemen Barang Hilang dan Temuan Terintegrasi Universitas Perjuangan Tasikmalaya.</p>
+
+        <div class="info-grid">
+            <div class="card-box">
+                <div class="icon">📂</div>
+                <h3>Latar Belakang</h3>
+                <p>LostFound Connect hadir sebagai solusi digital untuk mengatasi hilangnya barang berharga di lingkungan kampus UNPER. Seringkali, pengumuman kehilangan di grup media sosial tidak efisien, rahasia ciri barang bocor, dan rawan memicu penipuan bermodus tebusan.</p>
+            </div>
+            <div class="card-box">
+                <div class="icon">🛡️</div>
+                <h3>Aturan Utama</h3>
+                <p>Platform ini menerapkan asas 'Sistem Verifikasi Terpusat'. Kami tidak mempertemukan penemu dan pencari barang secara langsung demi menjaga privasi dan keamanan. Seluruh barang temuan wajib diamankan secara fisik di Pos Satpam Utama Kampus selaku pusat kendali logistik dan hukum.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title" style="text-align: center;">Mengapa Menggunakan Platform Kami?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon">❤️</div>
+                <h4>Privasi Terjaga</h4>
+                <p>Identitas penemu dan pencari dirahasiakan sepenuhnya untuk mencegah penyalahgunaan data.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">✅</div>
+                <h4>Verifikasi Ketat</h4>
+                <p>Hanya petugas berwenang yang dapat memvalidasi kepemilikan barang melalui bukti otentik.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">🏛️</div>
+                <h4>Legalitas Jelas</h4>
+                <p>Terintegrasi dengan sistem keamanan kampus Universitas Perjuangan Tasikmalaya.</p>
+            </div>
+        </div>
+
+        <div class="quote-box">
+            <p class="quote-text">"Kejujuran adalah pondasi utama komunitas kita. Platform ini hanyalah alat untuk menjembatani kebaikan hati Anda."</p>
+            <p class="quote-author">— Tim Keamanan Kampus UNPER</p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <span>LostFound Connect &copy; 2026 Universitas Perjuangan Tasikmalaya</span>
+        </div>
+    </footer>
+</body>
+</html>

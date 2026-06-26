@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Antrean Barang Temuan - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+
+        /* ============================================================
+                   SIDEBAR STYLE VISUAL FIGMA (COLOR #0F172A)
+                   ============================================================ */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #0F172A;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px 28px 12px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #ea580c;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 20px 12px 8px 12px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item span {
+            font-size: 16px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: #f1f5f9;
+        }
+
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            font-weight: 600;
+            border-left: 3px solid #ea580c;
+            border-radius: 4px 8px 8px 4px;
+            padding-left: 9px;
+        }
+        
+        .badge-orange {
+            margin-left: auto;
+            background: #ea580c;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-dark {
+            margin-left: auto;
+            background: #1e293b;
+            color: #94a3b8;
+            font-size: 10px;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 8px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #334155;
+        }
+
+        .user-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-meta .name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+
+        .user-meta .role {
+            font-size: 10px;
+            color: #475569;
+        }
+        
+        .logout-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #f87171;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px;
+        }
+
+        /* ============================================================
+                   MAIN CONTENT LAYOUT
+                   ============================================================ */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+        }
+
+        .header-title p {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 260px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            font-size: 13px;
+            color: #0f172a;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: #ea580c;
+            box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.08);
+        }
+
+        .search-input::placeholder {
+            color: #94a3b8;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .info-alert-box {
+            background: #fff7ed;
+            border: 1px solid #ffedd5;
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .info-alert-icon {
+            font-size: 15px;
+            color: #ea580c;
+            font-weight: bold;
+        }
+
+        .info-alert-text {
+            font-size: 12px;
+            color: #c2410c;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   TABLE WORKSPACE CONTAINER
+                   ============================================================ */
+        .table-wrapper-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+        }
+
+        .antrean-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .antrean-table th {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 16px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .antrean-table tr {
+            transition: background 0.15s ease;
+        }
+
+        .antrean-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .antrean-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13.5px;
+            color: #334155;
+            vertical-align: middle;
+        }
+
+        .col-id {
+            color: #ea580c !important;
+            font-weight: 700;
+        }
+
+        .col-item-flex {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .item-icon-box {
+            width: 32px;
+            height: 32px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .col-location-flex {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #64748b;
+        }
+
+        .status-pill-draft {
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .actions-flex {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-table-action {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-table-action.release {
+            background: #16a34a;
+            color: #ffffff;
+        }
+
+        .btn-table-action.release:hover {
+            background: #15803d;
+            transform: translateY(-0.5px);
+        }
+
+        .btn-table-action.cancel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+
+        .btn-table-action.cancel:hover {
+            background: #f1f5f9;
+            color: #334155;
+            border-color: #cbd5e1;
+        }
+
+        .table-footer-pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: #ffffff;
+        }
+
+        .entries-info {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .pagination-list {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .page-link-item {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .page-link-item:hover:not(.active):not(.arrow) {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .page-link-item.active {
+            background: #ea580c;
+            color: #ffffff;
+        }
+
+        .page-link-item.arrow {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+
+        /* ============================================================
+                   POP-UP MODAL PEMBATALAN STYLE
+                   ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 28px;
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            animation: modalPop 0.25s ease-out;
+            border-bottom: 5px solid #dc2626;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.96); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon-circle {
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px auto;
+            background: #fef2f2;
+            color: #dc2626;
+            font-size: 30px;
+        }
+
+        .modal-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 14px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-card p {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-form-label {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+        }
+
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .modal-select {
+            width: 100%;
+            padding: 14px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 13.5px;
+            color: #334155;
+            font-weight: 500;
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .select-wrapper::after {
+            content: '▼';
+            font-size: 9px;
+            color: #94a3b8;
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .modal-btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .btn-modal-secondary {
+            flex: 1;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #1e293b;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-modal-secondary:hover {
+            background: #f8fafc;
+        }
+
+        .btn-modal-danger {
+            flex: 1;
+            background: #dc2626;
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR LEFT PANEL -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">L</div>
+            <div class="logo-text">LostFound</div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-label">Main Menu</div>
+            <a href="../dashboard/index.html" class="menu-item">
+                <span>📊</span> Dashboard
+            </a>
+            <a href="index.html" class="menu-item active">
+                <span>📦</span> Antrean Temuan <span class="badge-orange">3</span>
+            </a>
+            <a href="../verifikasi/index.html" class="menu-item">
+                <span>📝</span> Verifikasi Klaim <span class="badge-dark">5</span>
+            </a>
+            <a href="../arsip/index.html" class="menu-item">
+                <span>📁</span> Arsip Laporan
+            </a>
+
+            <div class="menu-label">Settings</div>
+            <a href="../manajemen/index.html" class="menu-item">
+                <span>👥</span> Manajemen User
+            </a>
+            <a href="../konfigurasi/index.html" class="menu-item">
+                <span>⚙️</span> Konfigurasi Sistem
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Petugas" class="user-avatar">
+                <div class="user-meta">
+                    <div class="name">Petugas Posko</div>
+                    <div class="role">Super Admin</div>
+                </div>
+            </div>
+            <a href="../auth/login.html" class="logout-link">
+                <span>🚪</span> Keluar Sesi
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+        
+        <header class="content-header">
+            <div class="header-title">
+                <h1>Antrean Barang Temuan</h1>
+                <p>Kelola dan terbitkan laporan temuan dari mahasiswa.</p>
+            </div>
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Cari ID atau barang...">
+            </div>
+        </header>
+
+        <div class="info-alert-box">
+            <span class="info-alert-icon">ⓘ</span>
+            <p class="info-alert-text">
+                Data di tabel ini adalah objek temuan yang baru masuk dan masih tertahan di loket. Data akan otomatis masuk ke Feed Publik setelah divalidasi oleh petugas.
+            </p>
+        </div>
+
+        <!-- TABLE WORKSPACE CARD -->
+        <section class="table-wrapper-card">
+            <table class="antrean-table">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Id Item</th>
+                        <th style="width: 26%;">Nama Barang</th>
+                        <th style="width: 16%;">Penemu</th>
+                        <th style="width: 16%;">Lokasi</th>
+                        <th style="width: 10%;">Status</th>
+                        <th style="width: 22%;">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Baris 1 (Andi) -> SEKARANG KOMPAK KE detail.html -->
+                    <tr onclick="window.location.href='detail.html'" style="cursor: pointer;">
+                        <td class="col-id">#FND-104</td>
+                        <td>
+                            <div class="col-item-flex">
+                                <div class="item-icon-box">👝</div>
+                                <span>Dompet Kulit Cokelat</span>
+                            </div>
+                        </td>
+                        <td>Andi Wijaya</td>
+                        <td>
+                            <div class="col-location-flex">
+                                <span>📍</span> Kantin Utama
+                            </div>
+                        </td>
+                        <td><span class="status-pill-draft">DRAFT</span></td>
+                        <td>
+                            <div class="actions-flex" onclick="event.stopPropagation();">
+                                <button class="btn-table-action release" onclick="handleRelease('#FND-104')">Terima & Rilis</button>
+                                <button class="btn-table-action cancel" onclick="handleCancel('#FND-104', 'Andi Wijaya')">Batalkan</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Baris 2 (Siti) -> SEKARANG KOMPAK KE detail.html -->
+                    <tr onclick="window.location.href='detail.html'" style="cursor: pointer;">
+                        <td class="col-id">#FND-105</td>
+                        <td>
+                            <div class="col-item-flex">
+                                <div class="item-icon-box">💻</div>
+                                <span>MacBook Pro 14" Silver</span>
+                            </div>
+                        </td>
+                        <td>Siti Aminah</td>
+                        <td>
+                            <div class="col-location-flex">
+                                <span>📍</span> Perpustakaan Lt. 2
+                            </div>
+                        </td>
+                        <td><span class="status-pill-draft">DRAFT</span></td>
+                        <td>
+                            <div class="actions-flex" onclick="event.stopPropagation();">
+                                <button class="btn-table-action release" onclick="handleRelease('#FND-105')">Terima & Rilis</button>
+                                <button class="btn-table-action cancel" onclick="handleCancel('#FND-105', 'Siti Aminah')">Batalkan</button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Baris 3 (Budi) -> SEKARANG KOMPAK KE detail.html -->
+                    <tr onclick="window.location.href='detail.html'" style="cursor: pointer;">
+                        <td class="col-id">#FND-106</td>
+                        <td>
+                            <div class="col-item-flex">
+                                <div class="item-icon-box">🔑</div>
+                                <span>Kunci Motor Honda</span>
+                            </div>
+                        </td>
+                        <td>Budi Santoso</td>
+                        <td>
+                            <div class="col-location-flex">
+                                <span>📍</span> Parkir Gedung C
+                            </div>
+                        </td>
+                        <td><span class="status-pill-draft">DRAFT</span></td>
+                        <td>
+                            <div class="actions-flex" onclick="event.stopPropagation();">
+                                <button class="btn-table-action release" onclick="handleRelease('#FND-106')">Terima & Rilis</button>
+                                <button class="btn-table-action cancel" onclick="handleCancel('#FND-106', 'Budi Santoso')">Batalkan</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="table-footer-pagination">
+                <div class="entries-info">
+                    Showing 1-3 of 12 entries
+                </div>
+                <ul class="pagination-list">
+                    <li class="page-link-item arrow">&lt;</li>
+                    <li class="page-link-item active">1</li>
+                    <li class="page-link-item">2</li>
+                    <li class="page-link-item">3</li>
+                    <li class="page-link-item arrow">&gt;</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- KELOMPOK MODAL PEMBATALAN -->
+    <div class="modal-overlay" id="cancelModal">
+        <div class="modal-card">
+            <div class="modal-icon-circle">⚠️</div>
+            <h2>Batalkan Laporan?</h2>
+            <p>
+                Anda akan membatalkan laporan temuan dari <strong id="targetPenemu">Andi Wijaya</strong>.
+                <span style="color: #94a3b8; display: block; margin-top: 4px;">Tindakan ini tidak dapat dibatalkan.</span>
+            </p>
+            
+            <div style="text-align: left; margin-bottom: 24px;">
+                <label class="modal-form-label">Alasan Pembatalan</label>
+                <div class="select-wrapper">
+                    <select class="modal-select">
+                        <option value="invalid">Informasi Tidak Valid</option>
+                        <option value="spam">Laporan Palsu / Spam</option>
+                        <option value="duplicate">Laporan Duplikat</option>
+                        <option value="other">Alasan Lainnya</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="modal-btn-group">
+                <button class="btn-modal-secondary" onclick="closeCancelModal()">Tidak</button>
+                <button class="btn-modal-danger" onclick="executeCancellation()">Ya, Batalkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGIKA INTERAKSI POP-UP -->
+    <script>
+        function handleRelease(itemId) {window.location.href = "detail.html";
+}
+
+        function handleCancel(itemId, penemuName) {
+            document.getElementById('targetPenemu').innerText = penemuName;
+            document.getElementById('cancelModal').style.display = 'flex';
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').style.display = 'none';
+        }
+
+        function executeCancellation() {
+            alert('Sukses! Laporan telah dibatalkan dan dihapus dari antrean.');
+            closeCancelModal();
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('cancelModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

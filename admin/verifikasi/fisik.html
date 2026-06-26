@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengecekan Fisik Barang - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+
+        /* ============================================================
+                   SIDEBAR STYLE VISUAL FIGMA (COLOR #0F172A)
+                   ============================================================ */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #0F172A;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px 28px 12px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #ea580c;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 20px 12px 8px 12px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+
+        .menu-item span {
+            font-size: 16px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: #f1f5f9;
+        }
+
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            font-weight: 600;
+            border-left: 3px solid #ea580c;
+            border-radius: 4px 8px 8px 4px;
+            padding-left: 9px;
+        }
+        
+        .badge-orange {
+            margin-left: auto;
+            background: #ea580c;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-dark {
+            margin-left: auto;
+            background: #1e293b;
+            color: #94a3b8;
+            font-size: 10px;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-meta-flex {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #475569;
+            font-size: 12px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 8px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #334155;
+        }
+
+        .user-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-meta .name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+
+        .user-meta .role {
+            font-size: 10px;
+            color: #475569;
+        }
+        
+        .logout-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #f87171;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px;
+            transition: 0.2s;
+        }
+
+        /* ============================================================
+                   MAIN CONTENT AREA
+                   ============================================================ */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ============================================================
+                   LANGKAH 1: PENGECEKAN FISIK CARD
+                   ============================================================ */
+        .inspection-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 36px;
+            width: 100%;
+            max-width: 760px;
+            padding: 48px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+            position: relative;
+        }
+
+        .back-nav-row {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .btn-back-link {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .inspection-card h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .inspection-card .instruction-text {
+            font-size: 12.5px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .inspection-card .instruction-text strong {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        .main-showcase-img {
+            width: 100%;
+            height: 360px;
+            border-radius: 24px;
+            object-fit: cover;
+            margin-bottom: 32px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .comparison-grid-box {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 20px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .info-pane .panel-label-orange {
+            font-size: 9px;
+            font-weight: 700;
+            color: #ea580c;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .info-pane .quote-text-line {
+            font-size: 13px;
+            color: #0f172a;
+            font-weight: 500;
+            line-height: 1.6;
+            font-style: italic;
+            border-left: 3px solid #ea580c;
+            padding-left: 14px;
+        }
+
+        .info-pane .panel-label-blue {
+            font-size: 9px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .posko-desc-flex {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .posko-icon-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .posko-pure-text {
+            font-size: 13px;
+            color: #0f172a;
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+        .action-row-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .btn-action-verify {
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-action-verify.differ {
+            background: #ffffff;
+            border: 1px solid #fee2e2;
+            color: #ef4444;
+        }
+
+        .btn-action-verify.differ:hover {
+            background: #fef2f2;
+        }
+
+        .btn-action-verify.match {
+            background: #ea580c;
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(234, 88, 12, 0.2);
+        }
+
+        .btn-action-verify.match:hover {
+            background: #d94e06;
+        }
+
+        /* ============================================================
+                   NEW!! LANGKAH 2: SURAT PERNYATAAN CARD (FRAME 3.7)
+                   ============================================================ */
+        .statement-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 36px;
+            width: 100%;
+            max-width: 840px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+            display: none; /* Sembunyi di awal */
+        }
+
+        .step2-topbar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .btn-back-arrow {
+            font-size: 18px;
+            color: #64748b;
+            background: none;
+            cursor: pointer;
+        }
+
+        .step2-header-text h1 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .step2-status-badge {
+            font-size: 9px;
+            font-weight: 700;
+            color: #ea580c;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+            display: block;
+        }
+
+        .step2-item-title {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .step2-item-title h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .step2-item-title p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Grid Dua Kamera */
+        .camera-box-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .camera-panel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .camera-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .camera-dot-active {
+            width: 6px;
+            height: 6px;
+            background: #ef4444;
+            border-radius: 50%;
+        }
+
+        .camera-display-frame {
+            width: 100%;
+            height: 190px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 14px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .btn-retake-action {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Checklist Keamanan Box */
+        .security-checklist-block {
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+
+        .security-checklist-block .block-title {
+            font-size: 9px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+            margin-bottom: 18px;
+            display: block;
+        }
+
+        .checklist-grid-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            text-align: left;
+        }
+
+        .checklist-item-card {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .checklist-item-card input[type="checkbox"] {
+            display: none;
+        }
+
+        .custom-box-indicator {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #cbd5e1;
+            border-radius: 50%; /* Bulat sesuai gambar figma baru */
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            font-size: 10px;
+            color: transparent;
+        }
+
+        .checklist-item-card input[type="checkbox"]:checked + .custom-box-indicator {
+            background: #16a34a;
+            border-color: #16a34a;
+            color: #ffffff;
+        }
+
+        .checklist-item-card input[type="checkbox"]:checked + .custom-box-indicator::after {
+            content: '✓';
+        }
+
+        .checklist-card-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #334155;
+            line-height: 1.4;
+        }
+
+        /* Tombol Selesai Final */
+        .btn-submit-completion {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            background: #cbd5e1; /* Default abu-abu terkunci figma */
+            cursor: not-allowed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-submit-completion.active-orange {
+            background: #ea580c;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(234, 88, 12, 0.2);
+        }
+
+        .step2-meta-footer {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 20px;
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   MODAL POP-UP OVERLAYS
+                   ============================================================ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-circle-icon-err {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #fef2f2;
+            color: #ef4444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border: 1px solid #fee2e2;
+        }
+
+        .modal-box h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .modal-box p {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .status-highlight-orange {
+            color: #ea580c;
+            font-weight: 600;
+        }
+
+        .btn-modal-dashboard {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            background: #ea580c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .modal-faint-link {
+            font-size: 11.5px;
+            color: #94a3b8;
+        }
+        
+        .modal-faint-link strong {
+            color: #475569;
+        }
+
+        .bottom-security-info {
+            margin-top: 32px;
+            font-size: 10px;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR LEFT PANEL DENGAN BG COLOR #0F172A -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">L</div>
+            <div class="logo-text">LostFound</div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-label">Main Menu</div>
+            <a href="../dashboard/index.html" class="menu-item">
+                <span>📊</span> Dashboard
+            </a>
+            <a href="../antrean/index.html" class="menu-item">
+                <span>📦</span> Antrean Temuan <span class="badge-orange">3</span>
+            </a>
+            <a href="index.html" class="menu-item active">
+                <span>📝</span> Verifikasi Klaim
+            </a>
+            <a href="../arsip/index.html" class="menu-item">
+                <span>📁</span> Arsip Laporan
+                <div class="menu-meta-flex">... <span class="badge-dark">5</span></div>
+            </a>
+
+            <div class="menu-label">Settings</div>
+            <a href="../manajemen/index.html" class="menu-item">
+                <span>👥</span> Manajemen User
+            </a>
+            <a href="../konfigurasi/index.html" class="menu-item">
+                <span>⚙️</span> Konfigurasi Sistem
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Petugas" class="user-avatar">
+                <div class="user-meta">
+                    <div class="name">Petugas Posko</div>
+                    <div class="role">Super Admin</div>
+                </div>
+            </div>
+            <a href="../auth/login.html" class="logout-link">
+                <span>🚪</span> Keluar Sesi
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+
+        <!-- ============================================================
+                   CONTAINER LANGKAH 1: PENGECEKAN FISIK BARANG
+                   ============================================================ */ -->
+        <section class="inspection-card" id="step-1-view">
+            <div class="back-nav-row">
+                <a href="index.html" class="btn-back-link">← BATAL & KEMBALI</a>
+            </div>
+
+            <h1>Pengecekan Fisik Barang</h1>
+            <p class="instruction-text">
+                Petugas wajib mengambil fisik barang dari laci posko dan memperlihatkannya langsung kepada <br>
+                <strong>Ahmad Dahlan</strong> sebelum melanjutkan prosedur serah terima.
+            </p>
+
+            <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&q=80" alt="Pengecekan Dompet Kulit Cokelat" class="main-showcase-img">
+
+            <div class="comparison-grid-box">
+                <div class="info-pane">
+                    <span class="panel-label-orange">Ciri dari Mahasiswa</span>
+                    <div class="quote-text-line">
+                        "Dompet Levi's cokelat, ada goresan di pojok kanan bawah."
+                    </div>
+                </div>
+
+                <div class="info-pane">
+                    <span class="panel-label-blue">Barang Fisik di Posko</span>
+                    <div class="posko-desc-flex">
+                        <div class="posko-icon-card">📋</div>
+                        <div class="posko-pure-text">
+                            Dompet lipat kulit cokelat tua, merk Levi's original, kondisi bekas pakai.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-row-buttons">
+                <button class="btn-action-verify differ" onclick="openModal('modalCancel')">
+                    ✕ Fisik Berbeda
+                </button>
+                <button class="btn-action-verify match" onclick="navigateToStep2()">
+                    Ya, Fisik Sesuai ➔
+                </button>
+            </div>
+
+            <div class="bottom-security-info">
+                ID KLAIM: #CLM-98231-UP • SECURITY SESSION ACTIVE
+            </div>
+        </section>
+
+
+        
+        <section class="statement-card" id="step-2-view">
+            <!-- Header Atas Surat Pernyataan -->
+            <div class="step2-topbar">
+                <button class="btn-back-arrow" onclick="navigateToStep1()">←</button>
+                <div class="step2-header-text">
+                    <h1>Penyerahan via Surat Pernyataan</h1>
+                    <span class="step2-status-badge">STATUS: MEMBUTUHKAN BERKAS FISIK</span>
+                </div>
+            </div>
+
+            <!-- Detail ID Laporan -->
+            <div class="step2-item-title">
+                <h2>Dompet Levi's</h2>
+                <p>ID Klaim: <strong>#CLM-98231-UP</strong></p>
+            </div>
+
+            <!-- Grid Kamera Berkas & Penerima -->
+            <div class="camera-box-grid">
+                <!-- Kamera 1 -->
+                <div class="camera-panel">
+                    <div class="camera-panel-header">
+                        <span>Kamera 1: Surat Pernyataan</span>
+                        <div class="camera-dot-active"></div>
+                    </div>
+                    <img src="#" alt="Foto Berkas Surat Pernyataan" class="camera-display-frame">
+                    <button class="btn-retake-action">🔄 Ambil Ulang Foto Berkas</button>
+                </div>
+
+                <!-- Kamera 2 -->
+                <div class="camera-panel">
+                    <div class="camera-panel-header">
+                        <span>Kamera 2: Foto Penerima</span>
+                        <div class="camera-dot-active"></div>
+                    </div>
+                    <img src="#" alt="Foto Live Kamera Penerima" class="camera-display-frame">
+                    <button class="btn-retake-action">👤 Ambil Ulang Foto Penerima</button>
+                </div>
+            </div>
+
+            <!-- Checklist Verifikasi Keamanan Grid -->
+            <div class="security-checklist-block">
+                <span class="block-title">Checklist Verifikasi Keamanan</span>
+                
+                <div class="checklist-grid-row">
+                    <!-- Syarat 1 -->
+                    <label class="checklist-item-card">
+                        <input type="checkbox" id="chkRequirement1" onchange="validateStep2Form()">
+                        <span class="custom-box-indicator"></span>
+                        <div class="checklist-card-text">
+                            Surat Pernyataan telah ditandatangani di atas Materai Rp10.000
+                        </div>
+                    </label>
+
+                    <!-- Syarat 2 -->
+                    <label class="checklist-item-card">
+                        <input type="checkbox" id="chkRequirement2" onchange="validateStep2Form()">
+                        <span class="custom-box-indicator"></span>
+                        <div class="checklist-card-text">
+                            Wajah penerima terlihat jelas & sesuai identitas
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Tombol Final Submit Selesaikan Pengembalian -->
+            <button class="btn-submit-completion" id="btnFinalSubmit" onclick="submitFinalData()">
+                <span>🔏</span> SELESAIKAN PENGEMBALIAN BARANG
+            </button>
+
+            <!-- Metadata Timestamp area bawah figma -->
+            <div class="step2-meta-footer">
+                <span>🕒 2026-05-22 14:32 WIB</span>
+                <span>📍 POSKO KEAMANAN PUSAT</span>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- POP-UP MODAL KLAIM DIBATALKAN -->
+    <div class="modal-overlay" id="modalCancel">
+        <div class="modal-box">
+            <div class="modal-circle-icon-err">!</div>
+            <h2>Klaim Dibatalkan</h2>
+            <p>
+                Sistem telah membatalkan pencocokan ini secara otomatis. Laporan kehilangan atas nama <strong>Ahmad D.</strong> kini berstatus <span class="status-highlight-orange">Aktif</span> kembali, dan barang temuan telah dipublikasikan ulang ke Found Feed.
+            </p>
+            <button class="btn-modal-dashboard" onclick="window.location.href='index.html'">
+                📊 Kembali ke Dashboard
+            </button>
+            <span class="modal-faint-link">Butuh bantuan? <strong>Hubungi Admin</strong></span>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT CONTROLLER MULTI-STEP & VALIDASI -->
+    <script>
+        // Navigasi Pindah Halaman Mundur-Maju
+        function navigateToStep2() {
+            document.getElementById('step-1-view').style.display = 'none';
+            document.getElementById('step-2-view').style.display = 'block';
+        }
+
+        function navigateToStep1() {
+            document.getElementById('step-2-view').style.display = 'none';
+            document.getElementById('step-1-view').style.display = 'block';
+        }
+
+        // Fungsi Validasi Mengubah Tombol Jadi Oranye Menyala (image_bf7b5c.png)
+        function validateStep2Form() {
+            const chk1 = document.getElementById('chkRequirement1').checked;
+            const chk2 = document.getElementById('chkRequirement2').checked;
+            const submitBtn = document.getElementById('btnFinalSubmit');
+
+            if (chk1 && chk2) {
+                submitBtn.classList.add('active-orange');
+                submitBtn.style.cursor = 'pointer';
+            } else {
+                submitBtn.classList.remove('active-orange');
+                submitBtn.style.cursor = 'not-allowed';
+            }
+        }
+
+        // Pengalihan Akhir Menuju Halaman Serah Terima Sukses
+        function submitFinalData() {
+            const chk1 = document.getElementById('chkRequirement1').checked;
+            const chk2 = document.getElementById('chkRequirement2').checked;
+
+            if (chk1 && chk2) {
+                alert('Pengembalian barang berhasil diselesaikan! Surat pernyataan resmi diarsipkan.');
+                window.location.href = 'serahterima.html';
+            }
+        }
+
+        // Pengendali Modal Cancel
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
