@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serah Terima Langsung - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+
+        /* ============================================================
+                   SIDEBAR STYLE VISUAL FIGMA (COLOR #0F172A)
+                   ============================================================ */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background: #0F172A; /* Sesuai warna request Tiara */
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px 28px 12px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #ea580c;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 9px;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 20px 12px 8px 12px;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #94a3b8;
+            transition: all 0.2s;
+        }
+
+        .menu-item span {
+            font-size: 16px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            color: #f1f5f9;
+        }
+
+        /* State Aktif Sesuai Frame Figma */
+        .menu-item.active {
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            font-weight: 600;
+            border-left: 3px solid #ea580c;
+            border-radius: 4px 8px 8px 4px;
+            padding-left: 9px;
+        }
+        
+        /* Badge Notifikasi Lingkaran */
+        .badge-orange {
+            margin-left: auto;
+            background: #ea580c;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-dark {
+            margin-left: auto;
+            background: #1e293b;
+            color: #94a3b8;
+            font-size: 10px;
+            font-weight: 600;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-meta-flex {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #475569;
+            font-size: 12px;
+        }
+
+        /* Sidebar Footer Area */
+        .sidebar-footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 8px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #334155;
+        }
+
+        .user-meta {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-meta .name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+
+        .user-meta .role {
+            font-size: 10px;
+            color: #475569;
+        }
+        
+        .logout-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #f87171;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px;
+            transition: 0.2s;
+        }
+
+        /* ============================================================
+                   MAIN CONTENT AREA
+                   ============================================================ */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 32px 40px;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* TOPBAR NAV REVIEW HEADER */
+        .topbar-review {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 16px;
+        }
+
+        .btn-back-arrow {
+            font-size: 18px;
+            color: #475569;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .review-title-group h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .status-verified-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: #16a34a;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+            display: block;
+        }
+
+        /* CONTAINER CARD SERAH TERIMA */
+        .handover-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.01);
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .handover-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .handover-card .item-meta {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 32px;
+        }
+
+        .handover-card .item-meta strong {
+            color: #0f172a;
+        }
+
+        /* WEBCAM FRAME PANEL LAYER */
+        .webcam-container {
+            width: 100%;
+            height: 380px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .webcam-stream-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Live Badge Atas Kamera */
+        .live-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+        }
+
+        .live-badge::before {
+            content: '●';
+            color: #ef4444;
+            font-size: 12px;
+        }
+
+        /* Tombol Ambil Ulang Foto */
+        .btn-retake-photo {
+            background: #ffffff;
+            border: 1px dashed #cbd5e1;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            margin-bottom: 36px;
+        }
+
+        .btn-retake-photo:hover {
+            border-color: #94a3b8;
+            background: #f8fafc;
+        }
+
+        /* CHECKLIST BOX GROUP COMPONENTS */
+        .checklist-section {
+            text-align: left;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 32px;
+            width: 100%;
+        }
+
+        .checklist-section .section-title {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .checklist-row {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .checklist-row input[type="checkbox"] {
+            display: none;
+        }
+
+        /* Kustom Kotak Indikator Checkbox */
+        .custom-box-indicator {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.2s;
+            font-size: 11px;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        /* Efek aktif saat dicentang figma */
+        .checklist-row input[type="checkbox"]:checked + .custom-box-indicator {
+            background: #16a34a;
+            border-color: #16a34a;
+            color: #ffffff;
+        }
+
+        .checklist-row input[type="checkbox"]:checked + .custom-box-indicator::after {
+            content: '✓';
+        }
+
+        .checkbox-text-details strong {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0f172a;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .checkbox-text-details p {
+            font-size: 12.5px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* TOMBOL AKSI UTAMA DI BAWAH CARD */
+        .btn-archive-submit {
+            width: 100%;
+            max-width: 800px;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #cbd5e1; /* Default disabled abu-abu */
+            cursor: not-allowed;
+            transition: all 0.2s;
+            margin-bottom: 24px;
+        }
+
+        /* State tombol menyala aktif oranye figma */
+        .btn-archive-submit.active-orange {
+            background: #ea580c;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
+        }
+
+        .btn-archive-submit.active-orange:hover {
+            background: #d94e06;
+            transform: translateY(-1px);
+        }
+
+        /* SECURITY FOOTER PANEL */
+        .bottom-security-info {
+            font-family: monospace;
+            font-size: 11px;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR LEFT PANEL DENGAN ICON EMOJI & BG #0F172A -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">L</div>
+            <div class="logo-text">LostFound</div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <!-- GROUP 1: MAIN MENU -->
+            <div class="menu-label">Main Menu</div>
+            <a href="../dashboard/index.html" class="menu-item">
+                <span>📊</span> Dashboard
+            </a>
+            <a href="#" class="menu-item">
+                <span>📦</span> Antrean Temuan <span class="badge-orange">3</span>
+            </a>
+            <a href="index.html" class="menu-item active">
+                <span>📝</span> Verifikasi Klaim
+            </a>
+            <a href="#" class="menu-item">
+                <span>📁</span> Arsip Laporan
+                <div class="menu-meta-flex">... <span class="badge-dark">5</span></div>
+            </a>
+
+            <!-- GROUP 2: SETTINGS -->
+            <div class="menu-label">Settings</div>
+            <a href="#" class="menu-item">
+                <span>👥</span> Manajemen User
+            </a>
+            <a href="#" class="menu-item">
+                <span>⚙️</span> Konfigurasi Sistem
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <img src="penerima.jpg" alt="Petugas" class="user-avatar">
+                <div class="user-meta">
+                    <div class="name">Petugas Posko</div>
+                    <div class="role">Super Admin</div>
+                </div>
+            </div>
+            <a href="#" class="logout-link">
+                <span>🚪</span> Keluar Sesi
+            </a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+        
+        <!-- TOPBAR NAVIGATION SUB-NAV -->
+        <header class="topbar-review">
+            <a href="index.html" class="btn-back-arrow">←</a>
+            <div class="review-title-group">
+                <h1>Serah Terima Langsung</h1>
+                <span class="status-verified-badge">Bukti: KUAT / TERVERIFIKASI</span>
+            </div>
+        </header>
+
+        <!-- CARD SERAH TERIMA -->
+        <section class="handover-card">
+            <h2>Dompet Kulit Coklat Levi's</h2>
+            <p class="item-meta">Pemilik: <strong>Ahmad D.</strong> • Laporan: #FD-2024-089</p>
+
+            <!-- WEBCAM VIEW BOX -->
+            <div class="webcam-container">
+                <div class="live-badge">Live Webcam</div>
+                <!-- Foto Penerima Sinkron Lay-out Figma -->
+                <img src="penerima.jpg" alt="Foto Kamera Penerima" class="webcam-stream-img">
+            </div>
+
+            <!-- Tombol Ambil Ulang Foto -->
+            <button class="btn-retake-photo" onclick="alert('Mengaktifkan kembali lensa kamera...')">
+                <span>📷</span> Ambil Ulang Foto Penerima
+            </button>
+
+            <!-- CHECKLIST KEAMANAN STACK -->
+            <div class="checklist-section">
+                <div class="section-title">Checklist Keamanan</div>
+                
+                <!-- 1. Verifikasi Identitas -->
+                <label class="checklist-row">
+                    <input type="checkbox" id="chkVerifyId" onchange="checkValidationState()">
+                    <span class="custom-box-indicator"></span>
+                    <div class="checkbox-text-details">
+                        <strong>Verifikasi Identitas</strong>
+                        <p>Saya telah memeriksa KTP/KTM asli milik Ahmad D. dan data sesuai.</p>
+                    </div>
+                </label>
+
+                <!-- 2. Konfirmasi Serah Terima -->
+                <label class="checklist-row">
+                    <input type="checkbox" id="chkConfirmDelivery" onchange="checkValidationState()">
+                    <span class="custom-box-indicator"></span>
+                    <div class="checkbox-text-details">
+                        <strong>Konfirmasi Serah Terima</strong>
+                        <p>Barang fisik telah diserahkan sepenuhnya kepada pemilik yang sah.</p>
+                    </div>
+                </label>
+            </div>
+        </section>
+
+        <!-- TOMBOL AKSI UTAMA DI BAWAH KARTU -->
+        <button class="btn-archive-submit" id="btnSubmitLaporan" onclick="processFinalSubmission()">
+            ✓ SELESAIKAN & ARSIPKAN LAPORAN
+        </button>
+
+        <!-- FOOTER INFO TIMESTAMP -->
+        <div class="bottom-security-info">
+            SECURE SESSION • TIMESTAMP: 2026-05-22 14:32 WIB
+        </div>
+
+    </main>
+
+    <!-- LOGIK STRUKTUR INTERAKTIF DENGAN STATE BUTTON FIGMA -->
+    <script>
+        function checkValidationState() {
+            const idChecked = document.getElementById('chkVerifyId').checked;
+            const deliveryChecked = document.getElementById('chkConfirmDelivery').checked;
+            const submitBtn = document.getElementById('btnSubmitLaporan');
+
+            if (idChecked && deliveryChecked) {
+                submitBtn.classList.add('active-orange');
+                submitBtn.style.cursor = 'pointer';
+            } else {
+                submitBtn.classList.remove('active-orange');
+                submitBtn.style.cursor = 'not-allowed';
+            }
+        }
+
+        function processFinalSubmission() {
+            const idChecked = document.getElementById('chkVerifyId').checked;
+            const deliveryChecked = document.getElementById('chkConfirmDelivery').checked;
+
+            if (idChecked && deliveryChecked) {
+                alert('Sukses! Berkas laporan resmi diselesaikan dan riwayat data dipindahkan menuju sistem arsip.');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

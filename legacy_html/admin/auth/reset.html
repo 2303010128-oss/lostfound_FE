@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset Password Admin - LostFound Connect</title>
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        input {
+            font-family: inherit;
+        }
+
+        /* ============================================================
+                   UTILITY CLASSES
+                   ============================================================ */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .flex {
+            display: flex;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .gap-4 {
+            gap: 16px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .text-left {
+            text-align: left;
+        }
+        .relative {
+            position: relative;
+        }
+        .mt-2 {
+            margin-top: 8px;
+        }
+        .mt-4 {
+            margin-top: 16px;
+        }
+        .mt-6 {
+            margin-top: 24px;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .max-w-md {
+            max-width: 400px;
+        }
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* ============================================================
+                   NAVBAR
+                   ============================================================ */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            height: 64px;
+        }
+        .navbar .container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .navbar .logo {
+            color: #a33900;
+            font-weight: 600;
+            font-size: 20px;
+            letter-spacing: 0.3px;
+        }
+        .navbar .logo a {
+            color: #a33900;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .navbar .nav-links a {
+            color: #5a4138;
+            font-size: 16px;
+            transition: color 0.3s ease;
+            padding-bottom: 4px;
+        }
+        .navbar .nav-links a:hover {
+            color: #a33900;
+        }
+        .navbar .nav-links a.active {
+            color: #a33900;
+            font-weight: 600;
+            border-bottom: 2px solid #a33900;
+        }
+        .navbar .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .navbar .auth-buttons .admin-badge {
+            background: #a33900;
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .navbar .auth-buttons .admin-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #131b2e;
+        }
+        .navbar .auth-buttons .logout-btn {
+            font-size: 13px;
+            color: #dc2626;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .navbar .auth-buttons .logout-btn:hover {
+            color: #b91c1c;
+            text-decoration: underline;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #4b5563;
+        }
+        .menu-toggle svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ============================================================
+                   RESET PASSWORD PAGE
+                   ============================================================ */
+        .reset-page {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            min-height: calc(100vh - 64px);
+        }
+
+        .reset-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            border: 1px solid #eaedff;
+            max-width: 400px;
+            width: 100%;
+            padding: 48px 36px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reset-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #a33900, #cc4900, #a33900);
+        }
+
+        /* Logo / Icon */
+        .reset-card .logo-icon {
+            width: 72px;
+            height: 72px;
+            background: #fff4ed;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 32px;
+        }
+
+        .reset-card h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #131b2e;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .reset-card .subtitle {
+            font-size: 14px;
+            color: #9ca3af;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        /* Form */
+        .reset-card .form-group {
+            margin-bottom: 16px;
+        }
+
+        .reset-card .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        .reset-card .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #eaedff;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            outline: none;
+            background: #ffffff;
+            color: #131b2e;
+        }
+
+        .reset-card .form-group input:focus {
+            border-color: #a33900;
+        }
+
+        .reset-card .form-group input.error {
+            border-color: #ef4444;
+        }
+
+        .reset-card .form-group input::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Button */
+        .reset-card .btn-primary {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #a33900;
+            color: #ffffff;
+            padding: 14px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .reset-card .btn-primary:hover {
+            background: #8a2f00;
+        }
+
+        .reset-card .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Spinner */
+        .reset-card .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Message */
+        .reset-card .message {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+            border-left: 3px solid;
+        }
+
+        .reset-card .message.show {
+            display: block;
+        }
+
+        .reset-card .message.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #dc2626;
+        }
+
+        .reset-card .message.success {
+            background: #f0fdf4;
+            color: #16a34a;
+            border-color: #16a34a;
+        }
+
+        /* Footer Link */
+        .reset-card .footer-link {
+            text-align: center;
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .reset-card .footer-link a {
+            color: #a33900;
+            font-weight: 600;
+            transition: text-decoration 0.3s ease;
+        }
+
+        .reset-card .footer-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* ============================================================
+                   MOBILE NAV
+                   ============================================================ */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            background: #ffffff;
+            padding: 16px 24px;
+            gap: 12px;
+            border-top: 1px solid #eaedff;
+        }
+        .mobile-nav.open {
+            display: flex;
+        }
+        .mobile-nav a {
+            color: #5a4138;
+            font-size: 16px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .mobile-nav a.active {
+            color: #a33900;
+            font-weight: 600;
+        }
+        .mobile-nav a:last-child {
+            border-bottom: none;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer {
+            background: #eaedff;
+            padding: 24px;
+            margin-top: auto;
+        }
+        .footer .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .footer .footer-content .copyright {
+            font-size: 13px;
+            color: #5a4138;
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                display: none;
+            }
+            .menu-toggle {
+                display: block;
+            }
+
+            .reset-card {
+                padding: 32px 24px;
+            }
+            .reset-card h1 {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .reset-card {
+                padding: 24px 16px;
+            }
+            .reset-card .logo-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 24px;
+            }
+            .reset-card h1 {
+                font-size: 18px;
+            }
+            .navbar .auth-buttons .admin-name {
+                font-size: 13px;
+            }
+            .navbar .auth-buttons .logout-btn {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="reset-page">
+
+        <div class="reset-card">
+
+            <!-- Logo / Icon -->
+            <div class="logo-icon">🔑</div>
+
+            <!-- Title -->
+            <h1>Reset Kata Sandi</h1>
+            <p class="subtitle">Masukkan email admin untuk verifikasi</p>
+
+            <!-- Message -->
+            <div class="message" id="message">
+                <span id="messageText"></span>
+            </div>
+
+            <!-- Form -->
+            <form id="resetForm" onsubmit="handleReset(event)" novalidate>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                    type="email"
+                    id="email"
+                    placeholder="Masukkan email admin"
+                    required
+                    autocomplete="email"
+                    />
+                </div>
+
+                <button type="submit" class="btn-primary" id="resetBtn">
+                    <span id="btnText">Kirim Link Verifikasi</span>
+                    <span class="spinner hidden" id="btnSpinner"></span>
+                </button>
+
+                <div class="footer-link" style="margin-top:16px;">
+                    <a href="login.html">← Kembali ke Login</a>
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================================ -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span class="copyright">© 2026 LostFound Connect • Admin Panel</span>
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // MOBILE MENU TOGGLE
+            // ============================================================
+            var menuToggle = document.getElementById('menuToggle');
+            var mobileNav = document.getElementById('mobileNav');
+
+            if (menuToggle && mobileNav) {
+                menuToggle.addEventListener('click', function() {
+                    mobileNav.classList.toggle('open');
+                });
+            }
+
+            var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
+            mobileLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    mobileNav.classList.remove('open');
+                });
+            });
+
+            // ============================================================
+            // DOM ELEMENTS
+            // ============================================================
+            var form = document.getElementById('resetForm');
+            var emailInput = document.getElementById('email');
+            var message = document.getElementById('message');
+            var messageText = document.getElementById('messageText');
+            var resetBtn = document.getElementById('resetBtn');
+            var btnText = document.getElementById('btnText');
+            var btnSpinner = document.getElementById('btnSpinner');
+
+            // ============================================================
+            // DEMO EMAIL
+            // ============================================================
+            var DEMO_EMAIL = 'admin@lostfound.com';
+
+            // ============================================================
+            // VALIDATE EMAIL
+            // ============================================================
+            function isValidEmail(email) {
+                var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            // ============================================================
+            // HIDE MESSAGES HELPER
+            // ============================================================
+            function hideMessage() {
+                message.classList.remove('show', 'error', 'success');
+                messageText.textContent = '';
+            }
+
+            // ============================================================
+            // SHOW ERROR HELPER
+            // ============================================================
+            function showError(text) {
+                message.className = 'message show error';
+                messageText.textContent = text;
+            }
+
+            // ============================================================
+            // SHOW SUCCESS HELPER
+            // ============================================================
+            function showSuccess(text) {
+                message.className = 'message show success';
+                messageText.textContent = text;
+            }
+
+            // ============================================================
+            // SET LOADING STATE
+            // ============================================================
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    btnText.textContent = 'Mengirim...';
+                    btnSpinner.classList.remove('hidden');
+                    resetBtn.disabled = true;
+                } else {
+                    btnText.textContent = 'Kirim Link Verifikasi';
+                    btnSpinner.classList.add('hidden');
+                    resetBtn.disabled = false;
+                }
+            }
+
+            // ============================================================
+            // HANDLE RESET
+            // ============================================================
+            window.handleReset = function(e) {
+                e.preventDefault();
+                hideMessage();
+
+                var email = emailInput.value.trim();
+
+                // Validasi Email
+                if (!email) {
+                    showError('Email tidak boleh kosong.');
+                    emailInput.classList.add('error');
+                    emailInput.focus();
+                    return;
+                }
+
+                if (!isValidEmail(email)) {
+                    showError('Format email tidak valid. Contoh: admin@lostfound.com');
+                    emailInput.classList.add('error');
+                    emailInput.focus();
+                    return;
+                }
+
+                setLoading(true);
+
+                setTimeout(function() {
+                    showSuccess('📧 Link verifikasi telah dikirim ke ' + email);
+                    setLoading(false);
+
+                    // Simpan email ke localStorage
+                    localStorage.setItem('resetEmail', email);
+
+                    // Redirect ke halaman buat password baru setelah 1.5 detik
+                    setTimeout(function() {
+                        window.location.href = 'passwordbaru.html';
+                    }, 1500);
+                }, 1200);
+            };
+
+            // ============================================================
+            // CLEAR ERRORS ON INPUT
+            // ============================================================
+            emailInput.addEventListener('input', function() {
+                this.classList.remove('error');
+                hideMessage();
+            });
+
+            // ============================================================
+            // LOGOUT
+            // ============================================================
+            window.logout = function() {
+                if (confirm('Apakah Anda yakin ingin keluar?')) {
+                    localStorage.removeItem('isAdminLoggedIn');
+                    localStorage.removeItem('adminEmail');
+                    localStorage.removeItem('adminRememberMe');
+                    window.location.href = 'index.html';
+                }
+            };
+
+            // ============================================================
+            // NAV LINK ACTIVE STATE
+            // ============================================================
+            var navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    if (this.textContent.trim() === 'Keluar' || this.textContent.trim() === 'Admin') return;
+                    navLinks.forEach(function(l) {
+                        l.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            console.log('✅ Reset Password Admin page loaded successfully!');
+
+        })();
+    </script>
+
+</body>
+</html>
