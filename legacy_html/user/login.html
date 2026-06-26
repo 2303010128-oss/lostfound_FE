@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autentikasi Akun - LostFound Connect</title>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #1e293b;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        /* ============================================================
+                   CONTAINER & CARD (Sesuai Layout Figma)
+                   ============================================================ */
+        .auth-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+            border: 1px solid #f1f5f9;
+            width: 100%;
+            max-width: 440px;
+            padding: 40px 36px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        /* Top Border Aksen Khusus Register View */
+        .auth-card.register-border {
+            border-top: 4px solid #a33900;
+        }
+
+        /* Header Icons (Gembok / Sukses Bulat) */
+        .header-icon-box {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            margin: 0 auto 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-icon-box.orange-bg {
+            background: #fff4ed;
+            color: #a33900;
+        }
+
+        .header-icon-box.green-bg {
+            background: #e6f4ea;
+            color: #10b981;
+        }
+
+        .auth-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .auth-card .subtitle {
+            font-size: 13px;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 28px;
+        }
+
+        /* ============================================================
+                   INPUTS FIELDS (Border Oranye Terang Khas Figma)
+                   ============================================================ */
+        .form-group {
+            margin-bottom: 18px;
+            position: relative;
+            width: 100%;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #f97316; /* Border warna oranye terang figma */
+            border-radius: 25px; /* Pill-shaped input figma */
+            outline: none;
+            font-size: 14px;
+            color: #0f172a;
+            background: #ffffff;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #a33900;
+            box-shadow: 0 0 0 4px rgba(163, 57, 0, 0.08);
+        }
+
+        /* Icon Mata Sembunyikan Sandi */
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1e293b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        /* ============================================================
+                   WIDGET OPTIONS (Ingat Saya / Lupa Sandi)
+                   ============================================================ */
+        .form-options-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12.5px;
+            color: #64748b;
+            margin: -4px 4px 24px 4px;
+        }
+
+        .form-options-row .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .form-options-row .checkbox-label input {
+            accent-color: #a33900;
+            width: 15px;
+            height: 15px;
+        }
+
+        .form-options-row .forgot-link {
+            color: #a33900;
+            font-weight: 600;
+        }
+
+        /* Tip Keamanan Box */
+        .security-tip-box {
+            background: #eef2ff;
+            border-radius: 8px;
+            padding: 12px 16px;
+            text-align: left;
+            margin-bottom: 24px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .security-tip-box span {
+            font-size: 11px;
+            color: #4338ca;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   BUTTONS & NAVIGATION FOOTER TEXT
+                   ============================================================ */
+        .btn-submit {
+            width: 100%;
+            background: #a33900; /* Warna deep burnt-orange figma */
+            color: #ffffff;
+            padding: 14px;
+            border-radius: 25px; /* Pill-shaped button */
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: background 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background: #873000;
+        }
+
+        .switch-footer-txt {
+            text-align: center;
+            font-size: 13px;
+            color: #64748b;
+            margin-top: 24px;
+            font-weight: 500;
+        }
+
+        .switch-footer-txt span {
+            color: #a33900;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ============================================================
+                   FOOTER KAMPUS UTAMA
+                   ============================================================ */
+        .footer-bar {
+            background: #eaedff;
+            color: #5a4138;
+            padding: 24px 0;
+            font-size: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-weight: 500;
+        }
+
+        .footer-bar .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-bar .brand-txt {
+            font-weight: 700;
+            color: #131b2e;
+        }
+
+        .footer-bar .footer-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-bar .footer-links a {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CONTAINER AUTHENTICATION MAIN -->
+    <div class="auth-container">
+        
+        <!-- ============================================================ -->
+        <!-- VIEW 1: FORM LOGIN MASUK (image_25e560.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card" id="viewLogin">
+            <div class="header-icon-box orange-bg">
+                <!-- Icon Gembok Terkunci -->
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+            <h2>Selamat Datang Kembali</h2>
+            <div class="subtitle">Silakan masuk menggunakan akun Anda[cite: 4].</div>
+            
+            <form onsubmit="onLoginAction(event)">
+                <div class="form-group">
+                    <input type="email" id="logEmail" placeholder="Email" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="logPass" placeholder="Kata Sandi" required autocomplete="current-password">
+                    <div class="password-toggle" onclick="toggleInputType('logPass')">👁</div>
+                </div>
+                
+                <div class="form-options-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe"> Ingat Saya
+                    </label>
+                    <a href="#" class="forgot-link" onclick="navigateAuthView('forgot')">Lupa Kata Sandi?</a>
+                </div>
+                
+                <button type="submit" class="btn-submit">Masuk ke Aplikasi</button>
+            </form>
+            <div class="switch-footer-txt">Belum punya akun? <span onclick="navigateAuthView('register')">Daftar di sini</span></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 2: FORM DAFTAR / MULAI BERGABUNG (image_25742e.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card register-border hidden" id="viewRegister">
+            <h2>Mulai Bergabung</h2>
+            <div class="subtitle">Buat akun untuk melaporkan atau mengklaim barang hilang[cite: 4].</div>
+            
+            <form onsubmit="onRegisterAction(event)">
+                <div class="form-group"><input type="text" id="regName" placeholder="Nama Lengkap" required></div>
+                <div class="form-group"><input type="email" id="regEmail" placeholder="Email" required autocomplete="email"></div>
+                <div class="form-group"><input type="text" id="regNim" placeholder="Nim" required></div>
+                <div class="form-group"><input type="tel" id="regPhone" placeholder="Nomor Telepon" required></div>
+                <div class="form-group">
+                    <input type="password" id="regPass" placeholder="Kata Sandi" required autocomplete="new-password">
+                    <div class="password-toggle" onclick="toggleInputType('regPass')">👁</div>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="regConfirmPass" placeholder="Konfirmasi Kata Sandi" required autocomplete="new-password">
+                    <div class="password-toggle" onclick="toggleInputType('regConfirmPass')">👁</div>
+                </div>
+                
+                <button type="submit" class="btn-submit">Daftar Akun Baru ➔</button>
+            </form>
+            <div class="switch-footer-txt">Sudah punya akun? <span onclick="navigateAuthView('login')">Masuk di sini</span></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 3: LUPA KATA SANDI / ATUR ULANG (image_25e529.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card hidden" id="viewForgot">
+            <div class="header-icon-box orange-bg">
+                <!-- Icon Padlock Reset Gembok Panah Memutar -->
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 2a10 10 0 1 0 10 10H22"></path>
+                    <path d="M12 7v5l3 3"></path>
+                </svg>
+            </div>
+            <h2>Atur Ulang Kata Sandi</h2>
+            <div class="subtitle">Masukkan email terdaftar Anda. Sistem akan mengirimkan tautan verifikasi untuk mengubah kata sandi Anda.</div>
+            
+            <form onsubmit="onForgotAction(event)">
+                <div class="form-group">
+                    <input type="email" id="forgotEmail" placeholder="Email" required>
+                </div>
+                <button type="submit" class="btn-submit">Kirim Tautan Pemulihan ➔</button>
+            </form>
+            <div class="switch-footer-txt"><span onclick="navigateAuthView('login')" style="font-weight:500; font-size:12.5px; color:#64748b;">← Kembali ke Halaman Masuk</span></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 4: BUAT KATA SANDI BARU (image_25e50b.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card hidden" id="viewNewPassword">
+            <h2>Buat Kata Sandi Baru</h2>
+            <div class="subtitle">Silakan masukkan kata sandi baru yang kuat untuk mengamankan akun Anda.</div>
+            
+            <form onsubmit="onSetNewPasswordAction(event)">
+                <div class="form-group">
+                    <input type="password" id="newPass" placeholder="Kata Sandi Baru" required>
+                    <div class="password-toggle" onclick="toggleInputType('newPass')">👁</div>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="newConfirmPass" placeholder="Konfirmasi Kata Sandi" required>
+                    <div class="password-toggle" onclick="toggleInputType('newConfirmPass')">👁</div>
+                </div>
+                
+                <div class="security-tip-box">
+                    <span>⚠️ Tip Keamanan: Gunakan kombinasi huruf besar, angka, dan simbol agar tidak mudah ditebak.</span>
+                </div>
+                
+                <button type="submit" class="btn-submit">Perbarui Kata Sandi</button>
+            </form>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- VIEW 5: SUKSES DIUBAH (image_25e4e7.png) -->
+        <!-- ============================================================ -->
+        <div class="auth-card hidden" id="viewSuccess">
+            <div class="header-icon-box green-bg">
+                <!-- Icon Centang Sukses -->
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h2>Kata Sandi Berhasil Diperbarui!</h2>
+            <div class="subtitle">Akun Anda telah diamankan dengan kata sandi baru. Silakan masuk kembali ke dalam aplikasi untuk melanjutkan.</div>
+            
+            <button class="btn-submit" onclick="navigateAuthView('login')">Masuk ke Aplikasi ➔</button>
+        </div>
+
+    </div>
+
+    <!-- FOOTER KAMPUS -->
+    <footer class="footer-bar">
+        <div class="container">
+            <span class="brand-txt">LostFound Connect</span>
+            <span>© 2024 University LostFound Connect. Seluruh Hak Cipta Dilindungi.</span>
+            <div class="footer-links">
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat &amp; Ketentuan</a>
+                <a href="#">Kontak Kampus</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================ -->
+    <!-- LOGIC SYSTEM INTEGRATION -->
+    <!-- ============================================================ -->
+    <script>
+        // Router penunjuk view
+        function navigateAuthView(target) {
+            const views = ['viewLogin', 'viewRegister', 'viewForgot', 'viewNewPassword', 'viewSuccess'];
+            views.forEach(id => document.getElementById(id).classList.add('hidden'));
+
+            if (target === 'login') document.getElementById('viewLogin').classList.remove('hidden');
+            if (target === 'register') document.getElementById('viewRegister').classList.remove('hidden');
+            if (target === 'forgot') document.getElementById('viewForgot').classList.remove('hidden');
+            if (target === 'newpassword') document.getElementById('viewNewPassword').classList.remove('hidden');
+            if (target === 'success') document.getElementById('viewSuccess').classList.remove('hidden');
+        }
+
+        // Tampilkan/Sembunyikan password teks
+        function toggleInputType(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        // Action Register Form
+        function onRegisterAction(e) {
+            e.preventDefault();
+            const pass = document.getElementById('regPass').value;
+            const confirm = document.getElementById('regConfirmPass').value;
+
+            if (pass !== confirm) {
+                alert('Konfirmasi kata sandi tidak cocok!');
+                return;
+            }
+
+            localStorage.setItem('storedUserEmail', document.getElementById('regEmail').value.trim());
+            localStorage.setItem('storedUserPassword', pass);
+            localStorage.setItem('storedUserName', document.getElementById('regName').value.trim());
+
+            alert('Akun berhasil terdaftar! Mengalihkan ke Halaman Masuk.');
+            navigateAuthView('login');
+        }
+
+        // Action Login Form
+        function onLoginAction(e) {
+            e.preventDefault();
+            const email = document.getElementById('logEmail').value.trim();
+            const password = document.getElementById('logPass').value;
+
+            const dbEmail = localStorage.getItem('storedUserEmail') || 'mahasiswa@unper.ac.id';
+            const dbPassword = localStorage.getItem('storedUserPassword') || 'password123';
+            const dbName = localStorage.getItem('storedUserName') || 'Ahmad D.';
+
+            if (email === dbEmail && password === dbPassword) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userName', dbName);
+                localStorage.setItem('userEmail', email);
+                window.location.href = 'index.html';
+            } else {
+                alert('Email atau kata sandi Anda salah.');
+            }
+        }
+
+        // Action Forgot Recovery
+        function onForgotAction(e) {
+            e.preventDefault();
+            // Jalankan simulasi pengiriman email pemulihan sukses, lalu lempar ke form password baru
+            alert('Tautan pemulihan sandi dikirim ke email!');
+            navigateAuthView('newpassword');
+        }
+
+        // Action Simpan Kata Sandi Baru
+        function onSetNewPasswordAction(e) {
+            e.preventDefault();
+            const p1 = document.getElementById('newPass').value;
+            const p2 = document.getElementById('newConfirmPass').value;
+
+            if (p1 !== p2) {
+                alert('Kata sandi tidak sama!');
+                return;
+            }
+            localStorage.setItem('storedUserPassword', p1);
+            navigateAuthView('success');
+        }
+
+        // Routing cek parameter awal
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('mode') === 'register') navigateAuthView('register');
+        });
+    </script>
+</body>
+</html>

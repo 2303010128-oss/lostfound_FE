@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Prosedur - LostFound Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #ffffff; min-height: 100vh; display: flex; flex-direction: column; color: #131b2e; -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; font-family: inherit; border: none; background: none; outline: none; }
+        .container { max-width: 1240px; margin: 0 auto; padding: 0 24px; width: 100%; }
+
+        /* ============================================================
+                   NAVBAR (GRID TENGAH)
+                   ============================================================ */
+        .navbar { height: 72px; border-bottom: 1px solid #f1f5f9; background: #ffffff; position: sticky; top: 0; z-index: 100; }
+        .navbar .container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 100%; }
+        .navbar .logo { color: #a33900; font-weight: 700; font-size: 18px; justify-self: start; letter-spacing: -0.2px; }
+        
+        .navbar .nav-center { display: flex; align-items: center; gap: 32px; justify-self: center; }
+        .navbar .nav-center a { color: #64748b; font-size: 14.5px; font-weight: 500; padding: 6px 0; transition: color 0.2s; }
+        .navbar .nav-center a:hover { color: #a33900; }
+        
+        .navbar .nav-right { display: flex; align-items: center; gap: 24px; justify-self: end; }
+        .notification-bell { font-size: 18px; color: #64748b; cursor: pointer; position: relative; display: flex; align-items: center; }
+        .notification-bell::after { content: ''; position: absolute; top: 0; right: -2px; width: 7px; height: 7px; background: #ef4444; border-radius: 50%; border: 1.5px solid #fff; }
+        
+        .user-btn { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: 0.2s; }
+        .user-btn:hover { background: #f8fafc; }
+        .user-btn .avatar { width: 34px; height: 34px; border-radius: 50%; background: #d94e06; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; }
+        .user-btn .user-name { font-size: 14px; font-weight: 600; color: #131b2e; display: flex; align-items: center; gap: 4px; }
+        .user-btn .user-name span { font-size: 10px; color: #64748b; }
+
+        /* ============================================================
+                   LAYOUT MAIN & SIDEBAR
+                   ============================================================ */
+        .dashboard-layout { display: flex; gap: 48px; padding: 48px 0 80px 0; flex: 1; }
+        
+        /* SIDEBAR (Active pindah ke Klaim Saya) */
+        .sidebar { width: 240px; flex-shrink: 0; display: flex; flex-direction: column; }
+        .sidebar-menu { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+        .sidebar-menu li { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 10px; font-size: 14.5px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.2s ease; }
+        .sidebar-menu li:hover { background: #f8fafc; color: #131b2e; }
+        
+        .sidebar-menu li.active { background: #eef2ff; color: #a33900; }
+        .sidebar-menu li.danger { color: #dc2626; margin-top: auto; }
+        .sidebar-menu li.danger:hover { background: #fef2f2; }
+        .sidebar-menu .icon { font-size: 18px; width: 22px; display: flex; align-items: center; justify-content: center; }
+        
+        .bottom-menu { margin-top: 80px; border-top: 1px solid #f1f5f9; padding-top: 24px; }
+
+        /* MAIN CONTENT */
+        .dashboard-main { flex: 1; min-width: 0; }
+        
+        /* BACK BUTTON & HEADER */
+        .back-link { display: inline-flex; align-items: center; gap: 8px; color: #a33900; font-size: 13.5px; font-weight: 600; margin-bottom: 24px; transition: 0.2s; }
+        .back-link:hover { text-decoration: underline; }
+        
+        .page-header { margin-bottom: 32px; }
+        .page-header h1 { font-size: 24px; font-weight: 700; color: #131b2e; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .page-header p { font-size: 14.5px; color: #64748b; line-height: 1.6; max-width: 700px; }
+
+        /* DETAIL GRID (Kiri: Barang & Alert, Kanan: Prosedur) */
+        .detail-grid { display: grid; grid-template-columns: 360px 1fr; gap: 32px; align-items: start; }
+
+        /* KIRI: ITEM CARD */
+        .item-card { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }
+        .item-card img { width: 100%; height: 200px; object-fit: cover; }
+        .item-info { padding: 20px; }
+        
+        .item-title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+        .item-title-row h3 { font-size: 16px; font-weight: 700; color: #131b2e; line-height: 1.4; }
+        .badge-klarifikasi { background: #fff7ed; color: #c2410c; font-size: 10px; font-weight: 700; padding: 6px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; text-align: center; line-height: 1.2; }
+        
+        .item-meta { display: flex; flex-direction: column; gap: 8px; font-size: 13.5px; color: #64748b; }
+        .item-meta span { display: flex; align-items: center; gap: 8px; }
+        .item-meta i { font-style: normal; font-size: 14px; width: 16px; text-align: center; }
+
+        /* KIRI: ALERT NOTE */
+        .alert-note { background: #fef2f2; border: 1px solid #fca5a5; border-left: 4px solid #dc2626; padding: 20px; border-radius: 8px; }
+        .alert-title { display: flex; align-items: center; gap: 8px; color: #dc2626; font-size: 11.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 10px; }
+        .alert-note p { font-size: 13.5px; color: #475569; line-height: 1.6; }
+
+        /* KANAN: PROCEDURE CARD */
+        .procedure-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 32px; margin-bottom: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .procedure-card h2 { font-size: 18px; font-weight: 700; color: #131b2e; margin-bottom: 24px; }
+        
+        .step-list { display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
+        .step-item { display: flex; gap: 16px; }
+        .step-num { width: 28px; height: 28px; border-radius: 50%; background: #a33900; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+        .step-content h4 { font-size: 14.5px; font-weight: 700; color: #131b2e; margin-bottom: 6px; }
+        .step-content p { font-size: 13.5px; color: #64748b; line-height: 1.6; }
+
+        /* KANAN: BUTTONS */
+        .action-buttons { display: flex; gap: 16px; }
+        .btn-primary { background: #a33900; color: #ffffff; padding: 12px 24px; border-radius: 8px; font-size: 13.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .btn-primary:hover { background: #8a2f00; }
+        .btn-outline { border: 1px solid #cbd5e1; color: #475569; background: #ffffff; padding: 12px 24px; border-radius: 8px; font-size: 13.5px; font-weight: 600; transition: 0.2s; }
+        .btn-outline:hover { background: #f8fafc; border-color: #94a3b8; }
+
+        /* KANAN: INFO NOTICE */
+        .info-notice { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 20px; display: flex; gap: 12px; align-items: flex-start; }
+        .info-icon { color: #2563eb; font-size: 18px; margin-top: 2px; }
+        .info-notice p { font-size: 13px; color: #1e3a8a; line-height: 1.6; }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        .footer { background: #f8fafc; padding: 32px 0; font-size: 13px; color: #5a4138; margin-top: auto; border-top: 1px solid #f1f5f9; }
+        .footer .container { display: flex; justify-content: space-between; align-items: center; }
+        .footer .brand-txt { font-weight: 700; color: #a33900; font-size: 14px; }
+        .footer-links { display: flex; gap: 32px; }
+        .footer-links a { color: #64748b; font-weight: 500; transition: color 0.2s; }
+        .footer-links a:hover { color: #131b2e; }
+
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">LostFound Connect</div>
+            <nav class="nav-center">
+                <a href="index.html">Beranda</a>
+                <a href="tentangkami.html">Tentang Kami</a>
+                <a href="pusatbantuan.html">Pusat Bantuan</a>
+            </nav>
+            <div class="nav-right">
+                <div class="notification-bell">🔔</div>
+                <div class="user-btn">
+                    <div class="avatar">AD</div>
+                    <div class="user-name">Ahmad D. <span>▼</span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- DASHBOARD LAYOUT -->
+    <main class="container dashboard-layout">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li onclick="window.location.href='ringkasan.html'"><span class="icon">📊</span> Ringkasan</li>
+                <li class="active"><span class="icon">💼</span> Klaim Saya</li>
+                <li onclick="window.location.href='riwayat.html'"><span class="icon">⏳</span> Riwayat</li>
+            </ul>
+            <ul class="sidebar-menu bottom-menu">
+                <li><span class="icon">⚙️</span> Pengaturan</li>
+                <li class="danger" onclick="logout()"><span class="icon">🚪</span> Keluar</li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="dashboard-main">
+            
+            <a href="ringkasan.html" class="back-link">← Kembali ke Dashboard</a>
+
+            <div class="page-header">
+                <h1>Panduan Prosedur Klarifikasi Lapangan</h1>
+                <p>Langkah-langkah yang diperlukan untuk memvalidasi kepemilikan barang Anda secara tatap muka dengan petugas keamanan kami.</p>
+            </div>
+
+            <div class="detail-grid">
+                
+                <!-- KOLOM KIRI (Gambar Barang & Catatan Petugas) -->
+                <div class="left-panel">
+                    
+                    <!-- Kartu Barang -->
+                    <div class="item-card">
+                        <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=600&q=80" alt="Dompet Kulit Coklat Levi's">
+                        <div class="item-info">
+                            <div class="item-title-row">
+                                <h3>Dompet Kulit Coklat Levi's</h3>
+                                <div class="badge-klarifikasi">Klarifikasi<br>Diperlukan</div>
+                            </div>
+                            <div class="item-meta">
+                                <span><i>#</i> #CLM-98231-UP</span>
+                                <span><i>📍</i> Posko Satpam Utama</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kotak Alert Merah -->
+                    <div class="alert-note">
+                        <div class="alert-title">
+                            <span>⚠️</span> CATATAN PENINJAUAN PETUGAS
+                        </div>
+                        <p>Foto bukti digital yang Anda unggah terlihat buram dan tidak menunjukkan detail spesifik bagian dalam dompet. Validasi fisik diperlukan untuk mencocokkan dokumen.</p>
+                    </div>
+
+                </div>
+
+                <!-- KOLOM KANAN (Tahapan Prosedur) -->
+                <div class="right-panel">
+                    
+                    <div class="procedure-card">
+                        <h2>Tahapan Prosedur Lapangan</h2>
+                        
+                        <div class="step-list">
+                            <div class="step-item">
+                                <div class="step-num">1</div>
+                                <div class="step-content">
+                                    <h4>Siapkan Dokumen & Identitas</h4>
+                                    <p>Bawa KTP asli (atau KTM bagi mahasiswa) serta satu lembar Materai Rp10.000 untuk kelengkapan administrasi berita acara.</p>
+                                </div>
+                            </div>
+
+                            <div class="step-item">
+                                <div class="step-num">2</div>
+                                <div class="step-content">
+                                    <h4>Kunjungi Posko Satpam</h4>
+                                    <p>Datang langsung ke Gedung Rektorat Lt. 1 (Posko Utama) pada jam operasional kantor (Senin-Jumat, 08:00 - 16:00 WIB).</p>
+                                </div>
+                            </div>
+
+                            <div class="step-item">
+                                <div class="step-num">3</div>
+                                <div class="step-content">
+                                    <h4>Eksekusi Berita Acara</h4>
+                                    <p>Lakukan verifikasi fisik isi barang dengan petugas, bubuhkan tanda tangan di atas materai pada form serah terima resmi.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-primary">🗺️ Buka Peta Lokasi Posko</button>
+                            <button class="btn-outline" onclick="window.location.href='ringkasan.html'">Kembali ke Ringkasan</button>
+                        </div>
+                    </div>
+
+                    <!-- Kotak Info Biru -->
+                    <div class="info-notice">
+                        <div class="info-icon">ⓘ</div>
+                        <p>Klarifikasi ini wajib dilakukan dalam maksimal 7 hari kerja sejak notifikasi ini dikirimkan. Barang yang tidak diklaim akan dipindahkan ke gudang penyimpanan jangka panjang.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <span class="brand-txt">LostFound Connect</span>
+            <div class="footer-links">
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Syarat & Ketentuan</a>
+                <a href="#">Campus Safety</a>
+                <a href="#">Kontak Kampus</a>
+            </div>
+            <span>© 2024 Universitas Perjuangan Tasikmalaya</span>
+        </div>
+    </footer>
+
+    <script>
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin keluar dari sesi mahasiswa?')) {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
