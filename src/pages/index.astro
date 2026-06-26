@@ -1,0 +1,120 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Beranda">
+    <div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+            <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight mb-2">Papan Mading Digital</h1>
+            <p class="text-slate-600">Pusat informasi barang hilang dan temuan di Universitas Perjuangan.</p>
+        </div>
+        
+        <!-- Kolom Pencarian Dinamis -->
+        <div class="flex space-x-2 w-full md:w-auto">
+            <input type="text" id="search-input" placeholder="Cari dompet, kunci..." class="px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 outline-none w-full md:w-64 transition-shadow">
+            <button id="search-btn" class="bg-slate-800 text-white px-5 py-2 rounded-lg font-medium hover:bg-slate-900 transition shadow-sm">
+                Cari
+            </button>
+        </div>
+    </div>
+    
+    <!-- Animasi Loading -->
+    <div id="loading-spinner" class="text-center py-20">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-600 mb-4"></div>
+        <p class="text-slate-500 font-medium">Sinkronisasi data dengan server...</p>
+    </div>
+
+    <!-- Grid Card Mading (Diisi otomatis oleh JS) -->
+    <div id="mading-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 hidden">
+    </div>
+</MainLayout>
+
+<script>
+    import { API_URL, fetchAPI } from '../scripts/api.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const grid = document.getElementById('mading-grid');
+        const spinner = document.getElementById('loading-spinner');
+        const searchBtn = document.getElementById('search-btn');
+        const searchInput = document.getElementById('search-input');
+
+        async function loadItems(query = '') {
+            // Reset tampilan
+            grid.innerHTML = '';
+            spinner.classList.remove('hidden');
+            grid.classList.add('hidden');
+
+            try {
+                // Tembak API Backend Laravel
+                const endpoint = query ? `/items?q=${encodeURIComponent(query)}` : '/items';
+                const res = await fetchAPI(endpoint);
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    // Cek apakah data di-paginate (data.data.data) atau get biasa (data.data)
+                    const items = Array.isArray(data.data) ? data.data : data.data.data;
+
+                    if (!items || items.length === 0) {
+                        grid.innerHTML = `<div class="col-span-full flex flex-col items-center justify-center py-16 text-slate-500 bg-white rounded-2xl border border-slate-100 shadow-sm"><svg class="w-12 h-12 mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><p class="text-lg">Tidak ada barang yang ditemukan.</p></div>`;
+                    } else {
+                        // Render setiap barang menjadi HTML Card
+                        items.forEach(item => {
+                            const isLost = item.post_type === 'lost';
+                            const typeColor = isLost ? 'bg-red-100 text-red-700 border-red-200' : 'bg-emerald-100 text-emerald-700 border-emerald-200';
+                            const typeLabel = isLost ? 'Kehilangan' : 'Ditemukan';
+                            const imageUrl = item.foto ? `http://127.0.0.1:8000/storage/${item.foto}` : 'https://placehold.co/600x400/f8fafc/94a3b8?text=Tidak+Ada+Foto';
+                            const dateStr = new Date(item.tanggal_lapor).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'});
+
+                            const cardHTML = `
+                                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col h-full group">
+                                    <div class="relative h-52 overflow-hidden bg-slate-100">
+                                        <img src="${imageUrl}" alt="${item.judul}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        <div class="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold border ${typeColor} bg-white/90 backdrop-blur-sm shadow-sm">
+                                            ${typeLabel}
+                                        </div>
+                                    </div>
+                                    <div class="p-5 flex flex-col flex-grow">
+                                        <div class="flex items-center space-x-2 text-xs text-slate-500 mb-3">
+                                            <span class="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 font-medium text-slate-600">
+                                                ${item.category?.nama_kategori || 'Umum'}
+                                            </span>
+                                            <span>&bull;</span>
+                                            <span class="font-medium">${dateStr}</span>
+                                        </div>
+                                        <h3 class="text-lg font-bold text-slate-800 mb-2 line-clamp-1 group-hover:text-orange-600 transition-colors">${item.judul}</h3>
+                                        <p class="text-sm text-slate-600 line-clamp-2 mb-4 flex-grow leading-relaxed">${item.deskripsi}</p>
+                                        <div class="mt-auto pt-4 border-t border-slate-100 flex justify-between items-center">
+                                            <div class="flex items-center text-xs text-slate-500 font-medium truncate max-w-[60%]">
+                                                <svg class="w-4 h-4 mr-1.5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.243-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                                <span class="truncate">${item.location?.nama_tempat || 'Lokasi Tidak Diketahui'}</span>
+                                            </div>
+                                            <a href="/items/${item.id}" class="text-sm font-bold text-orange-600 hover:text-orange-700 bg-orange-50 hover:bg-orange-100 px-3 py-1.5 rounded-lg transition-colors">
+                                                Detail &rarr;
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            grid.insertAdjacentHTML('beforeend', cardHTML);
+                        });
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-red-500 font-medium">Gagal memuat data. Pastikan Backend Laravel Anda (127.0.0.1:8000) sedang menyala!</div>`;
+            } finally {
+                spinner.classList.add('hidden');
+                grid.classList.remove('hidden');
+            }
+        }
+
+        // Trigger Pencarian
+        searchBtn.addEventListener('click', () => loadItems(searchInput.value));
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') loadItems(searchInput.value);
+        });
+
+        // Render otomatis saat halaman dibuka
+        loadItems();
+    });
+</script>
