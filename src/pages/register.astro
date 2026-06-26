@@ -1,0 +1,88 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Daftar Akun">
+    <div class="max-w-md mx-auto mt-10 bg-white p-8 rounded-2xl shadow-sm border border-slate-100">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-slate-800">Daftar Akun Mahasiswa</h1>
+            <p class="text-slate-500 mt-2 text-sm">Gunakan email kampus (@student.unper.ac.id)</p>
+        </div>
+
+        <div id="alert-box" class="hidden p-3 rounded-lg text-sm mb-6 border"></div>
+
+        <form id="register-form" class="space-y-5">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Nama Lengkap</label>
+                <input type="text" id="nama" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none" placeholder="Ahmad Dahlan">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Email Mahasiswa</label>
+                <input type="email" id="email" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none" placeholder="nim@student.unper.ac.id">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Nomor HP / WhatsApp</label>
+                <input type="text" id="no_hp" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none" placeholder="08123456789">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                <input type="password" id="password" required class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 outline-none" placeholder="Minimal 8 karakter">
+            </div>
+            <button type="submit" id="submit-btn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold py-2.5 rounded-lg shadow-md transition-colors">
+                <span>Daftar Sekarang</span>
+            </button>
+        </form>
+
+        <p class="mt-6 text-center text-sm text-slate-600">
+            Sudah punya akun? <a href="/login" class="text-orange-600 font-semibold hover:underline">Masuk di sini</a>
+        </p>
+    </div>
+</MainLayout>
+
+<script>
+    import { API_URL } from '../scripts/api.js';
+
+    document.getElementById('register-form')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const payload = {
+            nama_lengkap: document.getElementById('nama').value,
+            email: document.getElementById('email').value,
+            no_hp: document.getElementById('no_hp').value,
+            password: document.getElementById('password').value
+        };
+
+        const btn = document.getElementById('submit-btn');
+        const alertBox = document.getElementById('alert-box');
+
+        btn.innerHTML = '<span class="animate-pulse">Mendaftarkan...</span>';
+        btn.disabled = true;
+        alertBox.className = 'hidden';
+
+        try {
+            const res = await fetch(`${API_URL}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                alertBox.textContent = 'Pendaftaran berhasil! Mengalihkan ke halaman Login...';
+                alertBox.className = 'bg-green-50 text-green-700 border-green-200 p-3 rounded-lg text-sm mb-6 border block';
+                setTimeout(() => window.location.href = '/login', 2000);
+            } else {
+                throw new Error(data.message || 'Gagal mendaftar. Pastikan format email benar.');
+            }
+        } catch (err) {
+            alertBox.textContent = err.message;
+            alertBox.className = 'bg-red-50 text-red-600 border-red-200 p-3 rounded-lg text-sm mb-6 border block';
+        } finally {
+            if (alertBox.classList.contains('bg-red-50')) {
+                btn.innerHTML = '<span>Daftar Sekarang</span>';
+                btn.disabled = false;
+            }
+        }
+    });
+</script>
