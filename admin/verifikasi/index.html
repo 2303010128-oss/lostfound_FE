@@ -561,10 +561,11 @@
                     var iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="2"><path d="M19 5H5a2 2 0 00-2 2v10a2 2 0 002 2h14a2 2 0 002-2V7a2 2 0 00-2-2z"/><path d="M16 11h4v2h-4z"/></svg>`; 
                     var bgColor = '#F1F5F9';
 
-                    if(item.item.toLowerCase().includes('iphone') || item.item.toLowerCase().includes('hp')) {
+                    var itemName = item.item ? item.item.toString().toLowerCase() : '';
+                    if(itemName.includes('iphone') || itemName.includes('hp')) {
                         iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#1E4A8A" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>`;
                         bgColor = '#EFF6FF';
-                    } else if(item.item.toLowerCase().includes('kunci')) {
+                    } else if(itemName.includes('kunci')) {
                         iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="2"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M21 3l-6 6M17 5l2 2M14 8l2 2"/></svg>`;
                         bgColor = '#F0FDF4';
                     }
@@ -622,9 +623,9 @@
                 filteredData = claimData.filter(function(item) {
                     var matchesTab = (item.status === currentTab);
                     var matchesSearch = keyword === '' || 
-                        item.id.toString().toLowerCase().includes(keyword) ||
-                        item.item.toLowerCase().includes(keyword) ||
-                        item.claimant.toLowerCase().includes(keyword);
+                        (item.id ? item.id.toString().toLowerCase().includes(keyword) : false) ||
+                        (item.item ? item.item.toString().toLowerCase().includes(keyword) : false) ||
+                        (item.claimant ? item.claimant.toString().toLowerCase().includes(keyword) : false);
                     return matchesTab && matchesSearch;
                 });
                 currentPage = 1;
