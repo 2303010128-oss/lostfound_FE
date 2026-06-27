@@ -19,4 +19,4 @@
 .header-admin-text { text-align: right; }
 .header-admin-text h4 { font-size: 13px; font-weight: 600; color: var(--text-dark); margin:0; padding:0; line-height:1.2;}
 .header-admin-text p { font-size: 11px; color: var(--text-gray); margin:0; padding:0; }
-.header-admin img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.avatar-initial { width: 36px; height: 36px; border-radius: 50%; background: #ea580c; color: white; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; }
