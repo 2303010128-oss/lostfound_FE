@@ -77,7 +77,7 @@
         .shield-icon .material-symbols-outlined { font-size: 18px; }
         
         .qr-box { background: #f1f5f9; padding: 16px; border-radius: 12px; display: inline-block; margin-bottom: 24px; }
-        .qr-box img { mix-blend-mode: multiply; transition: all 0.3s ease; }
+        .qr-box img { width: 120px; height: 120px; mix-blend-mode: multiply; }
         
         .badge-desc { font-size: 11px; color: var(--text-gray); line-height: 1.6; margin-bottom: 24px; padding: 0 16px;}
         .badge-footer { border-top: 1px solid #f1f5f9; padding-top: 16px; }
@@ -131,7 +131,7 @@
                 position: fixed !important; 
                 left: 50% !important; 
                 top: 40% !important; 
-                transform: translate(-50%, -40%) scale(1.2) !important; 
+                transform: translate(-50%, -40%) scale(var(--print-scale, 1.2)) !important; 
                 margin: 0 !important; 
             }
         }
@@ -337,8 +337,11 @@
                 document.getElementById('previewLocationName').textContent = locName;
                 const qrImg = document.getElementById('qrCodeImg');
                 qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=${currentSize}x${currentSize}&data=LostFound-${locCode}`;
-                qrImg.style.width = currentSize + 'px';
-                qrImg.style.height = currentSize + 'px';
+                
+                let pScale = 1.2;
+                if(currentSize == 100) pScale = 0.9;
+                if(currentSize == 200) pScale = 1.6;
+                document.documentElement.style.setProperty('--print-scale', pScale);
             };
 
             locSelect.addEventListener('change', updateQR);
