@@ -1,0 +1,191 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Proses Serah Terima">
+    <div class="max-w-4xl mx-auto mt-6">
+        <a href="/admin/dashboard" class="inline-flex items-center text-sm font-medium text-slate-500 hover:text-orange-600 mb-6 transition-colors">
+            &larr; Kembali ke Dashboard
+        </a>
+
+        <div class="bg-slate-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+            <!-- Sisi Kamera -->
+            <div class="w-full md:w-2/3 bg-black relative min-h-[400px] flex items-center justify-center">
+                <video id="webcam" class="absolute w-full h-full object-cover" autoplay playsinline></video>
+                <canvas id="canvas" class="hidden"></canvas>
+                
+                <!-- Hasil Foto Overlay -->
+                <img id="photo-result" class="absolute w-full h-full object-cover hidden z-10" />
+
+                <!-- Tombol Shutter Kamera -->
+                <div class="absolute bottom-6 left-0 right-0 flex justify-center z-20 space-x-4">
+                    <button id="capture-btn" class="bg-white w-16 h-16 rounded-full border-4 border-slate-300 hover:border-orange-500 transition-all shadow-lg flex items-center justify-center group focus:outline-none focus:ring-4 focus:ring-orange-500/50">
+                        <div class="w-12 h-12 bg-white rounded-full group-active:scale-90 transition-transform"></div>
+                    </button>
+                    
+                    <button id="retake-btn" class="hidden bg-slate-800 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-slate-700 transition">
+                        Ulangi Foto
+                    </button>
+                </div>
+
+                <!-- Indikator Loading Kamera -->
+                <div id="camera-loading" class="absolute z-0 text-white text-center">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-white mx-auto mb-3"></div>
+                    <p class="font-medium animate-pulse">Mengakses Kamera...</p>
+                </div>
+            </div>
+
+            <!-- Sisi Form Submit -->
+            <div class="w-full md:w-1/3 bg-white p-8 flex flex-col">
+                <h2 class="text-2xl font-black text-slate-800 mb-2">Serah Terima</h2>
+                <p class="text-sm text-slate-500 mb-6">Ambil foto Mahasiswa dan Barang sebagai bukti valid serah terima.</p>
+                
+                <div id="handover-alert" class="hidden p-3 rounded-lg text-sm mb-4 border"></div>
+
+                <div class="space-y-5 flex-grow">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">ID Klaim</label>
+                        <input type="text" id="claim-id" readonly class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-lg text-slate-600 font-mono font-bold cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Takeout Token</label>
+                        <input type="text" id="takeout-token" readonly class="w-full px-4 py-3 bg-orange-50 border border-orange-200 rounded-lg text-orange-700 font-mono font-bold text-xl tracking-widest cursor-not-allowed">
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-slate-100">
+                    <button id="submit-handover-btn" disabled class="w-full bg-slate-300 text-slate-500 font-bold py-3.5 rounded-xl transition-all flex justify-center items-center cursor-not-allowed">
+                        Selesaikan & Simpan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</MainLayout>
+
+<script>
+    import { fetchAPI } from '../../scripts/api.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const claimId = urlParams.get('claim_id');
+        const token = urlParams.get('token');
+
+        if (!claimId) {
+            alert('Claim ID tidak ditemukan di URL!');
+            window.location.href = '/admin/dashboard';
+            return;
+        }
+
+        document.getElementById('claim-id').value = claimId;
+        document.getElementById('takeout-token').value = token || 'TIDAK-ADA-TOKEN';
+
+        // Elemen Kamera
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('canvas');
+        const photoResult = document.getElementById('photo-result');
+        const captureBtn = document.getElementById('capture-btn');
+        const retakeBtn = document.getElementById('retake-btn');
+        const submitBtn = document.getElementById('submit-handover-btn');
+        const cameraLoading = document.getElementById('camera-loading');
+        
+        let stream = null;
+        let blobData = null; // Menyimpan hasil jepretan
+
+        // Mengaktifkan Webcam
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                video.srcObject = stream;
+                cameraLoading.classList.add('hidden');
+            } catch (err) {
+                console.error(err);
+                cameraLoading.innerHTML = '<p class="text-red-400 font-bold px-4">Gagal mengakses kamera. Pastikan browser memberi izin.</p>';
+            }
+        }
+
+        // Jepret Foto
+        captureBtn.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Konversi ke format JPEG 
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            photoResult.src = dataUrl;
+            photoResult.classList.remove('hidden');
+            
+            // Konversi Base64 ke Blob (File) untuk di-upload
+            canvas.toBlob((blob) => {
+                blobData = blob;
+                
+                // Ubah State Tombol
+                captureBtn.classList.add('hidden');
+                retakeBtn.classList.remove('hidden');
+                
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('bg-slate-300', 'text-slate-500', 'cursor-not-allowed');
+                submitBtn.classList.add('bg-orange-600', 'hover:bg-orange-700', 'text-white', 'shadow-lg');
+            }, 'image/jpeg', 0.8);
+        });
+
+        // Ulangi Foto
+        retakeBtn.addEventListener('click', () => {
+            photoResult.classList.add('hidden');
+            photoResult.src = '';
+            blobData = null;
+            
+            retakeBtn.classList.add('hidden');
+            captureBtn.classList.remove('hidden');
+            
+            submitBtn.disabled = true;
+            submitBtn.classList.add('bg-slate-300', 'text-slate-500', 'cursor-not-allowed');
+            submitBtn.classList.remove('bg-orange-600', 'hover:bg-orange-700', 'text-white', 'shadow-lg');
+        });
+
+        // Submit Form
+        submitBtn.addEventListener('click', async () => {
+            if (!blobData) return;
+
+            const alertBox = document.getElementById('handover-alert');
+            submitBtn.innerHTML = '<span class="animate-pulse">Menyimpan...</span>';
+            submitBtn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('claim_id', claimId);
+                // Nama file acak untuk bukti foto
+                formData.append('foto_bukti', blobData, `handover_${claimId}_${Date.now()}.jpg`);
+
+                const res = await fetchAPI('/handover', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    // Matikan kamera
+                    if (stream) {
+                        stream.getTracks().forEach(track => track.stop());
+                    }
+
+                    alertBox.textContent = 'Proses serah terima berhasil! Mengalihkan...';
+                    alertBox.className = 'bg-green-50 text-green-700 border-green-200 p-3 rounded-lg text-sm mb-4 border block';
+                    setTimeout(() => window.location.href = '/admin/dashboard', 2000);
+                } else {
+                    throw new Error(data.message || 'Gagal melakukan serah terima.');
+                }
+            } catch (err) {
+                alertBox.textContent = err.message;
+                alertBox.className = 'bg-red-50 text-red-600 border-red-200 p-3 rounded-lg text-sm mb-4 border block';
+                submitBtn.textContent = 'Selesaikan & Simpan';
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Mulai kamera saat halaman dimuat
+        startCamera();
+    });
+</script>

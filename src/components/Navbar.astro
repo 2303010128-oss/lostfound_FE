@@ -53,7 +53,11 @@
                 reportLink.classList.remove('hidden');
                 profileLink.classList.remove('hidden');
             } else if (role === 'satpam') {
-                // Modifikasi DOM untuk menambahkan link Satpam jika perlu
+                // Tambahkan link satpam ke Navbar secara dinamis
+                const navLinks = document.querySelector('.hidden.md\\:flex.space-x-8');
+                if (navLinks) {
+                    navLinks.innerHTML += `<a href="/admin/dashboard" class="text-orange-700 font-bold hover:text-orange-800 transition-colors bg-orange-100 px-3 py-1 rounded-md">Panel Satpam</a>`;
+                }
             }
         }
 
