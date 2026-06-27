@@ -123,14 +123,14 @@
                 <div class="stat-icon orange"><span class="emoji">👥</span></div>
                 <div class="stat-info">
                     <span class="label">Total User Umum</span>
-                    <span class="value">144</span>
+                    <span class="value" id="stat-total-user">...</span>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon blue"><span class="emoji">👤</span></div>
                 <div class="stat-info">
                     <span class="label">User Aktif</span>
-                    <span class="value">132</span>
+                    <span class="value" id="stat-aktif-user">...</span>
                 </div>
             </div>
         </section>
@@ -148,73 +148,14 @@
                         <th>AKSI</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="user-id">USR-88212</td>
-                        <td>
-                            <div class="user-name-col">
-                                <div class="user-initial initial-sa">SA</div>
-                                <span class="user-name-text">Siti Aminah</span>
-                            </div>
-                        </td>
-                        <td><span class="role-badge">USER</span></td>
-                        <td>siti.aminah@gmail.com</td>
-                        <td><span class="status-indicator status-nonaktif"><span class="status-dot"></span> NONAKTIF</span></td>
-                        <td>
-                            <button class="btn-delete"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="user-id">USR-88216</td>
-                        <td>
-                            <div class="user-name-col">
-                                <div class="user-initial initial-bk">BK</div>
-                                <span class="user-name-text">Bambang Kusuma</span>
-                            </div>
-                        </td>
-                        <td><span class="role-badge">USER</span></td>
-                        <td>bambang.k@outlook.com</td>
-                        <td><span class="status-indicator status-aktif"><span class="status-dot"></span> AKTIF</span></td>
-                        <td>
-                            <button class="btn-delete"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="user-id">USR-88217</td>
-                        <td>
-                            <div class="user-name-col">
-                                <div class="user-initial initial-dr">DR</div>
-                                <span class="user-name-text">Dewi Ratna</span>
-                            </div>
-                        </td>
-                        <td><span class="role-badge">USER</span></td>
-                        <td>dewiratna.99@gmail.com</td>
-                        <td><span class="status-indicator status-aktif"><span class="status-dot"></span> AKTIF</span></td>
-                        <td>
-                            <button class="btn-delete"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="user-id">USR-88218</td>
-                        <td>
-                            <div class="user-name-col">
-                                <div class="user-initial initial-ep">EP</div>
-                                <span class="user-name-text">Eko Prasetyo</span>
-                            </div>
-                        </td>
-                        <td><span class="role-badge">USER</span></td>
-                        <td>eko.prasetyo@gmail.com</td>
-                        <td><span class="status-indicator status-aktif"><span class="status-dot"></span> AKTIF</span></td>
-                        <td>
-                            <button class="btn-delete"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody id="userTableBody">
+                        <tr><td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Memuat data user...</td></tr>
+                    </tbody>
             </table>
             
             <!-- PAGINATION -->
             <div class="table-footer">
-                <span>Menampilkan 1–4 dari 144 user umum</span>
+                <span id="footer-text">Memuat...</span>
                 <div class="pagination">
                     <button class="page-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
                     <button class="page-btn active">1</button>
@@ -231,5 +172,70 @@
     <script src="../../assets/js/auth.js"></script>
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/components.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const result = await window.apiFetch('/users');
+                if (result.response.ok) {
+                    let users = [];
+                    if (Array.isArray(result.data)) users = result.data;
+                    else if (result.data && Array.isArray(result.data.data)) users = result.data.data;
+                    else if (result.data && result.data.data && Array.isArray(result.data.data.data)) users = result.data.data.data;
+                    
+                    let aktifCount = 0;
+                    let html = '';
+
+                    users.forEach(u => {
+                        aktifCount++; // Untuk sementara semua user dianggap aktif karena tidak ada kolom status di DB
+                        
+                        let initial = u.nama_lengkap ? u.nama_lengkap.substring(0, 2).toUpperCase() : 'US';
+                        let roleBadge = u.role === 'satpam' ? 'SATPAM' : 'USER';
+                        
+                        html += `<tr>
+                            <td class="user-id">USR-${u.id}</td>
+                            <td>
+                                <div class="user-name-col">
+                                    <div class="user-initial" style="background: linear-gradient(135deg, #1e293b, #334155);">${initial}</div>
+                                    <span class="user-name-text">${u.nama_lengkap}</span>
+                                </div>
+                            </td>
+                            <td><span class="role-badge">${roleBadge}</span></td>
+                            <td>${u.email}</td>
+                            <td><span class="status-indicator status-aktif"><span class="status-dot"></span> AKTIF</span></td>
+                            <td>
+                                <button class="btn-delete" onclick="deleteUser(${u.id})"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+                            </td>
+                        </tr>`;
+                    });
+
+                    if (html === '') html = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Belum ada user terdaftar.</td></tr>';
+                    document.getElementById('userTableBody').innerHTML = html;
+
+                    if(document.getElementById('stat-total-user')) document.getElementById('stat-total-user').innerText = users.length;
+                    if(document.getElementById('stat-aktif-user')) document.getElementById('stat-aktif-user').innerText = aktifCount;
+                    if(document.getElementById('footer-text')) document.getElementById('footer-text').innerText = `Menampilkan ${users.length} user`;
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('userTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #dc2626;">Terjadi kesalahan saat memuat data user.</td></tr>';
+            }
+        });
+
+        window.deleteUser = async function(id) {
+            if(!confirm('⚠️ PERINGATAN: Apakah Anda yakin ingin menghapus user ini selamanya?')) return;
+            try {
+                const result = await window.apiFetch('/users/' + id, { method: 'DELETE' });
+                if(result.response.ok) {
+                    alert('User berhasil dihapus dari database!');
+                    location.reload();
+                } else {
+                    alert('Gagal menghapus user: ' + (result.data.message || 'Kesalahan server'));
+                }
+            } catch(e) {
+                alert('Terjadi kesalahan jaringan.');
+            }
+        }
+    </script>
 </body>
 </html>
