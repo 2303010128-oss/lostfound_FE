@@ -66,6 +66,7 @@
         .btn-view-action svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/admin_header.css">
 </head>
 <body>
 
@@ -74,21 +75,7 @@
 
     <!-- MAIN CONTENT AREA -->
     <main class="main-content">
-        <header class="page-header-row">
-            <div class="page-title-block">
-                <h1>Arsip & Riwayat Laporan</h1>
-                <p>Rekam jejak seluruh kasus klaim, penyerahan, dan penolakan.</p>
-            </div>
-            <div class="filter-search-group">
-                <select class="status-dropdown">
-                    <option>Semua Status</option>
-                </select>
-                <div class="search-container">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" placeholder="Cari ID, Nama, atau Barang...">
-                </div>
-            </div>
-        </header>
+        <div id="app-header" data-title="Arsip Laporan" data-breadcrumb="Arsip > <span>Riwayat Laporan</span>"></div>
 
         <section class="stats-summary-grid">
             <div class="summary-card total-arsip">

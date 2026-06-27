@@ -40,24 +40,6 @@
         /* === MAIN CONTENT === */
         .main-content { margin-left: 260px; padding: 32px 48px; width: calc(100% - 260px); display: flex; flex-direction: column; }
         
-        /* Header Top */
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-        .page-title h1 { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
-        .breadcrumb { font-size: 13px; color: var(--text-gray); }
-        .breadcrumb span { color: var(--orange); }
-        
-        .header-right { display: flex; align-items: center; gap: 24px; }
-        .search-field { background: #f1f5f9; padding: 10px 16px; border-radius: 24px; width: 280px; display: flex; align-items: center; gap: 10px; color: var(--text-gray); }
-        .search-field input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; color: var(--text-dark); }
-        .search-field .material-symbols-outlined { font-size: 18px; }
-        
-        .icon-btn { cursor: pointer; }
-        
-        .header-admin { display: flex; align-items: center; gap: 12px; border-left: 1px solid var(--border-color); padding-left: 24px; }
-        .header-admin-text { text-align: right; }
-        .header-admin-text h4 { font-size: 13px; font-weight: 600; color: var(--text-dark); }
-        .header-admin-text p { font-size: 11px; color: var(--text-gray); }
-        .header-admin img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
         /* Grid Cards */
         .grid-config { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
@@ -138,6 +120,7 @@
         }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/admin_header.css">
 </head>
 <body>
 
@@ -146,27 +129,7 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-        <div class="header-top">
-            <div class="page-title">
-                <h1>Konfigurasi Sistem – Cetak QR</h1>
-                <p class="breadcrumb">Konfigurasi > <span>Cetak QR Code</span></p>
-            </div>
-            <div class="header-right">
-                <div class="search-field">
-                    <span class="material-symbols-outlined">search</span>
-                    <input type="text" placeholder="Cari pengaturan...">
-                </div>
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Bell.png" class="icon-3d icon-btn" alt="Notif">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Question%20Mark.png" class="icon-3d icon-btn" alt="Help">
-                <div class="header-admin">
-                    <div class="header-admin-text">
-                        <h4 id="profileName">Admin Ventura</h4>
-                        <p id="profileRole">Super Admin</p>
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop" alt="Admin">
-                </div>
-            </div>
-        </div>
+        <div id="app-header" data-title="Konfigurasi Sistem" data-breadcrumb="Konfigurasi > <span>Cetak QR Code</span>"></div>
 
         <div class="grid-config">
             <div class="card">

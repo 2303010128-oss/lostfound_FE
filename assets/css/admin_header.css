@@ -1,0 +1,18 @@
+/* Header Top */
+.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+.page-title h1 { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+.breadcrumb { font-size: 13px; color: var(--text-gray); }
+.breadcrumb span { color: var(--orange); }
+
+.header-right { display: flex; align-items: center; gap: 24px; }
+.search-field { background: #f1f5f9; padding: 10px 16px; border-radius: 24px; width: 280px; display: flex; align-items: center; gap: 10px; color: var(--text-gray); }
+.search-field input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; color: var(--text-dark); }
+.search-field .material-symbols-outlined { font-size: 18px; }
+
+.icon-btn { cursor: pointer; }
+
+.header-admin { display: flex; align-items: center; gap: 12px; border-left: 1px solid var(--border-color); padding-left: 24px; }
+.header-admin-text { text-align: right; }
+.header-admin-text h4 { font-size: 13px; font-weight: 600; color: var(--text-dark); margin:0; padding:0; line-height:1.2;}
+.header-admin-text p { font-size: 11px; color: var(--text-gray); margin:0; padding:0; }
+.header-admin img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }

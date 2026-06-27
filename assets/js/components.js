@@ -73,7 +73,30 @@ async function loadSidebar() {
     }
 }
 
+async function loadHeader() {
+    const container = document.getElementById('app-header');
+    if (!container) return;
+
+    try {
+        const res = await fetch(getBasePath() + '/components/header_admin.html?v=' + new Date().getTime());
+        const html = await res.text();
+        container.innerHTML = html;
+
+        // Set Title and Breadcrumb from data attributes
+        const title = container.getAttribute('data-title') || 'Dashboard';
+        const breadcrumb = container.getAttribute('data-breadcrumb') || 'Home > <span>Dashboard</span>';
+        
+        const titleEl = document.getElementById('header-title');
+        const breadcrumbEl = document.getElementById('header-breadcrumb');
+        if(titleEl) titleEl.textContent = title;
+        if(breadcrumbEl) breadcrumbEl.innerHTML = breadcrumb;
+    } catch (error) {
+        console.error('Gagal memuat header:', error);
+    }
+}
+
 // Jalankan otomatis saat halaman dimuat
 document.addEventListener('DOMContentLoaded', () => {
     loadSidebar();
+    loadHeader();
 });
