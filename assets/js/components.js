@@ -39,6 +39,35 @@ async function loadSidebar() {
                 }
             }
         });
+
+        // Dynamic Badges Fetching
+        if (typeof window.apiFetch === 'function') {
+            try {
+                // Fetch Items
+                const itemsRes = await window.apiFetch('/items');
+                if(itemsRes && itemsRes.data && itemsRes.data.data) {
+                    const pendingItems = itemsRes.data.data.filter(i => i.status_barang === 'pending' || i.status_barang === 'menunggu').length;
+                    const bAntrean = document.getElementById('badge-antrean');
+                    if(bAntrean && pendingItems > 0) {
+                        bAntrean.textContent = pendingItems;
+                        bAntrean.style.display = 'inline-block';
+                    }
+                }
+
+                // Fetch Claims
+                const claimsRes = await window.apiFetch('/claims');
+                if(claimsRes && claimsRes.data && claimsRes.data.data) {
+                    const pendingClaims = claimsRes.data.data.filter(c => c.status_verif === 'pending' || c.status_verif === 'menunggu').length;
+                    const bVerifikasi = document.getElementById('badge-verifikasi');
+                    if(bVerifikasi && pendingClaims > 0) {
+                        bVerifikasi.textContent = pendingClaims;
+                        bVerifikasi.style.display = 'inline-block';
+                    }
+                }
+            } catch(e) {
+                console.error('Gagal mengambil data antrean:', e);
+            }
+        }
     } catch (error) {
         console.error('Gagal memuat sidebar:', error);
     }
