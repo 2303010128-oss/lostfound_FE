@@ -781,25 +781,53 @@
             // ============================================================
             // APPROVE / CLARIFY / REJECT
             // ============================================================
-            window.approveClaim = function(id) {
+            async function submitVerification(id, status) {
                 var note = document.getElementById('verificationNote');
-                var noteText = note ? note.value : 'Tidak ada catatan.';
-                alert('✅ Klaim ' + id + ' telah disetujui.\nCatatan: ' + noteText);
-                window.location.href = '../verifikasi/index.html';
+                var noteText = note ? note.value : '';
+                try {
+                    const result = await window.apiFetch('/claims/' + id + '/verify', {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                            status: status,
+                            catatan: noteText
+                        })
+                    });
+                    if (result.response.ok) {
+                        alert('Berhasil memperbarui status klaim!');
+                        window.location.href = '../verifikasi/index.html';
+                    } else {
+                        alert('Gagal memperbarui status: ' + (result.data.message || 'Error tidak diketahui'));
+                    }
+                } catch (err) {
+                    console.error('Error saat verifikasi:', err);
+                    alert('Terjadi kesalahan jaringan.');
+                }
+            }
+
+            window.approveClaim = function(id) {
+                if (confirm('Yakin ingin menyetujui klaim ini?')) {
+                    submitVerification(id, 'approved');
+                }
             };
 
             window.clarifyClaim = function(id) {
                 var note = document.getElementById('verificationNote');
-                var noteText = note ? note.value : 'Tidak ada catatan.';
-                alert('❓ Klaim ' + id + ' membutuhkan klarifikasi.\nCatatan: ' + noteText);
-                window.location.href = '../verifikasi/index.html';
+                if (!note || !note.value.trim()) {
+                    alert('Catatan wajib diisi jika meminta klarifikasi!');
+                    return;
+                }
+                submitVerification(id, 'clarification_required');
             };
 
             window.rejectClaim = function(id) {
                 var note = document.getElementById('verificationNote');
-                var noteText = note ? note.value : 'Tidak ada catatan.';
-                alert('❌ Klaim ' + id + ' telah ditolak.\nCatatan: ' + noteText);
-                window.location.href = '../verifikasi/index.html';
+                if (!note || !note.value.trim()) {
+                    alert('Catatan wajib diisi jika menolak klaim!');
+                    return;
+                }
+                if (confirm('Yakin ingin menolak klaim ini?')) {
+                    submitVerification(id, 'rejected');
+                }
             };
 
             // ============================================================
