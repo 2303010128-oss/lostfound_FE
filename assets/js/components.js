@@ -82,14 +82,11 @@ async function loadHeader() {
         const html = await res.text();
         container.innerHTML = html;
 
-        // Set Title and Breadcrumb from data attributes
+        // Set Title from data attributes
         const title = container.getAttribute('data-title') || 'Dashboard';
-        const breadcrumb = container.getAttribute('data-breadcrumb') || 'Home > <span>Dashboard</span>';
         
         const titleEl = document.getElementById('header-title');
-        const breadcrumbEl = document.getElementById('header-breadcrumb');
         if(titleEl) titleEl.textContent = title;
-        if(breadcrumbEl) breadcrumbEl.innerHTML = breadcrumb;
     } catch (error) {
         console.error('Gagal memuat header:', error);
     }
