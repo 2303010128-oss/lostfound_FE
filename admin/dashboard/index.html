@@ -712,9 +712,10 @@
                     <h4>Input Token Validasi</h4>
                     <div class="token-subtitle">Token bersifat unik untuk setiap transaksi pengambilan.</div>
                     
-                    <div class="token-box">LF-ORANGE-992</div>
+                    <!-- Ubah div statis menjadi input field sungguhan -->
+                    <input type="text" id="inputTokenHandover" class="token-box" placeholder="LF-ORANGE-XXXX" style="width: 100%; text-align: center; border: 2px dashed #ea580c; outline: none; background: #fffaf5; font-family: monospace; font-size: 18px; letter-spacing: 2px; text-transform: uppercase;">
                     
-                    <button class="btn-submit-token">
+                    <button class="btn-submit-token" id="btnProsesSerahTerima" onclick="processHandover()">
                         ⚡ PROSES SERAH TERIMA
                     </button>
                     
@@ -742,18 +743,9 @@
                             <th>Waktu</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="dashboardActivityBody">
                         <tr>
-                            <td><strong>MacBook Air M2 Silver</strong></td>
-                            <td><span class="status-pill diserahkan">Diserahkan</span></td>
-                            <td>Budi Santoso (20210041)</td>
-                            <td>10:45 WIB</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Dompet Kulit Cokelat</strong></td>
-                            <td><span class="status-pill diverifikasi">Diverifikasi</span></td>
-                            <td>Siti Aminah (20220192)</td>
-                            <td>09:12 WIB</td>
+                            <td colspan="4" style="text-align: center; padding: 20px;"><span style="color: #64748b;">Memuat aktivitas terbaru dari database...</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -768,6 +760,9 @@
         const now = new Date();
         document.getElementById('currentDate').textContent = months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
     </script>
+    
+    <!-- Skrip Khusus Dasbor -->
+    <script src="../../assets/js/admin_dashboard.js"></script>
 
     <!-- Injected Base Scripts -->
     <script src="../../assets/js/auth.js"></script>
