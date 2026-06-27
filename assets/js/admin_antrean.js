@@ -15,7 +15,14 @@ async function loadAntrean() {
         if (result.response.ok) {
             // Anggap data yang dikembalikan ada di result.data.data (format pagination Laravel)
             // atau result.data jika berupa array langsung.
-            let items = result.data.data || result.data || [];
+            let items = [];
+            if (Array.isArray(result.data)) {
+                items = result.data;
+            } else if (result.data && Array.isArray(result.data.data)) {
+                items = result.data.data;
+            } else if (result.data && result.data.data && Array.isArray(result.data.data.data)) {
+                items = result.data.data.data;
+            }
             
             tbody.innerHTML = ''; // Kosongkan status "Memuat data..."
 

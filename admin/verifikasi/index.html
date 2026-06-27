@@ -41,187 +41,7 @@
         input {
             font-family: inherit;
         }
-
-        /* ============================================================
-                   SIDEBAR - WARNA GELAP (#0F172A) DENGAN KAPSUL ORANJE
-                   ============================================================ */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background: #0F172A; /* Hitam / Dark Navy Asli */
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            padding: 24px 0;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar .sidebar-header {
-            padding: 0 24px 24px 24px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sidebar .sidebar-header .logo-box {
-            width: 36px;
-            height: 36px;
-            background: #E15B17; /* Oranje ikon koper figma */
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sidebar .sidebar-header .logo-box svg {
-            width: 20px;
-            height: 20px;
-            fill: white;
-        }
-
-        .sidebar .sidebar-header .logo {
-            color: #FFFFFF;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .sidebar .sidebar-header .logo span {
-            font-weight: 400;
-            color: #64748B;
-            font-size: 11px;
-            margin-left: 2px;
-        }
-
-        .sidebar .sidebar-menu {
-            flex: 1;
-            padding: 16px 0;
-            overflow-y: auto;
-        }
-
-        .sidebar .sidebar-menu .menu-label {
-            font-size: 10px;
-            font-weight: 600;
-            color: #475569;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            padding: 12px 24px 8px 24px;
-        }
-
-        .sidebar .sidebar-menu .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 24px;
-            font-size: 14px;
-            color: #94A3B8; /* Muted abu-abu untuk menu biasa */
-            font-weight: 500;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            margin-bottom: 4px;
-        }
-
-        .sidebar .sidebar-menu .menu-item:hover {
-            background: rgba(255, 255, 255, 0.04);
-            color: #FFFFFF;
-        }
-
-        /* Menu Aktif: Boks Kapsul Oranje Sesuai Screenshot Figma */
-        .sidebar .sidebar-menu .menu-item.active {
-            background: #E15B17; /* Oranje terang figma */
-            color: #FFFFFF; /* Teks Putih */
-            font-weight: 600;
-            border-radius: 8px;
-            margin: 0 16px;
-            padding: 12px 16px;
-        }
-
-        .sidebar .sidebar-menu .menu-item svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        .sidebar .sidebar-menu .menu-item .badge {
-            margin-left: auto;
-            background: #E15B17;
-            color: #ffffff;
-            font-size: 11px;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 20px;
-        }
-
-        /* Badge saat berada di dalam menu aktif */
-        .sidebar .sidebar-menu .menu-item.active .badge {
-            background: rgba(255, 255, 255, 0.2);
-            color: #FFFFFF;
-        }
-
-        .sidebar .sidebar-footer {
-            padding: 16px 16px 0 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .sidebar .sidebar-footer .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-            padding: 0 8px;
-        }
-
-        /* Avatar Kiri Bawah murni CSS tanpa foto */
-        .sidebar .sidebar-footer .user-info .avatar-placeholder {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sidebar .sidebar-footer .user-info .avatar-placeholder svg {
-            width: 20px;
-            height: 20px;
-            color: #94A3B8;
-        }
-
-        .sidebar .sidebar-footer .user-info .user-details .name {
-            font-size: 13px;
-            font-weight: 600;
-            color: #FFFFFF;
-        }
-
-        .sidebar .sidebar-footer .user-info .user-details .role {
-            font-size: 11px;
-            color: #64748B;
-        }
-
-        /* Tombol Keluar Sesi teks Merah Soft */
-        .sidebar .sidebar-footer .logout-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 13px;
-            color: #F87171;
-            font-weight: 500;
-            width: 100%;
-            background: transparent;
-            transition: all 0.2s ease;
-        }
-
-        .sidebar .sidebar-footer .logout-btn:hover {
-            background: rgba(248, 113, 113, 0.1);
-        }
+        
 
         /* ============================================================
                    MAIN CONTENT AREA
@@ -581,67 +401,11 @@
             .header-actions { width: 100%; justify-content: space-between; }
         }
     </style>
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
 </head>
 <body>
 
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-box">
-                <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-            </div>
-            <div class="logo">LostFound <span>ADMIN</span></div>
-        </div>
-
-        <nav class="sidebar-menu">
-            <div class="menu-label">MAIN MENU</div>
-            <a href="../dashboard/index.html" class="menu-item">
-                <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-                Dashboard
-            </a>
-            <a href="../antrean-temuan/index.html" class="menu-item">
-                <svg viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                Antrean Temuan
-                <span class="badge">3</span>
-            </a>
-            <a href="index.html" class="menu-item active">
-                <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                Verifikasi Klaim
-                <span class="badge">5</span>
-            </a>
-            <a href="../arsip_laporan/index.html" class="menu-item">
-                <svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                Arsip Laporan
-            </a>
-            
-            <div class="menu-label">SETTINGS</div>
-            <a href="../manajemen-user/index.html" class="menu-item">
-                <svg viewBox="0 0 24 24"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                Manajemen User
-            </a>
-            <a href="#" class="menu-item">
-                <svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
-                Konfigurasi Sistem
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="user-info">
-                <div class="avatar-placeholder">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-                </div>
-                <div class="user-details">
-                    <div class="name">Petugas Posko</div>
-                    <div class="role">Super Admin</div>
-                </div>
-            </div>
-            <button class="logout-btn" onclick="logout()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                Keluar Sesi
-            </button>
-        </div>
-    </aside>
+    <div id="app-sidebar"></div>
 
     <main class="main-content">
         
@@ -668,17 +432,17 @@
         </header>
 
         <nav class="tabs-navigation">
-            <div class="tab-item active">
+            <div class="tab-item active" id="tab-pending" onclick="filterTab('pending')">
                 <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 Perlu Ditinjau
                 <span class="count-badge" id="countPending">3</span>
             </div>
-            <div class="tab-item">
+            <div class="tab-item" id="tab-clarification" onclick="filterTab('clarification')">
                 <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Butuh Klarifikasi
                 <span class="count-badge" id="countClarification">1</span>
             </div>
-            <div class="tab-item">
+            <div class="tab-item" id="tab-ready" onclick="filterTab('ready')">
                 <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
                 Siap Diambil
                 <span class="count-badge" id="countReady">2</span>
@@ -750,16 +514,46 @@
                 alert('📬 Tidak ada notifikasi baru.');
             };
 
-            var claimData = [
-                { id: '#CLM-98231', item: 'Dompet Kulit Cokelat', claimant: 'Ahmad Dahlan', date: '12 Nov 2024', status: 'pending' },
-                { id: '#CLM-98235', item: 'iPhone 13 Pro Max Blue', claimant: 'Siti Aminah', date: '13 Nov 2024', status: 'pending' },
-                { id: '#CLM-90240', item: 'Kunci Mobil Honda', claimant: 'Rizky Febrian', date: '14 Nov 2024', status: 'pending' },
-                { id: '#CLM-98245', item: 'Jam Tangan Rolex', claimant: 'Budi Santoso', date: '15 Nov 2024', status: 'clarification' },
-                { id: '#CLM-98250', item: 'Laptop ASUS ROG', claimant: 'Dewi Lestari', date: '16 Nov 2024', status: 'ready' },
-                { id: '#CLM-98255', item: 'Kacamata Ray-Ban', claimant: 'Putri Amelia', date: '17 Nov 2024', status: 'ready' },
-            ];
+            
+            var claimData = [];
 
-            var filteredData = claimData.slice();
+            window.fetchClaims = async function() {
+                try {
+                    const result = await apiFetch('/claims');
+                    if (result.response.ok) {
+                        let data = [];
+                        if (Array.isArray(result.data)) data = result.data;
+                        else if (result.data && Array.isArray(result.data.data)) data = result.data.data;
+                        else if (result.data && result.data.data && Array.isArray(result.data.data.data)) data = result.data.data.data;
+                        
+                        claimData = data.map(c => {
+                            let statusTab = 'pending';
+                            if (c.status_verif === 'clarification') statusTab = 'clarification';
+                            else if (c.status_verif === 'approved') statusTab = 'ready';
+                            else if (c.status_verif === 'pending' || c.status_verif === 'reviewed') statusTab = 'pending';
+                            else statusTab = c.status_verif;
+
+                            return {
+                                id: c.id,
+                                item: c.item ? c.item.judul : 'Barang',
+                                claimant: c.user ? c.user.nama_lengkap : 'Anonim',
+                                date: new Date(c.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}),
+                                status: statusTab
+                            };
+                        }).filter(item => ['pending', 'clarification', 'ready'].includes(item.status));
+
+                        searchData();
+                    }
+                } catch (error) {
+                    console.error('Gagal mengambil data:', error);
+                }
+            };
+
+            fetchClaims();
+
+
+            var currentTab = 'pending';
+            var filteredData = claimData.filter(function(i) { return i.status === currentTab; });
             var currentPage = 1;
             var rowsPerPage = 3;
 
@@ -796,7 +590,7 @@
 
                     html += `
                         <tr>
-                            <td class="col-id">${item.id}</td>
+                            <td class="col-id">#CLM-${item.id}</td>
                             <td>
                                 <div class="barang-wrapper">
                                     <div class="icon-container" style="background-color: ${bgColor};">
@@ -807,7 +601,7 @@
                             </td>
                             <td>${item.claimant}</td>
                             <td>${item.date}</td>
-                            <td><span class="badge-status">PENDING</span></td>
+                            <td><span class="badge-status">${item.status.toUpperCase()}</span></td>
                             <td style="text-align: right;">
                                 <a href="cek.html?id=${item.id}" class="btn-check">
                                     <svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -833,20 +627,29 @@
                 updateStats();
             }
 
+            
+            window.filterTab = function(status) {
+                currentTab = status;
+                document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+                document.getElementById('tab-' + status).classList.add('active');
+                searchData();
+            };
+
             window.searchData = function() {
-                var keyword = document.getElementById('searchInput').value.toLowerCase().trim();
-                if (keyword === '') {
-                    filteredData = claimData.slice();
-                } else {
-                    filteredData = claimData.filter(function(item) {
-                        return item.id.toLowerCase().includes(keyword) ||
-                            item.item.toLowerCase().includes(keyword) ||
-                            item.claimant.toLowerCase().includes(keyword);
-                    });
-                }
+                var searchInput = document.getElementById('searchInput');
+                var keyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
+                filteredData = claimData.filter(function(item) {
+                    var matchesTab = (item.status === currentTab);
+                    var matchesSearch = keyword === '' || 
+                        item.id.toLowerCase().includes(keyword) ||
+                        item.item.toLowerCase().includes(keyword) ||
+                        item.claimant.toLowerCase().includes(keyword);
+                    return matchesTab && matchesSearch;
+                });
                 currentPage = 1;
                 renderTable();
             };
+
 
             document.getElementById('prevPage').addEventListener('click', function() {
                 if (currentPage > 1) {

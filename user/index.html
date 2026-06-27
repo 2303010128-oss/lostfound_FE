@@ -573,7 +573,7 @@
                         <a href="riwayat.html" class="menu-item">⏳ Riwayat</a>
                         <div class="divider"></div>
                         <a href="profil.html" class="menu-item">👤 Profil</a>
-                        <a href="#" class="menu-item danger" onclick="handleLogoutAction(event)">🚪 Keluar</a>
+                        <a href="#" class="menu-item danger" onclick="event.preventDefault(); logout();">Keluar</a>
                     </div>
                 </div>
 
@@ -710,15 +710,7 @@
             document.getElementById('dropdownMenu').classList.toggle('open');
         }
 
-        function handleLogoutAction(e) {
-            e.preventDefault();
-            if (confirm('Apakah Anda yakin ingin keluar dari sesi mahasiswa?')) {
-                localStorage.setItem('isLoggedIn', 'false');
-                localStorage.removeItem('userName');
-                localStorage.removeItem('userEmail');
-                window.location.reload();
-            }
-        }
+        
 
         function checkAuthenticationRoute(pageUrl) {
             if (localStorage.getItem('isLoggedIn') === 'true') {
@@ -791,5 +783,6 @@
             });
         }
     </script>
+    <script src="./../assets/js/auth.js"></script>
 </body>
 </html>

@@ -35,33 +35,7 @@
             transition: transform 0.2s ease;
         }
         .icon-3d-lg { width: 26px; height: 26px; }
-
-        /* === SIDEBAR === */
-        .sidebar { width: 260px; min-height: 100vh; background: var(--sidebar-bg); position: fixed; padding: 32px 20px 24px; display: flex; flex-direction: column; }
         
-        .logo-box { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; padding-left: 4px; }
-        .logo-icon { background: var(--orange); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .logo-text { font-size: 18px; font-weight: 700; color: white; }
-        .logo-text span { font-weight: 400; color: var(--text-light); font-size: 14px; }
-
-        .menu-section { font-size: 11px; font-weight: 600; color: var(--text-gray); letter-spacing: 1px; margin: 24px 0 12px 4px; text-transform: uppercase; }
-        
-        .menu-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: var(--text-light); font-size: 14px; font-weight: 500; border-radius: 8px; margin-bottom: 4px; transition: 0.2s; }
-        .menu-item:hover { color: white; background: rgba(255,255,255,0.05); }
-        .menu-item:hover .icon-3d { transform: scale(1.1); }
-        .menu-item.active { background: var(--sidebar-active); color: white; border-radius: 0 8px 8px 0; border-left: 3px solid var(--orange); margin-left: -20px; padding-left: 33px; }
-
-        .profile-footer { margin-top: auto; border-top: 1px solid #1f2937; padding-top: 24px; }
-        .profile-card { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .profile-img-wrap { position: relative; width: 36px; height: 36px; }
-        .profile-img-wrap img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover; }
-        .online-dot { position: absolute; bottom: -2px; right: -2px; width: 10px; height: 10px; background: #10b981; border: 2px solid var(--sidebar-bg); border-radius: 50%; }
-        
-        .profile-info h4 { color: white; font-size: 13px; font-weight: 600; }
-        .profile-info p { color: var(--text-gray); font-size: 11px; }
-
-        .btn-logout { color: #f87171; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 10px; cursor: pointer; padding-left: 4px; transition: 0.2s; }
-        .btn-logout:hover { color: #fca5a5; }
 
         /* === MAIN CONTENT === */
         .main-content { margin-left: 260px; padding: 32px 48px; width: calc(100% - 260px); display: flex; flex-direction: column; }
@@ -150,6 +124,7 @@
         /* Footer */
         .footer-text { text-align: center; font-size: 12px; color: var(--text-light); padding-bottom: 24px;}
     </style>
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
 </head>
 <body>
 
@@ -172,8 +147,8 @@
                 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Question%20Mark.png" class="icon-3d icon-btn" alt="Help">
                 <div class="header-admin">
                     <div class="header-admin-text">
-                        <h4>Admin Ventura</h4>
-                        <p>Super Admin</p>
+                        <h4 id="profileName">Admin Ventura</h4>
+                        <p id="profileRole">Super Admin</p>
                     </div>
                     <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop" alt="Admin">
                 </div>
@@ -186,7 +161,7 @@
                     <div class="card-title">
                         <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Body%20parts/Eye.png" class="icon-3d icon-3d-lg" alt="Preview"> Pratinjau QR Code
                     </div>
-                    <span class="location-pill">Location ID: LBY-MAIN-001</span>
+                    <span class="location-pill" id="previewLocationId">Location ID: LBY-MAIN-001</span>
                 </div>
                 
                 <div class="preview-area">
@@ -194,7 +169,7 @@
                         <div class="badge-top">
                             <div>
                                 <h5>OFFICIAL VERIFICATION</h5>
-                                <h4>Lobby Utama</h4>
+                                <h4 id="previewLocationName">Lobby Utama</h4>
                             </div>
                             <div class="shield-icon">
                                 <span class="material-symbols-outlined">local_police</span>
@@ -202,7 +177,7 @@
                         </div>
                         
                         <div class="qr-box">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=LostFound-LBY-MAIN-001" alt="QR Code">
+                            <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=LostFound-LBY-MAIN-001" alt="QR Code">
                         </div>
                         
                         <p class="badge-desc">Pindai untuk verifikasi keaslian laporan temuan barang.</p>
@@ -224,23 +199,19 @@
                 
                 <div class="form-group">
                     <label>Lokasi Penempatan</label>
-                    <select class="custom-select">
-                        <option>Lobby Utama</option>
-                        <option>Pintu Timur</option>
-                        <option>Kantin Pusat</option>
-                    </select>
+                    <select class="custom-select" id="locationSelect"><option>Memuat lokasi...</option></select>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 28px;">
                     <label>Ukuran Cetak</label>
                     <div class="size-grid">
-                        <div class="size-box">
+                        <div class="size-box" data-size="100">
                             <h4>S</h4><p>Small</p>
                         </div>
-                        <div class="size-box active">
+                        <div class="size-box active" data-size="150">
                             <h4>M</h4><p>Medium</p>
                         </div>
-                        <div class="size-box">
+                        <div class="size-box" data-size="200">
                             <h4>L</h4><p>Large</p>
                         </div>
                     </div>
@@ -288,24 +259,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="td-dark">Lobby Utama</td>
-                        <td>Medium</td>
-                        <td>12 Okt 2023, 09:45</td>
-                        <td>Andri Wijaya</td>
-                        <td>
-                            <div class="status-pill"><div class="status-dot"></div> Aktif</div>
-                        </td>
-                        <td><a href="#" class="action-text">Cetak Ulang</a></td>
-                    </tr>
-                    <tr>
-                        <td class="td-dark">Pintu Timur</td>
-                        <td>Small</td>
-                        <td>10 Okt 2023, 14:20</td>
-                        <td>Siti Aminah</td>
-                        <td>
-                            <div class="status-pill"><div class="status-dot"></div> Aktif</div>
-                        </td>
-                        <td><a href="#" class="action-text">Cetak Ulang</a></td>
+                        <td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Belum ada riwayat pencetakan.</td>
                     </tr>
                 </tbody>
             </table>
@@ -321,5 +275,68 @@
     <script src="../../assets/js/auth.js"></script>
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/components.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Set User Profile
+            try {
+                const userRaw = localStorage.getItem('user');
+                const role = localStorage.getItem('role');
+                if (userRaw) {
+                    const uObj = JSON.parse(userRaw);
+                    document.getElementById('profileName').textContent = uObj.nama_lengkap || 'Admin';
+                    document.getElementById('profileRole').textContent = (role === 'satpam') ? 'SATPAM' : 'SUPER ADMIN';
+                }
+            } catch(e) {}
+
+            // Fetch Locations
+            const locSelect = document.getElementById('locationSelect');
+            let locations = [];
+            try {
+                const res = await window.apiFetch('/locations');
+                if (res.response.ok) {
+                    if (Array.isArray(res.data)) locations = res.data;
+                    else if (res.data && Array.isArray(res.data.data)) locations = res.data.data;
+                    else if (res.data && res.data.data && Array.isArray(res.data.data.data)) locations = res.data.data.data;
+                }
+            } catch (e) { console.error('Gagal mengambil lokasi', e); }
+
+            if (locations.length > 0) {
+                locSelect.innerHTML = locations.map(loc => `<option value="${loc.id}" data-name="${loc.nama_lokasi}">${loc.nama_lokasi}</option>`).join('');
+            } else {
+                locSelect.innerHTML = `<option value="LBY-01" data-name="Lobby Utama">Lobby Utama (Default)</option>`;
+            }
+
+            // QR Preview Update
+            let currentSize = 150;
+            const updateQR = () => {
+                const opt = locSelect.options[locSelect.selectedIndex];
+                if(!opt) return;
+                const locCode = 'LOC-' + opt.value;
+                const locName = opt.getAttribute('data-name');
+                
+                document.getElementById('previewLocationId').textContent = 'Location ID: ' + locCode;
+                document.getElementById('previewLocationName').textContent = locName;
+                document.getElementById('qrCodeImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=${currentSize}x${currentSize}&data=LostFound-${locCode}`;
+            };
+
+            locSelect.addEventListener('change', updateQR);
+
+            // Size Selection
+            const sizeBoxes = document.querySelectorAll('.size-box');
+            sizeBoxes.forEach(box => {
+                box.addEventListener('click', () => {
+                    sizeBoxes.forEach(b => b.classList.remove('active'));
+                    box.classList.add('active');
+                    currentSize = box.getAttribute('data-size');
+                    updateQR();
+                });
+            });
+
+            // Initialize
+            updateQR();
+        });
+    </script>
 </body>
+
 </html>

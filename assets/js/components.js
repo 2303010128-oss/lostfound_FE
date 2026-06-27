@@ -17,7 +17,8 @@ async function loadSidebar() {
     if (!container) return; // Skip jika halaman ini tidak butuh sidebar
 
     try {
-        const res = await fetch(getBasePath() + '/components/sidebar_admin.html');
+        // Tambahkan cache-buster (?v=...) agar peramban selalu mengambil versi HTML terbaru
+        const res = await fetch(getBasePath() + '/components/sidebar_admin.html?v=' + new Date().getTime());
         const html = await res.text();
         container.innerHTML = html;
 

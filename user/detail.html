@@ -560,7 +560,7 @@
                         <a href="riwayat.html" class="menu-item">⏳ Riwayat</a>
                         <div class="divider"></div>
                         <a href="profil.html" class="menu-item">👤 Profil</a>
-                        <a href="#" class="menu-item danger" onclick="handleLogoutAction(event)">🚪 Keluar</a>
+                        <a href="#" class="menu-item danger" onclick="event.preventDefault(); logout();">Keluar</a>
                     </div>
                 </div>
             </div>
@@ -717,15 +717,7 @@
             document.getElementById('dropdownMenu').classList.toggle('open');
         }
 
-        function handleLogoutAction(e) {
-            e.preventDefault();
-            if (confirm('Apakah Anda yakin ingin keluar sesi?')) {
-                localStorage.setItem('isLoggedIn', 'false');
-                localStorage.removeItem('userName');
-                localStorage.removeItem('userEmail');
-                window.location.href = 'index.html';
-            }
-        }
+        
 
         // FUNGSI UTAMA: Menyambungkan dan Melempar Navigasi ke Halaman kehilangan.html
         function triggerClaimSubmit() {
@@ -736,5 +728,6 @@
             window.location.href = `kehilangan.html?id=${itemId}`;
         }
     </script>
+    <script src="./../assets/js/auth.js"></script>
 </body>
 </html>

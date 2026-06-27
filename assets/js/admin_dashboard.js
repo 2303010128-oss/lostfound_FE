@@ -7,22 +7,45 @@ async function loadDashboardActivity() {
     if (!tbody) return;
 
     try {
-        const result = await apiFetch('/claims'); // Menggunakan endpoint klaim untuk memuat riwayat aktivitas
-        
-        if (result.response.ok) {
-            let claims = result.data.data || result.data || [];
-            
-            // Ambil 5 aktivitas terbaru saja untuk Dasbor
-            claims = claims.slice(0, 5);
+        const [claimsResult, itemsResult] = await Promise.all([
+            apiFetch('/claims'),
+            apiFetch('/items')
+        ]);
+
+        if (claimsResult.response.ok && itemsResult.response.ok) {
+            // Ekstrak Klaim
+            let claims = [];
+            if (Array.isArray(claimsResult.data)) claims = claimsResult.data;
+            else if (claimsResult.data && Array.isArray(claimsResult.data.data)) claims = claimsResult.data.data;
+            else if (claimsResult.data && claimsResult.data.data && Array.isArray(claimsResult.data.data.data)) claims = claimsResult.data.data.data;
+
+            // Ekstrak Items
+            let items = [];
+            if (Array.isArray(itemsResult.data)) items = itemsResult.data;
+            else if (itemsResult.data && Array.isArray(itemsResult.data.data)) items = itemsResult.data.data;
+            else if (itemsResult.data && itemsResult.data.data && Array.isArray(itemsResult.data.data.data)) items = itemsResult.data.data.data;
+
+            // Kalkulasi Statistik
+            const pendingClaims = claims.filter(c => ['pending', 'reviewed', 'clarification'].includes(c.status_verif)).length;
+            const activeItems = items.filter(i => ['draft', 'published'].includes(i.status)).length;
+            const returnedClaims = claims.filter(c => c.status_verif === 'returned').length;
+
+            // Injeksi ke UI Kartu Statistik
+            if (document.getElementById('stat-klaim-pending')) document.getElementById('stat-klaim-pending').innerText = pendingClaims;
+            if (document.getElementById('stat-antrean')) document.getElementById('stat-antrean').innerText = activeItems;
+            if (document.getElementById('stat-selesai')) document.getElementById('stat-selesai').innerText = returnedClaims;
+
+            // Ambil 5 aktivitas klaim terbaru saja untuk tabel Dasbor
+            let recentActivity = claims.slice(0, 5);
 
             tbody.innerHTML = '';
 
-            if (claims.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: #64748b;">Belum ada aktivitas terbaru hari ini.</td></tr>`;
+            if (recentActivity.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; padding: 20px; color: #64748b;">Belum ada aktivitas terbaru.</td></tr>`;
                 return;
             }
 
-            claims.forEach(claim => {
+            recentActivity.forEach(claim => {
                 const tr = document.createElement('tr');
                 
                 let statusClass = 'diverifikasi';
