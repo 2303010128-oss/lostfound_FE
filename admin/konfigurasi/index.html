@@ -199,7 +199,13 @@
                 
                 <div class="form-group">
                     <label>Lokasi Penempatan</label>
-                    <select class="custom-select" id="locationSelect"><option>Memuat lokasi...</option></select>
+                    <div style="display:flex; gap: 8px;">
+                        <select class="custom-select" id="locationSelect" style="flex: 1;">
+                            <option>Memuat lokasi...</option>
+                        </select>
+                        <button onclick="addLocation()" style="background:var(--orange); color:white; border:none; padding:0 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:18px;" title="Tambah Lokasi Baru">+</button>
+                        <button onclick="deleteLocation()" style="background:#dc2626; color:white; border:none; padding:0 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:18px;" title="Hapus Lokasi Terpilih">-</button>
+                    </div>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 28px;">
@@ -302,7 +308,7 @@
             } catch (e) { console.error('Gagal mengambil lokasi', e); }
 
             if (locations.length > 0) {
-                locSelect.innerHTML = locations.map(loc => `<option value="${loc.id}" data-name="${loc.nama_lokasi}">${loc.nama_lokasi}</option>`).join('');
+                locSelect.innerHTML = locations.map(loc => `<option value="${loc.id}" data-name="${loc.nama_tempat}">${loc.nama_tempat}</option>`).join('');
             } else {
                 locSelect.innerHTML = `<option value="LBY-01" data-name="Lobby Utama">Lobby Utama (Default)</option>`;
             }
@@ -335,6 +341,38 @@
 
             // Initialize
             updateQR();
+            // CRUD Lokasi
+            window.addLocation = async () => {
+                const nama = prompt('Masukkan nama lokasi penempatan baru (Contoh: "Gedung F"):');
+                if(!nama || nama.trim() === '') return;
+                try {
+                    const res = await window.apiFetch('/locations', { 
+                        method: 'POST', 
+                        body: JSON.stringify({ nama_tempat: nama }) 
+                    });
+                    if(res.response.ok) { 
+                        alert('Lokasi berhasil ditambahkan!'); 
+                        location.reload(); 
+                    } else { 
+                        alert('Gagal menambah lokasi.'); 
+                    }
+                } catch(e) { alert('Kesalahan jaringan.'); }
+            };
+
+            window.deleteLocation = async () => {
+                const opt = locSelect.options[locSelect.selectedIndex];
+                if(!opt || opt.value === 'LBY-01') return alert('Pilih lokasi yang valid untuk dihapus.');
+                if(!confirm(`⚠️ PERINGATAN: Yakin ingin menghapus lokasi "${opt.getAttribute('data-name')}" secara permanen?`)) return;
+                try {
+                    const res = await window.apiFetch('/locations/' + opt.value, { method: 'DELETE' });
+                    if(res.response.ok) { 
+                        alert('Lokasi berhasil dihapus!'); 
+                        location.reload(); 
+                    } else { 
+                        alert('Gagal menghapus lokasi.'); 
+                    }
+                } catch(e) { alert('Kesalahan jaringan.'); }
+            };
         });
     </script>
 </body>
