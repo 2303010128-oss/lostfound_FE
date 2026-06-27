@@ -27,7 +27,15 @@ async function loadAntrean() {
             tbody.innerHTML = ''; // Kosongkan status "Memuat data..."
 
             if (items.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">Tidak ada antrean barang temuan saat ini. (Data Kosong)</td></tr>`;
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 60px 20px; color: #64748b;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+                            <div style="font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 8px;">Tidak Ada Antrean</div>
+                            <div style="font-size: 13px;">Saat ini tidak ada data barang temuan yang tersedia.</div>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
 
