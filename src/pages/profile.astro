@@ -1,0 +1,90 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout title="Profil & Status Klaim">
+    <div class="max-w-4xl mx-auto mt-6">
+        <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight mb-2">Profil & Status Klaim</h1>
+        <p class="text-slate-600 mb-8">Pantau status persetujuan klaim barang yang Anda ajukan kepada Satpam.</p>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-slate-800">Riwayat Klaim Anda</h2>
+                <span id="claim-count" class="bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1 rounded-full">Memuat...</span>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-slate-500">
+                    <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200">
+                        <tr>
+                            <th scope="col" class="px-6 py-4">Barang</th>
+                            <th scope="col" class="px-6 py-4">Bukti Teks</th>
+                            <th scope="col" class="px-6 py-4 text-center">Status</th>
+                            <th scope="col" class="px-6 py-4">Takeout Token</th>
+                        </tr>
+                    </thead>
+                    <tbody id="claims-table-body">
+                        <tr>
+                            <td colspan="4" class="px-6 py-12 text-center text-slate-500 animate-pulse">Mengambil data dari server...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</MainLayout>
+
+<script>
+    import { fetchAPI } from '../scripts/api.js';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        const tbody = document.getElementById('claims-table-body');
+        const countBadge = document.getElementById('claim-count');
+
+        try {
+            const res = await fetchAPI('/claims/my-claims');
+            const data = await res.json();
+
+            if (res.ok && data.success) {
+                const claims = data.data;
+                countBadge.textContent = `${claims.length} Klaim`;
+
+                if (claims.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-slate-500">Anda belum mengajukan klaim apa pun.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = '';
+                claims.forEach(claim => {
+                    let statusHtml = '';
+                    if (claim.status_verif === 'pending') {
+                        statusHtml = `<span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-1 rounded border border-yellow-200">Menunggu Review</span>`;
+                    } else if (claim.status_verif === 'approved') {
+                        statusHtml = `<span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded border border-green-200">Disetujui</span>`;
+                    } else {
+                        statusHtml = `<span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-1 rounded border border-red-200">Ditolak</span>`;
+                    }
+
+                    const tokenHtml = claim.token_pengambilan 
+                        ? `<span class="font-mono font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded border border-orange-200">${claim.token_pengambilan}</span>`
+                        : `<span class="text-slate-400 italic">Belum tersedia</span>`;
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'bg-white border-b hover:bg-slate-50 transition-colors';
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 font-medium text-slate-900">${claim.item?.judul || 'Barang Dihapus'}</td>
+                        <td class="px-6 py-4 max-w-xs truncate" title="${claim.bukti_teks}">${claim.bukti_teks}</td>
+                        <td class="px-6 py-4 text-center">${statusHtml}</td>
+                        <td class="px-6 py-4">${tokenHtml}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } else {
+                throw new Error("Gagal mengambil data");
+            }
+        } catch (err) {
+            tbody.innerHTML = `<tr><td colspan="4" class="px-6 py-8 text-center text-red-500">Gagal memuat riwayat klaim. Pastikan Anda sudah login.</td></tr>`;
+            countBadge.textContent = "Error";
+        }
+    });
+</script>
