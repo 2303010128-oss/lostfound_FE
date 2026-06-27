@@ -79,10 +79,9 @@ window.handleApprove = async function() {
         const origTxt = btn.innerText;
         btn.innerText = 'Memproses...'; btn.disabled = true;
 
-        // Simulasi validasi (mengubah status ke published)
-        const result = await apiFetch(`/items/${currentItemId}`, {
-            method: 'PATCH',
-            body: JSON.stringify({ status: 'published' })
+        // Memanggil endpoint release khusus satpam
+        const result = await apiFetch(`/items/${currentItemId}/release`, {
+            method: 'PATCH'
         });
 
         if (result.response.ok) {
