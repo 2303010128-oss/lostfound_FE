@@ -715,11 +715,6 @@
                         <p style="font-size:13px; color:#64748b;">Periksa bukti di bawah ini sebelum mengambil tindakan. Kekuatan verifikasi menentukan integritas sistem pemeriksaan barang.</p>
                     </div>
 
-                    <!-- 4. SEARCH BAR "Cari berkas..." -->
-                    <div class="search-berkas">
-                        <span class="search-icon">🔍</span>
-                        <input type="text" id="searchBerkas" placeholder="Cari berkas..." oninput="filterFiles()" />
-                    </div>
 
                     <!-- 5. LAMPIRAN BUKTI -->
                     <div class="section" style="margin-top:12px;">
@@ -762,21 +757,6 @@
                 `;
             }
 
-            // ============================================================
-            // FILTER FILES (Search Berkas)
-            // ============================================================
-            window.filterFiles = function() {
-                var keyword = document.getElementById('searchBerkas').value.toLowerCase().trim();
-                var items = document.querySelectorAll('#fileList li');
-                for (var i = 0; i < items.length; i++) {
-                    var text = items[i].textContent.toLowerCase();
-                    if (keyword === '' || text.includes(keyword)) {
-                        items[i].style.display = 'flex';
-                    } else {
-                        items[i].style.display = 'none';
-                    }
-                }
-            };
 
             // ============================================================
             // APPROVE / CLARIFY / REJECT
