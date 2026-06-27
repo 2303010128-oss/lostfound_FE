@@ -105,10 +105,8 @@ window.closeCancelModal = function() {
 window.executeCancellation = async function() {
     try {
         const btn = document.querySelector('.btn-modal-danger');
-        btn.innerText = 'Menghapus...'; btn.disabled = true;
-
-        // Simulasi membuang barang
-        const result = await apiFetch(`/items/${currentItemId}`, { method: 'DELETE' });
+        btn.innerText = 'Menolak...'; btn.disabled = true;
+        const result = await apiFetch(`/items/${currentItemId}/reject`, { method: 'PATCH' });
         
         if (result.response.ok) {
             alert('Laporan dibatalkan dan dihapus.');
