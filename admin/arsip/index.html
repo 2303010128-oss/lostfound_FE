@@ -13,37 +13,7 @@
         body { font-family: 'Inter', sans-serif; background: #f8fafc; min-height: 100vh; display: flex; color: #1e293b; -webkit-font-smoothing: antialiased; }
         a { text-decoration: none; color: inherit; }
         button { cursor: pointer; font-family: inherit; border: none; background: none; outline: none; }
-
-        /* ============================================================
-                   SIDEBAR STYLE
-                   ============================================================ */
-        .sidebar { width: 260px; height: 100vh; background: #111c2e; position: fixed; top: 0; left: 0; z-index: 100; display: flex; flex-direction: column; padding: 32px 16px 24px 16px; }
-        .sidebar-header { display: flex; align-items: center; gap: 12px; padding: 0 12px 36px 12px; }
-        .logo-icon { width: 34px; height: 34px; background: #ea580c; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .logo-icon svg { width: 18px; height: 18px; fill: #ffffff; }
-        .logo-text { color: #ffffff; font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
-        .sidebar-menu { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-        .menu-label { font-size: 10px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 1.2px; padding: 20px 12px 10px 12px; }
         
-        .menu-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; font-size: 13.5px; font-weight: 500; color: #94a3b8; transition: all 0.2s ease; }
-        .menu-item:hover { background: rgba(255, 255, 255, 0.03); color: #f1f5f9; }
-        
-        /* CLASS BARU KHUSUS UNTUK EMOJI */
-        .menu-emoji { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; line-height: 1; }
-        
-        .menu-item.active { background: rgba(255, 255, 255, 0.06); color: #ffffff; font-weight: 600; border-left: 3px solid #ea580c; border-radius: 0 10px 10px 0; padding-left: 11px; }
-        .menu-item .badge { margin-left: auto; background: #ea580c; color: #ffffff; font-size: 11px; font-weight: 700; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .menu-item .badge.gray { background: #334155; color: #94a3b8; }
-
-        .sidebar-footer { margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.06); padding-top: 24px; display: flex; flex-direction: column; gap: 20px; }
-        .user-profile { display: flex; align-items: center; gap: 12px; padding: 0 12px; }
-        .user-avatar-box { position: relative; width: 38px; height: 38px; }
-        .user-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .active-dot { position: absolute; bottom: 1px; right: 1px; width: 9px; height: 9px; background: #10b981; border: 1.5px solid #111c2e; border-radius: 50%; }
-        .user-meta .name { font-size: 13.5px; font-weight: 600; color: #ffffff; }
-        .user-meta .role { font-size: 11px; color: #64748b; }
-        .logout-link { display: flex; align-items: center; justify-content: center; gap: 8px; color: #f87171; font-size: 13px; font-weight: 600; padding: 10px; width: 100%; }
-        .logout-link svg { width: 16px; height: 16px; stroke: #f87171; stroke-width: 2px; fill: none; }
 
         /* ============================================================
                    MAIN CONTENT AREA
@@ -95,6 +65,7 @@
         .btn-view-action:hover { background: #f1f5f9; color: #475569; }
         .btn-view-action svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
 </head>
 <body>
 
