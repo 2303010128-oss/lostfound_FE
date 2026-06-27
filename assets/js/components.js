@@ -1,3 +1,8 @@
+// Panggil fungsi Satpam (Auth Guard) untuk memastikan hanya admin yang bisa masuk!
+if (typeof requireAuth === 'function') {
+    requireAuth(['satpam']);
+}
+
 function getBasePath() {
     // Deteksi otomatis jika menggunakan XAMPP (lostfound-frontend)
     const path = window.location.pathname;
