@@ -786,7 +786,7 @@
                 var noteText = note ? note.value : '';
                 try {
                     const result = await window.apiFetch('/claims/' + id + '/verify', {
-                        method: 'PUT',
+                        method: 'PATCH',
                         body: JSON.stringify({
                             status: status,
                             catatan: noteText
