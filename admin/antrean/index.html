@@ -647,76 +647,10 @@
                         <th style="width: 22%;">Tindakan</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <!-- Baris 1 (Andi) -> SEKARANG KOMPAK KE detail.html -->
-                    <tr onclick="window.location.href='detail.html'" style="cursor: pointer;">
-                        <td class="col-id">#FND-104</td>
-                        <td>
-                            <div class="col-item-flex">
-                                <div class="item-icon-box">👝</div>
-                                <span>Dompet Kulit Cokelat</span>
-                            </div>
-                        </td>
-                        <td>Andi Wijaya</td>
-                        <td>
-                            <div class="col-location-flex">
-                                <span>📍</span> Kantin Utama
-                            </div>
-                        </td>
-                        <td><span class="status-pill-draft">DRAFT</span></td>
-                        <td>
-                            <div class="actions-flex" onclick="event.stopPropagation();">
-                                <button class="btn-table-action release" onclick="handleRelease('#FND-104')">Terima & Rilis</button>
-                                <button class="btn-table-action cancel" onclick="handleCancel('#FND-104', 'Andi Wijaya')">Batalkan</button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Baris 2 (Siti) -> SEKARANG KOMPAK KE detail.html -->
-                    <tr onclick="window.location.href='detail.html'" style="cursor: pointer;">
-                        <td class="col-id">#FND-105</td>
-                        <td>
-                            <div class="col-item-flex">
-                                <div class="item-icon-box">💻</div>
-                                <span>MacBook Pro 14" Silver</span>
-                            </div>
-                        </td>
-                        <td>Siti Aminah</td>
-                        <td>
-                            <div class="col-location-flex">
-                                <span>📍</span> Perpustakaan Lt. 2
-                            </div>
-                        </td>
-                        <td><span class="status-pill-draft">DRAFT</span></td>
-                        <td>
-                            <div class="actions-flex" onclick="event.stopPropagation();">
-                                <button class="btn-table-action release" onclick="handleRelease('#FND-105')">Terima & Rilis</button>
-                                <button class="btn-table-action cancel" onclick="handleCancel('#FND-105', 'Siti Aminah')">Batalkan</button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <!-- Baris 3 (Budi) -> SEKARANG KOMPAK KE detail.html -->
-                    <tr onclick="window.location.href='detail.html'" style="cursor: pointer;">
-                        <td class="col-id">#FND-106</td>
-                        <td>
-                            <div class="col-item-flex">
-                                <div class="item-icon-box">🔑</div>
-                                <span>Kunci Motor Honda</span>
-                            </div>
-                        </td>
-                        <td>Budi Santoso</td>
-                        <td>
-                            <div class="col-location-flex">
-                                <span>📍</span> Parkir Gedung C
-                            </div>
-                        </td>
-                        <td><span class="status-pill-draft">DRAFT</span></td>
-                        <td>
-                            <div class="actions-flex" onclick="event.stopPropagation();">
-                                <button class="btn-table-action release" onclick="handleRelease('#FND-106')">Terima & Rilis</button>
-                                <button class="btn-table-action cancel" onclick="handleCancel('#FND-106', 'Budi Santoso')">Batalkan</button>
-                            </div>
+                <tbody id="antreanBody">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px;">
+                            <span style="color: #64748b;">Memuat data dari database...</span>
                         </td>
                     </tr>
                 </tbody>
@@ -767,31 +701,7 @@
     </div>
 
     <!-- LOGIKA INTERAKSI POP-UP -->
-    <script>
-        function handleRelease(itemId) {window.location.href = "detail.html";
-}
-
-        function handleCancel(itemId, penemuName) {
-            document.getElementById('targetPenemu').innerText = penemuName;
-            document.getElementById('cancelModal').style.display = 'flex';
-        }
-
-        function closeCancelModal() {
-            document.getElementById('cancelModal').style.display = 'none';
-        }
-
-        function executeCancellation() {
-            alert('Sukses! Laporan telah dibatalkan dan dihapus dari antrean.');
-            closeCancelModal();
-        }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('cancelModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-    </script>
+    <script src="../../assets/js/admin_antrean.js"></script>
 
     <!-- Injected Base Scripts -->
     <script src="../../assets/js/auth.js"></script>

@@ -690,10 +690,10 @@
                 <button class="btn-back-arrow" onclick="window.location.href='index.html'">←</button>
                 <div class="topbar-title-block">
                     <h1>Detail Laporan Temuan</h1>
-                    <p>ID Laporan: #FND-106</p>
+                    <p id="detailHeaderId">ID Laporan: #FND-...</p>
                 </div>
             </div>
-            <span class="status-validation-badge">MENUNGGU VALIDASI</span>
+            <span class="status-validation-badge" id="detailHeaderStatus">MEMUAT...</span>
         </header>
 
         <div class="detail-grid-layout">
@@ -708,26 +708,26 @@
                     <div class="info-data-grid">
                         <div class="data-block-item">
                             <div class="label">Nama Barang</div>
-                            <div class="value">Kunci Motor Honda</div>
+                            <div class="value" id="detailItemName">Memuat...</div>
                         </div>
                         <div class="data-block-item">
                             <div class="label">Kategori</div>
-                            <div class="value">🔑 Kunci</div>
+                            <div class="value" id="detailItemCategory">Memuat...</div>
                         </div>
                         <div class="data-block-item">
                             <div class="label">Lokasi Penemuan</div>
-                            <div class="value">📍 Parkir Gedung C</div>
+                            <div class="value" id="detailItemLocation">Memuat...</div>
                         </div>
                         <div class="data-block-item">
-                            <div class="label">Waktu Ditemukan</div>
-                            <div class="value">📅 23 Mei 2026, 14:30 WIB</div>
+                            <div class="label">Waktu Dilaporkan</div>
+                            <div class="value" id="detailItemTime">Memuat...</div>
                         </div>
                     </div>
 
                     <div class="description-sub-section">
                         <span class="sub-label">Ciri Spesifik / Deskripsi</span>
-                        <p class="quote-paragraph">
-                            "Gantungan kunci berbentuk dompet kecil warna hitam, ada lecet pada bagian ring besi. Di dalam dompet kecil tersebut tidak ada isinya, hanya gantungan saja."
+                        <p class="quote-paragraph" id="detailItemDesc">
+                            Memuat deskripsi dari database...
                         </p>
                     </div>
                 </section>
@@ -738,8 +738,8 @@
                         <h2>Dokumentasi Foto</h2>
                     </div>
                     <div class="photo-display-box">
-                        <img src="https://images.unsplash.com/photo-1582139329536-e7284fece509?w=800&q=80" alt="Dokumentasi Foto Kunci" class="showcase-image-frame">
-                        <span class="image-filename-text">FOTO_BARANG_1.JPG</span>
+                        <img src="" alt="Dokumentasi Foto Barang" class="showcase-image-frame" id="detailItemPhoto" style="display: none;">
+                        <span class="image-filename-text" id="detailItemPhotoName">Memuat Foto...</span>
                     </div>
                 </section>
             </div>
@@ -752,10 +752,10 @@
                     </div>
 
                     <div class="reporter-profile-block">
-                        <div class="avatar-initial-box">BS</div>
+                        <div class="avatar-initial-box" id="detailReporterInitial">-</div>
                         <div class="reporter-meta">
-                            <h3>Budi Santoso</h3>
-                            <p>Mahasiswa • 230301012</p>
+                            <h3 id="detailReporterName">Memuat...</h3>
+                            <p id="detailReporterNpm">Role • -</p>
                         </div>
                     </div>
 
@@ -837,42 +837,7 @@
         </div>
     </div>
 
-    <script>
-        // --- KONTROL MODAL SUKSES ---
-        function handleApprove() {
-            document.getElementById('successModal').style.display = 'flex';
-        }
-
-        function closeModalAndRedirect() {
-            window.location.href = 'index.html';
-        }
-
-        function closeModalOnly(event) {
-            event.preventDefault();
-            document.getElementById('successModal').style.display = 'none';
-        }
-
-        // --- KONTROL MODAL PEMBATALAN ---
-        function handleReject() {
-            document.getElementById('cancelModal').style.display = 'flex';
-        }
-
-        function closeCancelModal() {
-            document.getElementById('cancelModal').style.display = 'none';
-        }
-
-        function executeCancellation() {
-            alert('Laporan sukses dibatalkan dan dihapus dari antrean loket.');
-            window.location.href = 'detail.html';
-        }
-
-        // Penutup otomatis jika mengeklik area hitam luar modal
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal-overlay')) {
-                event.target.style.display = 'none';
-            }
-        }
-    </script>
+    <script src="../../assets/js/admin_antrean_detail.js"></script>
 
     <!-- Injected Base Scripts -->
     <script src="../../assets/js/auth.js"></script>
