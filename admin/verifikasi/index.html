@@ -509,7 +509,7 @@
                         
                         claimData = data.map(c => {
                             let statusTab = 'pending';
-                            if (c.status_verif === 'clarification') statusTab = 'clarification';
+                            if (c.status_verif === 'clarification_required') statusTab = 'clarification';
                             else if (c.status_verif === 'approved') statusTab = 'ready';
                             else if (c.status_verif === 'pending' || c.status_verif === 'reviewed') statusTab = 'pending';
                             else statusTab = c.status_verif;
@@ -622,7 +622,7 @@
                 filteredData = claimData.filter(function(item) {
                     var matchesTab = (item.status === currentTab);
                     var matchesSearch = keyword === '' || 
-                        item.id.toLowerCase().includes(keyword) ||
+                        item.id.toString().toLowerCase().includes(keyword) ||
                         item.item.toLowerCase().includes(keyword) ||
                         item.claimant.toLowerCase().includes(keyword);
                     return matchesTab && matchesSearch;
