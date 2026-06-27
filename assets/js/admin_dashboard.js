@@ -9,7 +9,7 @@ async function loadDashboardActivity() {
     try {
         const [claimsResult, itemsResult] = await Promise.all([
             apiFetch('/claims'),
-            apiFetch('/items')
+            apiFetch('/admin/items')
         ]);
 
         if (claimsResult.response.ok && itemsResult.response.ok) {

@@ -44,7 +44,7 @@ async function loadSidebar() {
         if (typeof window.apiFetch === 'function') {
             try {
                 // Fetch Items
-                const itemsRes = await window.apiFetch('/items');
+                const itemsRes = await window.apiFetch('/admin/items?visibility=private');
                 if(itemsRes && itemsRes.data && itemsRes.data.data) {
                     const pendingItems = itemsRes.data.data.filter(i => i.status_barang === 'pending' || i.status_barang === 'menunggu').length;
                     const bAntrean = document.getElementById('badge-antrean');

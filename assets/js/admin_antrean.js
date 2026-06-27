@@ -10,7 +10,7 @@ async function loadAntrean() {
 
     try {
         // Panggil API Laravel (menggunakan auth header otomatis dari api.js)
-        const result = await apiFetch('/items');
+        const result = await apiFetch('/admin/items?visibility=private');
 
         if (result.response.ok) {
             // Anggap data yang dikembalikan ada di result.data.data (format pagination Laravel)
