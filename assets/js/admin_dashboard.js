@@ -10,7 +10,14 @@ async function loadDashboardActivity() {
         const result = await apiFetch('/claims'); // Menggunakan endpoint klaim untuk memuat riwayat aktivitas
         
         if (result.response.ok) {
-            let claims = result.data.data || result.data || [];
+            let claims = [];
+            if (Array.isArray(result.data)) {
+                claims = result.data;
+            } else if (result.data && Array.isArray(result.data.data)) {
+                claims = result.data.data;
+            } else if (result.data && result.data.data && Array.isArray(result.data.data.data)) {
+                claims = result.data.data.data;
+            }
             
             // Ambil 5 aktivitas terbaru saja untuk Dasbor
             claims = claims.slice(0, 5);
