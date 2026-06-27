@@ -147,8 +147,8 @@
                 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Question%20Mark.png" class="icon-3d icon-btn" alt="Help">
                 <div class="header-admin">
                     <div class="header-admin-text">
-                        <h4>Admin Ventura</h4>
-                        <p>Super Admin</p>
+                        <h4 id="profileName">Admin Ventura</h4>
+                        <p id="profileRole">Super Admin</p>
                     </div>
                     <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop" alt="Admin">
                 </div>
@@ -161,7 +161,7 @@
                     <div class="card-title">
                         <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Body%20parts/Eye.png" class="icon-3d icon-3d-lg" alt="Preview"> Pratinjau QR Code
                     </div>
-                    <span class="location-pill">Location ID: LBY-MAIN-001</span>
+                    <span class="location-pill" id="previewLocationId">Location ID: LBY-MAIN-001</span>
                 </div>
                 
                 <div class="preview-area">
@@ -169,7 +169,7 @@
                         <div class="badge-top">
                             <div>
                                 <h5>OFFICIAL VERIFICATION</h5>
-                                <h4>Lobby Utama</h4>
+                                <h4 id="previewLocationName">Lobby Utama</h4>
                             </div>
                             <div class="shield-icon">
                                 <span class="material-symbols-outlined">local_police</span>
@@ -177,7 +177,7 @@
                         </div>
                         
                         <div class="qr-box">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=LostFound-LBY-MAIN-001" alt="QR Code">
+                            <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=LostFound-LBY-MAIN-001" alt="QR Code">
                         </div>
                         
                         <p class="badge-desc">Pindai untuk verifikasi keaslian laporan temuan barang.</p>
@@ -199,23 +199,19 @@
                 
                 <div class="form-group">
                     <label>Lokasi Penempatan</label>
-                    <select class="custom-select">
-                        <option>Lobby Utama</option>
-                        <option>Pintu Timur</option>
-                        <option>Kantin Pusat</option>
-                    </select>
+                    <select class="custom-select" id="locationSelect"><option>Memuat lokasi...</option></select>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 28px;">
                     <label>Ukuran Cetak</label>
                     <div class="size-grid">
-                        <div class="size-box">
+                        <div class="size-box" data-size="100">
                             <h4>S</h4><p>Small</p>
                         </div>
-                        <div class="size-box active">
+                        <div class="size-box active" data-size="150">
                             <h4>M</h4><p>Medium</p>
                         </div>
-                        <div class="size-box">
+                        <div class="size-box" data-size="200">
                             <h4>L</h4><p>Large</p>
                         </div>
                     </div>
@@ -296,5 +292,68 @@
     <script src="../../assets/js/auth.js"></script>
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/components.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Set User Profile
+            try {
+                const userRaw = localStorage.getItem('user');
+                const role = localStorage.getItem('role');
+                if (userRaw) {
+                    const uObj = JSON.parse(userRaw);
+                    document.getElementById('profileName').textContent = uObj.nama_lengkap || 'Admin';
+                    document.getElementById('profileRole').textContent = (role === 'satpam') ? 'SATPAM' : 'SUPER ADMIN';
+                }
+            } catch(e) {}
+
+            // Fetch Locations
+            const locSelect = document.getElementById('locationSelect');
+            let locations = [];
+            try {
+                const res = await window.apiFetch('/locations');
+                if (res.response.ok) {
+                    if (Array.isArray(res.data)) locations = res.data;
+                    else if (res.data && Array.isArray(res.data.data)) locations = res.data.data;
+                    else if (res.data && res.data.data && Array.isArray(res.data.data.data)) locations = res.data.data.data;
+                }
+            } catch (e) { console.error('Gagal mengambil lokasi', e); }
+
+            if (locations.length > 0) {
+                locSelect.innerHTML = locations.map(loc => `<option value="${loc.id}" data-name="${loc.nama_lokasi}">${loc.nama_lokasi}</option>`).join('');
+            } else {
+                locSelect.innerHTML = `<option value="LBY-01" data-name="Lobby Utama">Lobby Utama (Default)</option>`;
+            }
+
+            // QR Preview Update
+            let currentSize = 150;
+            const updateQR = () => {
+                const opt = locSelect.options[locSelect.selectedIndex];
+                if(!opt) return;
+                const locCode = 'LOC-' + opt.value;
+                const locName = opt.getAttribute('data-name');
+                
+                document.getElementById('previewLocationId').textContent = 'Location ID: ' + locCode;
+                document.getElementById('previewLocationName').textContent = locName;
+                document.getElementById('qrCodeImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=${currentSize}x${currentSize}&data=LostFound-${locCode}`;
+            };
+
+            locSelect.addEventListener('change', updateQR);
+
+            // Size Selection
+            const sizeBoxes = document.querySelectorAll('.size-box');
+            sizeBoxes.forEach(box => {
+                box.addEventListener('click', () => {
+                    sizeBoxes.forEach(b => b.classList.remove('active'));
+                    box.classList.add('active');
+                    currentSize = box.getAttribute('data-size');
+                    updateQR();
+                });
+            });
+
+            // Initialize
+            updateQR();
+        });
+    </script>
 </body>
+
 </html>
