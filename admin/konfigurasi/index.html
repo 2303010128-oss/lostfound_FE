@@ -369,7 +369,7 @@
                         alert('Lokasi berhasil dihapus!'); 
                         location.reload(); 
                     } else { 
-                        alert('Gagal menghapus lokasi.'); 
+                        alert(res.data.message || 'Gagal menghapus lokasi.'); 
                     }
                 } catch(e) { alert('Kesalahan jaringan.'); }
             };
