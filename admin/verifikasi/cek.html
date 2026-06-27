@@ -811,20 +811,12 @@
             };
 
             window.clarifyClaim = function(id) {
-                var note = document.getElementById('verificationNote');
-                if (!note || !note.value.trim()) {
-                    alert('Catatan wajib diisi jika meminta klarifikasi!');
-                    return;
+                if (confirm('Yakin ingin meminta klarifikasi untuk klaim ini?')) {
+                    submitVerification(id, 'clarification_required');
                 }
-                submitVerification(id, 'clarification_required');
             };
 
             window.rejectClaim = function(id) {
-                var note = document.getElementById('verificationNote');
-                if (!note || !note.value.trim()) {
-                    alert('Catatan wajib diisi jika menolak klaim!');
-                    return;
-                }
                 if (confirm('Yakin ingin menolak klaim ini?')) {
                     submitVerification(id, 'rejected');
                 }
