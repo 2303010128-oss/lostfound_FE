@@ -171,19 +171,18 @@
     padding: 8px;
     border-radius: 6px;
     font-size: 13px;
-    color: #f87171;
-    background: transparent;
-    border: 1px solid transparent;
+    color: #ffffff;
+    background: #ef4444;
+    border: none;
     font-family: 'Inter', sans-serif;
-    font-weight: 500;
+    font-weight: 600;
     transition: all 0.2s ease;
     width: 100%;
     cursor: pointer;
 }
 
 .sidebar .sidebar-footer .logout-btn:hover {
-    background: rgba(248, 113, 113, 0.1);
-    border-color: rgba(248, 113, 113, 0.2);
+    background: #dc2626;
 }
 
 /* Ensure main content makes space for sidebar */
