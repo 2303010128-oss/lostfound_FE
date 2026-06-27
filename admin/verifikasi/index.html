@@ -432,7 +432,7 @@
         </header>
 
         <nav class="tabs-navigation">
-            <div class="tab-item active">
+            <div class="tab-item active" id="tab-pending" onclick="filterTab('pending')">
                 <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                 Perlu Ditinjau
                 <span class="count-badge" id="countPending">3</span>
@@ -523,7 +523,8 @@
                 { id: '#CLM-98255', item: 'Kacamata Ray-Ban', claimant: 'Putri Amelia', date: '17 Nov 2024', status: 'ready' },
             ];
 
-            var filteredData = claimData.slice();
+            var currentTab = 'pending';
+            var filteredData = claimData.filter(function(i) { return i.status === currentTab; });
             var currentPage = 1;
             var rowsPerPage = 3;
 
@@ -571,7 +572,7 @@
                             </td>
                             <td>${item.claimant}</td>
                             <td>${item.date}</td>
-                            <td><span class="badge-status">PENDING</span></td>
+                            <td><span class="badge-status">${item.status.toUpperCase()}</span></td>
                             <td style="text-align: right;">
                                 <a href="cek.html?id=${item.id}" class="btn-check">
                                     <svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
@@ -597,20 +598,29 @@
                 updateStats();
             }
 
+            
+            window.filterTab = function(status) {
+                currentTab = status;
+                document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+                document.getElementById('tab-' + status).classList.add('active');
+                searchData();
+            };
+
             window.searchData = function() {
-                var keyword = document.getElementById('searchInput').value.toLowerCase().trim();
-                if (keyword === '') {
-                    filteredData = claimData.slice();
-                } else {
-                    filteredData = claimData.filter(function(item) {
-                        return item.id.toLowerCase().includes(keyword) ||
-                            item.item.toLowerCase().includes(keyword) ||
-                            item.claimant.toLowerCase().includes(keyword);
-                    });
-                }
+                var searchInput = document.getElementById('searchInput');
+                var keyword = searchInput ? searchInput.value.toLowerCase().trim() : '';
+                filteredData = claimData.filter(function(item) {
+                    var matchesTab = (item.status === currentTab);
+                    var matchesSearch = keyword === '' || 
+                        item.id.toLowerCase().includes(keyword) ||
+                        item.item.toLowerCase().includes(keyword) ||
+                        item.claimant.toLowerCase().includes(keyword);
+                    return matchesTab && matchesSearch;
+                });
                 currentPage = 1;
                 renderTable();
             };
+
 
             document.getElementById('prevPage').addEventListener('click', function() {
                 if (currentPage > 1) {
