@@ -126,9 +126,14 @@
 
         @media print {
             body * { visibility: hidden; }
-            .card-preview, .card-preview * { visibility: visible; }
-            .card-preview { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); border: none; box-shadow: none; margin: 0; padding: 0; width: auto !important; height: auto !important; background: transparent; }
-            .sidebar { display: none !important; }
+            .id-badge, .id-badge * { visibility: visible; }
+            .id-badge { 
+                position: fixed !important; 
+                left: 50% !important; 
+                top: 40% !important; 
+                transform: translate(-50%, -40%) scale(1.2) !important; 
+                margin: 0 !important; 
+            }
         }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
