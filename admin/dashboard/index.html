@@ -632,56 +632,7 @@
 <body>
 
     <!-- SIDEBAR LEFT -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo">
-                <!-- Kotak Oranye dengan detail laci sesuai figma -->
-                <span class="logo-icon">
-                    <span class="box-line"></span>
-                </span>
-                LostFound <span>ADMIN</span>
-            </div>
-        </div>
-
-        <nav class="sidebar-menu">
-            <div class="menu-label">Main Menu</div>
-            <a href="index.html" class="menu-item active">
-                <span class="icon">📊</span> Dashboard
-            </a>
-            <a href="../antrean/index.html" class="menu-item">
-                <span class="icon">📦</span> Antrean Temuan
-                <span class="badge">2</span>
-            </a>
-            <a href="../verifikasi/index.html" class="menu-item">
-                <span class="icon">⏳</span> Verifikasi Klaim
-                <span class="badge blue">5</span>
-            </a>
-            <a href="../arsip/index.html" class="menu-item">
-                <span class="icon">📁</span> Arsip Laporan
-            </a>
-
-            <div class="menu-label" style="margin-top:20px;">Settings</div>
-            <a href="#" class="menu-item">
-                <span class="icon">👤</span> Manajemen User
-            </a>
-            <a href="#" class="menu-item">
-                <span class="icon">⚙️</span> Konfigurasi Sistem
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="user-info">
-                <div class="avatar">PA</div>
-                <div class="user-details">
-                    <div class="name">Petugas Posko</div>
-                    <div class="role">Super Admin</div>
-                </div>
-            </div>
-            <button class="logout-btn" onclick="alert('Keluar Sesi')">
-                🚪 Keluar Sesi
-            </button>
-        </div>
-    </aside>
+    <div id="app-sidebar"></div>
 
     <!-- MAIN CONTENT AREA -->
     <main class="main-content">
@@ -817,5 +768,10 @@
         const now = new Date();
         document.getElementById('currentDate').textContent = months[now.getMonth()] + ' ' + now.getDate() + ', ' + now.getFullYear();
     </script>
+
+    <!-- Injected Base Scripts -->
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components.js"></script>
 </body>
 </html>

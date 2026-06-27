@@ -1,0 +1,35 @@
+const BASE_URL = 'http://127.0.0.1:8000/api/v1';
+
+// Fungsi otomatis untuk mengambil header (menyuntikkan Token dan format JSON)
+function getHeaders() {
+    const headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    };
+    const token = localStorage.getItem('token');
+    if (token) {
+        headers['Authorization'] = 'Bearer ' + token;
+    }
+    return headers;
+}
+
+// Fungsi serbaguna untuk menembak API Backend
+async function apiFetch(endpoint, options = {}) {
+    const url = BASE_URL + endpoint;
+    const config = {
+        ...options,
+        headers: {
+            ...getHeaders(),
+            ...options.headers
+        }
+    };
+
+    try {
+        const response = await fetch(url, config);
+        const data = await response.json();
+        return { response, data };
+    } catch (error) {
+        console.error('Terjadi kesalahan jaringan atau server mati:', error);
+        throw error;
+    }
+}
