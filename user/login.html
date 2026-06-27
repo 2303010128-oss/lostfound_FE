@@ -435,41 +435,68 @@
         }
 
         // Action Register Form
-        function onRegisterAction(e) {
+        async function onRegisterAction(e) {
             e.preventDefault();
             const pass = document.getElementById('regPass').value;
             const confirm = document.getElementById('regConfirmPass').value;
+            const email = document.getElementById('regEmail').value.trim();
+            const name = document.getElementById('regName').value.trim();
+            
+            // Ambil nomor HP jika ada (default)
+            const phoneEl = document.getElementById('regPhone');
+            const phone = phoneEl ? phoneEl.value.trim() : '081234567890';
 
             if (pass !== confirm) {
                 alert('Konfirmasi kata sandi tidak cocok!');
                 return;
             }
 
-            localStorage.setItem('storedUserEmail', document.getElementById('regEmail').value.trim());
-            localStorage.setItem('storedUserPassword', pass);
-            localStorage.setItem('storedUserName', document.getElementById('regName').value.trim());
+            try {
+                const result = await apiFetch('/auth/register', {
+                    method: 'POST',
+                    body: JSON.stringify({ nama_lengkap: name, email: email, password: pass, no_hp: phone })
+                });
 
-            alert('Akun berhasil terdaftar! Mengalihkan ke Halaman Masuk.');
-            navigateAuthView('login');
+                if (result.response.ok) {
+                    alert('Akun berhasil terdaftar! Mengalihkan ke Halaman Masuk.');
+                    navigateAuthView('login');
+                } else {
+                    alert('Gagal mendaftar: ' + (result.data.message || 'Email sudah digunakan atau data tidak valid.'));
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan jaringan.');
+            }
         }
 
         // Action Login Form
-        function onLoginAction(e) {
+        async function onLoginAction(e) {
             e.preventDefault();
             const email = document.getElementById('logEmail').value.trim();
             const password = document.getElementById('logPass').value;
 
-            const dbEmail = localStorage.getItem('storedUserEmail') || 'mahasiswa@unper.ac.id';
-            const dbPassword = localStorage.getItem('storedUserPassword') || 'password123';
-            const dbName = localStorage.getItem('storedUserName') || 'Ahmad D.';
+            try {
+                const result = await apiFetch('/auth/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ email: email, password: password })
+                });
 
-            if (email === dbEmail && password === dbPassword) {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userName', dbName);
-                localStorage.setItem('userEmail', email);
-                window.location.href = 'index.html';
-            } else {
-                alert('Email atau kata sandi Anda salah.');
+                if (result.response.ok && result.data.token) {
+                    // Simpan token utama ke LocalStorage
+                    localStorage.setItem('token', result.data.token);
+                    localStorage.setItem('role', result.data.user.role || 'student');
+                    localStorage.setItem('user', JSON.stringify(result.data.user));
+
+                    // Variabel lawas agar kompatibel dengan sisa halaman mahasiswa lainnya
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userName', result.data.user.nama_lengkap);
+                    localStorage.setItem('userEmail', result.data.user.email);
+                    
+                    window.location.href = 'index.html';
+                } else {
+                    alert('❌ ' + (result.data.message || 'Email atau kata sandi Anda salah.'));
+                }
+            } catch (err) {
+                alert('❌ Terjadi kesalahan jaringan. Pastikan peladen Laravel menyala.');
             }
         }
 
@@ -501,5 +528,6 @@
             if (params.get('mode') === 'register') navigateAuthView('register');
         });
     </script>
+    <script src="../assets/js/api.js"></script>
 </body>
 </html>
