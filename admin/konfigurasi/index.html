@@ -130,8 +130,9 @@
             .id-badge { 
                 position: fixed !important; 
                 left: 50% !important; 
-                top: 40% !important; 
-                transform: translate(-50%, -40%) scale(var(--print-scale, 1.2)) !important; 
+                top: 2cm !important; 
+                transform: translateX(-50%) scale(var(--print-scale, 1.4)) !important; 
+                transform-origin: top center !important;
                 margin: 0 !important; 
             }
         }
@@ -335,13 +336,15 @@
                 
                 document.getElementById('previewLocationId').textContent = 'Location ID: ' + locCode;
                 document.getElementById('previewLocationName').textContent = locName;
-                const qrImg = document.getElementById('qrCodeImg');
-                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=${currentSize}x${currentSize}&data=LostFound-${locCode}`;
+                let pScale = 1.4;
+                let qrFetchSize = 300;
+                if(currentSize == 100) { pScale = 0.8; qrFetchSize = 200; }
+                if(currentSize == 200) { pScale = 2.7; qrFetchSize = 600; }
                 
-                let pScale = 1.2;
-                if(currentSize == 100) pScale = 0.9;
-                if(currentSize == 200) pScale = 1.6;
                 document.documentElement.style.setProperty('--print-scale', pScale);
+                
+                const qrImg = document.getElementById('qrCodeImg');
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrFetchSize}x${qrFetchSize}&data=LostFound-${locCode}`;
             };
 
             locSelect.addEventListener('change', updateQR);
