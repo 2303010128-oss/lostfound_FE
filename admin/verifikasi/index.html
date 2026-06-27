@@ -514,14 +514,43 @@
                 alert('📬 Tidak ada notifikasi baru.');
             };
 
-            var claimData = [
-                { id: '#CLM-98231', item: 'Dompet Kulit Cokelat', claimant: 'Ahmad Dahlan', date: '12 Nov 2024', status: 'pending' },
-                { id: '#CLM-98235', item: 'iPhone 13 Pro Max Blue', claimant: 'Siti Aminah', date: '13 Nov 2024', status: 'pending' },
-                { id: '#CLM-90240', item: 'Kunci Mobil Honda', claimant: 'Rizky Febrian', date: '14 Nov 2024', status: 'pending' },
-                { id: '#CLM-98245', item: 'Jam Tangan Rolex', claimant: 'Budi Santoso', date: '15 Nov 2024', status: 'clarification' },
-                { id: '#CLM-98250', item: 'Laptop ASUS ROG', claimant: 'Dewi Lestari', date: '16 Nov 2024', status: 'ready' },
-                { id: '#CLM-98255', item: 'Kacamata Ray-Ban', claimant: 'Putri Amelia', date: '17 Nov 2024', status: 'ready' },
-            ];
+            
+            var claimData = [];
+
+            window.fetchClaims = async function() {
+                try {
+                    const result = await apiFetch('/claims');
+                    if (result.response.ok) {
+                        let data = [];
+                        if (Array.isArray(result.data)) data = result.data;
+                        else if (result.data && Array.isArray(result.data.data)) data = result.data.data;
+                        else if (result.data && result.data.data && Array.isArray(result.data.data.data)) data = result.data.data.data;
+                        
+                        claimData = data.map(c => {
+                            let statusTab = 'pending';
+                            if (c.status_verif === 'clarification') statusTab = 'clarification';
+                            else if (c.status_verif === 'approved') statusTab = 'ready';
+                            else if (c.status_verif === 'pending' || c.status_verif === 'reviewed') statusTab = 'pending';
+                            else statusTab = c.status_verif;
+
+                            return {
+                                id: c.id,
+                                item: c.item ? c.item.judul : 'Barang',
+                                claimant: c.user ? c.user.nama_lengkap : 'Anonim',
+                                date: new Date(c.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}),
+                                status: statusTab
+                            };
+                        }).filter(item => ['pending', 'clarification', 'ready'].includes(item.status));
+
+                        searchData();
+                    }
+                } catch (error) {
+                    console.error('Gagal mengambil data:', error);
+                }
+            };
+
+            fetchClaims();
+
 
             var currentTab = 'pending';
             var filteredData = claimData.filter(function(i) { return i.status === currentTab; });
@@ -561,7 +590,7 @@
 
                     html += `
                         <tr>
-                            <td class="col-id">${item.id}</td>
+                            <td class="col-id">#CLM-${item.id}</td>
                             <td>
                                 <div class="barang-wrapper">
                                     <div class="icon-container" style="background-color: ${bgColor};">
