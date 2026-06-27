@@ -611,49 +611,7 @@
 <body>
 
     <!-- SIDEBAR LEFT PANEL -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <div class="logo-icon">L</div>
-            <div class="logo-text">LostFound</div>
-        </div>
-
-        <nav class="sidebar-menu">
-            <div class="menu-label">Main Menu</div>
-            <a href="../dashboard/index.html" class="menu-item">
-                <span>📊</span> Dashboard
-            </a>
-            <a href="index.html" class="menu-item active">
-                <span>📦</span> Antrean Temuan <span class="badge-orange">3</span>
-            </a>
-            <a href="../verifikasi/index.html" class="menu-item">
-                <span>📝</span> Verifikasi Klaim <span class="badge-dark">5</span>
-            </a>
-            <a href="../arsip/index.html" class="menu-item">
-                <span>📁</span> Arsip Laporan
-            </a>
-
-            <div class="menu-label">Settings</div>
-            <a href="../manajemen/index.html" class="menu-item">
-                <span>👥</span> Manajemen User
-            </a>
-            <a href="../konfigurasi/index.html" class="menu-item">
-                <span>⚙️</span> Konfigurasi Sistem
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <div class="user-profile">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Petugas" class="user-avatar">
-                <div class="user-meta">
-                    <div class="name">Petugas Posko</div>
-                    <div class="role">Super Admin</div>
-                </div>
-            </div>
-            <a href="../auth/login.html" class="logout-link">
-                <span>🚪</span> Keluar Sesi
-            </a>
-        </div>
-    </aside>
+    <div id="app-sidebar"></div>
 
     <!-- MAIN CONTENT AREA -->
     <main class="main-content">
@@ -834,5 +792,10 @@
             }
         }
     </script>
+
+    <!-- Injected Base Scripts -->
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components.js"></script>
 </body>
 </html>

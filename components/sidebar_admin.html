@@ -1,0 +1,50 @@
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">
+                    <span class="box-line"></span>
+                </span>
+                LostFound <span>ADMIN</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <div class="menu-label">Main Menu</div>
+            <a href="../dashboard/index.html" class="menu-item">
+                <span class="icon">📊</span> Dashboard
+            </a>
+            <a href="../antrean/index.html" class="menu-item">
+                <span class="icon">📦</span> Antrean Temuan
+                <span class="badge">2</span>
+            </a>
+            <a href="../verifikasi/index.html" class="menu-item">
+                <span class="icon">⏳</span> Verifikasi Klaim
+                <span class="badge blue">5</span>
+            </a>
+            <a href="../arsip/index.html" class="menu-item">
+                <span class="icon">📁</span> Arsip Laporan
+            </a>
+
+            <div class="menu-label" style="margin-top:20px;">Settings</div>
+            <a href="../manajemen/index.html" class="menu-item">
+                <span class="icon">👤</span> Manajemen User
+            </a>
+            <a href="../konfigurasi/index.html" class="menu-item">
+                <span class="icon">⚙️</span> Konfigurasi Sistem
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="avatar">PA</div>
+                <div class="user-details">
+                    <div class="name" id="sidebar-user-name">Petugas Posko</div>
+                    <div class="role" id="sidebar-user-role">Super Admin</div>
+                </div>
+            </div>
+            <!-- Tombol Keluar Langsung Terhubung ke auth.js -->
+            <button class="logout-btn" onclick="logout()">
+                🚪 Keluar Sesi
+            </button>
+        </div>
+    </aside>

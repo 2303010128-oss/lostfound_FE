@@ -154,56 +154,7 @@
 <body>
 
     <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <div class="logo-box">
-            <!-- LOGO ASLI (KOTAK PUTIH DI DALAM ORANYE) -->
-            <div class="logo-icon">
-                <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#ffffff" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 10H7v-2h7v2zm3-4H7V7h10v2zm0 8H7v-2h10v2z"/></svg>
-            </div>
-            <div class="logo-text">LostFound <span>ADMIN</span></div>
-        </div>
-
-        <nav>
-            <div class="menu-section">Main Menu</div>
-            <a href="../dashboard/index.html" class="menu-item">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Bar%20Chart.png" class="icon-3d" alt="Dashboard"> Dashboard
-            </a>
-            <a href="../antrean/index.html" class="menu-item">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Inbox%20Tray.png" class="icon-3d" alt="Antrean"> Antrean Temuan
-            </a>
-            <a href="../verifikasi/index.html" class="menu-item">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Clipboard.png" class="icon-3d" alt="Verifikasi"> Verifikasi Klaim
-            </a>
-            <a href="../arsip/index.html" class="menu-item">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/File%20Folder.png" class="icon-3d" alt="Arsip"> Arsip Laporan
-            </a>
-
-            <div class="menu-section">Settings</div>
-            <a href="../manajemen/index.html" class="menu-item">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Busts%20in%20Silhouette.png" class="icon-3d" alt="User"> Manajemen User
-            </a>
-            <!-- KONFIGURASI SISTEM ACTIVE -->
-            <a href="index.html" class="menu-item active">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Gear.png" class="icon-3d" alt="Gear"> Konfigurasi Sistem
-            </a>
-        </nav>
-
-        <div class="profile-footer">
-            <div class="profile-card">
-                <div class="profile-img-wrap">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Petugas">
-                    <span class="online-dot"></span>
-                </div>
-                <div class="profile-info">
-                    <h4>Petugas Posko</h4>
-                    <p>Super Admin</p>
-                </div>
-            </div>
-            <a href="../auth/login.html" class="btn-logout">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Door.png" class="icon-3d" style="width: 20px; height: 20px;" alt="Logout"> Keluar Sesi
-            </a>
-        </div>
-    </aside>
+    <div id="app-sidebar"></div>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
@@ -365,5 +316,10 @@
         </div>
     </main>
 
+
+    <!-- Injected Base Scripts -->
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components.js"></script>
 </body>
 </html>
