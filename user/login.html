@@ -483,18 +483,24 @@
                 if (result.response.ok && result.data.token) {
                     // Ambil objek profil dari API (result.data.data)
                     const userData = result.data.data || {};
+                    const role = userData.role || 'student';
                     
                     // Simpan token utama ke LocalStorage
                     localStorage.setItem('token', result.data.token);
-                    localStorage.setItem('role', userData.role || 'student');
+                    localStorage.setItem('role', role);
                     localStorage.setItem('user', JSON.stringify(userData));
 
                     // Variabel lawas agar kompatibel dengan sisa halaman mahasiswa lainnya
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('userName', userData.nama_lengkap || 'Mahasiswa');
-                    localStorage.setItem('userEmail', email); // Ambil dari form input karena API tidak mengembalikan email
+                    localStorage.setItem('userEmail', email); 
                     
-                    window.location.href = 'index.html';
+                    // PENGARAHAN PINTAR 1 PINTU (UNIFIED LOGIN)
+                    if (role === 'satpam' || role === 'admin') {
+                        window.location.href = '../admin/dashboard/index.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
                 } else {
                     alert('❌ ' + (result.data.message || 'Email atau kata sandi Anda salah.'));
                 }

@@ -722,8 +722,9 @@
                         
                         // Simpan token dan data user
                         const userData = result.data.data || {};
+                        const role = userData.role || 'satpam';
                         localStorage.setItem('token', result.data.token);
-                        localStorage.setItem('role', userData.role || 'satpam');
+                        localStorage.setItem('role', role);
                         localStorage.setItem('user', JSON.stringify(userData));
 
                         if (rememberMe.checked) {
@@ -735,7 +736,11 @@
                         }
 
                         setTimeout(function() {
-                            window.location.href = '../dashboard/index.html';
+                            if (role === 'satpam' || role === 'admin') {
+                                window.location.href = '../dashboard/index.html';
+                            } else {
+                                window.location.href = '../../user/index.html';
+                            }
                         }, 1000);
                     } else {
                         const errorMsg = result.data.message || 'Email atau kata sandi salah.';
