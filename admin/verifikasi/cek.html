@@ -788,8 +788,8 @@
                     const result = await window.apiFetch('/claims/' + id + '/verify', {
                         method: 'PATCH',
                         body: JSON.stringify({
-                            status: status,
-                            catatan: noteText
+                            status_verif: status,
+                            catatan_evaluasi: noteText
                         })
                     });
                     if (result.response.ok) {
