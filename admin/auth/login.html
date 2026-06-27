@@ -721,9 +721,10 @@
                         showSuccess('✅ Login berhasil! Mengarahkan ke dashboard...');
                         
                         // Simpan token dan data user
+                        const userData = result.data.data || {};
                         localStorage.setItem('token', result.data.token);
-                        localStorage.setItem('role', result.data.user.role || 'satpam');
-                        localStorage.setItem('user', JSON.stringify(result.data.user));
+                        localStorage.setItem('role', userData.role || 'satpam');
+                        localStorage.setItem('user', JSON.stringify(userData));
 
                         if (rememberMe.checked) {
                             localStorage.setItem('adminRememberMe', 'true');

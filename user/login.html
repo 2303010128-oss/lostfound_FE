@@ -481,22 +481,26 @@
                 });
 
                 if (result.response.ok && result.data.token) {
+                    // Ambil objek profil dari API (result.data.data)
+                    const userData = result.data.data || {};
+                    
                     // Simpan token utama ke LocalStorage
                     localStorage.setItem('token', result.data.token);
-                    localStorage.setItem('role', result.data.user.role || 'student');
-                    localStorage.setItem('user', JSON.stringify(result.data.user));
+                    localStorage.setItem('role', userData.role || 'student');
+                    localStorage.setItem('user', JSON.stringify(userData));
 
                     // Variabel lawas agar kompatibel dengan sisa halaman mahasiswa lainnya
                     localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userName', result.data.user.nama_lengkap);
-                    localStorage.setItem('userEmail', result.data.user.email);
+                    localStorage.setItem('userName', userData.nama_lengkap || 'Mahasiswa');
+                    localStorage.setItem('userEmail', email); // Ambil dari form input karena API tidak mengembalikan email
                     
                     window.location.href = 'index.html';
                 } else {
                     alert('❌ ' + (result.data.message || 'Email atau kata sandi Anda salah.'));
                 }
             } catch (err) {
-                alert('❌ Terjadi kesalahan jaringan. Pastikan peladen Laravel menyala.');
+                console.error('Error saat login:', err);
+                alert('❌ Terjadi kesalahan saat memproses login. Cek layar Console peramban Anda.');
             }
         }
 
