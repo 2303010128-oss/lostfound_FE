@@ -26,9 +26,9 @@ async function loadDashboardActivity() {
             else if (itemsResult.data && itemsResult.data.data && Array.isArray(itemsResult.data.data.data)) items = itemsResult.data.data.data;
 
             // Kalkulasi Statistik
-            const pendingClaims = claims.filter(c => ['pending', 'reviewed', 'clarification'].includes(c.status_verif)).length;
-            const activeItems = items.filter(i => ['draft', 'published'].includes(i.status)).length;
-            const returnedClaims = claims.filter(c => c.status_verif === 'returned').length;
+            const pendingClaims = claims.filter(c => ['pending', 'clarification_required'].includes(c.status_verif)).length;
+            const activeItems = items.filter(i => i.visibility === 'private').length;
+            const returnedClaims = claims.filter(c => c.status_verif === 'approved').length;
 
             // Injeksi ke UI Kartu Statistik
             if (document.getElementById('stat-klaim-pending')) document.getElementById('stat-klaim-pending').innerText = pendingClaims;
@@ -51,9 +51,9 @@ async function loadDashboardActivity() {
                 let statusClass = 'diverifikasi';
                 let statusText = 'Pending';
                 
-                if (claim.status_verif === 'approved' || claim.status_verif === 'returned') {
+                if (claim.status_verif === 'approved') {
                     statusClass = 'diserahkan';
-                    statusText = claim.status_verif === 'returned' ? 'Diserahkan' : 'Disetujui';
+                    statusText = 'Disetujui';
                 } else if (claim.status_verif === 'rejected') {
                     statusClass = 'diverifikasi'; // Gunakan class default untuk sementara
                     statusText = 'Ditolak';
