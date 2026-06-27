@@ -579,6 +579,11 @@
         </div>
     </main>
 
+    <!-- Injected Base Scripts -->
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components.js"></script>
+
     <script>
         (function() {
             'use strict';
@@ -627,25 +632,6 @@
             };
 
             // ============================================================
-            // DATA
-            // ============================================================
-            var claimData = [
-                { id: 'ACLM-98231', claimant: 'Ahmad Dahlan',
-                    desc: '"Terdapat gantungan kunci berbentuk kura-kura warna biru di resalting bagian dalam tas sebelah kanan. Di dalam kantung rahasianya juga ada foto keluarga ukuran kecil yang sudah agak luntur."',
-                    files: ['KTM_AHMAD_DAHLAN_JPG', 'NOTA_PEMBELIAN_JPG', 'FOTO_BARANG_JPG'],
-                    warning: 'Berkas Nota Pembelian terdeteksi memiliki kualitas gambar rendah (Low Res).',
-                    reviewId: '01-09-2021' },
-                { id: 'ACLM-98235', claimant: 'Siti Aminah',
-                    desc: '"iPhone 13 Pro Max warna biru dengan casing transparan. Ada stiker di bagian belakang."',
-                    files: ['KTM_SITI_AMINAH_JPG', 'FOTO_BARANG_JPG'],
-                    warning: '', reviewId: '02-09-2021' },
-                { id: 'ACLM-98240', claimant: 'Rizky Febrian',
-                    desc: '"Kunci mobil Honda dengan gantungan kunci berbentuk mobil."',
-                    files: ['KTM_RIZKY_FEBRIAN_JPG', 'FOTO_KUNCI_JPG'],
-                    warning: '', reviewId: '03-09-2021' },
-            ];
-
-            // ============================================================
             // GET ID FROM URL
             // ============================================================
             function getQueryParam(param) {
@@ -654,13 +640,28 @@
             }
 
             var claimId = getQueryParam('id');
-
             var item = null;
-            for (var i = 0; i < claimData.length; i++) {
-                if (claimData[i].id === claimId) {
-                    item = claimData[i];
-                    break;
+
+            async function loadClaimData() {
+                if (!claimId) return;
+                try {
+                    const result = await window.apiFetch('/claims/' + claimId);
+                    if (result.response.ok && result.data && result.data.data) {
+                        const c = result.data.data;
+                        item = {
+                            id: c.id,
+                            claimant: c.user ? c.user.nama_lengkap : 'Anonim',
+                            desc: '"' + c.bukti_teks + '"',
+                            files: c.bukti_foto ? ['BUKTI_FOTO_TERLAMPIR'] : ['TIDAK_ADA_FOTO_LAMPIRAN'],
+                            warning: '',
+                            reviewId: new Date(c.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}),
+                            rawStatus: c.status_verif
+                        };
+                    }
+                } catch (err) {
+                    console.error('Gagal mengambil data detail klaim:', err);
                 }
+                renderDetail();
             }
 
             // ============================================================
@@ -805,16 +806,11 @@
             // INIT
             // ============================================================
             renderDetail();
+            loadClaimData();
 
             console.log('✅ Peninjauan Berkas Klaim loaded successfully!');
 
         })();
     </script>
-
-
-    <!-- Injected Base Scripts -->
-    <script src="../../assets/js/auth.js"></script>
-    <script src="../../assets/js/api.js"></script>
-    <script src="../../assets/js/components.js"></script>
 </body>
 </html>
