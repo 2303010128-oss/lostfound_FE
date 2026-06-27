@@ -541,7 +541,7 @@
             var currentTab = 'pending';
             var filteredData = claimData.filter(function(i) { return i.status === currentTab; });
             var currentPage = 1;
-            var rowsPerPage = 3;
+            var rowsPerPage = 5;
 
             function updateStats() {
                 var pending = claimData.filter(function(item) { return item.status === 'pending'; }).length;
