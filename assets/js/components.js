@@ -87,6 +87,34 @@ async function loadHeader() {
         
         const titleEl = document.getElementById('header-title');
         if(titleEl) titleEl.textContent = title;
+
+        // Update profile info automatically
+        try {
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                const user = JSON.parse(userStr);
+                const nameEl = document.getElementById('profileNameHeader');
+                const roleEl = document.getElementById('profileRoleHeader');
+                const avatarEl = document.querySelector('.avatar-initial');
+                
+                if (nameEl && user.nama_lengkap) nameEl.textContent = user.nama_lengkap;
+                
+                if (roleEl && user.role) {
+                    const roleNames = {
+                        'satpam': 'Petugas Keamanan',
+                        'admin': 'Super Admin',
+                        'mahasiswa': 'Mahasiswa'
+                    };
+                    roleEl.textContent = roleNames[user.role] || user.role;
+                }
+                
+                if (avatarEl && user.nama_lengkap) {
+                    avatarEl.textContent = user.nama_lengkap.charAt(0).toUpperCase();
+                }
+            }
+        } catch (e) {
+            console.error('Gagal memuat profil header:', e);
+        }
     } catch (error) {
         console.error('Gagal memuat header:', error);
     }
