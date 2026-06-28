@@ -995,10 +995,6 @@
                     return;
                 }
 
-                if (!confirm('Apakah Anda yakin ingin memproses klaim dengan keputusan ini?')) {
-                    return;
-                }
-
                 try {
                     const result = await window.apiFetch('/claims/' + claimId + '/verify', {
                         method: 'PATCH',
