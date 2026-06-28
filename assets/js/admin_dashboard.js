@@ -85,43 +85,16 @@ async function loadDashboardActivity() {
 }
 
 // --- Logika Proses Serah Terima (Handover) dengan Token ---
-window.processHandover = async function() {
+window.processHandover = function() {
     const input = document.getElementById('inputTokenHandover');
-    const btn = document.getElementById('btnProsesSerahTerima');
-    
     const token = input.value.trim().toUpperCase();
     
     if (!token) {
-        alert('TOLONG MASUKKAN TOKEN!\nSilakan minta kode token (misal: LF-ORANGE-XYZ) dari aplikasi mahasiswa.');
+        alert('TOLONG MASUKKAN TOKEN!\nSilakan minta kode token dari aplikasi mahasiswa.');
         input.focus();
         return;
     }
 
-    if (!confirm(`Lanjutkan proses serah terima barang untuk token: ${token}?`)) return;
-
-    const originalText = btn.innerText;
-    btn.innerText = 'MEMPROSES KE SERVER...';
-    btn.disabled = true;
-
-    try {
-        // Berdasarkan dokumentasi API: POST /handovers membutuhkan token_pengambilan
-        const result = await apiFetch('/handovers', {
-            method: 'POST',
-            body: JSON.stringify({ token_pengambilan: token })
-        });
-
-        if (result.response.ok) {
-            alert('🎉 SERAH TERIMA BERHASIL!\nBarang telah resmi diserahkan ke pemilik yang sah. Sistem telah mencatat log secara digital.');
-            input.value = '';
-            loadDashboardActivity(); // Segarkan tabel aktivitas seketika
-        } else {
-            alert('❌ Serah terima gagal: ' + (result.data.message || 'Token tidak valid, kedaluwarsa, atau barang sudah diambil sebelumnya.'));
-        }
-    } catch (error) {
-        console.error('Error handover:', error);
-        alert('Terjadi kesalahan jaringan saat proses serah terima. Cek apakah Laravel Backend menyala.');
-    } finally {
-        btn.innerText = originalText;
-        btn.disabled = false;
-    }
+    // Redirect ke halaman Serah Terima Fisik (Jalur Langsung Disetujui)
+    window.location.href = `../serah-terima/index.html?token=${encodeURIComponent(token)}`;
 };
