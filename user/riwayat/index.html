@@ -1,0 +1,465 @@
+<!DOCTYPE html><html lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Riwayat Aktivitas - CampusFound</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#0d1c2e",
+                        "on-primary": "#ffffff",
+                        "surface-main": "#F8FAFC",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "surface-container": "#eaedff",
+                        "status-lost-bg": "#F43F5E",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-card": "#FFFFFF",
+                        "surface-bright": "#faf8ff",
+                        "status-warning-text": "#B45309",
+                        "tertiary": "#005da8",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-tertiary-fixed": "#001c39",
+                        "secondary-container": "#d5e3fc",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "status-warning-bg": "#F59E0B",
+                        "outline-variant": "#e2bfb2",
+                        "surface-tint": "#a73a00",
+                        "on-primary-fixed-variant": "#7f2b00",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "inverse-surface": "#283044",
+                        "inverse-primary": "#ffb599",
+                        "on-background": "#131b2e",
+                        "surface-container-high": "#e2e7ff",
+                        "on-surface": "#131b2e",
+                        "on-surface-variant": "#5a4138",
+                        "surface-dim": "#d2d9f4",
+                        "on-primary-container": "#fffbff",
+                        "surface-container-highest": "#dae2fd",
+                        "on-primary-fixed": "#370e00",
+                        "primary-container": "#cc4900",
+                        "background": "#faf8ff",
+                        "primary-fixed": "#ffdbce",
+                        "on-secondary-container": "#57657a",
+                        "tertiary-container": "#0076d2",
+                        "status-found-bg": "#10B981",
+                        "secondary-fixed": "#d5e3fc",
+                        "surface-variant": "#dae2fd",
+                        "on-tertiary-container": "#fdfcff",
+                        "outline": "#8e7166",
+                        "surface": "#faf8ff",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#ffb599",
+                        "primary": "#a33900",
+                        "tertiary-fixed": "#d4e3ff",
+                        "status-lost-text": "#BE123C",
+                        "surface-container-low": "#f2f3ff",
+                        "secondary": "#515f74",
+                        "inverse-on-surface": "#eef0ff",
+                        "status-found-text": "#047857"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "1rem",
+                        "stack-sm": "0.5rem",
+                        "stack-lg": "1.5rem",
+                        "stack-md": "1rem",
+                        "margin-desktop": "2rem",
+                        "container-max": "1280px",
+                        "gutter": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.025em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #F8FAFC;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface bg-surface-main min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest dark:bg-on-secondary-fixed shadow-sm">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-4">
+<button class="md:hidden flex items-center justify-center p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="text-headline-sm font-headline-lg text-primary dark:text-primary-fixed-dim">LostFound Connect</span>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="../mading/index.html">Beranda</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="../tentang/index.html">Tentang Kami</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="../bantuan/index.html">Pusat Bantuan</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-secondary hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border border-white"></span>
+</button>
+<div class="flex items-center gap-2 border-l border-surface-container-high pl-4">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-sm overflow-hidden" id="headerAvatar">
+                    AD
+                </div>
+<span class="hidden sm:block text-on-surface font-semibold text-sm truncate max-w-[100px]" id="headerName">User</span>
+</div>
+</div>
+</div>
+</header>
+<div class="flex max-w-container-max mx-auto pt-16 flex-1 w-full">
+<!-- SideNavBar (Desktop) -->
+<aside class="hidden md:flex flex-col w-64 shrink-0 gap-stack-sm py-gutter h-[calc(100vh-64px)] sticky top-16 border-r border-surface-container-low self-start">
+<a class="mx-2 px-4 py-3 rounded-lg text-secondary hover:bg-surface-container-low transition-colors font-label-md text-label-md flex items-center gap-3" href="../ringkasan/index.html">
+<span class="material-symbols-outlined">dashboard</span>Ringkasan
+</a>
+<a class="mx-2 px-4 py-3 rounded-lg text-secondary hover:bg-surface-container-low transition-colors font-label-md text-label-md flex items-center gap-3" href="../klaim/index.html">
+<span class="material-symbols-outlined">assignment</span>Klaim Saya
+</a>
+<a class="mx-2 px-4 py-3 rounded-lg bg-surface-container-high text-primary font-bold transition-colors font-label-md text-label-md flex items-center gap-3" href="../riwayat/index.html">
+<span class="material-symbols-outlined">history</span>Riwayat
+</a>
+<div class="mt-auto pt-4 border-t border-surface-container-low">
+<a class="mx-2 px-4 py-3 rounded-lg text-secondary hover:bg-surface-container-low transition-colors font-label-md text-label-md flex items-center gap-3" href="../profil/index.html">
+<span class="material-symbols-outlined">settings</span>Pengaturan
+</a>
+<a class="mx-2 px-4 py-3 rounded-lg text-error hover:bg-error-container/20 transition-colors font-label-md text-label-md flex items-center gap-3 mt-1" href="javascript:void(0)" onclick="logout()">
+<span class="material-symbols-outlined">logout</span>Keluar
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop min-h-screen">
+<div class="w-full">
+<!-- Header Section -->
+<div class="mb-stack-lg">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Riwayat Aktivitas</h1>
+<p class="font-body-md text-secondary">Daftar seluruh laporan kehilangan dan penemuan barang Anda yang telah selesai.</p>
+</div>
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-gutter mb-stack-lg">
+<div class="bg-surface-card p-stack-md rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]">task_alt</span>
+</div>
+<div>
+<p class="text-label-sm text-secondary">Total Selesai</p>
+<p class="font-headline-md text-headline-md" id="totalSelesai">0</p>
+</div>
+</div>
+<div class="bg-surface-card p-stack-md rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-status-lost-bg/10 flex items-center justify-center text-status-lost-text">
+<span class="material-symbols-outlined text-[28px]">search</span>
+</div>
+<div>
+<p class="text-label-sm text-secondary">Kehilangan</p>
+<p class="font-headline-md text-headline-md" id="totalLost">0</p>
+</div>
+</div>
+<div class="bg-surface-card p-stack-md rounded-xl shadow-sm border border-slate-100 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-status-found-bg/10 flex items-center justify-center text-status-found-text">
+<span class="material-symbols-outlined text-[28px]">handshake</span>
+</div>
+<div>
+<p class="text-label-sm text-secondary">Penemuan</p>
+<p class="font-headline-md text-headline-md" id="totalFound">0</p>
+</div>
+</div>
+</div>
+<!-- Filter Tabs -->
+<div class="flex gap-2 mb-stack-md overflow-x-auto pb-2 scrollbar-hide">
+<button data-filter="all" class="filter-btn px-6 py-2 bg-primary text-on-primary rounded-full font-label-md transition-all">Semua</button>
+<button data-filter="lost" class="filter-btn px-6 py-2 bg-surface-card text-secondary border border-slate-200 hover:border-primary hover:text-primary rounded-full font-label-md transition-all">Kehilangan</button>
+<button data-filter="found" class="filter-btn px-6 py-2 bg-surface-card text-secondary border border-slate-200 hover:border-primary hover:text-primary rounded-full font-label-md transition-all">Penemuan</button>
+</div>
+<!-- History List -->
+<div class="space-y-4" id="claimsList">
+    <div class="text-center py-10 text-secondary">Memuat riwayat...</div>
+</div>
+<!-- Footer Pagination -->
+<div class="mt-stack-lg flex justify-center mb-stack-lg" id="paginationContainer"></div>
+</div>
+</main>
+</div>
+<!-- Global Footer -->
+<footer class="bg-surface-container dark:bg-surface-dim mt-auto w-full">
+    <div class="w-full py-8 px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md">
+        <div class="text-label-md font-label-md text-primary font-display">
+            LostFound Connect
+        </div>
+        <div class="flex flex-wrap justify-center gap-4 text-on-secondary-fixed-variant font-body-sm text-body-sm">
+            <a class="hover:text-primary dark:hover:text-primary-fixed underline transition-all duration-200" href="#">Kebijakan Privasi</a>
+            <a class="hover:text-primary dark:hover:text-primary-fixed underline transition-all duration-200" href="#">Syarat &amp; Ketentuan</a>
+            <a class="hover:text-primary dark:hover:text-primary-fixed underline transition-all duration-200" href="#">Campus Safety</a>
+            <a class="hover:text-primary dark:hover:text-primary-fixed underline transition-all duration-200" href="#">Kontak Kampus</a>
+        </div>
+        <div class="text-on-surface dark:text-on-surface-variant font-body-sm text-body-sm text-center md:text-right">
+            © 2024 Universitas Perjuangan Tasikmalaya
+        </div>
+    </div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full h-16 bg-surface-card md:hidden flex justify-around items-center px-4 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] z-50">
+<a class="flex flex-col items-center gap-1 text-secondary" href="../ringkasan/index.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-label-md">Ringkasan</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="../klaim/index.html">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[10px] font-label-md">Klaim</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="../riwayat/index.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="text-[10px] font-label-md">Riwayat</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary" href="../profil/index.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-label-md">Profil</span>
+</a>
+</nav>
+
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+    let allRiwayat = [];
+    let currentFilteredRiwayat = [];
+    let currentPage = 1;
+    const itemsPerPage = 5;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (!localStorage.getItem('token')) {
+            window.location.href = '../auth/login.html';
+            return;
+        }
+
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                document.getElementById('headerName').innerText = user.nama_lengkap;
+                document.getElementById('headerAvatar').innerText = user.nama_lengkap.substring(0, 2).toUpperCase();
+            } catch(e){}
+        }
+
+        await fetchRiwayat();
+    });
+
+    async function fetchRiwayat() {
+        const listContainer = document.getElementById('claimsList');
+        try {
+            const res = await window.apiFetch('/auth/riwayat');
+            if (res.response.ok && res.data && res.data.success) {
+                const items = res.data.data.items.map(item => ({...item, _type: 'item'}));
+                const claims = res.data.data.claims.map(claim => ({...claim, _type: 'claim'}));
+                allRiwayat = [...items, ...claims].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                currentFilteredRiwayat = [...allRiwayat];
+                
+                // Calculate Stats
+                let totalSelesai = allRiwayat.length;
+                let totalLost = allRiwayat.filter(c => {
+                    const i = c._type === 'claim' ? c.item : c;
+                    return i && i.post_type === 'lost';
+                }).length;
+                let totalFound = allRiwayat.filter(c => {
+                    const i = c._type === 'claim' ? c.item : c;
+                    return i && i.post_type === 'found';
+                }).length;
+                
+                document.getElementById('totalSelesai').innerText = totalSelesai;
+                document.getElementById('totalLost').innerText = totalLost;
+                document.getElementById('totalFound').innerText = totalFound;
+                
+                renderRiwayat();
+            } else {
+                listContainer.innerHTML = '<div class="text-center py-10 text-error">Gagal mengambil riwayat.</div>';
+            }
+        } catch (e) {
+            console.error(e);
+            listContainer.innerHTML = '<div class="text-center py-10 text-error">Terjadi kesalahan jaringan.</div>';
+        }
+    }
+
+    function renderRiwayat() {
+        const listContainer = document.getElementById('claimsList');
+        listContainer.innerHTML = '';
+
+        if (currentFilteredRiwayat.length === 0) {
+            listContainer.innerHTML = '<div class="text-center py-10 text-secondary bg-surface-card rounded-xl border border-slate-100">Belum ada riwayat aktivitas.</div>';
+            document.getElementById('paginationContainer').innerHTML = '';
+            return;
+        }
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const paginated = currentFilteredRiwayat.slice(startIndex, startIndex + itemsPerPage);
+
+        paginated.forEach(data => {
+            const isClaim = data._type === 'claim';
+            const item = isClaim ? (data.item || {}) : data;
+            
+            let typeBadge = '';
+            let btnAction = '';
+            
+            if (item.post_type === 'lost') {
+                typeBadge = `<span class="bg-rose-50 text-status-lost-text text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded border border-rose-100">KEHILANGAN</span>`;
+            } else {
+                typeBadge = `<span class="bg-emerald-50 text-status-found-text text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded border border-emerald-100">PENEMUAN</span>`;
+            }
+
+            if (isClaim) {
+                btnAction = `<button onclick="window.location.href='detail.html?type=claim&id=${data.id}'" class="text-primary hover:underline font-label-md flex items-center gap-1">Lihat Detail <span class="material-symbols-outlined text-[18px]">chevron_right</span></button>`;
+            } else {
+                btnAction = `<button onclick="window.location.href='detail.html?type=item&id=${data.id}'" class="text-primary hover:underline font-label-md flex items-center gap-1">Lihat Laporan <span class="material-symbols-outlined text-[18px]">chevron_right</span></button>`;
+            }
+
+            let imgUrl = item.foto;
+            if (imgUrl && !imgUrl.startsWith('http')) {
+                imgUrl = `http://${window.location.hostname}:8000/storage/` + imgUrl;
+            }
+            if (!imgUrl) {
+                imgUrl = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22600%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1%20text%20%7B%20fill%3A%23999%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A30pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1%22%3E%3Crect%20width%3D%22600%22%20height%3D%22400%22%20fill%3D%22%23eee%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22204.5%22%20y%3D%22212.5%22%3ETidak%20Ada%20Foto%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E';
+            }
+
+            const dateObj = new Date(data.created_at);
+            const dateStr = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+            
+            const locationName = (item.location && item.location.nama_tempat) ? item.location.nama_tempat : 'Tidak diketahui';
+
+            const html = `
+            <div class="bg-surface-card rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow">
+                <div class="flex flex-col md:flex-row p-stack-md gap-stack-md items-start md:items-center">
+                    <div class="w-full md:w-20 h-20 bg-slate-100 rounded-lg flex-shrink-0 border border-slate-100">
+                        <img alt="${item.judul || 'Item'}" class="w-full h-full object-cover rounded-lg" src="${imgUrl}">
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            ${typeBadge}
+                            <span class="text-label-sm text-secondary">• ${dateStr}</span>
+                        </div>
+                        <h3 class="font-headline-sm text-on-surface">${item.judul || 'Unknown Item'}</h3>
+                        <p class="text-body-sm text-secondary">Lokasi: ${locationName}</p>
+                    </div>
+                    <div class="flex flex-col md:items-end gap-2 w-full md:w-auto">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-status-found-text font-label-md rounded-full border border-emerald-100">
+                            <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            Selesai
+                        </span>
+                        ${btnAction}
+                    </div>
+                </div>
+            </div>
+            `;
+            listContainer.insertAdjacentHTML('beforeend', html);
+        });
+        
+        renderPagination();
+    }
+
+    function renderPagination() {
+        const container = document.getElementById('paginationContainer');
+        container.innerHTML = '';
+        const totalPages = Math.ceil(currentFilteredRiwayat.length / itemsPerPage);
+        
+        if (totalPages <= 1) return;
+
+        let html = '<nav class="flex gap-1">';
+        html += `<button onclick="changePage(${currentPage - 1})" class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 text-secondary hover:bg-slate-50 transition-colors disabled:opacity-50" ${currentPage === 1 ? 'disabled' : ''}><span class="material-symbols-outlined">chevron_left</span></button>`;
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                html += `<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md">${i}</button>`;
+            } else {
+                html += `<button onclick="changePage(${i})" class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 text-secondary hover:bg-slate-50 transition-colors font-label-md">${i}</button>`;
+            }
+        }
+        html += `<button onclick="changePage(${currentPage + 1})" class="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-200 text-secondary hover:bg-slate-50 transition-colors disabled:opacity-50" ${currentPage === totalPages ? 'disabled' : ''}><span class="material-symbols-outlined">chevron_right</span></button>`;
+        html += '</nav>';
+        container.innerHTML = html;
+    }
+
+    window.changePage = function(page) {
+        const totalPages = Math.ceil(currentFilteredRiwayat.length / itemsPerPage);
+        if (page >= 1 && page <= totalPages) {
+            currentPage = page;
+            renderRiwayat();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+
+    // Filter Logic
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            filterBtns.forEach(b => {
+                b.classList.remove('bg-primary', 'text-on-primary');
+                b.classList.add('bg-surface-card', 'text-secondary', 'border', 'border-slate-200');
+            });
+            e.target.classList.remove('bg-surface-card', 'text-secondary', 'border', 'border-slate-200');
+            e.target.classList.add('bg-primary', 'text-on-primary');
+
+            const f = e.target.getAttribute('data-filter');
+            if (f === 'all') {
+                currentFilteredRiwayat = [...allRiwayat];
+            } else {
+                currentFilteredRiwayat = allRiwayat.filter(c => {
+                    const item = c._type === 'claim' ? c.item : c;
+                    return item && item.post_type === f;
+                });
+            }
+            currentPage = 1;
+            renderRiwayat();
+        });
+    });
+
+    // Micro-interactions
+    document.querySelectorAll('button, a').forEach(el => {
+        el.addEventListener('mousedown', () => el.classList.add('scale-95'));
+        el.addEventListener('mouseup', () => el.classList.remove('scale-95'));
+        el.addEventListener('mouseleave', () => el.classList.remove('scale-95'));
+    });
+</script>
+</body></html>

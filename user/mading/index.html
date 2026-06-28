@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beranda - LostFound Connect</title>
+    <link href="../../assets/css/user_hero.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+            outline: none;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ============================================================
+                   POSTS SECTION & CARDS GRID (Sesuai Desain Figma)
+                   ============================================================ */
+        .posts-section {
+            padding: 60px 0 80px 0;
+            background: #fafafa; /* Sedikit abu agar card putih menonjol */
+        }
+
+        .posts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .posts-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .posts-header .view-all {
+            color: #b45309;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .post-card {
+            background: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .post-card .card-img-box {
+            height: 200px;
+            background: #e0e7ff; /* Warna bg ungu/biru muda untuk placeholder */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-card .card-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Desain Placeholder Sesuai Figma */
+        .post-card .card-img-box .placeholder-box {
+            width: 100%;
+            height: 100%;
+            background: #e0e7ff; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-card .card-img-box .wallet-svg {
+            width: 50px;
+            height: 50px;
+            fill: #94a3b8;
+        }
+
+        /* Badge Halus Tipis Sesuai Gambar Figma */
+        .post-card .badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        .badge-lost { background: #ff4769; }
+        .badge-found { background: #10b981; }
+
+        .badge svg {
+            width: 13px;
+            height: 13px;
+            fill: currentColor;
+        }
+
+        .post-card .card-body {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Penyelarasan Judul & Waktu */
+        .post-card .card-body .card-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .post-card .card-body h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0f172a;
+            line-height: 1.4;
+        }
+
+        .post-card .card-body .time-txt {
+            font-size: 12px;
+            color: #64748b;
+            white-space: nowrap;
+            margin-top: 4px;
+        }
+
+        .post-card .card-body .desc-txt {
+            font-size: 13.5px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 42px;
+        }
+
+        /* Garis Pembatas Tipis */
+        .post-card .card-footer {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-card .card-footer .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #d94e06;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .post-card .card-footer .avatar.gray { background: #64748b; }
+
+        .post-card .card-footer .name-txt {
+            font-size: 13px;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        /* ============================================================
+                   FOOTER
+                   ============================================================ */
+        
+
+        
+        
+
+        @media (max-width: 1024px) {
+            .posts-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .posts-grid { grid-template-columns: 1fr; }
+            .navbar .nav-center { display: none; }
+            .hero h1 { font-size: 26px; }
+            .hero-buttons { flex-direction: column; width: 100%; max-width: 320px; margin: 0 auto; }
+            .btn-hero-primary, .btn-hero-outline { width: 100%; justify-content: center; }
+            
+    </style>
+</head>
+<body>
+
+    <div id="app-navbar"></div>
+
+    <section class="hero">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+
+        <div class="hero-content">
+            <h1>Kehilangan Barang di Kampus? Jangan Panik.</h1>
+            <p>Platform pusat informasi dan verifikasi terpusat untuk mengembalikan barang temuan Anda secara aman.</p>
+            
+            <div class="hero-buttons">
+                <button class="btn-hero-primary" onclick="checkAuthenticationRoute('../lapor-hilang/index.html')">
+                    <span style="font-size: 16px;">⊕</span> Lapor Kehilangan
+                </button>
+                <button class="btn-hero-outline" onclick="checkAuthenticationRoute('../lapor-temuan/index.html')">
+                    <span>🔍</span> Lapor Temuan
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- POSTS SECTION (Background Slightly Gray) -->
+    <section class="posts-section">
+        <div class="container">
+            <div class="posts-header">
+                <h2>Postingan Terbaru</h2>
+                <a href="#" class="view-all" onclick="alert('Menampilkan seluruh arsip postingan feed.')">Lihat Semua ➔</a>
+            </div>
+
+            <div class="posts-grid" id="feedGrid"></div>
+        </div>
+    </section>
+
+    <div id="app-footer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            window.addEventListener('click', () => {
+                const dropdown = document.getElementById('dropdownMenu');
+                if (dropdown) dropdown.classList.remove('open');
+            });
+        });
+
+        
+        function checkAuthenticationRoute(pageUrl) {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = pageUrl;
+            } else {
+                alert('Akses ditolak! Silakan masuk / login akun mahasiswa terlebih dahulu.');
+                window.location.href = '../auth/login.html';
+            }
+        }
+
+        async function loadFeedCards() {
+            const gridContainer = document.getElementById('feedGrid');
+            if (!gridContainer) return;
+            
+            gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">Memuat postingan terbaru...</div>';
+
+            try {
+                const result = await window.apiFetch('/items');
+                if (result.response.ok) {
+                    let feedData = [];
+                    if (Array.isArray(result.data)) feedData = result.data;
+                    else if (result.data && Array.isArray(result.data.data)) feedData = result.data.data;
+                    else if (result.data && result.data.data && Array.isArray(result.data.data.data)) feedData = result.data.data.data;
+                    
+                    renderFeed(feedData, gridContainer);
+                } else {
+                    gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #dc2626;">Gagal memuat data mading.</div>';
+                }
+            } catch (err) {
+                gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #dc2626;">Terjadi kesalahan jaringan.</div>';
+            }
+        }
+
+        function renderFeed(feedData, gridContainer) {
+            gridContainer.innerHTML = '';
+            
+            if (feedData.length === 0) {
+                gridContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">Belum ada postingan terbaru di mading ini.</div>';
+                return;
+            }
+
+            feedData.forEach(item => {
+                const articleCard = document.createElement('article');
+                articleCard.className = 'post-card';
+                
+                articleCard.onclick = () => {
+                    checkAuthenticationRoute(`../barang/index.html?id=${item.id}`);
+                };
+
+                // Rendering Gambar Utama / Box Placeholder SVG Sesuai Gambar Figma
+                let imgUrl = item.foto;
+                if (imgUrl && !imgUrl.startsWith('http')) {
+                    imgUrl = `http://${window.location.hostname}:8000/storage/` + imgUrl;
+                }
+                
+                let imageTag = `<img src="${imgUrl}" alt="${item.judul}">`;
+                if (!imgUrl) {
+                    imageTag = `
+                        <div class="placeholder-box">
+                            <svg class="wallet-svg" viewBox="0 0 24 24">
+                                <path d="M19 5H5c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 12H5V7h14v10zm-7-7h5v2h-5z"/>
+                            </svg>
+                        </div>`;
+                }
+
+                let authorName = item.user ? item.user.nama_lengkap : 'Anonym';
+                let avatarLetters = authorName.substring(0,2).toUpperCase();
+                
+                // Menambahkan kelas gray khusus jika Petugas
+                let isSatpam = item.user && item.user.role === 'satpam';
+                let avatarClass = isSatpam ? 'avatar gray' : 'avatar';
+                if (isSatpam) avatarLetters = 'PT';
+
+                // Ikon SVG Khusus untuk Badge (Tanda Seru untuk Kehilangan, Centang untuk Temuan)
+                let type = item.post_type || 'lost';
+                let badgeIconSVG = type === 'lost' 
+                    ? `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>`
+                    : `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>`;
+
+                let timeLabel = item.created_at ? new Date(item.created_at).toLocaleDateString('id-ID', {day:'numeric', month:'short'}) : 'Baru saja';
+
+                articleCard.innerHTML = `
+                    <div class="card-img-box">
+                        ${imageTag}
+                        <span class="badge ${type === 'lost' ? 'badge-lost' : 'badge-found'}">
+                            ${badgeIconSVG} ${type === 'lost' ? 'Kehilangan' : 'Ditemukan'}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title-row">
+                            <h3>${item.judul}</h3>
+                            <span class="time-txt">${timeLabel}</span>
+                        </div>
+                        <p class="desc-txt">${item.deskripsi || ''}</p>
+                        <div class="card-footer">
+                            <div class="${avatarClass}">${avatarLetters}</div>
+                            <span class="name-txt">${authorName}</span>
+                        </div>
+                    </div>
+                `;
+                gridContainer.appendChild(articleCard);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeedCards();
+        });
+    </script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components_user.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+</body>
+</html>

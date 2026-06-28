@@ -69,7 +69,7 @@ async function loadAntrean(page = 1) {
                     <td><span class="status-pill-draft">${status}</span></td>
                     <td>
                         <div class="actions-flex" onclick="event.stopPropagation();">
-                            <button class="btn-table-action release" onclick="handleRelease(${item.id})">Terima & Rilis</button>
+                            <button class="btn-table-action release" onclick="handleRelease(${item.id}, '${judul.replace(/'/g, "\\'")}')">Terima & Rilis</button>
                             <button class="btn-table-action cancel" onclick="handleCancel(${item.id}, '${penemu}')">Batalkan</button>
                         </div>
                     </td>
@@ -130,8 +130,41 @@ function renderPagination(pageData) {
 }
 
 // --- Logika Interaksi Modals ---
-window.handleRelease = function(itemId) {
-    window.location.href = `detail.html?id=${itemId}`;
+window.handleRelease = async function(itemId, itemName) {
+    const btn = event.currentTarget;
+    const originalText = btn.innerText;
+    btn.innerText = 'Memproses...';
+    btn.disabled = true;
+
+    try {
+        const result = await apiFetch(`/items/${itemId}/release`, {
+            method: 'PATCH'
+        });
+
+        if (result.response.ok) {
+            showSuccessReleaseModal(itemName);
+            // Refresh tabel di latar belakang
+            loadAntrean();
+        } else {
+            alert('Gagal merilis laporan: ' + (result.data.message || 'Error server'));
+        }
+    } catch (error) {
+        alert('Kesalahan jaringan!');
+    } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+    }
+};
+
+window.showSuccessReleaseModal = function(itemName) {
+    if (itemName) {
+        document.getElementById('successReleaseText').innerHTML = `Laporan fisik untuk <strong>'${itemName}'</strong> resmi diverifikasi. Status barang kini berubah menjadi 'Published' dan sudah tayang di halaman 'Found Feed' publik agar bisa dilihat oleh seluruh mahasiswa.`;
+    }
+    document.getElementById('successReleaseModal').style.display = 'flex';
+};
+
+window.closeSuccessReleaseModal = function() {
+    document.getElementById('successReleaseModal').style.display = 'none';
 };
 
 window.handleCancel = function(itemId, penemuName) {
@@ -154,8 +187,8 @@ window.executeCancellation = async function() {
     btn.disabled = true;
 
     try {
-        // Tembak API Delete ke Laravel
-        const result = await apiFetch(`/items/${currentCancelId}`, { method: 'DELETE' });
+        // Tembak API Reject ke Laravel
+        const result = await apiFetch(`/items/${currentCancelId}/reject`, { method: 'PATCH' });
         
         if (result.response.ok) {
             alert('Sukses! Laporan telah dibatalkan dan dihapus dari antrean.');
@@ -179,7 +212,11 @@ window.executeCancellation = async function() {
 // Tutup popup saat mengklik luar kotak
 window.onclick = function(event) {
     const modal = document.getElementById('cancelModal');
+    const successModal = document.getElementById('successReleaseModal');
     if (event.target == modal) {
         closeCancelModal();
+    }
+    if (event.target == successModal) {
+        closeSuccessReleaseModal();
     }
 };

@@ -143,7 +143,7 @@
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/components.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('token');
             
@@ -155,8 +155,22 @@
 
             document.getElementById('uiTokenValue').innerText = token;
             
-            document.getElementById('uiCiriBarang').innerText = "Karakteristik fisik terlihat sesuai.";
-            document.getElementById('uiKategoriBarang').innerText = "Sesuai dengan database arsip barang posko.";
+            try {
+                const result = await window.apiFetch('/claims/token/' + token);
+                if (result.response.ok && result.data && result.data.success) {
+                    const claim = result.data.data;
+                    document.getElementById('uiOwnerName').innerText = claim.user ? claim.user.nama_lengkap : 'Mahasiswa pengklaim';
+                    document.getElementById('uiCiriBarang').innerText = claim.bukti_teks || 'Tidak ada deskripsi.';
+                    document.getElementById('uiKategoriBarang').innerText = (claim.item && claim.item.category) ? claim.item.category.nama_kategori : 'Sesuai dengan database arsip barang posko.';
+                } else {
+                    alert('Token tidak valid atau klaim tidak ditemukan/belum disetujui.');
+                    window.location.href = '../dashboard/index.html';
+                    return;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Terjadi kesalahan jaringan.');
+            }
             
             // Event Listeners
             document.getElementById('btnSuccess').addEventListener('click', () => {

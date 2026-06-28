@@ -1,4 +1,4 @@
-const BASE_URL = 'http://127.0.0.1:8000/api/v1';
+const BASE_URL = `http://${window.location.hostname}:8000/api/v1`;
 
 // Fungsi otomatis untuk mengambil header (menyuntikkan Token dan format JSON)
 function getHeaders() {
@@ -28,12 +28,15 @@ async function apiFetch(endpoint, options = {}) {
         const response = await fetch(url, config);
         
         if (response.status === 401) {
-            console.error('API Error: Unauthenticated. Redirecting to login.');
-            if (typeof logout === 'function') {
-                logout();
-            } else {
-                localStorage.clear();
-                window.location.replace('/user/login.html');
+            console.error('API Error: Unauthenticated.');
+            if (!options.skipRedirect) {
+                console.error('Redirecting to login.');
+                if (typeof logout === 'function') {
+                    logout();
+                } else {
+                    localStorage.clear();
+                    window.location.replace('/user/login.html');
+                }
             }
             return { response, data: null };
         }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Antrean Barang Temuan - LostFound Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
                    RESET & BASE STYLES
@@ -437,6 +438,35 @@
             font-weight: 600;
             box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
         }
+
+        .modal-icon-success {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px auto;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+        }
+
+        .btn-modal-success {
+            width: 100%;
+            background: #283044;
+            color: #eef0ff;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .btn-modal-success:hover {
+            opacity: 0.9;
+        }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
     <link rel="stylesheet" href="../../assets/css/admin_header.css">
@@ -504,19 +534,33 @@
             <div style="text-align: left; margin-bottom: 24px;">
                 <label class="modal-form-label">Alasan Pembatalan</label>
                 <div class="select-wrapper">
-                    <select class="modal-select">
-                        <option value="invalid">Informasi Tidak Valid</option>
-                        <option value="spam">Laporan Palsu / Spam</option>
-                        <option value="duplicate">Laporan Duplikat</option>
-                        <option value="other">Alasan Lainnya</option>
+                    <select class="modal-select" id="cancel-reason">
+                        <option value="" disabled selected>Pilih alasan...</option>
+                        <option value="invalid">Barang fiktif / Indikasi Hoax</option>
+                        <option value="taken">Barang sudah diambil langsung pemilik di tempat</option>
+                        <option value="duplicate">Data laporan duplikat (Double input)</option>
                     </select>
                 </div>
             </div>
             
             <div class="modal-btn-group">
-                <button class="btn-modal-secondary" onclick="closeCancelModal()">Tidak</button>
-                <button class="btn-modal-danger" onclick="executeCancellation()">Ya, Batalkan</button>
+                <button class="btn-modal-secondary" onclick="closeCancelModal()">Kembali / Tidak</button>
+                <button class="btn-modal-danger" onclick="executeCancellation()">Ya, Batalkan Permanen</button>
             </div>
+        </div>
+    </div>
+
+    <!-- KELOMPOK MODAL SUKSES RILIS -->
+    <div class="modal-overlay" id="successReleaseModal">
+        <div class="modal-card" style="border-bottom: 5px solid #10B981;">
+            <div class="modal-icon-success">
+                <span class="material-symbols-outlined" style="font-size: 40px; font-variation-settings: 'FILL' 1;">check_circle</span>
+            </div>
+            <h2 style="font-size: 24px; color: #131b2e; margin-bottom: 12px;">Barang Berhasil Diterbitkan!</h2>
+            <p id="successReleaseText" style="color: #515f74; margin-bottom: 32px; font-size: 14px; line-height: 1.6;">
+                Laporan fisik resmi diverifikasi. Status barang kini berubah menjadi 'Published' dan sudah tayang di halaman 'Found Feed' publik agar bisa dilihat oleh seluruh mahasiswa.
+            </p>
+            <button class="btn-modal-success" onclick="closeSuccessReleaseModal()">Selesai & Tutup</button>
         </div>
     </div>
 

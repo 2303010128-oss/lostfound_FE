@@ -23,7 +23,7 @@ function requireAuth(allowedRoles = []) {
         if (role === 'satpam' || role === 'admin') {
             window.location.replace(base + '/admin/dashboard/index.html');
         } else {
-            window.location.replace(base + '/user/index.html'); 
+            window.location.replace(base + '/user/mading/index.html'); 
         }
         return false;
     }
@@ -31,11 +31,20 @@ function requireAuth(allowedRoles = []) {
 }
 
 // Fungsi untuk menghapus sesi dan membuang pengguna ke pintu depan tunggal
-function logout() {
+async function logout() {
+    // Beritahu backend untuk mematikan token (jika api.js tersedia)
+    if (typeof window.apiFetch === 'function' && localStorage.getItem('token')) {
+        try {
+            await window.apiFetch('/auth/logout', { method: 'POST' });
+        } catch (e) {
+            console.warn('Gagal memanggil API logout:', e);
+        }
+    }
+
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('user');
     localStorage.removeItem('userData');
     localStorage.removeItem('isLoggedIn');
-    window.location.replace(getAuthBasePath() + '/user/login.html');
+    window.location.replace(getAuthBasePath() + '/user/auth/login.html');
 }
