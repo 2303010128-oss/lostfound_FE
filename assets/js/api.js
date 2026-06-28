@@ -35,7 +35,7 @@ async function apiFetch(endpoint, options = {}) {
                     logout();
                 } else {
                     localStorage.clear();
-                    window.location.replace('/user/login.html');
+                    window.location.replace('/user/auth/login.html');
                 }
             }
             return { response, data: null };
