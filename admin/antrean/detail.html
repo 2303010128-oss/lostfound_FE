@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detail Laporan Temuan - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
@@ -24,315 +26,106 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            cursor: pointer;
-            font-family: inherit;
-            border: none;
-            outline: none;
-        }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; font-family: inherit; border: none; outline: none; }
         
-
-        /* ============================================================
-                   MAIN CONTENT LAYOUT
-                   ============================================================ */
-        .main-content {
+        .main-workspace {
             margin-left: 260px;
+            flex-direction: column;
+            align-items: flex-start;
             flex: 1;
-            padding: 40px;
-            background: #f8fafc;
+            flex-grow: 1;
+            z-index: 0;
+            position: relative;
+            display: flex;
+            align-self: stretch;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            background-color: #f8fafc;
         }
 
-        /* Top Navigation Header */
-        .detail-topbar {
+        .header-top-app-bar {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-        }
-
-        .topbar-left-flex {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .btn-back-arrow {
-            font-size: 18px;
-            color: #334155;
-            background: none;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .btn-back-arrow:hover {
-            transform: translateX(-2px);
-        }
-
-        .topbar-title-block h1 {
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .topbar-title-block p {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-top: 2px;
-            font-weight: 600;
-        }
-
-        .status-validation-badge {
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            color: #d97706;
-            font-size: 9px;
-            font-weight: 700;
-            padding: 6px 12px;
-            border-radius: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        /* TWO COLUMN GRID LAYOUT */
-        .detail-grid-layout {
-            display: grid;
-            grid-template-columns: 1.8fr 1fr;
-            gap: 24px;
-            align-items: start;
-        }
-
-        .column-left, .column-right {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .premium-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.01);
-            overflow: hidden;
-        }
-
-        .card-header-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 24px 28px 20px 28px;
-        }
-
-        .card-header-row .card-icon {
-            font-size: 16px;
-            color: #ea580c;
-        }
-
-        .card-header-row h2 {
-            font-size: 14px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        /* LEFT COLUMN COMPONENTS */
-        .info-data-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            padding: 0 28px 24px 28px;
-        }
-
-        .data-block-item .label {
-            font-size: 9px;
-            font-weight: 700;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 6px;
-        }
-
-        .data-block-item .value {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .description-sub-section {
-            border-top: 1px solid #f1f5f9;
-            padding: 24px 28px;
-        }
-
-        .description-sub-section .sub-label {
-            font-size: 9px;
-            font-weight: 700;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .description-sub-section .quote-paragraph {
-            font-size: 13px;
-            color: #475569;
-            line-height: 1.6;
-            font-weight: 500;
-        }
-
-        .photo-display-box {
-            padding: 0 28px 24px 28px;
-            text-align: center;
-        }
-
-        .showcase-image-frame {
+            padding: 16px 32px;
+            position: relative;
+            align-self: stretch;
             width: 100%;
-            height: 240px;
-            object-fit: cover;
-            border-radius: 14px;
-            border: 1px solid #e2e8f0;
-            background: #f1f5f9;
+            flex: 0 0 auto;
+            z-index: 1;
+            background-color: #ffffffcc;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-color: #e2e8f0;
+            backdrop-filter: blur(6px) brightness(100%);
+            -webkit-backdrop-filter: blur(6px) brightness(100%);
         }
 
-        .image-filename-text {
-            font-size: 10px;
-            font-weight: 700;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 12px;
-            display: block;
-        }
-
-        /* RIGHT COLUMN COMPONENTS */
-        .reporter-profile-block {
-            background: #f8fafc;
-            border-radius: 14px;
-            padding: 16px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin: 0 24px 20px 24px;
-            border: 1px solid #f1f5f9;
-        }
-
-        .avatar-initial-box {
-            width: 40px;
-            height: 40px;
-            background: #ffedd5;
-            color: #ea580c;
-            font-weight: 700;
-            font-size: 14px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .reporter-meta h3 {
-            font-size: 13.5px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .reporter-meta p {
-            font-size: 11.5px;
-            color: #64748b;
-            margin-top: 2px;
-        }
-
-        .reporter-status-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 24px;
-            border-top: 1px solid #f1f5f9;
-        }
-
-        .reporter-status-row .row-label {
-            font-size: 12.5px;
-            color: #64748b;
-            font-weight: 500;
-        }
-
-        .pill-verified-green {
-            background: #ecfdf5;
-            color: #059669;
-            font-size: 9px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        .report-count-value {
-            font-size: 13px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .actions-card-body {
-            padding: 0 24px 24px 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .btn-action-block {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-action-block.approve {
-            background: #10b981;
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
-        }
-
-        .btn-action-block.approve:hover {
-            background: #059669;
-        }
-
-        .btn-action-block.reject {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            color: #cbd5e1; /* Default Abu-abu redup pasif figma */
-            transition: 0.2s;
-        }
-
-        .btn-action-block.reject:hover {
-            background: #fff5f5;
-            color: #dc2626;
-            border-color: #fca5a5;
-        }
-
-        .action-card-subtext {
-            font-size: 11px;
-            color: #94a3b8;
-            line-height: 1.5;
-            text-align: center;
-            padding: 4px 12px 0 12px;
-        }
+        .div-5 { display: inline-flex; align-items: center; gap: 16px; position: relative; flex: 0 0 auto; }
+        .link-7 { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 6px 8px; position: relative; flex: 0 0 auto; border-radius: 12px; }
+        .icon-wrapper-2 { display: inline-flex; align-items: flex-start; position: relative; flex: 0 0 auto; }
+        .img-wrapper { position: relative; width: 24.02px; height: 28px; display: flex; align-items: center; justify-content: center; }
+        .div-6 { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; position: relative; flex: 0 0 auto; }
+        .div-wrapper-2 { display: flex; flex-direction: column; align-items: flex-start; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-10 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 20px; line-height: 28px; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .text-wrapper-8 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 400; color: #64748b; font-size: 12px; line-height: 16px; white-space: nowrap; }
+        .menunggu-validasi-wrapper { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 4px 12px; position: relative; flex: 0 0 auto; background-color: #fffbeb; border-radius: 9999px; border: 1px solid #fcd34d; }
+        .menunggu-validasi { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #d97706; font-size: 10px; letter-spacing: 0.5px; line-height: 15px; white-space: nowrap; }
+        
+        .content-area-margin { display: flex; flex-direction: column; align-items: flex-start; padding: 32px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; z-index: 0; }
+        .content-area { display: grid; grid-template-columns: 1.8fr 1fr; gap: 32px; width: 100%; align-items: start; }
+        
+        .left-column-detail { position: relative; width: 100%; height: fit-content; display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
+        
+        .main-info-card { display: flex; flex-direction: column; align-items: flex-start; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #ffffff; border-radius: 32px; overflow: hidden; border: 1px solid; border-color: #e2e8f0; box-shadow: 0px 1px 2px #0000000d; }
+        .horizontal-border { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding: 32px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-bottom-width: 1px; border-bottom-style: solid; border-color: #f1f5f9; }
+        .div-7 { display: flex; align-items: center; gap: 12px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .background-4 { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 6px 8px; position: relative; flex: 0 0 auto; background-color: #fff7ed; border-radius: 12px; }
+        .div-3 { display: inline-flex; flex-direction: column; align-items: flex-start; position: relative; flex: 0 0 auto; }
+        .text-wrapper-11 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 18px; line-height: 28px; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .div-8 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; width: 100%; }
+        .div-9, .div-10, .div-12, .div-13 { position: relative; width: 100%; height: fit-content; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+        .text-wrapper-12 { position: relative; display: flex; align-items: center; align-self: stretch; margin-top: -1px; font-weight: 700; color: #94a3b8; font-size: 10px; letter-spacing: 1px; line-height: 15px; }
+        .text-wrapper-13 { position: relative; display: flex; align-items: center; align-self: stretch; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 16px; line-height: 24px; }
+        .div-11 { display: flex; align-items: center; gap: 8px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .icon-wrapper-3 { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 2px 0px; position: relative; flex: 0 0 auto; }
+        .icon-2 { position: relative; width: 14.02px; height: 16px; display: flex; align-items: center; justify-content: center; }
+        .text-wrapper-14 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 500; color: #334155; font-size: 16px; line-height: 24px; white-space: nowrap; }
+        .overlay { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 32px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #f8fafc80; }
+        .gantungan-kunci { position: relative; align-self: stretch; margin-top: -1px; font-weight: 400; color: #475569; font-size: 14px; line-height: 24px; }
+        
+        .div-14 { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding: 32px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #ffffff; border-radius: 32px; border: 1px solid; border-color: #e2e8f0; box-shadow: 0px 1px 2px #0000000d; }
+        .div-15 { display: flex; flex-direction: column; width: 100%; align-items: flex-start; gap: 12px; position: relative; flex: 0 0 auto; }
+        .background-border-2 { position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; object-fit: cover; border-radius: 16px; border: 1px solid #e2e8f0; max-height: 350px; }
+        .div-wrapper-3 { display: flex; flex-direction: column; align-items: center; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-15 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #94a3b8; font-size: 10px; text-align: center; letter-spacing: 1px; line-height: 15px; white-space: nowrap; }
+        
+        .right-column { position: relative; width: 100%; height: fit-content; display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
+        .background-5 { display: flex; align-items: center; gap: 16px; padding: 24px 16px 16px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #f8fafc; border-radius: 16px; }
+        .background-6 { display: flex; width: 48px; height: 48px; align-items: center; justify-content: center; position: relative; background-color: #ffedd5; border-radius: 12px; }
+        .text-wrapper-16 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #ea580c; font-size: 16px; text-align: center; line-height: 24px; white-space: nowrap; }
+        .text-wrapper-17 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 16px; line-height: 24px; white-space: nowrap; }
+        .div-16 { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .div-17 { display: flex; align-items: center; justify-content: space-between; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-18 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 400; color: #64748b; font-size: 14px; line-height: 20px; white-space: nowrap; }
+        .terverifikasi-wrapper { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 2px 8px; position: relative; flex: 0 0 auto; background-color: #d1fae5; border-radius: 4px; }
+        .terverifikasi { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #059669; font-size: 10px; line-height: 20px; white-space: nowrap; }
+        .text-wrapper-19 { font-weight: 700; color: #0f172a; font-size: 14px; line-height: 20px; position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; white-space: nowrap; }
+        
+        .div-18 { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 8px 0px 0px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .button-2 { box-sizing: border-box; gap: 7.99px; padding: 16px 0px; background-color: #10b981; border-radius: 16px; display: flex; align-items: center; justify-content: center; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; transition: 0.2s; }
+        .button-2:hover { background-color: #059669; }
+        .button-shadow { position: absolute; width: 100%; height: 100%; top: 0; left: 0; background-color: #ffffff01; border-radius: 16px; box-shadow: 0px 4px 6px -4px #10b98133, 0px 10px 15px -3px #10b98133; }
+        .terima-rilis { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #ffffff; font-size: 14px; text-align: center; line-height: 20px; white-space: nowrap; }
+        .button-3 { box-sizing: border-box; gap: 8px; padding: 16px 0px; border-radius: 16px; border: 2px solid; border-color: #e2e8f0; display: flex; align-items: center; justify-content: center; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; transition: 0.2s; background: white; }
+        .button-3:hover { border-color: #cbd5e1; background: #f8fafc; }
+        .text-wrapper-20 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #94a3b8; font-size: 14px; text-align: center; line-height: 20px; white-space: nowrap; }
+        .menyetujui-laporan { position: relative; width: fit-content; margin-top: -1px; font-weight: 400; color: #94a3b8; font-size: 10px; text-align: center; line-height: 16.2px; }
 
         /* ============================================================
                    MODALS BASE SYSTEM (SUKSES & BATAL)
                    ============================================================ */
+
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -508,122 +301,146 @@
             font-weight: 600;
             box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
         }
+    
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
 </head>
 <body>
 
+    
+    <!-- SIDEBAR -->
     <div id="app-sidebar"></div>
 
-    <main class="main-content">
-        
-        <header class="detail-topbar">
-            <div class="topbar-left-flex">
-                <button class="btn-back-arrow" onclick="window.location.href='index.html'">←</button>
-                <div class="topbar-title-block">
-                    <h1>Detail Laporan Temuan</h1>
-                    <p id="detailHeaderId">ID Laporan: #FND-...</p>
+    <div class="main-workspace">
+        <div class="header-top-app-bar">
+            <div class="div-5">
+                <button class="link-7" onclick="window.location.href='index.html'" style="cursor: pointer; border: none; background: none; transition: transform 0.2s;" onmouseover="this.style.transform='translateX(-2px)'" onmouseout="this.style.transform='translateX(0)'">
+                    <div class="icon-wrapper-2">
+                        <div class="img-wrapper">
+                            <span class="material-symbols-outlined" style="font-size: 24px; color: #1e293b;">arrow_back</span>
+                        </div>
+                    </div>
+                </button>
+                <div class="div-6">
+                    <div class="div-wrapper-2"><div class="text-wrapper-10">Detail Laporan Temuan</div></div>
+                    <div class="div-wrapper-2"><div class="text-wrapper-8" id="detailHeaderId">ID Laporan: #FND-...</div></div>
                 </div>
             </div>
-            <span class="status-validation-badge" id="detailHeaderStatus">MEMUAT...</span>
-        </header>
-
-        <div class="detail-grid-layout">
-            
-            <div class="column-left">
-                <section class="premium-card">
-                    <div class="card-header-row">
-                        <span class="card-icon">ⓘ</span>
-                        <h2>Informasi Utama</h2>
-                    </div>
-
-                    <div class="info-data-grid">
-                        <div class="data-block-item">
-                            <div class="label">Nama Barang</div>
-                            <div class="value" id="detailItemName">Memuat...</div>
-                        </div>
-                        <div class="data-block-item">
-                            <div class="label">Kategori</div>
-                            <div class="value" id="detailItemCategory">Memuat...</div>
-                        </div>
-                        <div class="data-block-item">
-                            <div class="label">Lokasi Penemuan</div>
-                            <div class="value" id="detailItemLocation">Memuat...</div>
-                        </div>
-                        <div class="data-block-item">
-                            <div class="label">Waktu Dilaporkan</div>
-                            <div class="value" id="detailItemTime">Memuat...</div>
-                        </div>
-                    </div>
-
-                    <div class="description-sub-section">
-                        <span class="sub-label">Ciri Spesifik / Deskripsi</span>
-                        <p class="quote-paragraph" id="detailItemDesc">
-                            Memuat deskripsi dari database...
-                        </p>
-                    </div>
-                </section>
-
-                <section class="premium-card">
-                    <div class="card-header-row">
-                        <span class="card-icon">🖼️</span>
-                        <h2>Dokumentasi Foto</h2>
-                    </div>
-                    <div class="photo-display-box">
-                        <img src="" alt="Dokumentasi Foto Barang" class="showcase-image-frame" id="detailItemPhoto" style="display: none;">
-                        <span class="image-filename-text" id="detailItemPhotoName">Memuat Foto...</span>
-                    </div>
-                </section>
-            </div>
-
-            <div class="column-right">
-                <section class="premium-card">
-                    <div class="card-header-row">
-                        <span class="card-icon">👤</span>
-                        <h2>Pelapor (Penemu)</h2>
-                    </div>
-
-                    <div class="reporter-profile-block">
-                        <div class="avatar-initial-box" id="detailReporterInitial">-</div>
-                        <div class="reporter-meta">
-                            <h3 id="detailReporterName">Memuat...</h3>
-                            <p id="detailReporterNpm">Role • -</p>
-                        </div>
-                    </div>
-
-                    <div class="reporter-status-row">
-                        <span class="row-label">Status Akun</span>
-                        <span class="pill-verified-green">TERVERIFIKASI</span>
-                    </div>
-
-                    <div class="reporter-status-row">
-                        <span class="row-label">Total Laporan</span>
-                        <span class="report-count-value">2 Laporan</span>
-                    </div>
-                </section>
-
-                <section class="premium-card">
-                    <div class="card-header-row">
-                        <span class="card-icon">⚡</span>
-                        <h2>Tindakan Petugas</h2>
-                    </div>
-
-                    <div class="actions-card-body">
-                        <button class="btn-action-block approve" onclick="handleApprove()">
-                            ✓ Terima & Rilis
-                        </button>
-                        <button class="btn-action-block reject" onclick="handleReject()">
-                            ✕ Batalkan Laporan
-                        </button>
-                        <p class="action-card-subtext">
-                            Menyetujui laporan akan menerbitkan barang ini ke feed publik agar bisa dicari oleh pemiliknya.
-                        </p>
-                    </div>
-                </section>
-            </div>
-
+            <div class="menunggu-validasi-wrapper"><div class="menunggu-validasi" id="detailHeaderStatus">MEMUAT...</div></div>
         </div>
-    </main>
+
+        <div class="content-area-margin">
+            <div class="content-area">
+                <div class="left-column-detail">
+                    <div class="main-info-card">
+                        <div class="horizontal-border">
+                            <div class="div-7">
+                                <div class="background-4">
+                                    <div class="icon-wrapper-2">
+                                        <div class="img-wrapper"><span class="material-symbols-outlined" style="color: #ea580c;">info</span></div>
+                                    </div>
+                                </div>
+                                <div class="div-3"><div class="text-wrapper-11">Informasi Utama</div></div>
+                            </div>
+                            <div class="div-8">
+                                <div class="div-9">
+                                    <div class="div-wrapper-2"><div class="text-wrapper-12">NAMA BARANG</div></div>
+                                    <div class="div-wrapper-2"><div class="text-wrapper-13" id="detailItemName">Memuat...</div></div>
+                                </div>
+                                <div class="div-10">
+                                    <div class="div-wrapper-2"><div class="text-wrapper-12">KATEGORI</div></div>
+                                    <div class="div-11">
+                                        <div class="icon-wrapper-3"><div class="icon-2"><span class="material-symbols-outlined" style="font-size: 16px; color: #64748b;">category</span></div></div>
+                                        <div class="div-3"><div class="text-wrapper-14" id="detailItemCategory">Memuat...</div></div>
+                                    </div>
+                                </div>
+                                <div class="div-12">
+                                    <div class="div-wrapper-2"><div class="text-wrapper-12">LOKASI PENEMUAN</div></div>
+                                    <div class="div-11">
+                                        <div class="icon-wrapper-3"><div class="icon-2"><span class="material-symbols-outlined" style="font-size: 16px; color: #64748b;">location_on</span></div></div>
+                                        <div class="div-3"><div class="text-wrapper-14" id="detailItemLocation">Memuat...</div></div>
+                                    </div>
+                                </div>
+                                <div class="div-13">
+                                    <div class="div-wrapper-2"><div class="text-wrapper-12">WAKTU DITEMUKAN</div></div>
+                                    <div class="div-11">
+                                        <div class="icon-wrapper-3"><div class="icon-2"><span class="material-symbols-outlined" style="font-size: 16px; color: #64748b;">schedule</span></div></div>
+                                        <div class="div-3"><p class="text-wrapper-14" id="detailItemTime">Memuat...</p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="overlay">
+                            <div class="div-wrapper-2"><div class="text-wrapper-12">CIRI SPESIFIK / DESKRIPSI</div></div>
+                            <div class="div-wrapper-2"><p class="gantungan-kunci" id="detailItemDesc">Memuat deskripsi...</p></div>
+                        </div>
+                    </div>
+
+                    <div class="div-14">
+                        <div class="div-7">
+                            <div class="background-4">
+                                <div class="icon-wrapper-2"><div class="img-wrapper"><span class="material-symbols-outlined" style="color: #ea580c;">image</span></div></div>
+                            </div>
+                            <div class="div-3"><div class="text-wrapper-11">Dokumentasi Foto</div></div>
+                        </div>
+                        <div class="div-15" style="align-items: center;">
+                            <img class="background-border-2" id="detailItemPhoto" src="" style="display: none;" />
+                            <div class="div-wrapper-3"><div class="text-wrapper-15" id="detailItemPhotoName" style="margin-top: 12px;">Memuat Foto...</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-column">
+                    <div class="div-14">
+                        <div class="div-7">
+                            <div class="background-4">
+                                <div class="icon-wrapper-2"><div class="img-wrapper"><span class="material-symbols-outlined" style="color: #ea580c;">person</span></div></div>
+                            </div>
+                            <div class="div-3"><div class="text-wrapper-11">Pelapor (Penemu)</div></div>
+                        </div>
+                        <div class="background-5">
+                            <div class="background-6"><div class="text-wrapper-16" id="detailReporterInitial">-</div></div>
+                            <div class="div-3">
+                                <div class="div-wrapper-2"><div class="text-wrapper-17" id="detailReporterName">Memuat...</div></div>
+                                <div class="div-wrapper-2"><div class="text-wrapper-8" id="detailReporterNpm">Role • -</div></div>
+                            </div>
+                        </div>
+                        <div class="div-16">
+                            <div class="div-17">
+                                <div class="div-3"><div class="text-wrapper-18">Status Akun</div></div>
+                                <div class="terverifikasi-wrapper"><div class="terverifikasi">TERVERIFIKASI</div></div>
+                            </div>
+                            <div class="div-17">
+                                <div class="div-3"><div class="text-wrapper-18">Total Laporan</div></div>
+                                <div class="div-3"><div class="text-wrapper-19">2 Laporan</div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="div-14">
+                        <div class="div-7">
+                            <div class="background-4">
+                                <div class="icon-wrapper-2"><div class="img-wrapper"><span class="material-symbols-outlined" style="color: #ea580c;">bolt</span></div></div>
+                            </div>
+                            <div class="div-3"><div class="text-wrapper-11">Tindakan Petugas</div></div>
+                        </div>
+                        <div class="div-18">
+                            <button class="button-2" onclick="handleApprove()" style="cursor: pointer;">
+                                <div class="button-shadow"></div>
+                                <div class="div-2"><div class="icon"><span class="material-symbols-outlined" style="color: white; font-size: 18px;">check_circle</span></div></div>
+                                <div class="terima-rilis">Terima & Rilis</div>
+                            </button>
+                            <button class="button-3" onclick="handleReject()" style="cursor: pointer;">
+                                <div class="icon-wrapper-3"><div class="icon-2"><span class="material-symbols-outlined" style="color: #94a3b8; font-size: 18px;">cancel</span></div></div>
+                                <div class="text-wrapper-20">Batalkan Laporan</div>
+                            </button>
+                        </div>
+                        <div class="div-wrapper-3"><p class="menyetujui-laporan" style="margin-top: 12px;">Menyetujui laporan akan menerbitkan barang ini ke feed publik<br/>agar bisa dicari oleh pemiliknya.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal-overlay" id="successModal">
         <div class="modal-card">
