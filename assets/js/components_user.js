@@ -34,6 +34,19 @@ async function loadUserNavbar() {
     }
 }
 
+async function loadUserFooter() {
+    const container = document.getElementById('app-footer');
+    if (!container) return;
+
+    try {
+        const res = await fetch(getBasePath() + '/components/footer_user.html?v=' + new Date().getTime());
+        const html = await res.text();
+        container.innerHTML = html;
+    } catch (e) {
+        console.error('Gagal memuat footer user:', e);
+    }
+}
+
 async function checkAuthentication() {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const guestNav = document.getElementById('authNotLoggedIn');
@@ -101,4 +114,5 @@ document.addEventListener('click', function(e) {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadUserNavbar();
+    loadUserFooter();
 });

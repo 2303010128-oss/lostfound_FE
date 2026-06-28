@@ -316,17 +316,10 @@
         /* ============================================================
                    FOOTER
                    ============================================================ */
-        .footer {
-            background: #ffffff;
-            color: #475569;
-            padding: 24px 0;
-            font-size: 13px;
-            margin-top: auto;
-            border-top: 1px solid #e2e8f0;
-        }
+        
 
-        .footer .container { display: flex; justify-content: space-between; align-items: center; }
-        .footer .brand-txt { font-weight: 600; color: #1e293b; }
+        
+        
 
         @media (max-width: 1024px) {
             .posts-grid { grid-template-columns: repeat(2, 1fr); }
@@ -337,8 +330,7 @@
             .hero h1 { font-size: 26px; }
             .hero-buttons { flex-direction: column; width: 100%; max-width: 320px; margin: 0 auto; }
             .btn-hero-primary, .btn-hero-outline { width: 100%; justify-content: center; }
-            .footer .container { flex-direction: column; gap: 8px; text-align: center; }
-        }
+            
     </style>
 </head>
 <body>
@@ -377,12 +369,7 @@
         </div>
     </section>
 
-    <footer class="footer">
-        <div class="container">
-            <span class="brand-txt">LostFound Connect</span>
-            <span>© 2026 Universitas Perjuangan Tasikmalaya</span>
-        </div>
-    </footer>
+    <div id="app-footer"></div>
 
     <script>
         // 3 Data yang di-restore persis dengan screenshot terbaru Anda (Laptop, Botol, Dompet Kosong)
