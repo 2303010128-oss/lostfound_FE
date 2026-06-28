@@ -46,7 +46,7 @@ async function loadSidebar() {
                 // Fetch Items
                 const itemsRes = await window.apiFetch('/admin/items?visibility=private');
                 if(itemsRes && itemsRes.data && itemsRes.data.data) {
-                    const pendingItems = itemsRes.data.data.filter(i => i.status_barang === 'pending' || i.status_barang === 'menunggu').length;
+                    const pendingItems = itemsRes.data.data.filter(i => i.status === 'active').length;
                     const bAntrean = document.getElementById('badge-antrean');
                     if(bAntrean && pendingItems > 0) {
                         bAntrean.textContent = pendingItems;
@@ -57,7 +57,7 @@ async function loadSidebar() {
                 // Fetch Claims
                 const claimsRes = await window.apiFetch('/claims');
                 if(claimsRes && claimsRes.data && claimsRes.data.data) {
-                    const pendingClaims = claimsRes.data.data.filter(c => c.status_verif === 'pending' || c.status_verif === 'menunggu').length;
+                    const pendingClaims = claimsRes.data.data.filter(c => ['pending', 'clarification_required'].includes(c.status_verif)).length;
                     const bVerifikasi = document.getElementById('badge-verifikasi');
                     if(bVerifikasi && pendingClaims > 0) {
                         bVerifikasi.textContent = pendingClaims;
