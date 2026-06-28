@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Peninjauan Berkas Klaim - LostFound Admin</title>
     <style>
+        :root {
+            --text-dark: #0f172a;
+            --text-gray: #64748b;
+            --orange: #ea580c;
+            --border-color: #e2e8f0;
+        }
+
         /* ============================================================
                    RESET & BASE STYLES
                    ============================================================ */
@@ -42,11 +49,12 @@
                    MAIN CONTENT
                    ============================================================ */
         .main-content {
-            margin-left: 240px;
+            margin-left: 260px;
             flex: 1;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding: 32px 40px;
         }
 
         /* ============================================================
@@ -147,7 +155,6 @@
                    CONTENT
                    ============================================================ */
         .dashboard-content {
-            padding: 20px 28px 32px 28px;
             flex: 1;
         }
 
@@ -525,6 +532,7 @@
         }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/admin_header.css">
 </head>
 <body>
 
@@ -629,7 +637,8 @@
                             files: c.bukti_foto ? ['BUKTI_FOTO_TERLAMPIR'] : ['TIDAK_ADA_FOTO_LAMPIRAN'],
                             warning: '',
                             reviewId: new Date(c.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}),
-                            rawStatus: c.status_verif
+                            rawStatus: c.status_verif,
+                            token: c.token_pengambilan
                         };
                     }
                 } catch (err) {
@@ -706,6 +715,16 @@
                     <!-- 7. KEKUATAN VERIFIKASI / KEPUTUSAN PETUGAS -->
                     <div class="section">
                         <div class="section-title">Keputusan Petugas</div>
+                        ${item.token ? `
+                        <div class="verification-section" style="background:#f0fdf4; border:1px solid #bbf7d0; text-align:center;">
+                            <div style="font-size:12px; font-weight:700; color:#166534; margin-bottom:8px;">✅ KLAIM DISETUJUI</div>
+                            <div style="font-size:13px; color:#15803d; margin-bottom:12px;">Token Pengambilan Mahasiswa:</div>
+                            <div style="font-size:24px; font-family:monospace; font-weight:bold; color:#14532d; letter-spacing:2px; background:#dcfce7; padding:10px; border-radius:6px; display:inline-block;">${item.token}</div>
+                            <div style="margin-top:16px;">
+                                <a href="../verifikasi/index.html" class="btn btn-back">← Kembali ke Daftar</a>
+                            </div>
+                        </div>
+                        ` : `
                         <div class="verification-section">
                             <div class="verification-label">Ketik jawaban jika menolak atau meminta klarifikasi...</div>
                             <textarea id="verificationNote" placeholder="Tulis catatan verifikasi di sini..."></textarea>
@@ -717,6 +736,7 @@
                                 <a href="../verifikasi/index.html" class="btn btn-back">← Kembali</a>
                             </div>
                         </div>
+                        `}
                     </div>
 
                     <!-- 8. IN REVIEW -->
