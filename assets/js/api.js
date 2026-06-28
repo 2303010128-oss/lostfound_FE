@@ -28,12 +28,15 @@ async function apiFetch(endpoint, options = {}) {
         const response = await fetch(url, config);
         
         if (response.status === 401) {
-            console.error('API Error: Unauthenticated. Redirecting to login.');
-            if (typeof logout === 'function') {
-                logout();
-            } else {
-                localStorage.clear();
-                window.location.replace('/user/login.html');
+            console.error('API Error: Unauthenticated.');
+            if (!options.skipRedirect) {
+                console.error('Redirecting to login.');
+                if (typeof logout === 'function') {
+                    logout();
+                } else {
+                    localStorage.clear();
+                    window.location.replace('/user/login.html');
+                }
             }
             return { response, data: null };
         }

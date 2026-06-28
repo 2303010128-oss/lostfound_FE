@@ -56,8 +56,8 @@ async function checkAuthentication() {
         // 2. Integrasikan ke API di latar belakang untuk mendapatkan data terbaru
         if (typeof window.apiFetch === 'function') {
             try {
-                const result = await window.apiFetch('/auth/profile');
-                if (result.response.ok) {
+                const result = await window.apiFetch('/auth/profile', { skipRedirect: true });
+                if (result.response.ok && result.data) {
                     const latestUser = result.data.data || result.data;
                     if (latestUser && latestUser.nama_lengkap) {
                         name = latestUser.nama_lengkap;
@@ -67,6 +67,13 @@ async function checkAuthentication() {
                         // Perbarui chace lokal
                         localStorage.setItem('user', JSON.stringify(latestUser));
                     }
+                } else if (result.response.status === 401) {
+                    // Token kedaluwarsa, ganti ke tampilan guest dengan tenang tanpa lempar ke halaman login
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('user');
+                    if (guestNav) guestNav.style.display = 'flex';
+                    if (userNav) userNav.classList.add('hidden');
                 }
             } catch (err) {
                 console.error('Sinkronisasi profil gagal:', err);
