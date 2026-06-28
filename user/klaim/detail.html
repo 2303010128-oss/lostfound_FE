@@ -1,0 +1,425 @@
+<!DOCTYPE html><html class="light" lang="id" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Status Klaim Detail | LostFound Connect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#005da8",
+                        "surface": "#faf8ff",
+                        "secondary-container": "#d5e3fc",
+                        "surface-tint": "#a73a00",
+                        "surface-bright": "#faf8ff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "surface-container-high": "#e2e7ff",
+                        "surface-main": "#F8FAFC",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eef0ff",
+                        "status-warning-bg": "#F59E0B",
+                        "outline": "#8e7166",
+                        "surface-card": "#FFFFFF",
+                        "background": "#faf8ff",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "on-tertiary-container": "#fdfcff",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-background": "#131b2e",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-primary-fixed-variant": "#7f2b00",
+                        "surface-dim": "#d2d9f4",
+                        "status-lost-bg": "#F43F5E",
+                        "surface-container-low": "#f2f3ff",
+                        "on-surface-variant": "#5a4138",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#57657a",
+                        "inverse-primary": "#ffb599",
+                        "outline-variant": "#e2bfb2",
+                        "on-surface": "#131b2e",
+                        "inverse-surface": "#283044",
+                        "status-found-bg": "#10B981",
+                        "primary-container": "#cc4900",
+                        "secondary": "#515f74",
+                        "primary": "#a33900",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "status-warning-text": "#B45309",
+                        "tertiary-fixed": "#d4e3ff",
+                        "on-secondary": "#ffffff",
+                        "status-lost-text": "#BE123C",
+                        "surface-container": "#eaedff",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#dae2fd",
+                        "status-found-text": "#047857",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#0076d2",
+                        "primary-fixed-dim": "#ffb599",
+                        "on-primary-container": "#fffbff",
+                        "surface-variant": "#dae2fd",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "primary-fixed": "#ffdbce",
+                        "on-primary-fixed": "#370e00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "1.5rem",
+                        "stack-lg": "1.5rem",
+                        "stack-md": "1rem",
+                        "container-max": "1280px",
+                        "margin-desktop": "2rem",
+                        "stack-sm": "0.5rem",
+                        "margin-mobile": "1rem"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.025em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body class="bg-surface-main min-h-screen flex flex-col text-on-surface">
+<!-- TopAppBar Shell -->
+<header class="bg-surface-container-lowest dark:bg-inverse-surface shadow-sm docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-4">
+<span class="text-headline-sm font-headline-lg text-primary dark:text-primary-fixed-dim cursor-pointer" onclick="window.location.href='../mading/index.html'">LostFound Connect</span>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="../mading/index.html">Beranda</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="../tentang/index.html">Tentang Kami</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200" href="../bantuan/index.html">Pusat Bantuan</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-secondary hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border border-white"></span>
+</button>
+<div class="flex items-center gap-2 border-l border-surface-container-high pl-4">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-sm overflow-hidden" id="headerAvatar">
+        U
+    </div>
+<span class="text-on-surface font-semibold text-sm truncate max-w-[100px]" id="headerName">User</span>
+</div>
+</div>
+</div>
+</header>
+
+<div class="max-w-container-max mx-auto flex flex-1 w-full">
+<!-- SideNavBar Shell -->
+<aside class="hidden md:flex flex-col w-64 shrink-0 gap-stack-sm py-gutter sticky top-16 h-[calc(100vh-4rem)] overflow-y-auto self-start">
+<a class="px-4 py-3 rounded-lg text-secondary hover:bg-surface-container-low transition-colors font-label-md text-label-md flex items-center gap-3" href="../ringkasan/index.html">
+<span class="material-symbols-outlined">dashboard</span>Ringkasan</a>
+<a class="px-4 py-3 rounded-lg bg-surface-container-high text-primary font-bold transition-colors font-label-md text-label-md flex items-center gap-3" href="../klaim/index.html">
+<span class="material-symbols-outlined">assignment</span>Klaim Saya</a>
+<a class="px-4 py-3 rounded-lg text-secondary hover:bg-surface-container-low transition-colors font-label-md text-label-md flex items-center gap-3" href="../riwayat/index.html">
+<span class="material-symbols-outlined">history</span>Riwayat</a>
+<div class="mt-auto pt-4 border-t border-surface-container-low">
+<a class="px-4 py-3 rounded-lg text-secondary hover:bg-surface-container-low transition-colors font-label-md text-label-md flex items-center gap-3" href="../profil/index.html">
+<span class="material-symbols-outlined">settings</span>Pengaturan</a>
+<a class="px-4 py-3 rounded-lg text-error hover:bg-error-container/20 transition-colors font-label-md text-label-md flex items-center gap-3 mt-1" href="javascript:void(0)" onclick="logout()">
+<span class="material-symbols-outlined">logout</span>Keluar</a>
+</div></aside>
+
+<!-- Main Content -->
+<main class="flex-1 flex flex-col gap-gutter max-w-3xl p-gutter w-full">
+
+<!-- Page Header -->
+<div class="flex flex-col gap-stack-sm mb-4">
+<button onclick="window.history.back()" class="flex items-center gap-1 text-primary hover:underline font-label-md mb-2 w-fit"><span class="material-symbols-outlined text-sm">arrow_back</span> Kembali ke Daftar</button>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Detail Status Klaim</h1>
+<p class="font-body-md text-body-md text-secondary">Pantau perkembangan proses verifikasi barang temuan yang Anda klaim.</p>
+</div>
+
+<!-- Loading state -->
+<div id="loadingState" class="text-center py-10 text-secondary">Memuat detail klaim...</div>
+<div id="errorState" class="text-center py-10 text-error hidden">Gagal memuat klaim.</div>
+
+<div id="contentState" class="hidden flex-col gap-gutter">
+    <!-- Item Detail Card Summary -->
+    <section class="bg-surface-card rounded-xl p-5 border border-outline-variant shadow-sm flex flex-col sm:flex-row gap-6">
+        <div class="w-full sm:w-32 h-32 rounded-lg bg-surface-container-low overflow-hidden shrink-0">
+            <img id="detailImg" class="w-full h-full object-cover" src="">
+        </div>
+        <div class="flex flex-col justify-center gap-2 flex-1">
+            <span id="detailId" class="font-label-sm text-label-sm text-secondary uppercase tracking-wider"></span>
+            <h2 id="detailTitle" class="font-headline-sm text-headline-sm text-on-surface"></h2>
+            <p id="detailDesc" class="font-body-sm text-body-sm text-secondary"></p>
+            <div class="flex flex-wrap gap-4 mt-2">
+                <div class="flex items-center gap-1 font-body-sm text-body-sm text-secondary">
+                    <span class="material-symbols-outlined text-sm">calendar_today</span>
+                    <span id="detailDate"></span>
+                </div>
+                <div class="flex items-center gap-1 font-body-sm text-body-sm text-secondary">
+                    <span class="material-symbols-outlined text-sm">location_on</span>
+                    <span id="detailLocation"></span>
+                </div>
+                <div class="flex items-center gap-1 font-body-sm text-body-sm text-secondary">
+                    <span class="material-symbols-outlined text-sm">category</span>
+                    <span id="detailCategory"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: PENDING (MENUNGGU) -->
+    <section id="sectionPending" class="hidden bg-surface-container-high border border-surface-container rounded-xl p-6 shadow-sm flex-col gap-4">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-status-warning-bg text-3xl" style="font-variation-settings: 'FILL' 1;">pending_actions</span>
+            <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Status: Menunggu Verifikasi</h2>
+        </div>
+        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Pengajuan klaim Anda telah kami terima dan sedang dalam antrean pemeriksaan oleh petugas Satpam. Harap bersabar menunggu hasil evaluasi.
+        </p>
+    </section>
+
+    <!-- SECTION: CLARIFICATION REQUIRED -->
+    <div id="sectionClarification" class="hidden flex-col gap-gutter">
+        <section class="bg-surface-container-high border border-surface-container rounded-xl p-6 shadow-sm flex flex-col gap-4">
+            <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-tertiary text-3xl" style="font-variation-settings: 'FILL' 1;">assignment_late</span>
+            <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold">Status: Butuh Klarifikasi di Posko</h2>
+            </div>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                Bukti digital (struk/foto) yang Anda unggah dinilai kurang kuat oleh petugas keamanan untuk proses pencocokan otomatis. Namun, pengajuan klaim Anda TIDAK ditolak oleh sistem.
+            </p>
+            <!-- Instruction Box -->
+            <div class="bg-surface-card border border-outline-variant p-4 rounded-lg mt-1 shadow-[0_1px_2px_0_rgba(0,0,0,0.05)]">
+            <p class="font-body-sm text-body-sm text-on-surface leading-relaxed" id="clarificationNote">
+                Silakan datang langsung ke Posko Satpam Universitas Perjuangan untuk berbicara langsung dengan petugas loket.
+            </p>
+            </div>
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 mt-4">
+            <button onclick="window.location.href='../bantuan/index.html'" class="bg-primary hover:bg-surface-tint text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-sm">map</span> Lihat Panduan Prosedur</button>
+            </div>
+        </section>
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 border border-surface-container rounded-lg bg-surface-card/50 flex gap-4 items-start">
+            <span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+            <div><h3 class="font-label-md text-label-md text-on-surface">Jam Operasional Posko</h3><p class="font-body-sm text-body-sm text-on-surface-variant">Senin - Jumat: 08.00 - 16.00 WIB</p></div>
+            </div>
+            <div class="p-4 border border-surface-container rounded-lg bg-surface-card/50 flex gap-4 items-start">
+            <span class="material-symbols-outlined text-on-surface-variant">contact_support</span>
+            <div><h3 class="font-label-md text-label-md text-on-surface">Pusat Bantuan</h3><p class="font-body-sm text-body-sm text-on-surface-variant">Hubungi tim administrasi kami melalui WhatsApp atau Email resmi kampus.</p></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SECTION: APPROVED -->
+    <div id="sectionApproved" class="hidden flex-col gap-gutter">
+        <div class="bg-surface-card rounded-xl p-6 border border-outline-variant shadow-sm flex flex-col gap-stack-md">
+            <h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">description</span> Detail Verifikasi Klaim</h3>
+            <div class="space-y-4">
+            <div>
+            <label class="text-label-sm font-label-md text-secondary uppercase">Bukti Kepemilikan Mendalam</label>
+            <div class="mt-1 p-4 bg-surface-container-low rounded-lg border border-outline-variant/30">
+            <p class="text-body-md text-on-surface-variant italic" id="approvedNote"></p>
+            </div>
+            </div>
+            <div>
+            <label class="text-label-sm font-label-md text-secondary uppercase">Lampiran Dokumen &amp; Foto</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
+            <div class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg bg-surface-bright hover:bg-surface-container-low transition-colors cursor-pointer" id="btnViewKtp">
+            <div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center text-primary"><span class="material-symbols-outlined">badge</span></div>
+            <div class="flex flex-col overflow-hidden">
+            <span id="filenameKtp" class="text-label-md text-on-surface truncate">Lihat_KTP.jpg</span><span class="text-label-sm text-secondary">Foto KTP / KTM</span>
+            </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 border border-outline-variant rounded-lg bg-surface-bright hover:bg-surface-container-low transition-colors cursor-pointer" id="btnViewBukti">
+            <div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center text-primary"><span class="material-symbols-outlined">image</span></div>
+            <div class="flex flex-col overflow-hidden">
+            <span id="filenameBukti" class="text-label-md text-on-surface truncate">Lihat_Bukti_Fisik.jpg</span><span class="text-label-sm text-secondary">Bukti Kepemilikan Tambahan</span>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+        </div>
+
+        <div class="bg-status-found-bg/10 border border-status-found-bg rounded-xl p-5 flex flex-col gap-4">
+            <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-status-found-bg text-white flex items-center justify-center"><span class="material-symbols-outlined">verified</span></div>
+            <h3 class="font-headline-md text-headline-md text-status-found-text">Status: Klaim Disetujui!</h3>
+            </div>
+            <p class="font-body-md text-body-md text-on-surface">Selamat! Verifikasi kepemilikan Anda telah berhasil. Silakan ambil barang Anda di posko dengan menunjukkan kode token di bawah ini.</p>
+        </div>
+
+        <div class="bg-surface-card border-2 border-primary rounded-lg p-6 text-center flex flex-col items-center gap-3 shadow-sm">
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">Token Pengambilan Barang</h4>
+            <p class="font-body-sm text-body-sm text-secondary max-w-md">Tunjukkan kode token ini kepada petugas di loket Lost &amp; Found Universitas untuk mengambil barang Anda.</p>
+            <div class="bg-surface-main py-3 px-6 rounded-lg w-full max-w-sm border border-outline-variant mt-4">
+                <span class="font-headline-lg text-headline-lg text-primary font-mono tracking-widest font-bold" id="tokenCode">LF-TOKEN-XXX</span>
+            </div>
+            <div class="mt-4 flex items-center gap-2 bg-error-container/30 px-4 py-2 rounded-md text-left">
+                <span class="material-symbols-outlined text-status-lost-text text-sm">warning</span>
+                <p class="font-body-sm text-body-sm font-bold text-status-lost-text">Wajib membawa KTP asli atau KTM (Kartu Tanda Mahasiswa) saat pengambilan.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION: REJECTED -->
+    <section id="sectionRejected" class="hidden bg-surface-container-high border border-error-container rounded-xl p-6 shadow-sm flex-col gap-4">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-error text-3xl" style="font-variation-settings: 'FILL' 1;">cancel</span>
+            <h2 class="font-headline-sm text-headline-sm text-error font-semibold">Status: Klaim Ditolak</h2>
+        </div>
+        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Maaf, pengajuan klaim Anda telah ditolak oleh petugas. Evaluasi: <span id="rejectedNote" class="font-bold"></span>
+        </p>
+    </section>
+
+</div>
+
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container dark:bg-surface-dim mt-auto w-full">
+<div class="w-full py-8 px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div class="text-label-md font-label-md text-primary">LostFound Connect</div>
+<div class="text-on-surface dark:text-on-surface-variant font-body-sm text-body-sm text-center md:text-right">
+© 2024 Universitas Perjuangan Tasikmalaya
+</div>
+</div>
+</footer>
+
+<script src="../../assets/js/api.js"></script>
+<script src="../../assets/js/auth.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (!localStorage.getItem('token')) {
+            window.location.href = '../auth/login.html';
+            return;
+        }
+
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                document.getElementById('headerName').innerText = user.nama_lengkap;
+                document.getElementById('headerAvatar').innerText = user.nama_lengkap.substring(0, 2).toUpperCase();
+            } catch(e){}
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const claimId = urlParams.get('id');
+        if (!claimId) {
+            document.getElementById('loadingState').innerText = "ID Klaim tidak ditemukan.";
+            return;
+        }
+
+        try {
+            const res = await window.apiFetch(`/claims/${claimId}`);
+            if (res.response.ok && res.data && res.data.success) {
+                const claim = res.data.data;
+                const item = claim.item || {};
+
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('contentState').classList.remove('hidden');
+                document.getElementById('contentState').classList.add('flex');
+
+                // 1. Render Top Summary Card
+                document.getElementById('detailId').innerText = `Item #CLM-${claim.id}-UP`;
+                document.getElementById('detailTitle').innerText = item.judul || 'Item Tidak Diketahui';
+                document.getElementById('detailDesc').innerText = item.deskripsi || '';
+                
+                const dateObj = new Date(claim.tanggal_klaim);
+                document.getElementById('detailDate').innerText = dateObj.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                document.getElementById('detailLocation').innerText = (item.location ? item.location.nama_lokasi : 'Lokasi tidak spesifik');
+                document.getElementById('detailCategory').innerText = (item.category ? item.category.nama_kategori : 'Umum');
+
+                let imgUrl = item.foto;
+                if (imgUrl && !imgUrl.startsWith('http')) imgUrl = `http://${window.location.hostname}:8000/storage/` + imgUrl;
+                if (!imgUrl) imgUrl = 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22600%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20600%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1%20text%20%7B%20fill%3A%23999%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A30pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1%22%3E%3Crect%20width%3D%22600%22%20height%3D%22400%22%20fill%3D%22%23eee%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22204.5%22%20y%3D%22212.5%22%3ETidak%20Ada%20Foto%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E';
+                document.getElementById('detailImg').src = imgUrl;
+
+                // 2. Render Specific Status Section
+                const sPending = document.getElementById('sectionPending');
+                const sClarification = document.getElementById('sectionClarification');
+                const sApproved = document.getElementById('sectionApproved');
+                const sRejected = document.getElementById('sectionRejected');
+
+                if (claim.status_verif === 'pending') {
+                    sPending.classList.remove('hidden');
+                    sPending.classList.add('flex');
+                } else if (claim.status_verif === 'clarification_required') {
+                    sClarification.classList.remove('hidden');
+                    sClarification.classList.add('flex');
+                    if (claim.catatan_evaluasi) {
+                        document.getElementById('clarificationNote').innerText = claim.catatan_evaluasi;
+                    }
+                } else if (claim.status_verif === 'approved') {
+                    sApproved.classList.remove('hidden');
+                    sApproved.classList.add('flex');
+                    document.getElementById('approvedNote').innerText = `"${claim.bukti_teks}"`;
+                    document.getElementById('tokenCode').innerText = `LF-UP-${claim.id.toString().padStart(4, '0')}`;
+                    
+                    if (claim.foto_ktp) {
+                        const ktpName = claim.foto_ktp.split('/').pop();
+                        document.getElementById('filenameKtp').innerText = ktpName;
+                    }
+                    if (claim.foto_bukti_pendukung) {
+                        const buktiName = claim.foto_bukti_pendukung.split('/').pop();
+                        document.getElementById('filenameBukti').innerText = buktiName;
+                    }
+
+                    // Attach link to photos
+                    document.getElementById('btnViewKtp').onclick = () => {
+                        window.open(`http://${window.location.hostname}:8000/storage/${claim.foto_ktp}`, '_blank');
+                    };
+                    document.getElementById('btnViewBukti').onclick = () => {
+                        window.open(`http://${window.location.hostname}:8000/storage/${claim.foto_bukti_pendukung}`, '_blank');
+                    };
+                } else if (claim.status_verif === 'rejected') {
+                    sRejected.classList.remove('hidden');
+                    sRejected.classList.add('flex');
+                    document.getElementById('rejectedNote').innerText = claim.catatan_evaluasi || 'Alasan tidak diberikan.';
+                }
+
+            } else {
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('errorState').classList.remove('hidden');
+            }
+        } catch (e) {
+            console.error(e);
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('errorState').classList.remove('hidden');
+        }
+    });
+</script>
+</body></html>
