@@ -204,24 +204,37 @@
     <!-- ============================================================ -->
     <!-- SIDEBAR - WARNA #0F172A -->
     <!-- ============================================================ -->
+    <!-- SIDEBAR -->
     <div id="app-sidebar"></div>
 
-    <!-- ============================================================ -->
-    <!-- MAIN CONTENT -->
-    <!-- ============================================================ -->
-    <main class="main-content">
-
-        <div id="app-header" data-title="Peninjauan Berkas Klaim" data-breadcrumb="Verifikasi > <span>Peninjauan Berkas Klaim</span>"></div>
-
-        <!-- CONTENT -->
-        <div class="dashboard-content">
-
-            <div class="detail-card" id="detailCard">
-                <!-- diisi JavaScript -->
+    <div class="main-workspace">
+        <div class="header-top-app-bar">
+            <div class="container-4">
+                <div class="container-wrapper" onclick="window.location.href='../verifikasi/index.html'">
+                    <div class="container-5">
+                        <span class="material-symbols-outlined" style="color: #1e293b; font-size: 24px;">arrow_back</span>
+                    </div>
+                </div>
+                <div class="container-6">
+                    <div class="div-wrapper-2"><div class="text-wrapper-10">Peninjauan Berkas Klaim</div></div>
+                    <div class="div-wrapper-2"><div class="text-wrapper-8" id="headerSubtitle">Memuat...</div></div>
+                </div>
             </div>
-
+            <div class="div-2">
+                <div class="input-search">
+                    <span class="material-symbols-outlined" style="color: #94a3b8; font-size: 18px;">search</span>
+                    <input type="text" placeholder="Cari berkas..." />
+                </div>
+            </div>
         </div>
-    </main>
+
+        <div class="content-area-margin">
+            <div class="content-area" id="detailCard">
+                <!-- Data akan disuntik di sini oleh JS -->
+                <div style="padding: 40px; text-align: center; color: #64748b;">Memuat data...</div>
+            </div>
+        </div>
+    </div>
 
     
     <!-- Modals (Exact Stitch Design Ported to Vanilla CSS) -->
