@@ -137,15 +137,8 @@ window.handleRelease = async function(itemId, itemName) {
     btn.disabled = true;
 
     try {
-        // Panggil API untuk mengubah visibilitas menjadi public
-        const formData = new FormData();
-        formData.append('visibility', 'public');
-        // Jika backend membutuhkan _method=PUT untuk FormData
-        formData.append('_method', 'PUT');
-
-        const result = await apiFetch(`/items/${itemId}`, {
-            method: 'POST',
-            body: formData
+        const result = await apiFetch(`/items/${itemId}/release`, {
+            method: 'PATCH'
         });
 
         if (result.response.ok) {
@@ -194,8 +187,8 @@ window.executeCancellation = async function() {
     btn.disabled = true;
 
     try {
-        // Tembak API Delete ke Laravel
-        const result = await apiFetch(`/items/${currentCancelId}`, { method: 'DELETE' });
+        // Tembak API Reject ke Laravel
+        const result = await apiFetch(`/items/${currentCancelId}/reject`, { method: 'PATCH' });
         
         if (result.response.ok) {
             alert('Sukses! Laporan telah dibatalkan dan dihapus dari antrean.');
