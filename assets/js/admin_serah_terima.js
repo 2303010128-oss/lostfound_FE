@@ -88,6 +88,9 @@ function initWebcam() {
     const cameraPlaceholder = document.getElementById('cameraPlaceholder');
     const recIndicator = document.getElementById('recIndicator');
     const captureBtnText = document.getElementById('captureBtnText');
+    const btnUploadPhoto = document.getElementById('btnUploadPhoto');
+    const uploadPhotoInput = document.getElementById('uploadPhotoInput');
+    const orDivider = document.getElementById('orDivider');
 
     if (!btnStartCamera) return;
 
@@ -130,4 +133,47 @@ function initWebcam() {
             captureBtnText.innerText = 'Ambil Foto Penerima';
         }
     });
+
+    if (btnUploadPhoto && uploadPhotoInput) {
+        btnUploadPhoto.addEventListener('click', () => {
+            uploadPhotoInput.click();
+        });
+
+        uploadPhotoInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        // Stop webcam if running
+                        if (stream) {
+                            stream.getTracks().forEach(track => track.stop());
+                            stream = null;
+                        }
+                        
+                        webcamVideo.style.display = 'none';
+                        cameraPlaceholder.style.display = 'none';
+                        recIndicator.style.display = 'none';
+                        
+                        // Draw image to canvas
+                        webcamCanvas.width = img.width;
+                        webcamCanvas.height = img.height;
+                        const context = webcamCanvas.getContext('2d');
+                        context.drawImage(img, 0, 0, webcamCanvas.width, webcamCanvas.height);
+                        webcamCanvas.style.display = 'block';
+
+                        // Update UI buttons
+                        btnStartCamera.style.display = 'flex';
+                        btnStartCamera.innerHTML = `<span class="material-symbols-outlined text-lg">videocam</span> Ganti ke Kamera`;
+                        btnCapturePhoto.style.display = 'none';
+                        orDivider.style.display = 'flex';
+                        btnUploadPhoto.innerHTML = `<span class="material-symbols-outlined text-lg">upload_file</span> Ganti File Foto`;
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
 }
