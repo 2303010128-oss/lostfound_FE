@@ -738,9 +738,9 @@
 
                         setTimeout(function() {
                             if (role === 'satpam' || role === 'admin') {
-                                window.location.href = '../dashboard/index.html';
+                                window.location.href = '/admin/dashboard/index.html';
                             } else {
-                                window.location.href = '../../user/mading/index.html';
+                                window.location.href = '/user/mading/index.html';
                             }
                         }, 1000);
                     } else {
@@ -787,7 +787,7 @@
             // CHECK IF ALREADY LOGGED IN
             // ============================================================
             if (localStorage.getItem('token')) {
-                window.location.href = '../dashboard/index.html';
+                window.location.href = '/admin/dashboard/index.html';
             }
 
             // ============================================================

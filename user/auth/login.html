@@ -498,9 +498,9 @@
                     
                     // PENGARAHAN PINTAR 1 PINTU (UNIFIED LOGIN)
                     if (role === 'satpam' || role === 'admin') {
-                        window.location.href = '../admin/dashboard/index.html';
+                        window.location.href = '/admin/dashboard/index.html';
                     } else {
-                        window.location.href = '../mading/index.html';
+                        window.location.href = '/user/mading/index.html';
                     }
                 } else {
                     alert('❌ ' + (result.data?.message || 'Email atau kata sandi Anda salah.'));
