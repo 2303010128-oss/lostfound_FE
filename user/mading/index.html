@@ -710,8 +710,6 @@
             document.getElementById('dropdownMenu').classList.toggle('open');
         }
 
-        
-
         function checkAuthenticationRoute(pageUrl) {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 window.location.href = pageUrl;
@@ -814,8 +812,9 @@
                 gridContainer.appendChild(articleCard);
             });
         }
-        
-        loadFeedCards();
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeedCards();
+        });
     </script>
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/auth.js"></script>
