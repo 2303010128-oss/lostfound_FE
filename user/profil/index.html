@@ -161,7 +161,7 @@ body { background-color: #F8FAFC; color: #131b2e; }
 <script>
     document.addEventListener('DOMContentLoaded', async () => {
         if (!localStorage.getItem('token')) {
-            window.location.href = '../auth/login.html';
+            window.location.href = '/user/auth/login.html';
             return;
         }
         await fetchProfile();
