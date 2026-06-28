@@ -4,24 +4,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let currentCancelId = null;
 
-async function loadAntrean() {
+async function loadAntrean(page = 1) {
     const tbody = document.getElementById('antreanBody');
     if (!tbody) return;
 
     try {
         // Panggil API Laravel (menggunakan auth header otomatis dari api.js)
-        const result = await apiFetch('/admin/items?visibility=private');
+        const result = await apiFetch('/admin/items?visibility=private&page=' + page);
 
         if (result.response.ok) {
             // Anggap data yang dikembalikan ada di result.data.data (format pagination Laravel)
-            // atau result.data jika berupa array langsung.
             let items = [];
+            let pagination = null;
             if (Array.isArray(result.data)) {
                 items = result.data;
             } else if (result.data && Array.isArray(result.data.data)) {
                 items = result.data.data;
+                pagination = result.data;
             } else if (result.data && result.data.data && Array.isArray(result.data.data.data)) {
                 items = result.data.data.data;
+                pagination = result.data.data;
             }
             
             tbody.innerHTML = ''; // Kosongkan status "Memuat data..."
@@ -75,6 +77,10 @@ async function loadAntrean() {
                 tbody.appendChild(tr);
             });
 
+            if (pagination) {
+                renderPagination(pagination);
+            }
+
         } else {
             tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 40px; color: #dc2626;">Gagal memuat data: ${result.data.message || 'Error Backend'}</td></tr>`;
         }
@@ -82,6 +88,45 @@ async function loadAntrean() {
         console.error('Error fetching antrean:', error);
         tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 40px; color: #dc2626;">Terjadi kesalahan jaringan saat memuat data.</td></tr>`;
     }
+}
+
+function renderPagination(pageData) {
+    const info = document.getElementById('paginationInfo');
+    const list = document.getElementById('paginationList');
+    if (!info || !list) return;
+
+    const from = pageData.from || 0;
+    const to = pageData.to || 0;
+    const total = pageData.total || 0;
+    
+    info.innerText = `Showing ${from}-${to} of ${total} entries`;
+
+    let html = '';
+    
+    // Prev
+    if (pageData.prev_page_url) {
+        html += `<li class="page-link-item arrow" onclick="loadAntrean(${pageData.current_page - 1})">«</li>`;
+    } else {
+        html += `<li class="page-link-item arrow" style="opacity:0.5; cursor:not-allowed;">«</li>`;
+    }
+
+    // Pages
+    for (let i = 1; i <= pageData.last_page; i++) {
+        if (i === pageData.current_page) {
+            html += `<li class="page-link-item active">${i}</li>`;
+        } else {
+            html += `<li class="page-link-item" onclick="loadAntrean(${i})">${i}</li>`;
+        }
+    }
+
+    // Next
+    if (pageData.next_page_url) {
+        html += `<li class="page-link-item arrow" onclick="loadAntrean(${pageData.current_page + 1})">»</li>`;
+    } else {
+        html += `<li class="page-link-item arrow" style="opacity:0.5; cursor:not-allowed;">»</li>`;
+    }
+
+    list.innerHTML = html;
 }
 
 // --- Logika Interaksi Modals ---
