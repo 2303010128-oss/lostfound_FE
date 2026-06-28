@@ -1,409 +1,964 @@
-<!DOCTYPE html><html class="light" lang="id"><head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>Peninjauan Berkas Klaim - LostFound Admin</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
-<link rel="stylesheet" href="../../assets/css/admin_header.css">
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "background": "#faf8ff",
-                    "status-warning-bg": "#F59E0B",
-                    "surface-bright": "#faf8ff",
-                    "tertiary-container": "#0076d2",
-                    "on-surface-variant": "#5a4138",
-                    "on-secondary-fixed": "#0d1c2e",
-                    "status-lost-text": "#BE123C",
-                    "on-secondary": "#ffffff",
-                    "status-warning-text": "#B45309",
-                    "secondary-fixed-dim": "#b9c7df",
-                    "surface-dim": "#d2d9f4",
-                    "surface-main": "#F8FAFC",
-                    "on-error-container": "#93000a",
-                    "surface-container": "#eaedff",
-                    "primary-fixed-dim": "#ffb599",
-                    "inverse-primary": "#ffb599",
-                    "status-found-text": "#047857",
-                    "secondary-container": "#d5e3fc",
-                    "on-tertiary-container": "#fdfcff",
-                    "on-secondary-container": "#57657a",
-                    "tertiary": "#005da8",
-                    "on-secondary-fixed-variant": "#3a485b",
-                    "on-tertiary": "#ffffff",
-                    "surface-card": "#FFFFFF",
-                    "on-background": "#131b2e",
-                    "error": "#ba1a1a",
-                    "tertiary-fixed": "#d4e3ff",
-                    "surface-container-high": "#e2e7ff",
-                    "on-tertiary-fixed": "#001c39",
-                    "on-tertiary-fixed-variant": "#004883",
-                    "surface-container-lowest": "#ffffff",
-                    "primary-container": "#cc4900",
-                    "inverse-surface": "#283044",
-                    "error-container": "#ffdad6",
-                    "inverse-on-surface": "#eef0ff",
-                    "primary-fixed": "#ffdbce",
-                    "primary": "#a33900",
-                    "surface-tint": "#a73a00",
-                    "surface": "#faf8ff",
-                    "outline-variant": "#e2bfb2",
-                    "on-error": "#ffffff",
-                    "tertiary-fixed-dim": "#a4c9ff",
-                    "on-primary-fixed": "#370e00",
-                    "on-primary": "#ffffff",
-                    "surface-container-low": "#f2f3ff",
-                    "on-surface": "#131b2e",
-                    "on-primary-fixed-variant": "#7f2b00",
-                    "secondary-fixed": "#d5e3fc",
-                    "outline": "#8e7166",
-                    "surface-variant": "#dae2fd",
-                    "status-lost-bg": "#F43F5E",
-                    "secondary": "#515f74",
-                    "on-primary-container": "#fffbff",
-                    "surface-container-highest": "#dae2fd",
-                    "status-found-bg": "#10B981"
-            },
-            "fontFamily": {
-                    "body-md": ["Inter"],
-                    "label-md": ["Inter"],
-                    "headline-md": ["Hanken Grotesk"],
-                    "label-sm": ["Inter"],
-                    "headline-lg-mobile": ["Hanken Grotesk"],
-                    "body-lg": ["Inter"],
-                    "body-sm": ["Inter"],
-                    "headline-sm": ["Hanken Grotesk"],
-                    "headline-lg": ["Hanken Grotesk"]
-            }
-          }
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peninjauan Berkas Klaim - LostFound Admin</title>
+    <style>
+        :root {
+            --text-dark: #0f172a;
+            --text-gray: #64748b;
+            --orange: #ea580c;
+            --border-color: #e2e8f0;
         }
-    </script>
-<style>
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+
+        body {
+            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
         }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        input {
+            font-family: inherit;
+        }
+        
+
+        /* ============================================================
+                   MAIN CONTENT
+                   ============================================================ */
         .main-content {
             margin-left: 260px;
             flex: 1;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding: 32px 40px;
         }
-    </style>
+
+        /* ============================================================
+                   TOPBAR
+                   ============================================================ */
+        .topbar {
+            background: #ffffff;
+            padding: 14px 28px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar .page-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .topbar .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .topbar .topbar-right .notification {
+            font-size: 18px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .topbar .topbar-right .notification .dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 7px;
+            height: 7px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+        }
+
+        .topbar .topbar-right .admin-badge {
+            background: #a33900;
+            color: #ffffff;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .topbar .topbar-right .admin-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #0f172a;
+        }
+
+        .topbar .topbar-right .divider {
+            width: 1px;
+            height: 20px;
+            background: #e2e8f0;
+        }
+
+        /* ============================================================
+                   BREADCRUMB
+                   ============================================================ */
+        .breadcrumb {
+            padding: 14px 28px 0 28px;
+            font-size: 13px;
+            color: #64748b;
+        }
+        .breadcrumb a {
+            color: #a33900;
+        }
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        .breadcrumb .separator {
+            margin: 0 8px;
+            color: #94a3b8;
+        }
+        .breadcrumb .current {
+            color: #0f172a;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   CONTENT
+                   ============================================================ */
+        .dashboard-content {
+            flex: 1;
+        }
+
+        /* ============================================================
+                   DETAIL CARD
+                   ============================================================ */
+        .detail-card {
+            background: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            padding: 28px 32px;
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        .detail-card .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .detail-card .card-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .detail-card .section {
+            margin-bottom: 20px;
+        }
+
+        .detail-card .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-card .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .detail-card .section-desc {
+            font-size: 13px;
+            color: #475569;
+            line-height: 1.7;
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 3px solid #a33900;
+        }
+
+        /* ============================================================
+                   SEARCH BAR - "Cari berkas..."
+                   ============================================================ */
+        .search-berkas {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 8px 14px;
+            gap: 10px;
+            border: 1px solid #e2e8f0;
+            transition: border-color 0.3s ease;
+            margin-top: 6px;
+        }
+
+        .search-berkas:focus-within {
+            border-color: #a33900;
+            background: #ffffff;
+        }
+
+        .search-berkas .search-icon {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .search-berkas input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 13px;
+            color: #0f172a;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .search-berkas input::placeholder {
+            color: #94a3b8;
+        }
+
+        .detail-card .file-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 8px;
+        }
+
+        .detail-card .file-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 13px;
+            color: #334155;
+        }
+
+        .detail-card .file-list li .file-icon {
+            font-size: 14px;
+            color: #a33900;
+        }
+
+        .detail-card .file-list li .file-name {
+            font-weight: 500;
+        }
+
+        /* ============================================================
+                   VERIFICATION SECTION
+                   ============================================================ */
+        .detail-card .verification-section .verification-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .detail-card .verification-section textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 60px;
+            outline: none;
+            transition: border-color 0.3s ease;
+            background: #ffffff;
+            color: #0f172a;
+        }
+
+        .detail-card .verification-section textarea:focus {
+            border-color: #a33900;
+        }
+
+        .detail-card .verification-section textarea::placeholder {
+            color: #94a3b8;
+        }
+
+        .detail-card .decision-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .detail-card .decision-buttons .btn {
+            padding: 8px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .detail-card .decision-buttons .btn-success {
+            background: #22c55e;
+            color: #ffffff;
+        }
+
+        .detail-card .decision-buttons .btn-success:hover {
+            background: #16a34a;
+        }
+
+        .detail-card .decision-buttons .btn-warning {
+            background: #f59e0b;
+            color: #ffffff;
+        }
+
+        .detail-card .decision-buttons .btn-warning:hover {
+            background: #d97706;
+        }
+
+        .detail-card .decision-buttons .btn-danger {
+            background: #ef4444;
+            color: #ffffff;
+        }
+
+        .detail-card .decision-buttons .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .detail-card .decision-buttons .btn-back {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .detail-card .decision-buttons .btn-back:hover {
+            background: #cbd5e1;
+        }
+
+        /* ============================================================
+                   REVIEW SECTION
+                   ============================================================ */
+        .detail-card .review-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: #fef3c7;
+            border-radius: 8px;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        .detail-card .review-section .review-icon {
+            font-size: 18px;
+        }
+
+        .detail-card .review-section .review-text {
+            font-size: 13px;
+            font-weight: 500;
+            color: #92400e;
+        }
+
+        .detail-card .review-section .review-id {
+            font-size: 13px;
+            color: #92400e;
+            margin-left: auto;
+            font-weight: 600;
+        }
+
+        /* ============================================================
+                   WARNING BOX
+                   ============================================================ */
+        .detail-card .warning-box {
+            background: #fef3c7;
+            border-left: 3px solid #f59e0b;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #92400e;
+            margin-top: 8px;
+        }
+
+        .detail-card .warning-box .warning-icon {
+            margin-right: 8px;
+        }
+
+        /* ============================================================
+                   RESPONSIVE
+                   ============================================================ */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #0f172a;
+            font-size: 22px;
+            padding: 4px;
+        }
+
+        .menu-toggle svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.5);
+            z-index: 99;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 280px;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .topbar {
+                padding: 10px 16px;
+            }
+
+            .topbar .page-title {
+                font-size: 16px;
+            }
+
+            .topbar .topbar-right .admin-name {
+                display: none;
+            }
+
+            .topbar .topbar-right .divider {
+                display: none;
+            }
+
+            .breadcrumb {
+                padding: 10px 16px 0 16px;
+                font-size: 12px;
+            }
+
+            .dashboard-content {
+                padding: 14px 16px 24px 16px;
+            }
+
+            .detail-card {
+                padding: 16px 18px;
+            }
+
+            .detail-card .card-title {
+                font-size: 17px;
+            }
+
+            .detail-card .decision-buttons {
+                flex-direction: column;
+            }
+
+            .detail-card .decision-buttons .btn {
+                text-align: center;
+                width: 100%;
+            }
+
+            .detail-card .review-section {
+                flex-wrap: wrap;
+            }
+
+            .detail-card .review-section .review-id {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar .page-title {
+                font-size: 14px;
+            }
+
+            .topbar .topbar-right .admin-badge {
+                font-size: 9px;
+                padding: 2px 10px;
+            }
+
+            .detail-card .section-desc {
+                font-size: 12px;
+                padding: 10px 12px;
+            }
+
+            .search-berkas input {
+                font-size: 12px;
+            }
+        }
+    
+        /* ============================================================
+                   GRID LAYOUT FOR VERIFICATION (MODERN)
+                   ============================================================ */
+        .verification-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .grid-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .grid-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 12px;
+        }
+
+        .photo-evidence-container {
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f1f5f9;
+            aspect-ratio: 3/2;
+            position: relative;
+        }
+        .photo-evidence-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .photo-evidence-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            animation: modalPop 0.3s ease-out;
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .modal-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px auto;
+            font-size: 32px;
+        }
+        .modal-icon-success { background: #dcfce7; color: #16a34a; }
+        .modal-icon-warning { background: #dbeafe; color: #0284c7; }
+        .modal-icon-danger { background: #fee2e2; color: #dc2626; }
+        
+        .modal-title { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
+        .modal-desc { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 24px; }
+        .modal-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            background: #0f172a;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .modal-btn:hover { background: #1e293b; }
+
+        @media (max-width: 1024px) {
+            .verification-grid { grid-template-columns: 1fr; }
+        }
+
+</style>
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/admin_header.css">
 </head>
-<body class="bg-surface-main font-body-md text-on-surface flex">
+<body>
 
-<div id="app-sidebar"></div>
+    <!-- ============================================================ -->
+    <!-- SIDEBAR OVERLAY (Mobile) -->
+    <!-- ============================================================ -->
+    <!-- ============================================================ -->
+    <!-- SIDEBAR - WARNA #0F172A -->
+    <!-- ============================================================ -->
+    <div id="app-sidebar"></div>
 
-<!-- Main Workspace -->
-<main class="main-content">
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================================ -->
+    <main class="main-content">
 
-<div id="app-header" data-title="Peninjauan Berkas Klaim" data-breadcrumb="Verifikasi > <span>Peninjauan Berkas Klaim</span>"></div>
+        <div id="app-header" data-title="Peninjauan Berkas Klaim" data-breadcrumb="Verifikasi > <span>Peninjauan Berkas Klaim</span>"></div>
 
-<!-- Content Area -->
-<div class="p-8 max-w-7xl mx-auto w-full">
-<!-- Breadcrumb Navigation -->
-<button onclick="window.location.href='../verifikasi/index.html'" class="flex items-center gap-2 text-secondary hover:text-primary transition-all mb-6 group">
-<span class="material-symbols-outlined text-sm group-hover:-translate-x-1 transition-transform">arrow_back</span>
-<span class="font-label-md text-label-md">Kembali ke Daftar Antrean Klaim</span>
-</button>
+        <!-- CONTENT -->
+        <div class="dashboard-content">
 
-<!-- Page Header -->
-<div class="mb-10">
-<h2 class="font-headline-lg text-headline-lg text-on-background mb-2">
-                    Peninjauan Berkas: <span id="uiClaimantName">Memuat...</span> <span class="text-primary opacity-80" id="uiClaimId">(#CLM-...)</span>
-</h2>
-<p class="text-on-surface-variant font-body-md text-body-md max-w-3xl">
-                    Periksa bukti mendalam di bawah ini sebelum mengambil tindakan hukum. Keakuratan verifikasi menentukan integritas sistem penemuan barang.
-                </p>
-</div>
+            <div class="detail-card" id="detailCard">
+                <!-- diisi JavaScript -->
+            </div>
 
-<!-- Dashboard Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+        </div>
+    </main>
 
-<!-- Left Column: Pemeriksaan Berkas -->
-<div class="space-y-8 flex flex-col">
-<div class="bg-white rounded-xl shadow-sm border border-slate-100 p-8 flex-1">
-<div class="flex items-center gap-2 mb-6 pb-4 border-b border-slate-50">
-<span class="material-symbols-outlined text-primary">description</span>
-<h3 class="font-headline-sm text-headline-sm">Deskripsi Rahasia Pengguna</h3>
-</div>
-<blockquote id="uiClaimDesc" class="bg-surface-container-low p-6 rounded-lg italic text-on-surface leading-relaxed border-l-4 border-primary">
-                            Memuat data...
-                        </blockquote>
-<div class="mt-8">
-<h4 class="font-label-md text-label-md text-secondary uppercase tracking-widest mb-4">Lampiran Bukti Identitas &amp; Kepemilikan</h4>
-<div class="grid grid-cols-1 gap-4" id="uiAttachmentContainer">
-    <!-- Attachments populated by JS -->
-    <p class="text-sm text-slate-500 italic" id="uiNoAttachment">Memuat...</p>
-</div>
-
-</div>
-</div>
-</div>
-
-<!-- Right Column: Panel Keputusan -->
-<div class="space-y-8 flex flex-col">
-<div class="bg-white rounded-xl shadow-sm border border-slate-100 p-8 flex flex-col h-full">
-<div class="flex items-center gap-2 mb-6 pb-4 border-b border-slate-50">
-<span class="material-symbols-outlined text-primary">fact_check</span>
-<h3 class="font-headline-sm text-headline-sm">Formulir Keputusan Petugas</h3>
-</div>
-
-<!-- Form Content -->
-<div class="flex-1 space-y-6" id="decisionFormArea">
-<div>
-<label class="block text-label-md text-on-surface mb-2" for="officer-notes">
-                                    Catatan / Alasan Petugas (Wajib diisi jika menolak atau meminta klarifikasi):
-                                </label>
-<textarea class="w-full rounded-lg border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary text-body-sm font-body-sm resize-none" id="officer-notes" placeholder="Ketik alasan di sini..." rows="5"></textarea>
-</div>
-
-<!-- Action Buttons -->
-<div class="space-y-4">
-<button onclick="handleAction('approved')" class="w-full bg-status-found-bg text-white py-4 px-6 rounded-xl flex items-center justify-center gap-3 group hover:brightness-110 active:scale-[0.98] transition-all duration-200">
-<span class="font-label-md text-label-md">Setujui Klaim (Terbitkan Token Ambil)</span>
-<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">check_circle</span>
-</button>
-<button onclick="handleAction('clarification_required')" class="w-full bg-[#005da8] text-white py-4 px-6 rounded-xl flex items-center justify-center gap-3 group hover:brightness-110 active:scale-[0.98] transition-all duration-200">
-<span class="font-label-md text-label-md">Minta Klarifikasi Lapangan (Wajib Surat Materai)</span>
-<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">contact_support</span>
-</button>
-<button onclick="handleAction('rejected')" class="w-full border-2 border-status-lost-bg text-status-lost-text py-4 px-6 rounded-xl flex items-center justify-center gap-3 group hover:bg-rose-50 active:scale-[0.98] transition-all duration-200">
-<span class="font-label-md text-label-md">Tolak Klaim (Bukti Palsu/Fiktif)</span>
-<span class="material-symbols-outlined group-hover:-rotate-12 transition-transform">cancel</span>
-</button>
-</div>
-</div>
-
-<!-- Status Done Area -->
-<div id="statusDoneArea" class="hidden">
-    <div class="bg-emerald-50 border border-emerald-200 p-6 rounded-xl text-center">
-        <span class="material-symbols-outlined text-emerald-600 text-4xl mb-2">check_circle</span>
-        <h4 class="text-emerald-800 font-bold mb-2">Klaim Telah Selesai Diproses</h4>
-        <p class="text-emerald-600 text-sm mb-4" id="statusDoneMessage"></p>
-        <div class="bg-white rounded-lg p-4 font-mono text-xl tracking-wider text-emerald-900 border border-emerald-100 shadow-sm" id="statusDoneToken">
+    
+    <!-- Modals -->
+    <div class="modal-overlay" id="modalSetuju">
+        <div class="modal-card">
+            <div class="modal-icon-wrapper modal-icon-success">✓</div>
+            <div class="modal-title">Pengajuan Klaim Disetujui!</div>
+            <div class="modal-desc">
+                Sistem berhasil memvalidasi kepemilikan barang. Kode Token Pengambilan Rahasia <strong id="modalSetujuToken" style="color:#0f172a;"></strong> telah resmi diterbitkan dan dikirimkan ke dashboard akun <strong id="modalSetujuNama" style="color:#0f172a;"></strong> beserta instruksi pengambilan di posko.
+            </div>
+            <button class="modal-btn" onclick="window.location.href='../verifikasi/index.html'">Selesai & Kembali ke Antrean</button>
         </div>
     </div>
-</div>
 
-<!-- Footer Info -->
-<div class="mt-8 pt-6 border-t border-slate-50 flex items-center justify-between">
-<div class="flex items-center gap-2">
-<span class="w-2 h-2 bg-status-warning-bg rounded-full animate-pulse"></span>
-<span class="text-label-sm text-secondary" id="uiReviewDate">Sedang Ditinjau</span>
-</div>
-<span class="text-label-sm text-slate-400">ID Sesi: VER-9021-X</span>
-</div>
-</div>
-</div>
+    <div class="modal-overlay" id="modalKlarifikasi">
+        <div class="modal-card">
+            <div class="modal-icon-wrapper modal-icon-warning">!</div>
+            <div class="modal-title">Instruksi Prosedur Lapangan Terkirim</div>
+            <div class="modal-desc">
+                Status pengajuan <strong id="modalKlarifikasiNama" style="color:#0f172a;"></strong> telah diubah menjadi <strong>"Butuh Klarifikasi"</strong>. Pesan catatan petugas yang Anda ketik di kotak input telah diteruskan ke akun mahasiswa.
+            </div>
+            <button class="modal-btn" onclick="window.location.href='../verifikasi/index.html'">Selesai & Kembali ke Antrean</button>
+        </div>
+    </div>
 
-</div>
-</div>
-</main>
+    <div class="modal-overlay" id="modalTolak">
+        <div class="modal-card">
+            <div class="modal-icon-wrapper modal-icon-danger">✕</div>
+            <div class="modal-title">Klaim Resmi Ditolak permanen</div>
+            <div class="modal-desc">
+                Pengajuan klaim oleh <strong id="modalTolakNama" style="color:#0f172a;"></strong> ditutup dengan status 'Rejected / Bukti Palsu'. Alasan penolakan yang Anda ketik telah diarsipkan dalam log keamanan sistem.
+            </div>
+            <button class="modal-btn" onclick="window.location.href='../verifikasi/index.html'">Selesai & Kembali ke Antrean</button>
+        </div>
+    </div>
 
-<!-- MODALS -->
+    <!-- Injected Base Scripts -->
 
-<!-- Modal Tolak -->
-<div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm hidden" id="modalTolak">
-<div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full border-t-4 border-error flex flex-col items-center text-center">
-<div class="w-16 h-16 bg-error/10 rounded-full flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-error text-4xl font-bold">cancel</span>
-</div>
-<h3 class="text-headline-md font-headline-md text-error mb-4">Klaim Resmi Ditolak permanen</h3>
-<p class="text-body-md text-on-surface-variant mb-8">
-      Pengajuan klaim oleh <strong id="modalTolakNama"></strong> ditutup dengan status 'Rejected / Bukti Palsu'. Alasan penolakan yang Anda ketik telah diarsipkan dalam log keamanan sistem. Akun mahasiswa telah menerima notifikasi penolakan resmi.
-    </p>
-<button onclick="window.location.href='../verifikasi/index.html'" class="w-full bg-slate-900 text-white py-3 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity">
-      Selesai &amp; Kembali ke Antrean
-    </button>
-</div>
-</div>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components.js"></script>
 
-<!-- Modal Klarifikasi -->
-<div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm hidden" id="modalKlarifikasi">
-<div class="bg-white rounded-xl shadow-lg border border-[#0076d2]/20 p-8 max-w-md w-full flex flex-col items-center text-center">
-<div class="w-16 h-16 bg-[#0076d2]/10 rounded-full flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-[#0076d2] text-4xl">assignment_late</span>
-</div>
-<h3 class="text-headline-sm font-bold text-on-surface mb-4">Instruksi Prosedur Lapangan Terkirim</h3>
-<p class="text-body-md text-on-surface-variant mb-8 leading-relaxed">
-      Status pengajuan <span class="font-bold" id="modalKlarifikasiNama"></span> telah diubah menjadi <span class="font-semibold">"Butuh Klarifikasi"</span>. Pesan catatan petugas yang Anda ketik di kotak input telah diteruskan ke akun mahasiswa. Sistem telah mengaktifkan alarm spanduk "Urgent Action" di HP mahasiswa untuk menyuruhnya datang membawa dokumen.
-    </p>
-<button onclick="window.location.href='../verifikasi/index.html'" class="w-full bg-slate-900 text-white py-3.5 px-6 rounded-xl font-label-md text-label-md hover:bg-slate-800 transition-colors shadow-sm">
-      Selesai &amp; Kembali ke Antrean
-    </button>
-</div>
-</div>
+    <script>
+        (function() {
+            'use strict';
 
-<!-- Modal Setuju -->
-<div class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm hidden" id="modalSetuju">
-<div class="bg-white max-w-md w-full rounded-xl shadow-2xl p-8 text-center">
-<div class="w-16 h-16 bg-[#10B981] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-200">
-<span class="material-symbols-outlined text-white text-4xl font-bold">check</span>
-</div>
-<h3 class="text-headline-sm font-headline-lg text-on-surface mb-3">
-                Pengajuan Klaim Disetujui!
-            </h3>
-<p class="text-body-md text-on-surface-variant font-body-md leading-relaxed mb-8">
-                Sistem berhasil memvalidasi kepemilikan barang. Kode Token Pengambilan Rahasia <span class="font-bold text-on-surface" id="modalSetujuToken"></span> telah resmi diterbitkan dan dikirimkan ke dashboard akun <span class="font-bold" id="modalSetujuNama"></span> beserta instruksi pengambilan di posko.
-            </p>
-<button onclick="window.location.href='../verifikasi/index.html'" class="w-full bg-slate-900 hover:bg-slate-800 text-white py-3.5 rounded-lg font-label-md text-label-md transition-all active:scale-[0.98] shadow-md">
-                Selesai &amp; Kembali ke Antrean
-            </button>
-</div>
-</div>
+            // ============================================================
+            // SIDEBAR TOGGLE (Mobile)
+            // ============================================================
+            var sidebar = document.getElementById('sidebar');
+            var sidebarOverlay = document.getElementById('sidebarOverlay');
+            var menuToggle = document.getElementById('menuToggle');
 
-<script src="../../assets/js/auth.js"></script>
-<script src="../../assets/js/api.js"></script>
-<script src="../../assets/js/components.js"></script>
-<script>
-    (function() {
-        'use strict';
+            window.toggleSidebar = function() {
+                sidebar.classList.toggle('open');
+                sidebarOverlay.classList.toggle('active');
+            };
 
-        function getQueryParam(param) {
-            var urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(param);
-        }
-
-        var claimId = getQueryParam('id');
-        var currentClaim = null;
-
-        async function loadClaimData() {
-            if (!claimId) {
-                alert('ID Klaim tidak ditemukan!');
-                window.location.href = '../verifikasi/index.html';
-                return;
-            }
-            try {
-                const result = await window.apiFetch('/claims/' + claimId);
-                if (result.response.ok && result.data && result.data.data) {
-                    currentClaim = result.data.data;
-                    renderUI();
-                } else {
-                    alert('Gagal memuat data klaim.');
-                }
-            } catch (err) {
-                console.error('Error fetching claim:', err);
-            }
-        }
-
-        function getFullImageUrl(path) {
-            if (!path) return '';
-            if (path.startsWith('http')) return path;
-            return 'http://127.0.0.1:8000/storage/' + path;
-        }
-
-        function renderUI() {
-            if (!currentClaim) return;
-
-            const name = currentClaim.user ? currentClaim.user.nama_lengkap : 'Anonim';
-            document.getElementById('uiClaimantName').innerText = name;
-            document.getElementById('uiClaimId').innerText = `(#CLM-${currentClaim.id})`;
-            document.getElementById('uiClaimDesc').innerText = `"${currentClaim.bukti_teks}"`;
-            document.getElementById('uiReviewDate').innerText = 'Ditinjau pada ' + new Date().toLocaleDateString('id-ID');
-
-            // Set modal names
-            document.getElementById('modalTolakNama').innerText = name;
-            document.getElementById('modalKlarifikasiNama').innerText = name;
-            document.getElementById('modalSetujuNama').innerText = name;
-
-            // Attachments
-            const attContainer = document.getElementById('uiAttachmentContainer');
-            const noAtt = document.getElementById('uiNoAttachment');
-            
-            if (currentClaim.bukti_foto) {
-                noAtt.style.display = 'none';
-                const imgUrl = getFullImageUrl(currentClaim.bukti_foto);
-                attContainer.innerHTML = `
-                <div class="group cursor-zoom-in relative">
-                    <div class="aspect-[3/2] rounded-lg overflow-hidden bg-slate-100 border border-slate-200">
-                        <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-[10px] text-white">BUKTI_FOTO.JPG</div>
-                </div>
-                `;
-            } else {
-                noAtt.innerText = "Tidak ada lampiran foto.";
-            }
-
-            // Status UI
-            const status = currentClaim.status_verif;
-            if (status !== 'pending') {
-                document.getElementById('decisionFormArea').classList.add('hidden');
-                document.getElementById('statusDoneArea').classList.remove('hidden');
-
-                const msg = document.getElementById('statusDoneMessage');
-                const tkn = document.getElementById('statusDoneToken');
-
-                if (status === 'approved' || status === 'returned') {
-                    msg.innerText = "Klaim disetujui. Mahasiswa dapat menggunakan token berikut:";
-                    tkn.innerText = currentClaim.token_pengambilan || 'TOKEN-TIDAK-DITEMUKAN';
-                } else if (status === 'rejected') {
-                    msg.innerText = "Klaim ini telah ditolak secara permanen.";
-                    tkn.innerText = "REJECTED";
-                    tkn.classList.replace('text-emerald-900', 'text-red-900');
-                    tkn.parentElement.classList.replace('bg-emerald-50', 'bg-red-50');
-                    tkn.parentElement.classList.replace('border-emerald-200', 'border-red-200');
-                } else {
-                    msg.innerText = "Menunggu klarifikasi dari mahasiswa.";
-                    tkn.innerText = "PENDING CLARIFICATION";
-                }
-            }
-        }
-
-        window.handleAction = async function(status) {
-            const note = document.getElementById('officer-notes').value;
-            
-            if ((status === 'rejected' || status === 'clarification_required') && !note.trim()) {
-                alert('Mohon isi catatan/alasan petugas!');
-                return;
-            }
-
-            if (!confirm('Apakah Anda yakin ingin memproses klaim dengan keputusan ini?')) {
-                return;
-            }
-
-            try {
-                const result = await window.apiFetch('/claims/' + claimId + '/verify', {
-                    method: 'PATCH',
-                    body: JSON.stringify({
-                        status_verif: status,
-                        catatan_evaluasi: note
-                    })
+            if (menuToggle) {
+                menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleSidebar();
                 });
-
-                if (result.response.ok) {
-                    const updatedData = result.data.data || currentClaim;
-                    // Show success modal based on status
-                    if (status === 'approved') {
-                        document.getElementById('modalSetujuToken').innerText = updatedData.token_pengambilan || '-';
-                        document.getElementById('modalSetuju').classList.remove('hidden');
-                    } else if (status === 'clarification_required') {
-                        document.getElementById('modalKlarifikasi').classList.remove('hidden');
-                    } else if (status === 'rejected') {
-                        document.getElementById('modalTolak').classList.remove('hidden');
-                    }
-                } else {
-                    alert('Gagal memproses klaim: ' + (result.data.message || 'Error server'));
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Terjadi kesalahan jaringan.');
             }
-        };
 
-        loadClaimData();
-    })();
-</script>
-</body></html>
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', function() {
+                    toggleSidebar();
+                });
+            }
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                    toggleSidebar();
+                }
+            });
+
+            // ============================================================
+            // LOGOUT
+            // ============================================================
+            window.logout = function() {
+                if (confirm('Apakah Anda yakin ingin keluar?')) {
+                    localStorage.removeItem('isAdminLoggedIn');
+                    localStorage.removeItem('adminEmail');
+                    localStorage.removeItem('adminRememberMe');
+                    window.location.href = '../auth/login.html';
+                }
+            };
+
+            // ============================================================
+            // GET ID FROM URL
+            // ============================================================
+            function getQueryParam(param) {
+                var urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(param);
+            }
+
+            var claimId = getQueryParam('id');
+            var item = null;
+
+            async function loadClaimData() {
+                if (!claimId) return;
+                try {
+                    const result = await window.apiFetch('/claims/' + claimId);
+                    if (result.response.ok && result.data && result.data.data) {
+                        const c = result.data.data;
+                        item = {
+                            id: c.id,
+                            claimant: c.user ? c.user.nama_lengkap : 'Anonim',
+                            desc: '"' + c.bukti_teks + '"',
+                            files: c.bukti_foto ? ['BUKTI_FOTO_TERLAMPIR'] : ['TIDAK_ADA_FOTO_LAMPIRAN'],
+                            foto_url: c.bukti_foto ? (c.bukti_foto.startsWith('http') ? c.bukti_foto : 'http://127.0.0.1:8000/storage/' + c.bukti_foto) : null,
+                            warning: '',
+                            reviewId: new Date(c.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}),
+                            rawStatus: c.status_verif,
+                            token: c.token_pengambilan
+                        };
+                    }
+                } catch (err) {
+                    console.error('Gagal mengambil data detail klaim:', err);
+                }
+                renderDetail();
+            }
+
+            // ============================================================
+            // RENDER DETAIL
+            // ============================================================
+            function renderDetail() {
+                var card = document.getElementById('detailCard');
+
+                if (!item) {
+                    card.innerHTML = `
+                        <div style="text-align:center; padding:40px;">
+                            <p style="color:#64748b; font-size:16px;">❌ Klaim tidak ditemukan.</p>
+                            <a href="../verifikasi/index.html" style="color:#a33900; font-weight:600; margin-top:12px; display:inline-block;">Kembali ke Verifikasi</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Build file list
+                var filesHtml = '';
+                for (var i = 0; i < item.files.length; i++) {
+                    filesHtml += `
+                        <li>
+                            <span class="file-icon">📎</span>
+                            <span class="file-name">${item.files[i]}</span>
+                        </li>
+                    `;
+                }
+
+                // Warning box
+                var warningHtml = '';
+                if (item.warning) {
+                    warningHtml = `
+                        <div class="warning-box">
+                            <span class="warning-icon">⚠️</span>
+                            ${item.warning}
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="card-title" style="font-size:24px; margin-bottom:4px;">Peninjauan Berkas: <span style="color:#0f172a;">${item.claimant}</span> <span style="color:#a33900; opacity:0.8; font-size:18px;">(#CLM-${item.id})</span></div>
+                    <div style="font-size:14px; color:#64748b; margin-bottom:24px; max-width:800px; line-height:1.5;">Periksa bukti mendalam di bawah ini sebelum mengambil tindakan hukum. Keakuratan verifikasi menentukan integritas sistem penemuan barang.</div>
+                    
+                    <div class="verification-grid">
+                        <!-- Kolom Kiri -->
+                        <div class="grid-card">
+                            <div class="grid-card-title">📄 Deskripsi Rahasia Pengguna</div>
+                            <div style="background:#f8fafc; padding:20px; border-radius:8px; border-left:4px solid #a33900; font-style:italic; font-size:14px; color:#334155; line-height:1.6;">
+                                ${item.desc}
+                            </div>
+                            
+                            <div class="grid-card-title" style="margin-top:16px;">🖼️ Lampiran Bukti Kepemilikan</div>
+                            <div id="uiAttachmentContainer">
+                                ${item.foto_url ? `
+                                <div class="photo-evidence-container">
+                                    <img src="${item.foto_url}" alt="Lampiran Bukti">
+                                    <div style="position:absolute; bottom:8px; left:8px; background:rgba(0,0,0,0.6); color:white; font-size:10px; padding:4px 8px; border-radius:4px; backdrop-filter:blur(4px);">BUKTI_LAMPIRAN.JPG</div>
+                                </div>
+                                ` : `<p style="font-size:13px; color:#64748b; font-style:italic;">Tidak ada lampiran foto dari pengguna.</p>`}
+                            </div>
+                        </div>
+
+                        <!-- Kolom Kanan -->
+                        <div class="grid-card">
+                            <div class="grid-card-title">⚖️ Formulir Keputusan Petugas</div>
+                            
+                            <div id="decisionFormArea" style="display: ${item.rawStatus !== 'pending' ? 'none' : 'block'};">
+                                <label style="font-size:13px; font-weight:600; color:#0f172a; display:block; margin-bottom:8px;">Catatan / Alasan Petugas (Wajib jika menolak):</label>
+                                <textarea id="verificationNote" style="width:100%; border:1px solid #cbd5e1; border-radius:8px; padding:12px; font-family:inherit; font-size:13px; min-height:120px; resize:vertical; outline:none; transition:border 0.2s;" placeholder="Ketik alasan di sini..."></textarea>
+                                
+                                <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+                                    <button class="btn-action" onclick="handleAction('approved')" style="background:#10b981; color:white; padding:14px; border-radius:8px; font-weight:600; font-size:14px; border:none; cursor:pointer; transition:background 0.2s;">✅ Setujui Klaim (Terbitkan Token)</button>
+                                    <button class="btn-action" onclick="handleAction('clarification_required')" style="background:#0076d2; color:white; padding:14px; border-radius:8px; font-weight:600; font-size:14px; border:none; cursor:pointer; transition:background 0.2s;">❓ Minta Klarifikasi (Surat Materai)</button>
+                                    <button class="btn-action" onclick="handleAction('rejected')" style="background:transparent; border:2px solid #ef4444; color:#ef4444; padding:14px; border-radius:8px; font-weight:600; font-size:14px; cursor:pointer; transition:background 0.2s;">❌ Tolak Klaim (Bukti Palsu)</button>
+                                </div>
+                            </div>
+                            
+                            <div id="statusDoneArea" style="display: ${item.rawStatus !== 'pending' ? 'flex' : 'none'}; flex-direction:column; align-items:center; justify-content:center; height:100%; border-top: 1px solid transparent;">
+                                <div style="text-align:center; padding:32px; background:${item.rawStatus === 'approved' ? '#f0fdf4' : (item.rawStatus === 'rejected' ? '#fef2f2' : '#f0f9ff')}; border:1px solid ${item.rawStatus === 'approved' ? '#bbf7d0' : (item.rawStatus === 'rejected' ? '#fecaca' : '#bae6fd')}; border-radius:12px; width:100%;">
+                                    <div style="font-size:48px; margin-bottom:16px;">${item.rawStatus === 'approved' ? '✅' : (item.rawStatus === 'rejected' ? '❌' : '⏳')}</div>
+                                    <div style="font-size:18px; font-weight:700; color:${item.rawStatus === 'approved' ? '#166534' : (item.rawStatus === 'rejected' ? '#991b1b' : '#075985')}; margin-bottom:16px;">
+                                        ${item.rawStatus === 'approved' ? 'Klaim telah disetujui.' : (item.rawStatus === 'rejected' ? 'Klaim ini telah ditolak.' : 'Menunggu klarifikasi.')}
+                                    </div>
+                                    <div style="font-size:24px; font-family:monospace; font-weight:800; color:${item.rawStatus === 'approved' ? '#14532d' : (item.rawStatus === 'rejected' ? '#7f1d1d' : '#0369a1')}; letter-spacing:2px; background:#ffffff; padding:12px 24px; border-radius:8px; border:2px dashed ${item.rawStatus === 'approved' ? '#86efac' : (item.rawStatus === 'rejected' ? '#fca5a5' : '#7dd3fc')}; display:inline-block;">
+                                        ${item.token || (item.rawStatus === 'rejected' ? 'REJECTED' : 'PENDING')}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:auto; padding-top:20px; border-top:1px solid #f1f5f9; display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#64748b;">
+                                <div style="display:flex; align-items:center; gap:6px;">
+                                    <div style="width:8px; height:8px; background:#f59e0b; border-radius:50%; animation: pulse 2s infinite;"></div>
+                                    Sedang Ditinjau oleh Admin
+                                </div>
+                                <div>ID Sesi: VER-9021-X</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+
+            // ============================================================
+            // APPROVE / CLARIFY / REJECT
+            // ============================================================
+            window.handleAction = async function(status) {
+                const noteEl = document.getElementById('verificationNote');
+                const note = noteEl ? noteEl.value : '';
+                
+                if ((status === 'rejected' || status === 'clarification_required') && !note.trim()) {
+                    alert('Mohon isi catatan/alasan petugas!');
+                    return;
+                }
+
+                if (!confirm('Apakah Anda yakin ingin memproses klaim dengan keputusan ini?')) {
+                    return;
+                }
+
+                try {
+                    const result = await window.apiFetch('/claims/' + claimId + '/verify', {
+                        method: 'PATCH',
+                        body: JSON.stringify({
+                            status_verif: status,
+                            catatan_evaluasi: note
+                        })
+                    });
+
+                    if (result.response.ok) {
+                        const updatedData = result.data.data || item;
+                        // Set modal names
+                        document.getElementById('modalSetujuNama').innerText = item.claimant;
+                        document.getElementById('modalKlarifikasiNama').innerText = item.claimant;
+                        document.getElementById('modalTolakNama').innerText = item.claimant;
+                        
+                        // Show success modal based on status
+                        if (status === 'approved') {
+                            document.getElementById('modalSetujuToken').innerText = updatedData.token_pengambilan || '-';
+                            document.getElementById('modalSetuju').classList.add('active');
+                        } else if (status === 'clarification_required') {
+                            document.getElementById('modalKlarifikasi').classList.add('active');
+                        } else if (status === 'rejected') {
+                            document.getElementById('modalTolak').classList.add('active');
+                        }
+                    } else {
+                        alert('Gagal memproses klaim: ' + (result.data.message || 'Error server'));
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Terjadi kesalahan jaringan.');
+                }
+            };
+
+            // ============================================================
+            // INIT
+            // ============================================================
+            renderDetail();
+            loadClaimData();
+
+            console.log('✅ Peninjauan Berkas Klaim loaded successfully!');
+
+        })();
+    </script>
+</body>
+</html>
