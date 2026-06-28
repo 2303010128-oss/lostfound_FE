@@ -87,6 +87,7 @@ async function loadDashboardActivity() {
 // --- Logika Proses Serah Terima (Handover) dengan Token ---
 window.processHandover = async function() {
     const input = document.getElementById('inputTokenHandover');
+    const fileInput = document.getElementById('fotoSerahTerima');
     const btn = document.getElementById('btnProsesSerahTerima');
     
     const token = input.value.trim().toUpperCase();
@@ -97,6 +98,12 @@ window.processHandover = async function() {
         return;
     }
 
+    if (!fileInput.files || fileInput.files.length === 0) {
+        alert('TOLONG UNGGAH FOTO BUKTI SERAH TERIMA!');
+        fileInput.focus();
+        return;
+    }
+
     if (!confirm(`Lanjutkan proses serah terima barang untuk token: ${token}?`)) return;
 
     const originalText = btn.innerText;
@@ -104,15 +111,20 @@ window.processHandover = async function() {
     btn.disabled = true;
 
     try {
-        // Berdasarkan dokumentasi API: POST /handovers membutuhkan token_pengambilan
+        const formData = new FormData();
+        formData.append('token_pengambilan', token);
+        formData.append('foto_serah_terima', fileInput.files[0]);
+
+        // Berdasarkan dokumentasi API: POST /handovers membutuhkan multipart/form-data
         const result = await apiFetch('/handovers', {
             method: 'POST',
-            body: JSON.stringify({ token_pengambilan: token })
+            body: formData
         });
 
         if (result.response.ok) {
             alert('🎉 SERAH TERIMA BERHASIL!\nBarang telah resmi diserahkan ke pemilik yang sah. Sistem telah mencatat log secara digital.');
             input.value = '';
+            fileInput.value = '';
             loadDashboardActivity(); // Segarkan tabel aktivitas seketika
         } else {
             alert('❌ Serah terima gagal: ' + (result.data.message || 'Token tidak valid, kedaluwarsa, atau barang sudah diambil sebelumnya.'));

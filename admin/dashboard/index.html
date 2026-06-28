@@ -525,7 +525,12 @@
                     <div class="token-subtitle">Token bersifat unik untuk setiap transaksi pengambilan.</div>
                     
                     <!-- Ubah div statis menjadi input field sungguhan -->
-                    <input type="text" id="inputTokenHandover" class="token-box" placeholder="LF-ORANGE-XXXX" style="width: 100%; text-align: center; border: 2px dashed #ea580c; outline: none; background: #fffaf5; font-family: monospace; font-size: 18px; letter-spacing: 2px; text-transform: uppercase;">
+                    <input type="text" id="inputTokenHandover" class="token-box" placeholder="LF-ORANGE-XXXX" style="width: 100%; text-align: center; border: 2px dashed #ea580c; outline: none; background: #fffaf5; font-family: monospace; font-size: 18px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">
+                    
+                    <div style="margin-bottom: 16px; font-size: 12px;">
+                        <label style="display:block; margin-bottom:6px; font-weight:600; color:#334155;">Unggah Foto Bukti Serah Terima <span style="color:#ef4444;">*</span></label>
+                        <input type="file" id="fotoSerahTerima" accept="image/png, image/jpeg, image/jpg" style="width: 100%; border: 1px solid #e2e8f0; padding: 8px; border-radius: 6px; background: #fff;">
+                    </div>
                     
                     <button class="btn-submit-token" id="btnProsesSerahTerima" onclick="processHandover()">
                         ⚡ PROSES SERAH TERIMA
