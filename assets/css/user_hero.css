@@ -60,10 +60,50 @@
     border: 1px solid #ffd3c0;
 }
 
+/* Tombol-tombol Hero */
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-hero-primary {
+    background: #a33900;
+    color: #ffffff;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-hero-primary:hover { background: #8a2f00; }
+
+.btn-hero-outline {
+    border: 1.5px solid #a33900;
+    color: #a33900;
+    padding: 12.5px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+}
+
+.btn-hero-outline:hover { background: #fff5f0; }
+
 @media (max-width: 768px) {
     .hero { padding: 60px 0; }
     .hero h1 { font-size: 26px; }
     .hero .blob { filter: blur(30px); }
     .hero .blob-1 { width: 100px; height: 100px; }
     .hero .blob-2 { width: 100px; height: 100px; }
+    
+    .hero-buttons { flex-direction: column; width: 100%; max-width: 320px; margin: 0 auto; }
+    .btn-hero-primary, .btn-hero-outline { width: 100%; justify-content: center; }
 }
