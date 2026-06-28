@@ -4,14 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Peninjauan Berkas Klaim - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --text-dark: #0f172a;
-            --text-gray: #64748b;
-            --orange: #ea580c;
-            --border-color: #e2e8f0;
-        }
-
         /* ============================================================
                    RESET & BASE STYLES
                    ============================================================ */
@@ -22,630 +17,181 @@
         }
 
         body {
-            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f1f5f9;
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
             min-height: 100vh;
             display: flex;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            cursor: pointer;
-            font-family: inherit;
-            border: none;
-            background: none;
-        }
-
-        input {
-            font-family: inherit;
-        }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+        textarea { font-family: inherit; }
         
-
-        /* ============================================================
-                   MAIN CONTENT
-                   ============================================================ */
-        .main-content {
+        .main-workspace {
             margin-left: 260px;
-            flex: 1;
-            min-height: 100vh;
-            display: flex;
             flex-direction: column;
-            padding: 32px 40px;
+            align-items: flex-start;
+            flex: 1;
+            flex-grow: 1;
+            z-index: 0;
+            position: relative;
+            display: flex;
+            align-self: stretch;
+            min-height: 100vh;
+            background-color: #f8fafc;
         }
 
-        /* ============================================================
-                   TOPBAR
-                   ============================================================ */
-        .topbar {
-            background: #ffffff;
-            padding: 14px 28px;
-            border-bottom: 1px solid #e2e8f0;
+        .header-top-app-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .topbar .page-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        .topbar .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .topbar .topbar-right .notification {
-            font-size: 18px;
-            cursor: pointer;
+            padding: 16px 32px;
             position: relative;
-        }
-
-        .topbar .topbar-right .notification .dot {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 7px;
-            height: 7px;
-            background: #ef4444;
-            border-radius: 50%;
-            border: 2px solid #ffffff;
-        }
-
-        .topbar .topbar-right .admin-badge {
-            background: #a33900;
-            color: #ffffff;
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 600;
-        }
-
-        .topbar .topbar-right .admin-name {
-            font-size: 13px;
-            font-weight: 500;
-            color: #0f172a;
-        }
-
-        .topbar .topbar-right .divider {
-            width: 1px;
-            height: 20px;
-            background: #e2e8f0;
-        }
-
-        /* ============================================================
-                   BREADCRUMB
-                   ============================================================ */
-        .breadcrumb {
-            padding: 14px 28px 0 28px;
-            font-size: 13px;
-            color: #64748b;
-        }
-        .breadcrumb a {
-            color: #a33900;
-        }
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-        .breadcrumb .separator {
-            margin: 0 8px;
-            color: #94a3b8;
-        }
-        .breadcrumb .current {
-            color: #0f172a;
-            font-weight: 500;
-        }
-
-        /* ============================================================
-                   CONTENT
-                   ============================================================ */
-        .dashboard-content {
-            flex: 1;
-        }
-
-        /* ============================================================
-                   DETAIL CARD
-                   ============================================================ */
-        .detail-card {
-            background: #ffffff;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            padding: 28px 32px;
-            max-width: 820px;
-            margin: 0 auto;
-        }
-
-        .detail-card .card-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 4px;
-        }
-
-        .detail-card .card-subtitle {
-            font-size: 14px;
-            color: #64748b;
-            margin-bottom: 20px;
-        }
-
-        .detail-card .section {
-            margin-bottom: 20px;
-        }
-
-        .detail-card .section:last-child {
-            margin-bottom: 0;
-        }
-
-        .detail-card .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #0f172a;
-            margin-bottom: 6px;
-        }
-
-        .detail-card .section-desc {
-            font-size: 13px;
-            color: #475569;
-            line-height: 1.7;
-            padding: 12px 16px;
-            background: #f8fafc;
-            border-radius: 8px;
-            border-left: 3px solid #a33900;
-        }
-
-        /* ============================================================
-                   SEARCH BAR - "Cari berkas..."
-                   ============================================================ */
-        .search-berkas {
-            display: flex;
-            align-items: center;
-            background: #f1f5f9;
-            border-radius: 8px;
-            padding: 8px 14px;
-            gap: 10px;
-            border: 1px solid #e2e8f0;
-            transition: border-color 0.3s ease;
-            margin-top: 6px;
-        }
-
-        .search-berkas:focus-within {
-            border-color: #a33900;
-            background: #ffffff;
-        }
-
-        .search-berkas .search-icon {
-            color: #94a3b8;
-            font-size: 14px;
-        }
-
-        .search-berkas input {
-            border: none;
-            outline: none;
-            background: transparent;
-            font-size: 13px;
-            color: #0f172a;
+            align-self: stretch;
             width: 100%;
-            font-family: inherit;
+            flex: 0 0 auto;
+            z-index: 1;
+            background-color: #ffffffcc;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-color: #e2e8f0;
+            backdrop-filter: blur(6px) brightness(100%);
+            -webkit-backdrop-filter: blur(6px) brightness(100%);
         }
 
-        .search-berkas input::placeholder {
-            color: #94a3b8;
-        }
-
-        .detail-card .file-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 8px;
-        }
-
-        .detail-card .file-list li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 0;
-            font-size: 13px;
-            color: #334155;
-        }
-
-        .detail-card .file-list li .file-icon {
-            font-size: 14px;
-            color: #a33900;
-        }
-
-        .detail-card .file-list li .file-name {
-            font-weight: 500;
-        }
-
-        /* ============================================================
-                   VERIFICATION SECTION
-                   ============================================================ */
-        .detail-card .verification-section .verification-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-
-        .detail-card .verification-section textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 13px;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 60px;
-            outline: none;
-            transition: border-color 0.3s ease;
-            background: #ffffff;
-            color: #0f172a;
-        }
-
-        .detail-card .verification-section textarea:focus {
-            border-color: #a33900;
-        }
-
-        .detail-card .verification-section textarea::placeholder {
-            color: #94a3b8;
-        }
-
-        .detail-card .decision-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-
-        .detail-card .decision-buttons .btn {
-            padding: 8px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 13px;
-            transition: all 0.3s ease;
-        }
-
-        .detail-card .decision-buttons .btn-success {
-            background: #22c55e;
-            color: #ffffff;
-        }
-
-        .detail-card .decision-buttons .btn-success:hover {
-            background: #16a34a;
-        }
-
-        .detail-card .decision-buttons .btn-warning {
-            background: #f59e0b;
-            color: #ffffff;
-        }
-
-        .detail-card .decision-buttons .btn-warning:hover {
-            background: #d97706;
-        }
-
-        .detail-card .decision-buttons .btn-danger {
-            background: #ef4444;
-            color: #ffffff;
-        }
-
-        .detail-card .decision-buttons .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .detail-card .decision-buttons .btn-back {
-            background: #e2e8f0;
-            color: #0f172a;
-        }
-
-        .detail-card .decision-buttons .btn-back:hover {
-            background: #cbd5e1;
-        }
-
-        /* ============================================================
-                   REVIEW SECTION
-                   ============================================================ */
-        .detail-card .review-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 16px;
-            background: #fef3c7;
-            border-radius: 8px;
-            margin-top: 16px;
-            margin-bottom: 8px;
-        }
-
-        .detail-card .review-section .review-icon {
-            font-size: 18px;
-        }
-
-        .detail-card .review-section .review-text {
-            font-size: 13px;
-            font-weight: 500;
-            color: #92400e;
-        }
-
-        .detail-card .review-section .review-id {
-            font-size: 13px;
-            color: #92400e;
-            margin-left: auto;
-            font-weight: 600;
-        }
-
-        /* ============================================================
-                   WARNING BOX
-                   ============================================================ */
-        .detail-card .warning-box {
-            background: #fef3c7;
-            border-left: 3px solid #f59e0b;
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #92400e;
-            margin-top: 8px;
-        }
-
-        .detail-card .warning-box .warning-icon {
-            margin-right: 8px;
-        }
-
-        /* ============================================================
-                   RESPONSIVE
-                   ============================================================ */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #0f172a;
-            font-size: 22px;
-            padding: 4px;
-        }
-
-        .menu-toggle svg {
-            width: 22px;
-            height: 22px;
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 23, 42, 0.5);
-            z-index: 99;
-        }
-
-        .sidebar-overlay.active {
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                width: 280px;
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .sidebar-overlay.active {
-                display: block;
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .topbar {
-                padding: 10px 16px;
-            }
-
-            .topbar .page-title {
-                font-size: 16px;
-            }
-
-            .topbar .topbar-right .admin-name {
-                display: none;
-            }
-
-            .topbar .topbar-right .divider {
-                display: none;
-            }
-
-            .breadcrumb {
-                padding: 10px 16px 0 16px;
-                font-size: 12px;
-            }
-
-            .dashboard-content {
-                padding: 14px 16px 24px 16px;
-            }
-
-            .detail-card {
-                padding: 16px 18px;
-            }
-
-            .detail-card .card-title {
-                font-size: 17px;
-            }
-
-            .detail-card .decision-buttons {
-                flex-direction: column;
-            }
-
-            .detail-card .decision-buttons .btn {
-                text-align: center;
-                width: 100%;
-            }
-
-            .detail-card .review-section {
-                flex-wrap: wrap;
-            }
-
-            .detail-card .review-section .review-id {
-                margin-left: 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .topbar .page-title {
-                font-size: 14px;
-            }
-
-            .topbar .topbar-right .admin-badge {
-                font-size: 9px;
-                padding: 2px 10px;
-            }
-
-            .detail-card .section-desc {
-                font-size: 12px;
-                padding: 10px 12px;
-            }
-
-            .search-berkas input {
-                font-size: 12px;
-            }
-        }
-    
-        /* ============================================================
-                   GRID LAYOUT FOR VERIFICATION (MODERN)
-                   ============================================================ */
-        .verification-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-top: 24px;
-        }
-
-        .grid-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
+        .container-4 { display: inline-flex; align-items: center; gap: 16px; position: relative; flex: 0 0 auto; }
+        .container-wrapper { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 6px 8px; flex: 0 0 auto; position: relative; border-radius: 12px; cursor: pointer; transition: transform 0.2s; }
+        .container-wrapper:hover { transform: translateX(-2px); }
+        .container-5 { display: inline-flex; align-items: flex-start; position: relative; flex: 0 0 auto; }
+        .container-6 { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; position: relative; flex: 0 0 auto; }
+        .div-wrapper-2 { display: flex; flex-direction: column; align-items: flex-start; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-10 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 20px; line-height: 28px; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .text-wrapper-8 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 400; color: #64748b; font-size: 12px; line-height: 16px; white-space: nowrap; }
         
-        .grid-card-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 12px;
+        .div-2 { display: inline-flex; flex-direction: column; align-items: flex-start; position: relative; flex: 0 0 auto; }
+        .input-search { display: flex; width: 256px; align-items: center; justify-content: flex-start; padding: 9px 16px 10px 16px; position: relative; flex: 0 0 auto; background-color: #f1f5f9; border-radius: 12px; border: 1px solid transparent; gap: 8px; }
+        .input-search input { background: transparent; border: none; outline: none; width: 100%; font-size: 14px; color: #0f172a; }
+        
+        .content-area-margin { padding: 32px; align-self: stretch; z-index: 0; display: flex; flex-direction: column; align-items: flex-start; position: relative; width: 100%; flex: 0 0 auto; }
+        .content-area { width: 100%; gap: 40px; display: flex; flex-direction: column; align-items: flex-start; position: relative; flex: 0 0 auto; }
+        .page-header { display: flex; flex-direction: column; align-items: flex-start; gap: 6.88px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-12 { position: relative; display: flex; align-items: center; align-self: stretch; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 24px; line-height: 32px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .periksa-bukti-di { position: relative; width: fit-content; margin-top: -1px; font-weight: 400; color: #64748b; font-size: 14px; line-height: 22.8px; }
+        
+        .dashboard-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 32px; width: 100%; align-items: start; }
+        
+        .left-column { position: relative; width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
+        .div-3 { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding: 32px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #ffffff; border-radius: 32px; border: 1px solid; border-color: #e2e8f0; box-shadow: 0px 1px 2px #0000000d; }
+        .container-9 { display: flex; align-items: center; gap: 12px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .background-3 { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 6px 8px; position: relative; flex: 0 0 auto; background-color: #fff7ed; border-radius: 12px; }
+        .text-wrapper-13 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 18px; line-height: 28px; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .blockquote { display: flex; flex-direction: column; align-items: flex-start; padding: 24px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #f8fafc; border-radius: 16px; border-left-width: 4px; border-left-style: solid; border-color: #ea580c; }
+        .terdapat-gantungan { position: relative; width: fit-content; margin-top: -4px; font-weight: 400; font-style: italic; color: #334155; font-size: 16px; line-height: 26px; }
+        
+        .container-10 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; width: 100%; }
+        .container-11 { position: relative; width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+        .background-border-2 { position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; aspect-ratio: 1.33; object-fit: cover; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .container-12 { display: flex; flex-direction: column; align-items: center; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-14 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #94a3b8; font-size: 10px; text-align: center; letter-spacing: 1px; line-height: 15px; white-space: nowrap; }
+        
+        .background-border-3 { display: flex; align-items: center; gap: 12px; padding: 16px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #fef2f2; border-radius: 16px; border: 1px solid; border-color: #fee2e2; margin-top: 16px; }
+        .p { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 500; color: #b91c1c; font-size: 12px; line-height: 16px; white-space: nowrap; }
+        
+        .right-column { position: relative; width: 100%; display: flex; flex-direction: column; align-items: flex-start; }
+        .background-border-4 { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; padding: 32px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #ffffff; border-radius: 32px; border: 1px solid; border-color: #e2e8f0; box-shadow: 0px 1px 2px #0000000d; }
+        .container-14 { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .container-15 { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-15 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #94a3b8; font-size: 10px; letter-spacing: 1px; line-height: 15px; white-space: nowrap; }
+        .textarea-input { width: 100%; padding: 12px; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; font-size: 14px; font-weight: 500; color: #334155; min-height: 100px; resize: vertical; outline: none; }
+        .textarea-input:focus { border-color: #94a3b8; }
+        .textarea-input::placeholder { color: #cbd5e1; }
+        
+        .container-16 { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .button-2 { box-sizing: border-box; gap: 7.99px; background-color: #10b981; display: flex; align-items: center; justify-content: center; padding: 16px 0px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-radius: 16px; transition: 0.2s; }
+        .button-2:hover { background-color: #059669; }
+        .text-wrapper-16 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #ffffff; font-size: 14px; text-align: center; line-height: 20px; white-space: nowrap; }
+        
+        .button-3 { box-sizing: border-box; gap: 8px; background-color: #0f172a; display: flex; align-items: center; justify-content: center; padding: 16px 0px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-radius: 16px; transition: 0.2s; }
+        .button-3:hover { background-color: #1e293b; }
+        .text-wrapper-17 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #ffffff; font-size: 14px; text-align: center; line-height: 20px; white-space: nowrap; }
+        
+        .button-4 { box-sizing: border-box; gap: 8px; border: 2px solid; border-color: #ef4444; display: flex; align-items: center; justify-content: center; padding: 16px 0px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-radius: 16px; background: white; transition: 0.2s; }
+        .button-4:hover { background-color: #fef2f2; }
+        .text-wrapper-18 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #ef4444; font-size: 14px; text-align: center; line-height: 20px; white-space: nowrap; }
+        
+        .horizontal-border { display: flex; align-items: center; justify-content: space-between; padding: 24px 0px 0px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-top-width: 1px; border-top-style: solid; border-color: #f1f5f9; }
+        .container-18 { display: inline-flex; align-items: center; gap: 8px; position: relative; flex: 0 0 auto; }
+        .background-4-dot { position: relative; width: 8px; height: 8px; background-color: #f59e0b; border-radius: 9999px; animation: pulse 2s infinite; }
+        .text-wrapper-19 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 400; color: #cbd5e1; font-size: 10px; line-height: 15px; white-space: nowrap; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
         }
 
-        .photo-evidence-container {
-            border-radius: 8px;
-            overflow: hidden;
-            background: #f1f5f9;
-            aspect-ratio: 3/2;
-            position: relative;
-        }
-        .photo-evidence-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-        .photo-evidence-container:hover img {
-            transform: scale(1.05);
-        }
+.tw-fixed { position: fixed; }
+        .tw-absolute { position: absolute; }
+        .tw-relative { position: relative; }
+        .tw-inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .tw-z-100 { z-index: 100; }
+        .tw-z-110 { z-index: 110; }
+        .tw-flex { display: flex; }
+        .tw-flex-col { flex-direction: column; }
+        .tw-items-center { align-items: center; }
+        .tw-justify-center { justify-content: center; }
+        .tw-p-4 { padding: 1rem; }
+        .tw-p-8 { padding: 2rem; }
+        .tw-bg-black-50 { background-color: rgba(0, 0, 0, 0.5); }
+        .tw-backdrop-blur { backdrop-filter: blur(4px); }
+        .tw-bg-white { background-color: #ffffff; }
+        .tw-max-w-md { max-width: 28rem; }
+        .tw-w-full { width: 100%; }
+        .tw-rounded-xl { border-radius: 0.75rem; }
+        .tw-rounded-lg { border-radius: 0.5rem; }
+        .tw-rounded-full { border-radius: 9999px; }
+        .tw-shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .tw-shadow-lg-emerald { box-shadow: 0 10px 15px -3px rgba(167, 243, 208, 0.5); }
+        .tw-shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .tw-shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .tw-text-center { text-align: center; }
+        .tw-w-16 { width: 4rem; }
+        .tw-h-16 { height: 4rem; }
+        .tw-mx-auto { margin-left: auto; margin-right: auto; }
+        .tw-mb-6 { margin-bottom: 1.5rem; }
+        .tw-mb-3 { margin-bottom: 0.75rem; }
+        .tw-mb-4 { margin-bottom: 1rem; }
+        .tw-mb-8 { margin-bottom: 2rem; }
+        .tw-text-white { color: #ffffff; }
+        .tw-text-4xl { font-size: 2.25rem; }
+        .tw-font-bold { font-weight: 700; }
+        .tw-font-semibold { font-weight: 600; }
+        .tw-text-headline-sm { font-size: 1.25rem; font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; color: #131b2e; }
+        .tw-text-body-md { font-size: 1rem; line-height: 1.625; font-family: 'Inter', sans-serif; color: #5a4138; }
+        .tw-bg-slate-900 { background-color: #0f172a; transition: all 0.2s; cursor: pointer; border: none; }
+        .tw-bg-slate-900:hover { background-color: #1e293b; }
+        .tw-bg-inverse { background-color: #283044; transition: all 0.2s; cursor: pointer; border: none; }
+        .tw-bg-inverse:hover { opacity: 0.9; }
+        .tw-py-3-5 { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+        .tw-py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .tw-px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .tw-border-t-4 { border-top: 4px solid; }
+        .tw-border-error { border-color: #ba1a1a; }
+        .tw-border-tertiary { border: 1px solid rgba(0, 93, 168, 0.2); }
+        .tw-transition-all { transition: all 0.3s; }
+        .tw-animate-zoom { animation: modalZoom 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         
-        /* Modals */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 9999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 32px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-            animation: modalPop 0.3s ease-out;
-        }
-        @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        
-        .modal-icon-wrapper {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px auto;
-            font-size: 32px;
-        }
-        .modal-icon-success { background: #dcfce7; color: #16a34a; }
-        .modal-icon-warning { background: #dbeafe; color: #0284c7; }
-        .modal-icon-danger { background: #fee2e2; color: #dc2626; }
-        
-        .modal-title { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 12px; }
-        .modal-desc { font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 24px; }
-        .modal-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            background: #0f172a;
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.2s;
-            border: none;
-            cursor: pointer;
-        }
-        .modal-btn:hover { background: #1e293b; }
-
-        @media (max-width: 1024px) {
-            .verification-grid { grid-template-columns: 1fr; }
+        @keyframes modalZoom {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-</style>
+        .stitch-modal { display: none; }
+        .stitch-modal.active { display: flex !important; }
+    </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
     <link rel="stylesheet" href="../../assets/css/admin_header.css">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -681,7 +227,133 @@
     <!-- Modals (Exact Stitch Design Ported to Vanilla CSS) -->
     
     <style>
-        .tw-fixed { position: fixed; }
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+        textarea { font-family: inherit; }
+        
+        .main-workspace {
+            margin-left: 260px;
+            flex-direction: column;
+            align-items: flex-start;
+            flex: 1;
+            flex-grow: 1;
+            z-index: 0;
+            position: relative;
+            display: flex;
+            align-self: stretch;
+            min-height: 100vh;
+            background-color: #f8fafc;
+        }
+
+        .header-top-app-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 32px;
+            position: relative;
+            align-self: stretch;
+            width: 100%;
+            flex: 0 0 auto;
+            z-index: 1;
+            background-color: #ffffffcc;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-color: #e2e8f0;
+            backdrop-filter: blur(6px) brightness(100%);
+            -webkit-backdrop-filter: blur(6px) brightness(100%);
+        }
+
+        .container-4 { display: inline-flex; align-items: center; gap: 16px; position: relative; flex: 0 0 auto; }
+        .container-wrapper { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 6px 8px; flex: 0 0 auto; position: relative; border-radius: 12px; cursor: pointer; transition: transform 0.2s; }
+        .container-wrapper:hover { transform: translateX(-2px); }
+        .container-5 { display: inline-flex; align-items: flex-start; position: relative; flex: 0 0 auto; }
+        .container-6 { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; position: relative; flex: 0 0 auto; }
+        .div-wrapper-2 { display: flex; flex-direction: column; align-items: flex-start; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-10 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 20px; line-height: 28px; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .text-wrapper-8 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 400; color: #64748b; font-size: 12px; line-height: 16px; white-space: nowrap; }
+        
+        .div-2 { display: inline-flex; flex-direction: column; align-items: flex-start; position: relative; flex: 0 0 auto; }
+        .input-search { display: flex; width: 256px; align-items: center; justify-content: flex-start; padding: 9px 16px 10px 16px; position: relative; flex: 0 0 auto; background-color: #f1f5f9; border-radius: 12px; border: 1px solid transparent; gap: 8px; }
+        .input-search input { background: transparent; border: none; outline: none; width: 100%; font-size: 14px; color: #0f172a; }
+        
+        .content-area-margin { padding: 32px; align-self: stretch; z-index: 0; display: flex; flex-direction: column; align-items: flex-start; position: relative; width: 100%; flex: 0 0 auto; }
+        .content-area { width: 100%; gap: 40px; display: flex; flex-direction: column; align-items: flex-start; position: relative; flex: 0 0 auto; }
+        .page-header { display: flex; flex-direction: column; align-items: flex-start; gap: 6.88px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-12 { position: relative; display: flex; align-items: center; align-self: stretch; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 24px; line-height: 32px; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .periksa-bukti-di { position: relative; width: fit-content; margin-top: -1px; font-weight: 400; color: #64748b; font-size: 14px; line-height: 22.8px; }
+        
+        .dashboard-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 32px; width: 100%; align-items: start; }
+        
+        .left-column { position: relative; width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 32px; }
+        .div-3 { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; padding: 32px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #ffffff; border-radius: 32px; border: 1px solid; border-color: #e2e8f0; box-shadow: 0px 1px 2px #0000000d; }
+        .container-9 { display: flex; align-items: center; gap: 12px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .background-3 { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 6px 8px; position: relative; flex: 0 0 auto; background-color: #fff7ed; border-radius: 12px; }
+        .text-wrapper-13 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #0f172a; font-size: 18px; line-height: 28px; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .blockquote { display: flex; flex-direction: column; align-items: flex-start; padding: 24px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #f8fafc; border-radius: 16px; border-left-width: 4px; border-left-style: solid; border-color: #ea580c; }
+        .terdapat-gantungan { position: relative; width: fit-content; margin-top: -4px; font-weight: 400; font-style: italic; color: #334155; font-size: 16px; line-height: 26px; }
+        
+        .container-10 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; width: 100%; }
+        .container-11 { position: relative; width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+        .background-border-2 { position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; aspect-ratio: 1.33; object-fit: cover; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .container-12 { display: flex; flex-direction: column; align-items: center; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-14 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #94a3b8; font-size: 10px; text-align: center; letter-spacing: 1px; line-height: 15px; white-space: nowrap; }
+        
+        .background-border-3 { display: flex; align-items: center; gap: 12px; padding: 16px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #fef2f2; border-radius: 16px; border: 1px solid; border-color: #fee2e2; margin-top: 16px; }
+        .p { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 500; color: #b91c1c; font-size: 12px; line-height: 16px; white-space: nowrap; }
+        
+        .right-column { position: relative; width: 100%; display: flex; flex-direction: column; align-items: flex-start; }
+        .background-border-4 { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; padding: 32px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #ffffff; border-radius: 32px; border: 1px solid; border-color: #e2e8f0; box-shadow: 0px 1px 2px #0000000d; }
+        .container-14 { display: flex; flex-direction: column; align-items: flex-start; gap: 24px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .container-15 { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .text-wrapper-15 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #94a3b8; font-size: 10px; letter-spacing: 1px; line-height: 15px; white-space: nowrap; }
+        .textarea-input { width: 100%; padding: 12px; background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; font-size: 14px; font-weight: 500; color: #334155; min-height: 100px; resize: vertical; outline: none; }
+        .textarea-input:focus { border-color: #94a3b8; }
+        .textarea-input::placeholder { color: #cbd5e1; }
+        
+        .container-16 { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; }
+        .button-2 { box-sizing: border-box; gap: 7.99px; background-color: #10b981; display: flex; align-items: center; justify-content: center; padding: 16px 0px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-radius: 16px; transition: 0.2s; }
+        .button-2:hover { background-color: #059669; }
+        .text-wrapper-16 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #ffffff; font-size: 14px; text-align: center; line-height: 20px; white-space: nowrap; }
+        
+        .button-3 { box-sizing: border-box; gap: 8px; background-color: #0f172a; display: flex; align-items: center; justify-content: center; padding: 16px 0px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-radius: 16px; transition: 0.2s; }
+        .button-3:hover { background-color: #1e293b; }
+        .text-wrapper-17 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #ffffff; font-size: 14px; text-align: center; line-height: 20px; white-space: nowrap; }
+        
+        .button-4 { box-sizing: border-box; gap: 8px; border: 2px solid; border-color: #ef4444; display: flex; align-items: center; justify-content: center; padding: 16px 0px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-radius: 16px; background: white; transition: 0.2s; }
+        .button-4:hover { background-color: #fef2f2; }
+        .text-wrapper-18 { position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #ef4444; font-size: 14px; text-align: center; line-height: 20px; white-space: nowrap; }
+        
+        .horizontal-border { display: flex; align-items: center; justify-content: space-between; padding: 24px 0px 0px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-top-width: 1px; border-top-style: solid; border-color: #f1f5f9; }
+        .container-18 { display: inline-flex; align-items: center; gap: 8px; position: relative; flex: 0 0 auto; }
+        .background-4-dot { position: relative; width: 8px; height: 8px; background-color: #f59e0b; border-radius: 9999px; animation: pulse 2s infinite; }
+        .text-wrapper-19 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 400; color: #cbd5e1; font-size: 10px; line-height: 15px; white-space: nowrap; }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+.tw-fixed { position: fixed; }
         .tw-absolute { position: absolute; }
         .tw-relative { position: relative; }
         .tw-inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
@@ -885,6 +557,7 @@
             // ============================================================
             // RENDER DETAIL
             // ============================================================
+            
             function renderDetail() {
                 var card = document.getElementById('detailCard');
 
@@ -898,89 +571,119 @@
                     return;
                 }
 
-                // Build file list
-                var filesHtml = '';
-                for (var i = 0; i < item.files.length; i++) {
-                    filesHtml += `
-                        <li>
-                            <span class="file-icon">📎</span>
-                            <span class="file-name">${item.files[i]}</span>
-                        </li>
+                // Update Header
+                document.getElementById('headerSubtitle').innerText = item.claimant + ' (#CLM-' + item.id + ')';
+
+                // Build photos html
+                var photosHtml = '';
+                if (item.foto_url) {
+                    photosHtml = `
+                    <div class="container-11">
+                        <img class="background-border-2" src="${item.foto_url}" />
+                        <div class="container-12"><div class="text-wrapper-14">BUKTI_LAMPIRAN.JPG</div></div>
+                    </div>
                     `;
+                } else {
+                    photosHtml = `<p style="font-size:14px; color:#64748b; font-style:italic;">Tidak ada lampiran foto.</p>`;
                 }
 
-                // Warning box
                 var warningHtml = '';
                 if (item.warning) {
                     warningHtml = `
-                        <div class="warning-box">
-                            <span class="warning-icon">⚠️</span>
-                            ${item.warning}
-                        </div>
+                    <div class="background-border-3">
+                        <span class="material-symbols-outlined" style="color: #b91c1c;">warning</span>
+                        <div class="div-2"><p class="p">${item.warning}</p></div>
+                    </div>
                     `;
                 }
 
-                card.innerHTML = `
-                    <div class="card-title" style="font-size:24px; margin-bottom:4px;">Peninjauan Berkas: <span style="color:#0f172a;">${item.claimant}</span> <span style="color:#a33900; opacity:0.8; font-size:18px;">(#CLM-${item.id})</span></div>
-                    <div style="font-size:14px; color:#64748b; margin-bottom:24px; max-width:800px; line-height:1.5;">Periksa bukti mendalam di bawah ini sebelum mengambil tindakan hukum. Keakuratan verifikasi menentukan integritas sistem penemuan barang.</div>
-                    
-                    <div class="verification-grid">
-                        <!-- Kolom Kiri -->
-                        <div class="grid-card">
-                            <div class="grid-card-title">📄 Deskripsi Rahasia Pengguna</div>
-                            <div style="background:#f8fafc; padding:20px; border-radius:8px; border-left:4px solid #a33900; font-style:italic; font-size:14px; color:#334155; line-height:1.6;">
-                                ${item.desc}
+                var decisionFormArea = `
+                    <div id="decisionFormArea" style="display: ${item.rawStatus !== 'pending' ? 'none' : 'block'}; width: 100%;">
+                        <div class="container-14">
+                            <div class="container-15">
+                                <div class="text-wrapper-15">CATATAN VERIFIKASI</div>
+                                <textarea id="verificationNote" class="textarea-input" placeholder="Ketik alasan jika menolak atau meminta klarifikasi..."></textarea>
                             </div>
-                            
-                            <div class="grid-card-title" style="margin-top:16px;">🖼️ Lampiran Bukti Kepemilikan</div>
-                            <div id="uiAttachmentContainer">
-                                ${item.foto_url ? `
-                                <div class="photo-evidence-container">
-                                    <img src="${item.foto_url}" alt="Lampiran Bukti">
-                                    <div style="position:absolute; bottom:8px; left:8px; background:rgba(0,0,0,0.6); color:white; font-size:10px; padding:4px 8px; border-radius:4px; backdrop-filter:blur(4px);">BUKTI_LAMPIRAN.JPG</div>
-                                </div>
-                                ` : `<p style="font-size:13px; color:#64748b; font-style:italic;">Tidak ada lampiran foto dari pengguna.</p>`}
+                            <div class="container-16">
+                                <button class="button-2" onclick="handleAction('approved')">
+                                    <span class="material-symbols-outlined" style="color: white; margin-right: 8px;">check_circle</span>
+                                    <div class="text-wrapper-16">Setujui Klaim</div>
+                                </button>
+                                <button class="button-3" onclick="handleAction('clarification_required')">
+                                    <span class="material-symbols-outlined" style="color: white; margin-right: 8px;">help_outline</span>
+                                    <div class="text-wrapper-17">Minta Klarifikasi</div>
+                                </button>
+                                <button class="button-4" onclick="handleAction('rejected')">
+                                    <span class="material-symbols-outlined" style="color: #ef4444; margin-right: 8px;">cancel</span>
+                                    <div class="text-wrapper-18">Tolak Klaim</div>
+                                </button>
                             </div>
                         </div>
+                    </div>
+                `;
 
-                        <!-- Kolom Kanan -->
-                        <div class="grid-card">
-                            <div class="grid-card-title">⚖️ Formulir Keputusan Petugas</div>
-                            
-                            <div id="decisionFormArea" style="display: ${item.rawStatus !== 'pending' ? 'none' : 'block'};">
-                                <label style="font-size:13px; font-weight:600; color:#0f172a; display:block; margin-bottom:8px;">Catatan / Alasan Petugas (Wajib jika menolak):</label>
-                                <textarea id="verificationNote" style="width:100%; border:1px solid #cbd5e1; border-radius:8px; padding:12px; font-family:inherit; font-size:13px; min-height:120px; resize:vertical; outline:none; transition:border 0.2s;" placeholder="Ketik alasan di sini..."></textarea>
+                var statusDoneArea = `
+                    <div id="statusDoneArea" style="display: ${item.rawStatus !== 'pending' ? 'flex' : 'none'}; flex-direction:column; align-items:center; justify-content:center; width: 100%; border-top: 1px solid transparent; padding: 20px;">
+                        <div style="text-align:center; padding:32px; background:${item.rawStatus === 'approved' ? '#f0fdf4' : (item.rawStatus === 'rejected' ? '#fef2f2' : '#f0f9ff')}; border:1px solid ${item.rawStatus === 'approved' ? '#bbf7d0' : (item.rawStatus === 'rejected' ? '#fecaca' : '#bae6fd')}; border-radius:12px; width:100%;">
+                            <div style="font-size:48px; margin-bottom:16px;">${item.rawStatus === 'approved' ? '✅' : (item.rawStatus === 'rejected' ? '❌' : '⏳')}</div>
+                            <div style="font-size:18px; font-weight:700; color:${item.rawStatus === 'approved' ? '#166534' : (item.rawStatus === 'rejected' ? '#991b1b' : '#075985')}; margin-bottom:16px;">
+                                ${item.rawStatus === 'approved' ? 'Klaim telah disetujui.' : (item.rawStatus === 'rejected' ? 'Klaim ini telah ditolak.' : 'Menunggu klarifikasi.')}
+                            </div>
+                            <div style="font-size:24px; font-family:monospace; font-weight:800; color:${item.rawStatus === 'approved' ? '#14532d' : (item.rawStatus === 'rejected' ? '#7f1d1d' : '#0369a1')}; letter-spacing:2px; background:#ffffff; padding:12px 24px; border-radius:8px; border:2px dashed ${item.rawStatus === 'approved' ? '#86efac' : (item.rawStatus === 'rejected' ? '#fca5a5' : '#7dd3fc')}; display:inline-block;">
+                                ${item.token || (item.rawStatus === 'rejected' ? 'REJECTED' : 'PENDING')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                card.innerHTML = `
+                    <div class="page-header">
+                        <div class="div-wrapper-2"><div class="text-wrapper-12">Pemeriksaan Bukti Mendalam</div></div>
+                        <div class="periksa-bukti-di-wrapper"><p class="periksa-bukti-di">Periksa bukti di bawah ini sebelum mengambil tindakan. Keakuratan verifikasi menentukan integritas sistem<br/>penemuan barang.</p></div>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="left-column">
+                            <div class="div-3">
+                                <div class="container-9">
+                                    <div class="background-3"><span class="material-symbols-outlined" style="color: #ea580c;">description</span></div>
+                                    <div class="div-2"><div class="text-wrapper-13">Deskripsi Rahasia Pengguna</div></div>
+                                </div>
+                                <div class="blockquote"><p class="terdapat-gantungan">${item.desc}</p></div>
+                            </div>
+                            <div class="div-3">
+                                <div class="container-9">
+                                    <div class="background-3"><span class="material-symbols-outlined" style="color: #ea580c;">attach_file</span></div>
+                                    <div class="div-2"><div class="text-wrapper-13">Lampiran Bukti</div></div>
+                                </div>
+                                <div class="container-10">
+                                    ${photosHtml}
+                                </div>
+                                ${warningHtml}
+                            </div>
+                        </div>
+                        <div class="right-column">
+                            <div class="background-border-4">
+                                <div class="container-9">
+                                    <div class="background-3"><span class="material-symbols-outlined" style="color: #ea580c;">gavel</span></div>
+                                    <div class="div-2"><div class="text-wrapper-13">Keputusan Petugas</div></div>
+                                </div>
                                 
-                                <div style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
-                                    <button class="btn-action" onclick="handleAction('approved')" style="background:#10b981; color:white; padding:14px; border-radius:8px; font-weight:600; font-size:14px; border:none; cursor:pointer; transition:background 0.2s;">✅ Setujui Klaim (Terbitkan Token)</button>
-                                    <button class="btn-action" onclick="handleAction('clarification_required')" style="background:#0076d2; color:white; padding:14px; border-radius:8px; font-weight:600; font-size:14px; border:none; cursor:pointer; transition:background 0.2s;">❓ Minta Klarifikasi (Surat Materai)</button>
-                                    <button class="btn-action" onclick="handleAction('rejected')" style="background:transparent; border:2px solid #ef4444; color:#ef4444; padding:14px; border-radius:8px; font-weight:600; font-size:14px; cursor:pointer; transition:background 0.2s;">❌ Tolak Klaim (Bukti Palsu)</button>
-                                </div>
-                            </div>
-                            
-                            <div id="statusDoneArea" style="display: ${item.rawStatus !== 'pending' ? 'flex' : 'none'}; flex-direction:column; align-items:center; justify-content:center; height:100%; border-top: 1px solid transparent;">
-                                <div style="text-align:center; padding:32px; background:${item.rawStatus === 'approved' ? '#f0fdf4' : (item.rawStatus === 'rejected' ? '#fef2f2' : '#f0f9ff')}; border:1px solid ${item.rawStatus === 'approved' ? '#bbf7d0' : (item.rawStatus === 'rejected' ? '#fecaca' : '#bae6fd')}; border-radius:12px; width:100%;">
-                                    <div style="font-size:48px; margin-bottom:16px;">${item.rawStatus === 'approved' ? '✅' : (item.rawStatus === 'rejected' ? '❌' : '⏳')}</div>
-                                    <div style="font-size:18px; font-weight:700; color:${item.rawStatus === 'approved' ? '#166534' : (item.rawStatus === 'rejected' ? '#991b1b' : '#075985')}; margin-bottom:16px;">
-                                        ${item.rawStatus === 'approved' ? 'Klaim telah disetujui.' : (item.rawStatus === 'rejected' ? 'Klaim ini telah ditolak.' : 'Menunggu klarifikasi.')}
-                                    </div>
-                                    <div style="font-size:24px; font-family:monospace; font-weight:800; color:${item.rawStatus === 'approved' ? '#14532d' : (item.rawStatus === 'rejected' ? '#7f1d1d' : '#0369a1')}; letter-spacing:2px; background:#ffffff; padding:12px 24px; border-radius:8px; border:2px dashed ${item.rawStatus === 'approved' ? '#86efac' : (item.rawStatus === 'rejected' ? '#fca5a5' : '#7dd3fc')}; display:inline-block;">
-                                        ${item.token || (item.rawStatus === 'rejected' ? 'REJECTED' : 'PENDING')}
-                                    </div>
-                                </div>
-                            </div>
+                                ${decisionFormArea}
+                                ${statusDoneArea}
 
-                            <div style="margin-top:auto; padding-top:20px; border-top:1px solid #f1f5f9; display:flex; align-items:center; justify-content:space-between; font-size:12px; color:#64748b;">
-                                <div style="display:flex; align-items:center; gap:6px;">
-                                    <div style="width:8px; height:8px; background:#f59e0b; border-radius:50%; animation: pulse 2s infinite;"></div>
-                                    Sedang Ditinjau oleh Admin
+                                <div class="horizontal-border">
+                                    <div class="container-18">
+                                        <div class="${item.rawStatus === 'pending' ? 'background-4-dot' : ''}" style="${item.rawStatus !== 'pending' ? 'width:8px; height:8px; background-color:#10b981; border-radius:50%;' : ''}"></div>
+                                        <div class="div-2"><div class="text-wrapper-15">${item.rawStatus === 'pending' ? 'IN REVIEW' : 'PROCESSED'}</div></div>
+                                    </div>
+                                    <div class="container-19"><div class="text-wrapper-19">ID Sesi: VER-${item.id}</div></div>
                                 </div>
-                                <div>ID Sesi: VER-9021-X</div>
                             </div>
                         </div>
                     </div>
                 `;
             }
+
 
 
             // ============================================================
