@@ -220,7 +220,7 @@
                         let title = currentTab === 'barang' ? c.judul : (c.item ? c.item.judul : 'Barang');
                         let user = c.user ? c.user.nama_lengkap : 'Anonim';
                         let idPrefix = currentTab === 'barang' ? 'ITM' : 'CLM';
-                        let linkUrl = currentTab === 'barang' ? `../antrean/detail.html?id=${c.id}` : `../verifikasi/cek.html?id=${c.id}`;
+                        let linkUrl = currentTab === 'barang' ? `detail.html?id=${c.id}&type=barang` : `detail.html?id=${c.id}&type=klaim`;
 
                         html += `<tr>
                             <td class="id-cell">#${idPrefix}-${c.id}</td>

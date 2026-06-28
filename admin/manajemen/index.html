@@ -1,122 +1,461 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Manajemen User - LostFound Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* ============================================================
-           RESET & BASE STYLES
-           ============================================================ */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; min-height: 100vh; display: flex; color: #1e293b; -webkit-font-smoothing: antialiased; }
-        a { text-decoration: none; color: inherit; }
-        button { cursor: pointer; font-family: inherit; border: none; background: none; outline: none; }
-
-        /* Font khusus agar Emoji 3D Apple/Windows muncul sempurna */
-        .emoji { 
-            font-family: "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif; 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center; 
-        }
-        
-
-        /* ============================================================
-           MAIN CONTENT AREA
-           ============================================================ */
-        .main-content { margin-left: 260px; flex: 1; padding: 40px; width: calc(100% - 260px); }
-
-        .page-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-        .page-title-block h1 { font-size: 20px; font-weight: 700; color: #0f172a; letter-spacing: -0.3px; }
-        .page-title-block p { font-size: 13px; color: #64748b; margin-top: 4px; }
-        
-        .header-actions { display: flex; align-items: center; gap: 16px; }
-        .search-bar { display: flex; align-items: center; background: #f1f5f9; border-radius: 8px; padding: 10px 16px; width: 260px; gap: 10px; }
-        .search-bar svg { width: 16px; height: 16px; stroke: #64748b; stroke-width: 2; fill: none; }
-        .search-bar input { border: none; background: transparent; outline: none; font-size: 13px; color: #0f172a; width: 100%; }
-        .icon-btn { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; transition: 0.2s; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; color: #475569; }
-        .icon-btn:hover { background: #f8fafc; color: #0f172a; }
-
-        /* ============================================================
-           STATS CARDS (EMOJI 3D)
-           ============================================================ */
-        .stats-row { display: flex; gap: 16px; margin-bottom: 32px; }
-        .stat-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 16px; min-width: 200px; }
-        .stat-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .stat-icon.orange { background: #ffedd5; }
-        .stat-icon.blue { background: #e0f2fe; }
-        .stat-icon .emoji { font-size: 24px; }
-        
-        .stat-info .label { font-size: 11px; font-weight: 600; color: #64748b; margin-bottom: 4px; display: block; }
-        .stat-info .value { font-size: 20px; font-weight: 700; color: #0f172a; }
-
-        /* ============================================================
-           TABLE AREA
-           ============================================================ */
-        .data-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.8px; padding: 16px 24px; border-bottom: 1px solid #f1f5f9; }
-        td { padding: 16px 24px; font-size: 13px; color: #475569; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-        
-        .user-id { color: #64748b; }
-        
-        .user-name-col { display: flex; align-items: center; gap: 12px; }
-        .user-initial { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
-        .initial-sa { background: #f1f5f9; color: #475569; }
-        .initial-bk { background: #ffedd5; color: #ea580c; }
-        .initial-dr { background: #f1f5f9; color: #475569; }
-        .initial-ep { background: #e0f2fe; color: #0284c7; }
-        .user-name-text { font-weight: 500; color: #0f172a; }
-
-        .role-badge { background: #f1f5f9; color: #475569; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; display: inline-block; }
-
-        .status-indicator { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-        .status-dot { width: 6px; height: 6px; border-radius: 50%; }
-        .status-nonaktif { color: #94a3b8; }
-        .status-nonaktif .status-dot { background: #cbd5e1; }
-        .status-aktif { color: #16a34a; }
-        .status-aktif .status-dot { background: #16a34a; }
-
-        .btn-delete { color: #cbd5e1; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; }
-        .btn-delete:hover { color: #ef4444; background: #fee2e2; }
-
-        /* Pagination Footer */
-        .table-footer { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; font-size: 12px; color: #64748b; }
-        .pagination { display: flex; gap: 4px; }
-        .page-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-weight: 600; font-size: 12px; color: #475569; transition: 0.2s; }
-        .page-btn:hover:not(.active) { background: #f1f5f9; }
-        .page-btn.active { background: #c2410c; color: #ffffff; }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen User - Admin Lost & Found</title>
+    <!-- Injected Base Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
     <link rel="stylesheet" href="../../assets/css/admin_header.css">
-</head>
-<body>
 
-    <!-- SIDEBAR -->
+    <style>
+        /* ============================================================
+                   RESET & BASE STYLES
+                   ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            color: #1e293b;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            outline: none;
+        }
+
+        /* ============================================================
+                   MAIN CONTENT LAYOUT
+                   ============================================================ */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* TABLE CSS */
+        .data-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 16px 24px;
+            background: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        tr {
+            transition: background 0.15s ease;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        td {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13.5px;
+            color: #334155;
+            vertical-align: middle;
+        }
+        
+        /* Pagination layout */
+        .table-footer-pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: #ffffff;
+        }
+
+        .entries-info {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .pagination-list {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+
+        .page-link-item {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .page-link-item:hover:not(.active):not(.arrow) {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .page-link-item.active {
+            background: #ea580c;
+            color: #ffffff;
+        }
+
+        .page-link-item.arrow {
+            color: #cbd5e1;
+            font-size: 14px;
+        }
+        /* ============================================================
+           MANAJEMEN USER SPECIFIC STYLES - ULTRA PREMIUM
+           ============================================================ */
+        .controls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            gap: 16px;
+        }
+
+        .search-filter-group {
+            display: flex;
+            gap: 12px;
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .search-box input:focus {
+            border-color: #ea580c;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.1);
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .filter-select {
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            background: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .btn-add-user {
+            background: linear-gradient(135deg, #ea580c, #c2410c);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .btn-add-user:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(234, 88, 12, 0.3);
+        }
+
+        /* User Table Styles */
+        .user-name-col {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        .user-info-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name-title {
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 14px;
+        }
+
+        .user-phone {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .role-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .role-satpam {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .role-mahasiswa {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .actions-flex {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action-sm {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-edit {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .btn-edit:hover {
+            background: #dbeafe;
+        }
+
+        .btn-delete {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .btn-delete:hover {
+            background: #fee2e2;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            animation: modalSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes modalSlideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .btn-close-modal {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-close-modal:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #ea580c;
+            box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.1);
+        }
+
+        .modal-footer {
+            margin-top: 32px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-modal-cancel {
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-modal-save {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+    </style>
+</head>
+<body class="admin-body">
+    <!-- Injected Sidebar -->
     <div id="app-sidebar"></div>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
         <div id="app-header" data-title="Manajemen User" data-breadcrumb="Settings > <span>Manajemen User</span>"></div>
 
-        <!-- KARTU STATISTIK DENGAN EMOJI 3D BERWARNA -->
-        <section class="stats-row">
-            <div class="stat-card">
-                <div class="stat-icon orange"><span class="emoji">👥</span></div>
-                <div class="stat-info">
-                    <span class="label">Total User Umum</span>
-                    <span class="value" id="stat-total-user">...</span>
+        <section class="controls-row">
+            <div class="search-filter-group">
+                <div class="search-box">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <input type="text" id="searchInput" placeholder="Cari nama atau email..." onkeyup="handleSearch(event)">
                 </div>
+                <select class="filter-select" id="roleFilter" onchange="loadUsers(1)">
+                    <option value="all">Semua Role</option>
+                    <option value="mahasiswa">Mahasiswa</option>
+                    <option value="satpam">Satpam (Admin)</option>
+                </select>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon blue"><span class="emoji">👤</span></div>
-                <div class="stat-info">
-                    <span class="label">User Aktif</span>
-                    <span class="value" id="stat-aktif-user">...</span>
-                </div>
-            </div>
+            <button class="btn-add-user" onclick="openUserModal()">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Tambah User
+            </button>
         </section>
 
         <!-- TABEL DATA -->
@@ -124,102 +463,80 @@
             <table>
                 <thead>
                     <tr>
-                        <th>ID USER</th>
-                        <th>NAMA</th>
+                        <th>PENGGUNA</th>
                         <th>ROLE</th>
                         <th>EMAIL</th>
-                        <th>STATUS</th>
+                        <th>TERDAFTAR PADA</th>
                         <th>AKSI</th>
                     </tr>
                 </thead>
                 <tbody id="userTableBody">
-                        <tr><td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Memuat data user...</td></tr>
-                    </tbody>
+                    <tr><td colspan="5" style="text-align: center; padding: 40px; color: #64748b;">Memuat data...</td></tr>
+                </tbody>
             </table>
             
-            <!-- PAGINATION -->
-            <div class="table-footer">
-                <span id="footer-text">Memuat...</span>
-                <div class="pagination">
-                    <button class="page-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
-                    <button class="page-btn active">1</button>
-                    <button class="page-btn">2</button>
-                    <button class="page-btn">3</button>
-                    <button class="page-btn"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-                </div>
+            <div class="table-footer-pagination">
+                <div class="entries-info" id="paginationInfo">Memuat...</div>
+                <ul class="pagination-list" id="paginationList"></ul>
             </div>
         </section>
     </main>
+
+    <!-- USER MODAL -->
+    <div class="modal-overlay" id="userModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Tambah User Baru</h3>
+                <button class="btn-close-modal" onclick="closeUserModal()">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <form id="userForm" onsubmit="saveUser(event)">
+                <input type="hidden" id="userId">
+                
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" id="userName" class="form-input" required placeholder="Masukkan nama lengkap">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Alamat Email</label>
+                    <input type="email" id="userEmail" class="form-input" required placeholder="email@contoh.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Kontak (HP/WA)</label>
+                    <input type="text" id="userPhone" class="form-input" required placeholder="08xxxxxxxxxx">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Role Akses</label>
+                    <select id="userRole" class="form-input" required>
+                        <option value="mahasiswa">Mahasiswa (Pengguna Biasa)</option>
+                        <option value="satpam">Satpam (Admin/Petugas)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" id="passwordLabel">Kata Sandi</label>
+                    <input type="password" id="userPassword" class="form-input" minlength="6" placeholder="Minimal 6 karakter">
+                    <small style="color: #64748b; font-size: 11px; margin-top: 4px; display: block;" id="passwordHelp">Biarkan kosong jika tidak ingin mengubah password (saat edit).</small>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal-cancel" onclick="closeUserModal()">Batal</button>
+                    <button type="submit" class="btn-modal-save" id="btnSaveUser">Simpan User</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 
     <!-- Injected Base Scripts -->
     <script src="../../assets/js/auth.js"></script>
     <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/components.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const result = await window.apiFetch('/users');
-                if (result.response.ok) {
-                    let users = [];
-                    if (Array.isArray(result.data)) users = result.data;
-                    else if (result.data && Array.isArray(result.data.data)) users = result.data.data;
-                    else if (result.data && result.data.data && Array.isArray(result.data.data.data)) users = result.data.data.data;
-                    
-                    let aktifCount = 0;
-                    let html = '';
-
-                    users.forEach(u => {
-                        aktifCount++; // Untuk sementara semua user dianggap aktif karena tidak ada kolom status di DB
-                        
-                        let initial = u.nama_lengkap ? u.nama_lengkap.substring(0, 2).toUpperCase() : 'US';
-                        let roleBadge = u.role === 'satpam' ? 'SATPAM' : 'USER';
-                        
-                        html += `<tr>
-                            <td class="user-id">USR-${u.id}</td>
-                            <td>
-                                <div class="user-name-col">
-                                    <div class="user-initial" style="background: linear-gradient(135deg, #1e293b, #334155);">${initial}</div>
-                                    <span class="user-name-text">${u.nama_lengkap}</span>
-                                </div>
-                            </td>
-                            <td><span class="role-badge">${roleBadge}</span></td>
-                            <td>${u.email}</td>
-                            <td><span class="status-indicator status-aktif"><span class="status-dot"></span> AKTIF</span></td>
-                            <td>
-                                <button class="btn-delete" onclick="deleteUser(${u.id})"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
-                            </td>
-                        </tr>`;
-                    });
-
-                    if (html === '') html = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Belum ada user terdaftar.</td></tr>';
-                    document.getElementById('userTableBody').innerHTML = html;
-
-                    if(document.getElementById('stat-total-user')) document.getElementById('stat-total-user').innerText = users.length;
-                    if(document.getElementById('stat-aktif-user')) document.getElementById('stat-aktif-user').innerText = aktifCount;
-                    if(document.getElementById('footer-text')) document.getElementById('footer-text').innerText = `Menampilkan ${users.length} user`;
-                }
-            } catch (error) {
-                console.error(error);
-                document.getElementById('userTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #dc2626;">Terjadi kesalahan saat memuat data user.</td></tr>';
-            }
-        });
-
-        window.deleteUser = async function(id) {
-            if(!confirm('⚠️ PERINGATAN: Apakah Anda yakin ingin menghapus user ini selamanya?')) return;
-            try {
-                const result = await window.apiFetch('/users/' + id, { method: 'DELETE' });
-                if(result.response.ok) {
-                    alert('User berhasil dihapus dari database!');
-                    location.reload();
-                } else {
-                    alert('Gagal menghapus user: ' + (result.data.message || 'Kesalahan server'));
-                }
-            } catch(e) {
-                alert('Terjadi kesalahan jaringan.');
-            }
-        }
-    </script>
+    <script src="user.js"></script>
 </body>
 </html>

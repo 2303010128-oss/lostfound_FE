@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfirmasi Kecocokan Fisik - Lost & Found Admin</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/admin_header.css">
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            margin: 0;
+            display: flex;
+        }
+        .font-headline {
+            font-family: 'Hanken Grotesk', sans-serif;
+        }
+        /* Reset Tailwind overrides for main container */
+        .main-content {
+            margin-left: 260px;
+            padding: 32px 48px;
+            width: calc(100% - 260px);
+            flex: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .content-wrapper {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="text-[#131b2e]">
+
+    <!-- SIDEBAR LEFT -->
+    <div id="app-sidebar"></div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+        <div class="content-wrapper">
+            <!-- TOPBAR -->
+            <div id="app-header" data-title="Pengecekan Fisik" data-breadcrumb="Dashboard > Serah Terima > <span>Pengecekan Fisik</span>"></div>
+
+            <!-- Batal & Kembali Button -->
+            <button onclick="window.location.href='../dashboard/index.html'" class="group flex items-center gap-2 mb-8 mt-4 text-[#57657a] hover:text-[#a33900] transition-colors font-semibold text-sm">
+                <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">arrow_back</span>
+                Batal & Kembali ke Dashboard
+            </button>
+
+            <!-- Verification Container -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
+                <!-- Header -->
+                <header class="mb-8">
+                    <h1 class="text-3xl font-bold font-headline text-[#a33900] mb-3">
+                        Pengecekan Fisik Barang Klaim Token: <span id="uiTokenValue">...</span>
+                    </h1>
+                    <p class="text-base text-[#57657a] leading-relaxed">
+                        Petugas wajib mengambil fisik barang dari laci posko dan memperlihatkannya langsung kepada <span class="font-bold" id="uiOwnerName">Mahasiswa pengklaim</span> sebelum melanjutkan prosedur.
+                    </p>
+                </header>
+
+                <!-- Image Placeholder for Physical Verification -->
+                <div class="mb-8 rounded-lg overflow-hidden h-48 bg-slate-100 border border-slate-200 flex items-center justify-center">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOFHmpPF9K6sEAxktKzcoBdHe7p-JcC_W74Vr7uT0He69JRgfYbIOwDazofRiDqAkBTfi4Q4OlkZrNguITPEK7TITSLLG5CiIsy1oGUMxKoDaORDeB9LfeEwOw36l9Azsyixh5Qob1Vlxt_qrW7mYOxhYvH8mQajg7UW66hmNZBhK8q9jnWO_PqA57LSygeRwsho3gcTaF24c5qZ4zQ9d_T1HGkibg9SqgaNnzlG7Yu6J3aSSRLQMfbNec3RuO1l1mbSINXeH1WdY" class="w-full h-full object-cover opacity-80" alt="Physical Evidence Comparison">
+                </div>
+
+                <!-- Comparison Box -->
+                <section class="bg-slate-50 rounded-lg p-6 mb-10 border border-slate-100">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+                        <!-- Divider Line for Desktop -->
+                        <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-slate-200"></div>
+                        
+                        <!-- Left Column -->
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs font-semibold text-[#57657a] uppercase tracking-wider">Ciri dari Korban:</span>
+                            <blockquote class="italic text-lg text-[#131b2e] border-l-4 border-[#a33900] pl-4" id="uiCiriBarang">
+                                Memuat deskripsi dari klaim...
+                            </blockquote>
+                        </div>
+                        
+                        <!-- Right Column -->
+                        <div class="flex flex-col gap-2">
+                            <span class="text-xs font-semibold text-[#57657a] uppercase tracking-wider">Kategori Barang di Posko:</span>
+                            <div class="flex items-start gap-2 mt-2">
+                                <span class="material-symbols-outlined text-[#a33900]" style="font-variation-settings: 'FILL' 1;">inventory</span>
+                                <p class="text-lg text-[#131b2e] font-semibold" id="uiKategoriBarang">
+                                    Memuat data barang...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Decision Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <!-- Left Button (Failure) -->
+                    <button id="btnFail" class="flex-1 flex items-center justify-center gap-3 py-4 px-6 bg-[#ba1a1a] text-white rounded-lg font-bold hover:brightness-110 active:scale-[0.98] transition-all duration-200 shadow-md">
+                        <span class="material-symbols-outlined">close</span>
+                        <span class="text-center">Bukan, Fisik Barang Berbeda</span>
+                    </button>
+                    <!-- Right Button (Success) -->
+                    <button id="btnSuccess" class="flex-1 flex items-center justify-center gap-3 py-4 px-6 bg-[#a33900] text-white rounded-lg font-bold hover:brightness-110 active:scale-[0.98] transition-all duration-200 shadow-md">
+                        <span class="text-center">Ya, Fisik Barang Sesuai (Lanjut Serah Terima)</span>
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL PEMBATALAN -->
+    <div id="modalBatal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" style="display:none;">
+        <div class="bg-white rounded-xl p-6 shadow-xl max-w-md w-full relative flex flex-col items-center animate-in zoom-in duration-300">
+            <div class="mb-4">
+                <span class="material-symbols-outlined text-[#ba1a1a] text-[48px]">error_outline</span>
+            </div>
+            <h2 class="text-2xl font-bold font-headline text-center text-[#131b2e] mb-4">
+                Klaim Dibatalkan & Postingan Dirilis Ulang
+            </h2>
+            <p class="text-base text-[#57657a] text-center mb-8">
+                Sistem membatalkan pencocokan otomatis ini. Laporan kehilangan resmi dikembalikan ke status 'Aktif', dan barang temuan dipublikasikan ulang ke publik agar bisa dicari oleh pemilik yang benar.
+            </p>
+            <button id="btnBackToDashboard" class="w-full flex items-center justify-center gap-2 py-3 px-6 bg-[#131b2e] text-white rounded-lg font-bold hover:opacity-90 transition-all duration-200">
+                <span class="material-symbols-outlined">home</span>
+                Kembali ke Dashboard Admin
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            
+            if (!token) {
+                alert('Token validasi tidak ditemukan!');
+                window.location.href = '../dashboard/index.html';
+                return;
+            }
+
+            document.getElementById('uiTokenValue').innerText = token;
+            
+            document.getElementById('uiCiriBarang').innerText = "Karakteristik fisik terlihat sesuai.";
+            document.getElementById('uiKategoriBarang').innerText = "Sesuai dengan database arsip barang posko.";
+            
+            // Event Listeners
+            document.getElementById('btnSuccess').addEventListener('click', () => {
+                // Lanjut ke tahap dokumentasi (Jalur Langsung Disetujui)
+                window.location.href = `dokumentasi.html?token=${encodeURIComponent(token)}`;
+            });
+
+            document.getElementById('btnFail').addEventListener('click', () => {
+                // Tampilkan modal pembatalan
+                document.getElementById('modalBatal').style.display = 'flex';
+            });
+
+            document.getElementById('btnBackToDashboard').addEventListener('click', () => {
+                window.location.href = '../dashboard/index.html';
+            });
+        });
+    </script>
+</body>
+</html>
