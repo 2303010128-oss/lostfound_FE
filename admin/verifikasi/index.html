@@ -1375,28 +1375,28 @@
 </div>
 
 <!-- Modal Validasi Token -->
-<div id="tokenModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center;">
-    <div style="background: white; width: 400px; border-radius: 16px; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); position: relative;">
+<div id="tokenModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; box-sizing: border-box;">
+    <div style="background: white; width: 400px; border-radius: 16px; padding: 32px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); position: relative; box-sizing: border-box;">
         <!-- Close Button -->
-        <button onclick="closeTokenModal()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; line-height: 1; color: #94a3b8; cursor: pointer;">&times;</button>
+        <button onclick="closeTokenModal()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 24px; line-height: 1; color: #94a3b8; cursor: pointer; box-sizing: border-box;">&times;</button>
         
-        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px;">
-            <div style="width: 56px; height: 56px; border-radius: 50%; background: #fff7ed; display: flex; align-items: center; justify-content: center; color: #ea580c;">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; box-sizing: border-box;">
+            <div style="width: 56px; height: 56px; border-radius: 50%; background: #fff7ed; display: flex; align-items: center; justify-content: center; color: #ea580c; box-sizing: border-box;">
                 <span class="material-symbols-outlined" style="font-size: 28px;">qr_code_scanner</span>
             </div>
-            <div>
-                <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Validasi Token Pengklaim</h3>
-                <p style="font-size: 14px; color: #64748b; line-height: 20px;">Masukkan 6 karakter token rahasia yang dimiliki oleh pengklaim untuk memvalidasi kepemilikan barang.</p>
+            <div style="box-sizing: border-box;">
+                <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 8px; box-sizing: border-box;">Validasi Token Pengklaim</h3>
+                <p style="font-size: 14px; color: #64748b; line-height: 20px; box-sizing: border-box; margin: 0;">Masukkan 6 karakter token rahasia yang dimiliki oleh pengklaim untuk memvalidasi kepemilikan barang.</p>
             </div>
             
-            <div style="width: 100%; margin-top: 8px;">
-                <input type="text" id="tokenInput" maxlength="6" placeholder="Contoh: A1B2C3" style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 16px; text-align: center; text-transform: uppercase; outline: none; transition: border-color 0.2s;" oninput="this.value = this.value.toUpperCase()">
-                <p id="tokenErrorMsg" style="color: #ef4444; font-size: 12px; margin-top: 8px; display: none;">Token tidak valid atau tidak cocok!</p>
+            <div style="width: 100%; margin-top: 8px; box-sizing: border-box;">
+                <input type="text" id="tokenInput" maxlength="6" placeholder="Contoh: A1B2C3" style="width: 100%; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600; text-align: center; text-transform: uppercase; outline: none; transition: border-color 0.2s; box-sizing: border-box;" oninput="this.value = this.value.toUpperCase()">
+                <p id="tokenErrorMsg" style="color: #ef4444; font-size: 12px; margin-top: 8px; display: none; box-sizing: border-box;">Token tidak valid atau tidak cocok!</p>
             </div>
 
-            <div style="width: 100%; display: flex; gap: 12px; margin-top: 8px;">
-                <button onclick="closeTokenModal()" style="flex: 1; padding: 12px; border-radius: 12px; background: #f1f5f9; color: #475569; font-weight: 600; font-size: 14px; transition: all 0.2s;">Batal</button>
-                <button onclick="submitToken()" style="flex: 1; padding: 12px; border-radius: 12px; background: #ea580c; color: white; font-weight: 600; font-size: 14px; box-shadow: 0 4px 6px -1px rgba(234, 88, 12, 0.2); transition: all 0.2s;">Validasi & Lanjut</button>
+            <div style="width: 100%; display: flex; gap: 12px; margin-top: 8px; box-sizing: border-box;">
+                <button onclick="closeTokenModal()" style="flex: 1; padding: 12px; border-radius: 12px; background: #f1f5f9; color: #475569; font-weight: 600; font-size: 14px; transition: all 0.2s; box-sizing: border-box; border: none; cursor: pointer;">Batal</button>
+                <button onclick="submitToken()" style="flex: 1; padding: 12px; border-radius: 12px; background: #ea580c; color: white; font-weight: 600; font-size: 14px; box-shadow: 0 4px 6px -1px rgba(234, 88, 12, 0.2); transition: all 0.2s; box-sizing: border-box; border: none; cursor: pointer;">Validasi & Lanjut</button>
             </div>
         </div>
     </div>
