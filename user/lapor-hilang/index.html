@@ -1,838 +1,655 @@
 <!DOCTYPE html>
-<html lang="id">
+<html class="light" lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lapor Kehilangan - LostFound Connect</title>
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Formulir Laporan Kehilangan Barang - LostFound Connect</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eef0ff",
+                        "status-warning-text": "#B45309",
+                        "on-tertiary-container": "#fdfcff",
+                        "secondary": "#515f74",
+                        "on-tertiary-fixed": "#001c39",
+                        "tertiary-container": "#0076d2",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-secondary-container": "#57657a",
+                        "on-primary-container": "#fffbff",
+                        "primary-container": "#cc4900",
+                        "tertiary-fixed-dim": "#a4c9ff",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "surface-dim": "#d2d9f4",
+                        "surface-variant": "#dae2fd",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "status-found-bg": "#10B981",
+                        "inverse-primary": "#ffb599",
+                        "surface-tint": "#a73a00",
+                        "surface-container-high": "#e2e7ff",
+                        "on-primary-fixed": "#370e00",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "inverse-surface": "#283044",
+                        "surface-container": "#eaedff",
+                        "status-found-text": "#047857",
+                        "on-surface-variant": "#5a4138",
+                        "primary-fixed": "#ffdbce",
+                        "on-error-container": "#93000a",
+                        "on-background": "#131b2e",
+                        "on-surface": "#131b2e",
+                        "surface-container-highest": "#dae2fd",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#e2bfb2",
+                        "on-primary-fixed-variant": "#7f2b00",
+                        "error-container": "#ffdad6",
+                        "status-lost-text": "#BE123C",
+                        "secondary-container": "#d5e3fc",
+                        "surface": "#faf8ff",
+                        "primary": "#a33900",
+                        "surface-card": "#FFFFFF",
+                        "primary-fixed-dim": "#ffb599",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-primary": "#ffffff",
+                        "background": "#faf8ff",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "tertiary-fixed": "#d4e3ff",
+                        "status-lost-bg": "#F43F5E",
+                        "error": "#ba1a1a",
+                        "surface-main": "#F8FAFC",
+                        "status-warning-bg": "#F59E0B",
+                        "outline": "#8e7166",
+                        "tertiary": "#005da8",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f2f3ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "stack-sm": "0.5rem",
+                        "stack-lg": "1.5rem",
+                        "margin-desktop": "2rem",
+                        "margin-mobile": "1rem",
+                        "gutter": "1.5rem",
+                        "stack-md": "1rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "500" }],
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.025em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
     <style>
-        /* ============================================================
-                   RESET & BASE STYLES
-                   ============================================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #1e293b;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            cursor: pointer;
-            font-family: inherit;
-            border: none;
-            background: none;
-        }
-
-        /* ============================================================
-                   NAVBAR BAR (Presisi Figma)
-                   ============================================================ */
-        .navbar {
-            background: #ffffff;
-            border-bottom: 1px solid #f1f5f9;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            height: 72px;
-        }
-
-        .navbar .container {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0 24px;
-            width: 100%;
-        }
-
-        .navbar .logo {
-            color: #a33900;
-            font-weight: 700;
-            font-size: 18px;
-        }
-
-        .navbar .nav-center {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-        }
-
-        .navbar .nav-center a {
-            color: #475569;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .navbar .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .navbar .nav-right .notification-bell {
-            font-size: 18px;
-            color: #475569;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .navbar .nav-right .notification-bell::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 6px;
-            height: 6px;
-            background: #ef4444;
-            border-radius: 50%;
-        }
-
-        .navbar .nav-right .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .navbar .nav-right .avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: #d94e06;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .navbar .nav-right .user-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: #0f172a;
-        }
-
-        /* ============================================================
-                   PROGRESS STEPPER WIZARD (Hanya 3 Langkah Sesuai Figma)
-                   ============================================================ */
-        .wizard-header-box {
-            max-width: 600px;
-            width: 100%;
-            margin: 40px auto 24px auto;
-            text-align: center;
-        }
-
-        .stepper-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            margin-bottom: 12px;
-            gap: 12px;
-        }
-
-        .step-node {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 2px solid #cbd5e1;
-            color: #64748b;
-            font-weight: 700;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            transition: all 0.3s;
-        }
-
-        .step-line-bar {
-            width: 80px;
-            height: 3px;
-            background: #cbd5e1;
-            z-index: 1;
-            transition: all 0.3s;
-        }
-
-        .step-node.active, .step-node.completed {
-            background: #a33900;
-            border-color: #a33900;
-            color: #ffffff;
-        }
-
-        .step-line-bar.active {
-            background: #a33900;
-        }
-
-        .wizard-step-title-text {
-            font-size: 14px;
-            font-weight: 600;
-            color: #a33900;
-            margin-top: 8px;
-        }
-
-        /* ============================================================
-                   MAIN CONTENT CARD STYLES
-                   ============================================================ */
-        .main-form-card {
-            background: #ffffff;
-            border: 1px solid #eaedff;
-            border-radius: 12px;
-            max-width: 740px;
-            width: 100%;
-            margin: 0 auto 80px auto;
-            padding: 40px 48px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.01);
-        }
-
-        .main-form-card h2 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #131b2e;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        .main-form-card .card-description {
-            font-size: 13.5px;
-            color: #64748b;
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        /* Input Controls */
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 6px;
-            text-align: left;
-        }
-
-        .input-split-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            outline: none;
-            font-size: 14px;
-            color: #0f172a;
-            background: #ffffff;
-            transition: all 0.2s;
-        }
-
-        .form-control::placeholder {
-            color: #94a3b8;
-        }
-
-        .form-control:focus {
-            border-color: #a33900;
-        }
-
-        textarea.form-control {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        /* Dropzone Upload Area Box */
-        .upload-dropzone-box {
-            border: 1.5px dashed #cbd5e1;
-            border-radius: 8px;
-            padding: 32px;
-            text-align: center;
-            background: #ffffff;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .upload-dropzone-box:hover {
-            border-color: #a33900;
-            background: #fff8f5;
-        }
-
-        .upload-dropzone-box .icon {
-            font-size: 24px;
-            color: #a33900;
-            margin-bottom: 8px;
-        }
-
-        .upload-dropzone-box p {
-            font-size: 13px;
-            color: #64748b;
-        }
-
-        /* Action Buttons */
-        .btn-action-primary {
-            width: 100%;
-            background: #a33900;
-            color: #ffffff;
-            padding: 14px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 24px;
-        }
-
-        .btn-action-primary:hover {
-            background: #873000;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* ============================================================
-                   STEP 2 COMPONENTS (Cari Kecocokan)
-                   ============================================================ */
-        .alert-match-found {
-            background: #fff8f5;
-            border: 1px solid #ffd3c0;
-            border-radius: 8px;
-            padding: 16px 20px;
-            text-align: left;
-            margin-bottom: 28px;
-        }
-
-        .alert-match-found h4 {
-            font-size: 14.5px;
-            font-weight: 700;
-            color: #a33900;
-            margin-bottom: 4px;
-        }
-
-        .alert-match-found p {
-            font-size: 13px;
-            color: #475569;
-        }
-
-        .match-cards-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 36px;
-        }
-
-        .match-item-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            overflow: hidden;
-            text-align: left;
-        }
-
-        .match-item-card .img-container {
-            height: 150px;
-            background: #f1f5f9;
-        }
-
-        .match-item-card .img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .match-item-card .card-info-content {
-            padding: 16px;
-        }
-
-        .match-item-card .card-info-content h5 {
-            font-size: 15px;
-            font-weight: 700;
-            color: #131b2e;
-            margin-bottom: 6px;
-        }
-
-        .match-item-card .card-info-content .meta-loc-time {
-            font-size: 12.5px;
-            color: #64748b;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .btn-claim-card {
-            width: 100%;
-            background: #a33900;
-            color: #ffffff;
-            padding: 12px;
-            text-align: center;
-            font-size: 13px;
-            font-weight: 600;
-            border: none;
-            border-top: 1px solid #f1f5f9;
-            cursor: pointer;
-        }
-
-        .unregistered-center-box {
-            text-align: center;
-            padding: 24px 0 0 0;
-            border-top: 1px solid #f1f5f9;
-        }
-
-        .unregistered-center-box .icon-box {
-            font-size: 32px;
-            margin-bottom: 12px;
-            color: #a33900;
-        }
-
-        .unregistered-center-box h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #131b2e;
-            margin-bottom: 6px;
-        }
-
-        .unregistered-center-box p {
-            font-size: 13px;
-            color: #64748b;
-            max-width: 440px;
-            margin: 0 auto 24px auto;
-            line-height: 1.5;
-        }
-
-        .legal-notice-card {
-            background: #fff5f5;
-            border: 1px solid #feb2b2;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: left;
-        }
-
-        .legal-notice-card .notice-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: #dc2626;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .legal-notice-card p {
-            font-size: 12.5px;
-            color: #4b5563;
-            line-height: 1.6;
-            margin-bottom: 12px;
-        }
-
-        .legal-notice-card .quota-info {
-            font-size: 12px;
-            color: #64748b;
-            background: #f8fafc;
-            padding: 8px 12px;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
-        }
-
-        /* ============================================================
-                   STEP 3 COMPONENTS (Kirim Bukti Klaim)
-                   ============================================================ */
-        .claiming-item-id-badge {
-            float: right;
-            background: #eef2ff;
-            color: #4338ca;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .double-upload-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .upload-dashed-small {
-            border: 1.5px dashed #cbd5e1;
-            border-radius: 8px;
-            padding: 24px 16px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .upload-dashed-small:hover {
-            border-color: #a33900;
-            background: #fff8f5;
-        }
-
-        .upload-dashed-small .icon-sm {
-            font-size: 20px;
-            color: #64748b;
-            margin-bottom: 6px;
-        }
-
-        .upload-dashed-small h4 {
-            font-size: 13px;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 4px;
-        }
-
-        .upload-dashed-small span {
-            color: #a33900;
-            font-weight: 500;
-            font-size: 12px;
-        }
-
-        .upload-dashed-small p {
-            font-size: 11px;
-            color: #94a3b8;
-            margin-top: 2px;
-        }
-
-        .info-warning-banner {
-            background: #eff6ff;
-            border-left: 4px solid #2563eb;
-            border-radius: 4px;
-            padding: 14px 16px;
-            text-align: left;
-            margin-bottom: 24px;
-            font-size: 13px;
-            line-height: 1.5;
-            color: #1e40af;
-        }
-
-        .info-warning-banner strong {
-            color: #1d4ed8;
-        }
-
-        /* ============================================================
-                   FOOTER BAR COMPONENT
-                   ============================================================ */
-        .footer {
-            background: #eaedff;
-            color: #5a4138;
-            padding: 24px 0;
-            font-size: 13px;
-            margin-top: auto;
-        }
-
+        .hidden { display: none !important; }
+        
+        /* Fix for injected Vanilla CSS Navbar/Footer inside Tailwind environment */
+        .navbar .container,
         .footer .container {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0 24px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer .footer-links {
-            display: flex;
-            gap: 20px;
-        }
-
-        .footer .footer-links a:hover {
-            text-decoration: underline;
+            max-width: 1280px !important;
+            margin: 0 auto !important;
+            padding: 0 1.5rem !important;
         }
     </style>
 </head>
-<body>
+<body class="bg-surface-main min-h-screen flex flex-col font-body-md text-body-md text-on-surface">
 
-    <!-- NAVBAR COMPONENT -->
-    <header class="navbar">
-        <div class="container">
-            <div class="logo">LostFound Connect</div>
-            <nav class="nav-center">
-                <a href="../mading/index.html">Beranda</a>
-                <a href="../tentang/index.html">Tentang Kami</a>
-                <a href="../bantuan/index.html">Pusat Bantuan</a>
-            </nav>
-            <div class="nav-right">
-                <div class="notification-bell">🔔</div>
-                <div class="user-profile">
-                    <div class="avatar">AD</div>
-                    <span class="user-name">Ahmad D.</span>
-                </div>
-            </div>
-        </div>
-    </header>
+    <div id="app-navbar"></div>
 
-    <!-- STEP PROGRESSION BAR HEADER -->
-    <div class="wizard-header-box">
-        <div class="stepper-row">
-            <div class="step-node active" id="node1">1</div>
-            <div class="step-line-bar" id="line1"></div>
-            <div class="step-node" id="node2">2</div>
-            <div class="step-line-bar" id="line2"></div>
-            <div class="step-node" id="node3">3</div>
-        </div>
-        <div class="wizard-step-title-text" id="wizardProgressTxt">Langkah 1 dari 3: Pengisian Formulir</div>
-    </div>
-
-    <!-- MAIN FORM WINDOW CONTAINER -->
-    <main class="container">
-        <div class="main-form-card">
+    <main class="flex-grow w-full max-w-3xl mx-auto my-10 px-4">
+        <div class="bg-surface-card rounded-xl border border-surface-container shadow-sm p-8">
             
-            <!-- ============================================================ -->
-            <!-- LANGKAH 1: PENGISIAN FORMULIR AWAL (image_2826e1.png) -->
-            <!-- ============================================================ -->
+            <!-- Stepper -->
+            <div class="flex flex-col items-center justify-center mb-8">
+                <div class="flex items-center gap-2 mb-2">
+                    <div id="node1" class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold transition-colors">1</div>
+                    <div id="line1" class="h-1 w-16 bg-surface-variant transition-colors"></div>
+                    <div id="node2" class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant font-bold transition-colors">2</div>
+                    <div id="line2" class="h-1 w-16 bg-surface-variant transition-colors"></div>
+                    <div id="node3" class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant font-bold transition-colors">3</div>
+                </div>
+                <p id="wizardProgressTxt" class="font-label-sm text-primary">Langkah 1 dari 3: Pengisian Formulir</p>
+            </div>
+
+            <!-- ===================== STEP 1 ===================== -->
             <div id="viewStep1">
-                <h2>Formulir Laporan Kehilangan Barang</h2>
-                <div class="card-description">Isi detail informasi untuk membantu sistem mencari kecocokan di database.</div>
+                <header class="mb-8 text-center">
+                    <h1 class="font-headline-md text-headline-md text-on-surface mb-2">Formulir Laporan Kehilangan Barang</h1>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Isi detail informasi untuk membantu sistem mencari kecocokan di database.</p>
+                </header>
                 
-                <form onsubmit="onStep1FormSubmit(event)">
-                    <div class="form-group">
-                        <label class="form-label">Nama / Judul Barang Hilang</label>
-                        <input type="text" id="fName" class="form-control" placeholder="e.g., Dompet Kulit Cokelat" required>
-                    </div>
-
-                    <div class="form-group input-split-grid">
-                        <div>
-                            <label class="form-label">Kategori Barang</label>
-                            <select id="fCategory" class="form-control" required>
-                                <option value="">Pilih Kategori...</option>
-                                <option value="Elektronik">Elektronik</option>
-                                <option value="Dompet / Tas">Dompet / Tas</option>
-                                <option value="Aksesoris">Aksesoris</option>
-                                <option value="Lainnya">Lainnya</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="form-label">Perkiraan Lokasi Hilang</label>
-                            <select id="fLocation" class="form-control" required>
-                                <option value="">Pilih Lokasi...</option>
-                                <option value="Gedung A">Gedung A</option>
-                                <option value="Gedung B">Gedung B</option>
-                                <option value="Kantin Utama">Kantin Utama</option>
-                                <option value="Perpustakaan Pusat">Perpustakaan Pusat</option>
-                                <option value="Area Parkir Utara">Area Parkir Utara</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Estimasi Tanggal & Waktu Hilang</label>
-                        <input type="datetime-local" id="fDate" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Deskripsi Ciri Khusus</label>
-                        <textarea id="fDesc" class="form-control" placeholder="e.g., Ada goresan di sudut kanan bawah..." required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Unggah Foto Barang (Opsional)</label>
-                        <div class="upload-dropzone-box" onclick="alert('Simulasi pemilihan file foto lama objek berhasil.')">
-                            <div class="icon">📷</div>
-                            <p>Pilih file atau seret foto lama barang di sini</p>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn-action-primary">🔍 Cari di Database Penemuan</button>
-                </form>
-            </div>
-
-            <!-- ============================================================ -->
-            <!-- LANGKAH 2: CARI KECOCOKAN DATABASE (image_28271e.png) -->
-            <!-- ============================================================ -->
-            <div id="viewStep2" class="hidden">
-                <div class="alert-match-found">
-                    <h4>Sistem Menemukan Barang yang Mirip di Pos Satpam!</h4>
-                    <p>Sila periksa beberapa barang temuan di bawah ini sebelum menerbitkan laporan baru.</p>
-                </div>
-
-                <div class="match-cards-grid">
-                    <!-- Card 1 -->
-                    <div class="match-item-card">
-                        <div class="img-container">
-                            <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=400" alt="Dompet">
-                        </div>
-                        <div class="card-info-content">
-                            <h5>Dompet Kulit Cokelat</h5>
-                            <div class="meta-loc-time">📍 Perpustakaan Pusat</div>
-                            <div class="meta-loc-time">📅 12 Okt 2026</div>
-                        </div>
-                        <button class="btn-claim-card" onclick="routeToStep3('#FOUND-882')">Ini Barang Saya! (Ajukan Klaim)</button>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="match-item-card">
-                        <div class="img-container">
-                            <img src="https://images.unsplash.com/photo-1582139329536-e7284fece509?w=400" alt="Kunci">
-                        </div>
-                        <div class="card-info-content">
-                            <h5>Kunci dengan Gantungan Merah</h5>
-                            <div class="meta-loc-time">📍 Kantin Utama</div>
-                            <div class="meta-loc-time">📅 11 Okt 2026</div>
-                        </div>
-                        <button class="btn-claim-card" onclick="routeToStep3('#FOUND-912')">Ini Barang Saya! (Ajukan Klaim)</button>
-                    </div>
-                </div>
-
-                <div class="unregistered-center-box">
-                    <div class="icon-box">📦</div>
-                    <h3>Barang Anda Belum Terdaftar di Database Penemuan.</h3>
-                    <p>Jangan khawatir, Anda dapat mempublikasikan laporan ini ke beranda publik agar penemu bisa mencocokannya nanti.</p>
+                <form class="space-y-stack-lg" onsubmit="onStep1FormSubmit(event)">
                     
-                    <div class="legal-notice-card">
-                        <div class="notice-title">⚠️ PERNYATAAN HUKUM & AKUNTABILITAS AKUN</div>
-                        <p>Laporan ini akan diterbitkan menggunakan identitas resmi Anda sebagai Ahmad D.. Setiap pelanggaran berupa pembuatan laporan palsu/fiktif akan dikenakan sanksi disiplin berat oleh Dewan Etik Akademik Universitas Perjuangan.</p>
-                        <div class="quota-info">ℹ️ Sisa kuota laporan kehilangan aktif Anda: 1 dari maksimal 2 laporan.</div>
+                    <div>
+                        <label class="block font-label-sm text-label-sm text-on-surface mb-stack-sm" for="fName">Nama / Judul Barang Hilang</label>
+                        <input class="w-full rounded-lg border-surface-container-highest bg-surface-lowest text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-primary font-body-sm text-body-sm py-2 px-3" id="fName" placeholder="e.g., Dompet Kulit Cokelat" type="text" required>
                     </div>
 
-                    <button class="btn-action-primary" onclick="publishIndependentLostFeed()">📢 Publikasikan ke Beranda 'Lost Feed'</button>
-                </div>
-            </div>
-
-            <!-- ============================================================ -->
-            <!-- LANGKAH 3: KIRIM BUKTI KLAIM (image_282744.png) -->
-            <!-- ============================================================ -->
-            <div id="viewStep3" class="hidden">
-                <span class="claiming-item-id-badge" id="claimIdTxt">Claiming Item ID: #FOUND-882</span>
-                <h2 style="text-align: left; margin-bottom: 4px;">Verifikasi Kepemilikan Barang</h2>
-                <p class="subtitle" style="text-align: left; margin-bottom: 24px;">Harap lengkapi formulir di bawah ini dengan informasi yang seakurat mungkin untuk membantu proses verifikasi.</p>
-                
-                <form onsubmit="finalizeVerificationSubmit(event)">
-                    <div class="form-group">
-                        <label class="form-label">Tuliskan Bukti Kepemilikan Mendalam (Wajib)</label>
-                        <textarea class="form-control" placeholder="Sebutkan detail interior/isi di dalam barang yang tidak tampak pada foto publik. Contoh: nomor seri, nominal uang di dalam, jenis gantungan tersembunyi, atau cacat/goresan fisik spesifik." required></textarea>
-                    </div>
-
-                    <div class="double-upload-grid">
-                        <div class="upload-dashed-small" onclick="alert('Simulasi unggah KTP berhasil.')">
-                            <div class="icon-sm">👤</div>
-                            <h4>Unggah Foto KTP / Identitas</h4>
-                            <span>Klik untuk unggah</span>
-                            <p>atau seret file KTP Anda di sini</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+                        <div>
+                            <label class="block font-label-sm text-label-sm text-on-surface mb-stack-sm" for="fCategory">Kategori Barang</label>
+                            <select class="w-full rounded-lg border-surface-container-highest bg-surface-lowest text-on-surface focus:border-primary focus:ring-primary font-body-sm text-body-sm py-2 px-3" id="fCategory" required>
+                                <option value="">Pilih Kategori...</option>
+                            </select>
                         </div>
-                        <div class="upload-dashed-small" onclick="alert('Simulasi unggah bukti pendukung berhasil.')">
-                            <div class="icon-sm">📷</div>
-                            <h4>Unggah Foto Bukti Kepemilikan</h4>
-                            <span>Klik untuk unggah</span>
-                            <p>foto nota, kotak, atau bukti fisik lainnya</p>
+                        <div>
+                            <label class="block font-label-sm text-label-sm text-on-surface mb-stack-sm" for="fLocation">Perkiraan Lokasi Hilang</label>
+                            <select class="w-full rounded-lg border-surface-container-highest bg-surface-lowest text-on-surface focus:border-primary focus:ring-primary font-body-sm text-body-sm py-2 px-3" id="fLocation" required>
+                                <option value="">Pilih Lokasi...</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="info-warning-banner">
-                        ℹ️ <strong>Penting:</strong> Jika bukti digital Anda dirasa kurang kuat oleh petugas, Anda <strong>TIDAK</strong> akan langsung ditolak. Anda akan diberikan opsi penyelesaian formal lewat surat Pernyataan Bermaterai di Posko Satpam.
+                    <div>
+                        <label class="block font-label-sm text-label-sm text-on-surface mb-stack-sm" for="fDate">Estimasi Tanggal & Waktu Hilang</label>
+                        <input class="w-full rounded-lg border-surface-container-highest bg-surface-lowest text-on-surface focus:border-primary focus:ring-primary font-body-sm text-body-sm py-2 px-3" id="fDate" type="datetime-local" required>
                     </div>
 
-                    <button type="submit" class="btn-action-primary">Kirim Bukti Klaim ke Admin</button>
+                    <div>
+                        <label class="block font-label-sm text-label-sm text-on-surface mb-stack-sm" for="fDescPublic">Deskripsi Umum Barang</label>
+                        <textarea class="w-full rounded-lg border-surface-container-highest bg-surface-lowest text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-primary font-body-sm text-body-sm py-2 px-3" id="fDescPublic" placeholder="e.g., Dompet warna cokelat tua merek X. Akan ditampilkan secara publik." rows="3" required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-label-sm text-label-sm text-on-surface mb-stack-sm" for="fDesc">Deskripsi Ciri Khusus (Rahasia)</label>
+                        <textarea class="w-full rounded-lg border-surface-container-highest bg-surface-lowest text-on-surface placeholder:text-on-surface-variant/50 focus:border-primary focus:ring-primary font-body-sm text-body-sm py-2 px-3" id="fDesc" placeholder="e.g., Ada goresan di sudut kanan bawah, berisi KTP dan KTM. Hanya untuk verifikasi." rows="3" required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-label-sm text-label-sm text-on-surface mb-stack-sm">Unggah Foto Barang (Opsional)</label>
+                        <div class="bg-surface-main border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-surface-container transition-colors" onclick="document.getElementById('fPhoto').click()">
+                            <input type="file" id="fPhoto" accept="image/*" class="hidden" onchange="previewFile('fPhoto', 'previewPhoto')">
+                            <span class="material-symbols-outlined text-primary mb-2 text-3xl">photo_camera</span>
+                            <p id="previewPhoto" class="font-body-sm text-body-sm text-on-surface-variant">Pilih file atau seret foto lama barang di sini</p>
+                        </div>
+                    </div>
+
+                    <button id="btnSearchMatch" class="bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md py-3 w-full rounded-lg shadow-sm mt-6 flex items-center justify-center gap-2 transition-colors" type="submit">
+                        <span class="material-symbols-outlined">search</span>
+                        <span id="btnSearchMatchText">Cari di Database Penemuan</span>
+                    </button>
                 </form>
             </div>
 
+            <!-- ===================== STEP 2 ===================== -->
+            <div id="viewStep2" class="hidden flex flex-col">
+                <div class="bg-primary-container/10 border border-outline-variant rounded-xl p-4 mb-6">
+                    <h2 class="font-headline-sm text-headline-sm text-primary font-bold mb-2">Sistem Menemukan Barang yang Mirip di Pos Satpam!</h2>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Sila periksa beberapa barang temuan di bawah ini sebelum menerbitkan laporan baru.</p>
+                </div>
+                
+                <div class="match-cards-grid grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Cards will be injected by JS -->
+                </div>
+
+
+                <div class="w-full h-px bg-surface-container-high my-4"></div>
+
+                <section class="bg-surface-card rounded-xl border border-surface-container p-8 text-center flex flex-col items-center shadow-sm w-full">
+                    <div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center mb-4">
+                        <span class="material-symbols-outlined text-3xl text-primary">inventory_2</span>
+                    </div>
+                    <h2 class="font-headline-md text-headline-md text-on-surface mb-2">Barang Anda Belum Terdaftar di Database Penemuan.</h2>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant max-w-md mb-6">Jangan khawatir, Anda dapat mempublikasikan laporan ini ke beranda publik agar penemu bisa mencocokannya nanti.</p>
+                    
+                    <div class="w-full bg-error-container/10 border border-error/20 rounded-xl p-5 text-left mb-6">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="material-symbols-outlined text-status-lost-text" style="font-size: 20px;">gavel</span>
+                            <span class="font-label-md text-label-md text-status-lost-text uppercase tracking-wider">PERNYATAAN HUKUM & AKUNTABILITAS AKUN</span>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
+                            Laporan ini akan diterbitkan menggunakan identitas resmi Anda. Setiap pelanggaran berupa pembuatan laporan palsu/fiktif akan dikenakan sanksi disiplin berat oleh Dewan Etik Akademik Universitas Perjuangan.
+                        </p>
+                        <label class="flex gap-3 cursor-pointer group">
+                            <div class="flex-shrink-0 pt-0.5">
+                                <input id="chkLegal" class="w-4 h-4 rounded border-outline text-primary focus:ring-primary" type="checkbox" onchange="togglePublishBtn()"/>
+                            </div>
+                            <span class="font-body-sm text-body-sm text-on-surface font-bold">
+                                Saya menyatakan dengan sadar bahwa informasi kehilangan ini adalah benar dan bersedia mempertanggungjawabkannya secara hukum kampus.
+                            </span>
+                        </label>
+                    </div>
+                    <button id="btnPublishIndependent" disabled class="bg-primary text-on-primary w-full md:w-auto px-12 py-3 rounded-lg font-label-md text-label-md opacity-50 cursor-not-allowed flex items-center justify-center gap-2 transition-all" onclick="publishIndependentLostFeed()">
+                        <span class="material-symbols-outlined">publish</span>
+                        <span>Publikasikan Laporan ke Beranda</span>
+                    </button>
+                </section>
+            </div>
+
+            <!-- ===================== STEP 3 ===================== -->
+            <div id="viewStep3" class="hidden">
+                <div class="mb-8 border-b border-surface-container pb-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-2">
+                        <h1 id="step3Title" class="font-headline-md text-headline-md text-on-surface">Verifikasi Kepemilikan Barang</h1>
+                        <span id="claimIdTxt" class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-mono text-xs font-semibold whitespace-nowrap">
+                            Claiming Item ID: #...
+                        </span>
+                    </div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-2">
+                        Harap lengkapi formulir di bawah ini dengan informasi yang seakurat mungkin untuk membantu proses verifikasi.
+                    </p>
+                </div>
+                
+                <form class="space-y-6" onsubmit="finalizeVerificationSubmit(event)">
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface mb-2" for="fBuktiTeks">
+                            Tuliskan Bukti Kepemilikan Mendalam (Wajib)
+                        </label>
+                        <textarea class="w-full h-32 rounded-lg border border-outline-variant bg-surface-lowest p-3 font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary focus:border-primary transition-colors resize-none placeholder-on-surface-variant/60" id="fBuktiTeks" placeholder="Sebutkan detail interior/isi di dalam barang yang tidak tampak pada foto publik. Contoh: nomor seri, nominal uang di dalam, jenis gantungan tersembunyi, atau cacat/goresan fisik spesifik." required></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface mb-2">
+                            Unggah Dokumen / Foto Bukti Pendukung (Wajib)
+                        </label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-1">
+                            <div class="flex flex-col items-center justify-center px-4 py-6 border-2 border-outline-variant border-dashed rounded-xl bg-surface-main hover:bg-surface-container transition-colors cursor-pointer group" onclick="document.getElementById('fKtp').click()">
+                                <input type="file" id="fKtp" accept="image/*" class="hidden" onchange="previewFile('fKtp', 'previewKtp')">
+                                <span class="material-symbols-outlined text-3xl text-secondary group-hover:text-primary transition-colors mb-2">account_circle</span>
+                                <p class="font-label-sm text-center text-on-surface mb-1">Unggah Foto KTP / Identitas</p>
+                                <div class="flex flex-col items-center text-xs text-on-surface-variant">
+                                    <span class="font-label-sm text-primary group-hover:text-primary-container">Klik untuk unggah</span>
+                                    <p id="previewKtp" class="text-center mt-1">atau seret file KTP di sini</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col items-center justify-center px-4 py-6 border-2 border-outline-variant border-dashed rounded-xl bg-surface-main hover:bg-surface-container transition-colors cursor-pointer group" onclick="document.getElementById('fBuktiPendukung').click()">
+                                <input type="file" id="fBuktiPendukung" accept="image/*" class="hidden" onchange="previewFile('fBuktiPendukung', 'previewBukti')">
+                                <span class="material-symbols-outlined text-3xl text-secondary group-hover:text-primary transition-colors mb-2">photo_camera</span>
+                                <p class="font-label-sm text-center text-on-surface mb-1">Unggah Foto Bukti Pendukung</p>
+                                <div class="flex flex-col items-center text-xs text-on-surface-variant">
+                                    <span class="font-label-sm text-primary group-hover:text-primary-container">Klik untuk unggah</span>
+                                    <p id="previewBukti" class="text-center mt-1">foto nota, kotak, atau lainnya</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-secondary mt-2">PNG, JPG (Max. 5MB per file)</p>
+                    </div>
+
+                    <div class="bg-surface-container rounded-lg p-4 flex gap-3 items-start border-l-4 border-primary">
+                        <span class="material-symbols-outlined text-primary mt-0.5">info</span>
+                        <div>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                                <strong class="text-on-surface">Penting:</strong> Jika bukti digital Anda dirasa kurang kuat oleh petugas, Anda TIDAK akan langsung ditolak. Anda akan diberikan opsi penyelesaian formal lewat Surat Pernyataan Bermaterai di Posko Satpam.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm font-label-md text-label-md text-on-primary bg-primary hover:bg-primary-container focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-colors font-bold" type="submit" id="btnSubmitClaim">
+                            Kirim Bukti Klaim ke Admin
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- ===================== SUCCESS CLAIM ===================== -->
+            <div id="viewSuccessClaim" class="hidden bg-surface-card rounded-xl shadow-sm p-4 md:p-8 text-center border border-surface-variant/30 transform transition-all hover:shadow-md">
+                <div class="mb-6 flex justify-center">
+                    <div class="relative">
+                        <span class="material-symbols-outlined text-[80px] text-status-found-text" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        <div class="absolute inset-0 bg-status-found-bg/10 rounded-full scale-150 -z-10 animate-pulse"></div>
+                    </div>
+                </div>
+                <h1 class="text-headline-lg font-headline-lg text-on-surface mb-4">Bukti Klaim Berhasil Dikirim!</h1>
+                <p class="text-body-md font-body-md text-on-surface-variant mb-8 leading-relaxed">
+                    Terima kasih. Bukti kepemilikan Anda telah kami terima dan saat ini sedang dalam antrean verifikasi oleh petugas keamanan (Satpam). Proses ini biasanya memakan waktu <span class="font-semibold">1-2 hari kerja</span>.
+                </p>
+                <div class="bg-surface-container-low rounded-lg p-5 flex gap-4 text-left border-l-4 border-tertiary mb-8">
+                    <span class="material-symbols-outlined text-tertiary">info</span>
+                    <p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+                        Anda akan menerima notifikasi melalui aplikasi dan email segera setelah status klaim Anda diperbarui. Anda juga dapat memantau perkembangan klaim melalui <span class="font-semibold text-tertiary">Dashboard Aktivitas Saya</span>.
+                    </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="window.location.href='../klaim/index.html'" class="bg-primary text-on-primary px-8 py-3.5 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-all active:scale-95 shadow-md shadow-primary/20 flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                        Lihat Status Klaim
+                    </button>
+                    <button onclick="window.location.href='../dashboard/index.html'" class="border-2 border-outline text-primary px-8 py-3.5 rounded-lg font-label-md text-label-md hover:bg-surface-container-low transition-all active:scale-95 flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">home</span>
+                        Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===================== SUCCESS PUBLISH ===================== -->
+            <div id="viewSuccessPublish" class="hidden bg-surface-card rounded-xl border border-surface-container shadow-sm p-4 md:p-8 text-center flex flex-col items-center">
+                <span class="material-symbols-outlined text-status-found-text text-[64px] mb-4" style="font-variation-settings: 'FILL' 1;">
+                    check_circle
+                </span>
+                <h1 class="font-headline-lg font-headline-lg text-on-surface mb-2">
+                    Laporan Kehilangan Berhasil Diterbitkan!
+                </h1>
+                <p class="font-body-md text-body-md text-on-surface-variant max-w-md mb-8">
+                    Laporan Anda kini telah aktif di papan mading digital publik ('Lost Feed'). Seluruh warga kampus Universitas Perjuangan dapat melihat informasi ini untuk membantu proses pencarian.
+                </p>
+                <div class="bg-surface-container-low border border-surface-container rounded-lg p-4 text-left w-full mb-8 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+                    <div class="flex gap-3">
+                        <span class="material-symbols-outlined text-primary text-body-lg">info</span>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                            <span class="font-bold text-on-surface">SOP Pengembalian:</span> Jika ada pengguna lain yang menemukan barang Anda, mereka diwajibkan menyerahkannya langsung ke Pos Satpam Utama. Sistem Laravel akan otomatis mendeteksi kecocokan data dan mengirimkan alarm notifikasi klaim ke akun Anda.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 w-full">
+                    <button onclick="window.location.href='../mading/index.html'" class="flex-1 bg-primary text-on-primary px-6 py-3 rounded-lg font-bold hover:bg-primary-container transition-all flex items-center justify-center gap-2 group">
+                        <span class="material-symbols-outlined text-body-lg group-hover:translate-x-1 transition-transform">visibility</span>
+                        Lihat Postingan Saya
+                    </button>
+                    <button onclick="window.location.href='../dashboard/index.html'" class="flex-1 border-2 border-primary text-primary px-6 py-3 rounded-lg font-bold hover:bg-primary-fixed-dim/20 transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-body-lg">home</span>
+                        Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+            
         </div>
     </main>
 
-    <!-- FOOTER SECTION COMPONENT -->
-    <footer class="footer">
-        <div class="container">
-            <span class="brand-txt">LostFound Connect</span>
-            <div class="footer-links">
-                <a href="#">Kebijakan Privasi</a>
-                <a href="#">Syarat &amp; Ketentuan</a>
-                <a href="#">Kontak Kampus</a>
-            </div>
-            <span>© 2026 Universitas Perjuangan Tasikmalaya</span>
-        </div>
-    </footer>
+    <div id="app-footer"></div>
 
-    <!-- ============================================================ -->
-    <!-- WIZARD STEP SYSTEM ENGINE CORE -->
-    <!-- ============================================================ -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlQuery = new URLSearchParams(window.location.search);
-            const refId = urlQuery.get('id');
-            if (refId) {
-                const globalFeed = JSON.parse(localStorage.getItem('globalFeed')) || [];
-                const matchedObj = globalFeed.find(x => x.id == refId);
-                if (matchedObj) {
-                    document.getElementById('fName').value = matchedObj.title;
-                    document.getElementById('fCategory').value = matchedObj.category || "Lainnya";
-                    document.getElementById('fDesc').value = "Konfirmasi respon kecocokan terhadap barang " + matchedObj.title;
-                }
-            }
-        });
+        const API_URL = 'http://localhost:8000/api/v1';
+        let selectedClaimItemId = null;
+        let submitMode = 'claim';
 
-        // Alur navigasi antar-step figma (Langkah 1 -> Langkah 2)
-        function onStep1FormSubmit(e) {
-            e.preventDefault();
-            
-            document.getElementById('node2').classList.add('active');
-            document.getElementById('line1').classList.add('active');
-            document.getElementById('wizardProgressTxt').textContent = "Langkah 2 dari 3: Cari Kecocokan";
-
-            document.getElementById('viewStep1').classList.add('hidden');
-            document.getElementById('viewStep2').classList.remove('hidden');
+        function getAuthToken() {
+            return localStorage.getItem('token');
         }
 
-        // Alur navigasi antar-step figma (Langkah 2 -> Langkah 3)
-        function routeToStep3(claimId) {
-            document.getElementById('claimIdTxt').textContent = "Claiming Item ID: " + claimId;
+        async function fetchCategoriesAndLocations() {
+            try {
+                const headers = { 'Authorization': 'Bearer ' + getAuthToken() };
+                
+                const [catRes, locRes] = await Promise.all([
+                    fetch(`${API_URL}/categories`, { headers }),
+                    fetch(`${API_URL}/locations`, { headers })
+                ]);
+                
+                const catData = await catRes.json();
+                const locData = await locRes.json();
+                
+                const catSelect = document.getElementById('fCategory');
+                if (catData.success) {
+                    catData.data.forEach(c => {
+                        catSelect.innerHTML += `<option value="${c.id}">${c.nama_kategori}</option>`;
+                    });
+                }
+                
+                const locSelect = document.getElementById('fLocation');
+                if (locData.success) {
+                    locData.data.forEach(l => {
+                        locSelect.innerHTML += `<option value="${l.id}">${l.nama_tempat}</option>`;
+                    });
+                }
+            } catch (err) {
+                console.error("Gagal mengambil data referensi:", err);
+            }
+        }
 
-            document.getElementById('node3').classList.add('active');
-            document.getElementById('line2').classList.add('active');
+        function previewFile(inputId, previewId) {
+            const file = document.getElementById(inputId).files[0];
+            if (file) {
+                document.getElementById(previewId).textContent = "File terpilih: " + file.name;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!getAuthToken()) {
+                alert('Silakan login terlebih dahulu.');
+                window.location.href = '../auth/login.html';
+                return;
+            }
+            fetchCategoriesAndLocations();
+        });
+
+        // Set Step Active State
+        function setStepState(stepNum) {
+            const nodes = ['node1', 'node2', 'node3'];
+            const lines = ['line1', 'line2'];
+            
+            nodes.forEach((id, index) => {
+                const el = document.getElementById(id);
+                if (index < stepNum) {
+                    el.classList.remove('bg-surface-variant', 'text-on-surface-variant');
+                    el.classList.add('bg-primary', 'text-on-primary');
+                }
+            });
+
+            lines.forEach((id, index) => {
+                const el = document.getElementById(id);
+                if (index < stepNum - 1) {
+                    el.classList.remove('bg-surface-variant');
+                    el.classList.add('bg-primary');
+                }
+            });
+        }
+
+        async function onStep1FormSubmit(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('btnSearchMatch');
+            btn.disabled = true;
+            document.getElementById('btnSearchMatchText').textContent = "Mencari...";
+
+            currentLostData = new FormData();
+            currentLostData.append('judul', document.getElementById('fName').value);
+            currentLostData.append('category_id', document.getElementById('fCategory').value);
+            currentLostData.append('location_id', document.getElementById('fLocation').value);
+            
+            const dateVal = document.getElementById('fDate').value;
+            currentLostData.append('tanggal_lapor', dateVal);
+            
+            // Deskripsi Umum dan Rahasia disertakan (Perbaikan fatal flaw)
+            currentLostData.append('deskripsi', document.getElementById('fDescPublic').value);
+            currentLostData.append('deskripsi_rahasia', document.getElementById('fDesc').value);
+            currentLostData.append('post_type', 'lost');
+            
+            const photoFile = document.getElementById('fPhoto').files[0];
+            if (photoFile) currentLostData.append('foto', photoFile);
+
+            try {
+                const catId = document.getElementById('fCategory').value;
+                const judul = document.getElementById('fName').value;
+                const headers = { 'Authorization': 'Bearer ' + getAuthToken() };
+                const res = await fetch(`${API_URL}/items?post_type=found&category_id=${catId}&q=${encodeURIComponent(judul)}`, {
+                    headers: headers
+                });
+                const resData = await res.json();
+                
+                renderMatchedItems(resData.data.data || []); 
+                
+                setStepState(2);
+                document.getElementById('wizardProgressTxt').textContent = "Langkah 2 dari 3: Cari Kecocokan";
+
+                document.getElementById('viewStep1').classList.add('hidden');
+                document.getElementById('viewStep2').classList.remove('hidden');
+            } catch (err) {
+                alert('Terjadi kesalahan saat mencari data kecocokan.');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                document.getElementById('btnSearchMatchText').textContent = "Cari di Database Penemuan";
+            }
+        }
+        
+        function getImageUrl(path) {
+            return path ? `http://localhost:8000/storage/${path}` : 'https://via.placeholder.com/400x150?text=No+Image';
+        }
+
+        function renderMatchedItems(items) {
+            const grid = document.querySelector('.match-cards-grid');
+            if (items.length === 0) {
+                grid.innerHTML = '<p class="col-span-1 md:col-span-2 text-center text-on-surface-variant py-4">Tidak ada barang temuan yang mirip di kategori ini saat ini.</p>';
+                return;
+            }
+            
+            grid.innerHTML = items.map(item => `
+                <article class="bg-surface-card rounded-xl shadow-sm border border-surface-container overflow-hidden flex flex-col">
+                    <div class="w-full h-40 relative bg-surface-container overflow-hidden">
+                        <img alt="${item.judul}" class="w-full h-full object-cover" src="${getImageUrl(item.foto)}"/>
+                    </div>
+                    <div class="p-4 flex-grow flex flex-col gap-stack-sm">
+                        <h3 class="font-headline-sm text-headline-sm text-on-surface">${item.judul}</h3>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px]">location_on</span> ${item.location ? item.location.nama_tempat : '-'}
+                        </p>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px]">calendar_today</span> ${new Date(item.tanggal_lapor).toLocaleDateString('id-ID')}
+                        </p>
+                    </div>
+                    <button class="bg-primary text-on-primary w-full py-2.5 font-label-md text-label-md hover:bg-primary/90 transition-colors" onclick="routeToStep3(${item.id})">Ini Barang Saya! (Ajukan Klaim)</button>
+                </article>
+            `).join('');
+        }
+
+        function togglePublishBtn() {
+            const chk = document.getElementById('chkLegal');
+            const btn = document.getElementById('btnPublishIndependent');
+            if(chk.checked) {
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                btn.classList.add('hover:bg-primary-container');
+            } else {
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.classList.remove('hover:bg-primary-container');
+            }
+        }
+
+        function routeToStep3(itemId) {
+            submitMode = 'claim';
+            selectedClaimItemId = itemId;
+            document.getElementById('step3Title').textContent = "Verifikasi Klaim Barang";
+            document.getElementById('claimIdTxt').textContent = "Claiming Item ID: #" + itemId;
+            document.getElementById('btnSubmitClaim').textContent = "Kirim Bukti Klaim ke Admin";
+
+            setStepState(3);
             document.getElementById('wizardProgressTxt').textContent = "Langkah 3 dari 3: Kirim Bukti";
 
+            document.getElementById('viewStep1').classList.add('hidden');
             document.getElementById('viewStep2').classList.add('hidden');
             document.getElementById('viewStep3').classList.remove('hidden');
         }
 
-        // Menyimpan data mandiri lost feed menuju localStorage agar terhubung ke Admin
-        function publishIndependentLostFeed() {
-            const feed = JSON.parse(localStorage.getItem('globalFeed')) || [];
+        async function publishIndependentLostFeed() {
+            if (!currentLostData) return;
             
-            const newIndependentLostReport = {
-                id: Date.now(),
-                title: document.getElementById('fName').value || "Barang Kehilangan Mandiri",
-                type: 'lost',
-                category: document.getElementById('fCategory').value || "Lainnya",
-                location: document.getElementById('fLocation').value || "Area Kampus",
-                date: document.getElementById('fDate').value || "2026-06-23",
-                timeLabel: 'Baru saja',
-                desc: document.getElementById('fDesc').value,
-                phone: "0812345678",
-                author: localStorage.getItem('userName') || 'Ahmad D.',
-                avatar: 'AD',
-                img: '' 
-            };
-
-            feed.unshift(newIndependentLostReport);
-            localStorage.setItem('globalFeed', JSON.stringify(feed));
-
-            alert('📢 Sukses! Laporan kehilangan mandiri Anda berhasil diterbitkan di Beranda umum dan tersambung ke Admin.');
-            window.location.href = 'index.html';
+            try {
+                const btn = document.getElementById('btnPublishIndependent');
+                btn.disabled = true;
+                btn.innerHTML = `<span class="material-symbols-outlined">sync</span><span>Memproses...</span>`;
+                
+                const headers = { 'Authorization': 'Bearer ' + getAuthToken() };
+                const res = await fetch(`${API_URL}/items`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: currentLostData
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    setStepState(3);
+                    document.getElementById('viewStep2').classList.add('hidden');
+                    document.getElementById('viewSuccessPublish').classList.remove('hidden');
+                    document.getElementById('wizardProgressTxt').textContent = "Langkah 3 dari 3: Laporan Diterbitkan";
+                } else {
+                    alert('Gagal: ' + (data.message || 'Terjadi kesalahan'));
+                    btn.innerHTML = `<span class="material-symbols-outlined">publish</span><span>Publikasikan Laporan ke Beranda</span>`;
+                    btn.disabled = false;
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan server.');
+                console.error(err);
+                const btn = document.getElementById('btnPublishIndependent');
+                btn.innerHTML = `<span class="material-symbols-outlined">publish</span><span>Publikasikan Laporan ke Beranda</span>`;
+                btn.disabled = false;
+            }
         }
 
-        // Penyelesaian akhir pengiriman bukti klaim
-        function finalizeVerificationSubmit(e) {
+        async function finalizeVerificationSubmit(e) {
             e.preventDefault();
-            alert('📨 Sukses! Bukti verifikasi klaim Anda telah berhasil dikirim ke Admin. Silakan pantau perkembangannya di menu "Klaim Saya".');
-            window.location.href = 'index.html';
+            
+            if (!selectedClaimItemId) return;
+            
+            const ktpFile = document.getElementById('fKtp').files[0];
+            const pndkFile = document.getElementById('fBuktiPendukung').files[0];
+            
+            if (!ktpFile || !pndkFile) {
+                alert('Mohon unggah Foto KTP dan Foto Bukti Pendukung terlebih dahulu.');
+                return;
+            }
+            
+            const btn = document.getElementById('btnSubmitClaim');
+            btn.disabled = true;
+            btn.textContent = 'Mengirim Klaim...';
+            
+            const formData = new FormData();
+            formData.append('item_id', selectedClaimItemId);
+            formData.append('bukti_teks', document.getElementById('fBuktiTeks').value);
+            formData.append('foto_ktp', ktpFile);
+            formData.append('foto_bukti_pendukung', pndkFile);
+            
+            try {
+                const res = await fetch(`${API_URL}/claims`, {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + getAuthToken() },
+                    body: formData
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('viewStep3').classList.add('hidden');
+                    document.getElementById('viewSuccessClaim').classList.remove('hidden');
+                    document.getElementById('wizardProgressTxt').textContent = "Bukti Terkirim";
+                } else {
+                    alert('Gagal mengirim klaim: ' + (data.message || 'Terjadi kesalahan'));
+                }
+            } catch (err) {
+                alert('Terjadi kesalahan server.');
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Kirim Bukti Klaim ke Admin';
+            }
         }
     </script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components_user.js"></script>
     <script src="../../assets/js/auth.js"></script>
 </body>
 </html>

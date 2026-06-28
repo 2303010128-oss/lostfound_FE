@@ -1,1189 +1,641 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lapor Temuan - LostFound Connect</title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Formulir Laporan Penemuan Barang - LostFound Connect</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#a33900",
+                        "primary-container": "#cc4900",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#fffbff",
+                        "secondary": "#515f74",
+                        "secondary-container": "#d5e3fc",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#57657a",
+                        "surface": "#faf8ff",
+                        "surface-variant": "#dae2fd",
+                        "on-surface": "#131b2e",
+                        "on-surface-variant": "#5a4138",
+                        "surface-card": "#FFFFFF",
+                        "surface-main": "#F8FAFC",
+                        "surface-container": "#eaedff",
+                        "surface-container-low": "#f2f3ff",
+                        "surface-container-highest": "#dae2fd",
+                        "outline": "#8e7166",
+                        "outline-variant": "#e2bfb2",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "status-found-bg": "#10B981",
+                        "status-found-text": "#047857",
+                        "status-lost-bg": "#F43F5E",
+                        "status-lost-text": "#BE123C",
+                        "status-warning-bg": "#F59E0B",
+                        "status-warning-text": "#B45309",
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "headline-sm": ["Hanken Grotesk"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        /* ============================================================
-                   RESET & BASE STYLES
-                   ============================================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            cursor: pointer;
-            font-family: inherit;
-            border: none;
-            background: none;
-        }
-
-        input,
-        select,
-        textarea {
-            font-family: inherit;
-        }
-
-        /* ============================================================
-                   UTILITY CLASSES
-                   ============================================================ */
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .flex {
-            display: flex;
-        }
-        .flex-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .flex-between {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .flex-col {
-            flex-direction: column;
-        }
-        .gap-2 {
-            gap: 8px;
-        }
-        .gap-4 {
-            gap: 16px;
-        }
-        .gap-6 {
-            gap: 24px;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .text-left {
-            text-align: left;
-        }
-        .relative {
-            position: relative;
-        }
-        .mt-2 {
-            margin-top: 8px;
-        }
-        .mt-4 {
-            margin-top: 16px;
-        }
-        .mt-6 {
-            margin-top: 24px;
-        }
-        .mt-8 {
-            margin-top: 32px;
-        }
-        .mt-12 {
-            margin-top: 48px;
-        }
-        .mb-2 {
-            margin-bottom: 8px;
-        }
-        .mb-4 {
-            margin-bottom: 16px;
-        }
-        .mb-6 {
-            margin-bottom: 24px;
-        }
-        .mb-8 {
-            margin-bottom: 32px;
-        }
-        .w-full {
-            width: 100%;
-        }
-        .max-w-2xl {
-            max-width: 672px;
-        }
-        .max-w-3xl {
-            max-width: 768px;
-        }
-        .max-w-4xl {
-            max-width: 896px;
-        }
-        .mx-auto {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .hidden {
-            display: none !important;
-        }
-
-        /* ============================================================
-                   NAVBAR
-                   ============================================================ */
-        .navbar {
-            background: #ffffff;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            height: 64px;
-        }
-        .navbar .container {
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .navbar .logo {
-            color: #a33900;
-            font-weight: 600;
-            font-size: 20px;
-            letter-spacing: 0.3px;
-        }
-        .navbar .logo a {
-            color: #a33900;
-        }
-        .navbar .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-        .navbar .nav-links a {
-            color: #5a4138;
-            font-size: 16px;
-            transition: color 0.3s ease;
-            padding-bottom: 4px;
-        }
-        .navbar .nav-links a:hover {
-            color: #a33900;
-        }
-        .navbar .nav-links a.active {
-            color: #a33900;
-            font-weight: 600;
-            border-bottom: 2px solid #a33900;
-        }
-        .navbar .auth-buttons {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .navbar .auth-buttons .login-link {
-            color: #a33900;
-            font-weight: 600;
-            font-size: 14px;
-            transition: text-decoration 0.3s ease;
-        }
-        .navbar .auth-buttons .login-link:hover {
-            text-decoration: underline;
-        }
-        .navbar .auth-buttons .register-btn {
-            background: #a33900;
-            color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        .navbar .auth-buttons .register-btn:hover {
-            background: #8a2f00;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #4b5563;
-        }
-        .menu-toggle svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* ============================================================
-                   BREADCRUMB
-                   ============================================================ */
-        .breadcrumb {
-            padding: 16px 0 24px 0;
-            font-size: 14px;
-            color: #6b7280;
-        }
-        .breadcrumb a {
-            color: #a33900;
-            transition: text-decoration 0.3s ease;
-        }
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-        .breadcrumb .separator {
-            margin: 0 8px;
-            color: #9ca3af;
-        }
-        .breadcrumb .current {
-            color: #374151;
-            font-weight: 500;
-        }
-
-        /* ============================================================
-                   FORM PAGE
-                   ============================================================ */
-        .form-page {
-            flex: 1;
-            padding: 0 24px 64px;
-        }
-
-        .form-card {
-            background: #ffffff;
-            border-radius: 16px;
-            border: 1px solid #eaedff;
-            padding: 32px 36px;
-            max-width: 768px;
-            margin: 0 auto;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-        }
-
-        /* Back Button */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #6b7280;
-            font-size: 14px;
-            transition: color 0.3s ease;
-            margin-bottom: 16px;
-            cursor: pointer;
-        }
-        .back-link:hover {
-            color: #a33900;
-        }
-
-        /* Title */
-        .form-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #131b2e;
-            margin-bottom: 4px;
-        }
-
-        .form-subtitle {
-            font-size: 14px;
-            color: #6b7280;
-            margin-bottom: 24px;
-        }
-
-        /* Steps */
-        .steps {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .steps .step-number {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            font-size: 14px;
-            font-weight: 600;
-            color: #ffffff;
-            background: #d1d5db;
-            transition: all 0.3s ease;
-        }
-
-        .steps .step-number.active {
-            background: #a33900;
-        }
-
-        .steps .step-number.done {
-            background: #10b981;
-        }
-
-        .steps .step-line {
-            flex: 1;
-            height: 2px;
-            background: #d1d5db;
-            max-width: 40px;
-        }
-
-        .steps .step-line.active {
-            background: #a33900;
-        }
-
-        .steps .step-label {
-            font-size: 13px;
-            font-weight: 500;
-            color: #6b7280;
-        }
-
-        .steps .step-label.active {
-            color: #a33900;
-        }
-
-        /* Form Groups */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 6px;
-        }
-
-        .form-group label .required {
-            color: #ef4444;
-        }
-
-        .form-group .hint {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 4px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px 14px;
-            border: 2px solid #eaedff;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-            outline: none;
-            background: #ffffff;
-            color: #131b2e;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            border-color: #a33900;
-        }
-
-        .form-group input.error,
-        .form-group select.error,
-        .form-group textarea.error {
-            border-color: #ef4444;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        /* File Upload */
-        .upload-area {
-            border: 2px dashed #eaedff;
-            border-radius: 8px;
-            padding: 32px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .upload-area:hover {
-            border-color: #a33900;
-            background: #faf8f7;
-        }
-
-        .upload-area .icon {
-            font-size: 40px;
-            margin-bottom: 8px;
-        }
-
-        .upload-area p {
-            font-size: 14px;
-            color: #6b7280;
-        }
-
-        .upload-area .file-name {
-            font-size: 13px;
-            color: #a33900;
-            font-weight: 500;
-            margin-top: 4px;
-        }
-
-        /* Buttons */
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #a33900;
-            color: #ffffff;
-            padding: 12px 32px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        .btn-primary:hover {
-            background: #8a2f00;
-        }
-
-        .btn-outline {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: transparent;
-            color: #a33900;
-            padding: 12px 32px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 2px solid #a33900;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            width: 100%;
-        }
-        .btn-outline:hover {
-            background: #a33900;
-            color: #ffffff;
-        }
-
-        .btn-success {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: #10b981;
-            color: #ffffff;
-            padding: 12px 32px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        .btn-success:hover {
-            background: #059669;
-        }
-
-        .btn-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 8px;
-        }
-
-        .btn-actions .btn-primary,
-        .btn-actions .btn-outline {
-            flex: 1;
-        }
-
-        /* Step 2 - Scan Barcode */
-        .scan-box {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 32px;
-            text-align: center;
-            border: 2px dashed #eaedff;
-            margin: 16px 0;
-        }
-
-        .scan-box .scan-icon {
-            font-size: 64px;
-            margin-bottom: 12px;
-        }
-
-        .scan-box p {
-            font-size: 14px;
-            color: #6b7280;
-            line-height: 24px;
-        }
-
-        .scan-box .highlight {
-            color: #a33900;
-            font-weight: 600;
-        }
-
-        .btn-scan {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #a33900;
-            color: #ffffff;
-            padding: 14px 40px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 16px;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-            margin-top: 12px;
-        }
-        .btn-scan:hover {
-            background: #8a2f00;
-        }
-
-        /* Step 3 - Match Found */
-        .match-card {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 20px 24px;
-            border: 1px solid #eaedff;
-            margin: 16px 0;
-        }
-
-        .match-card .match-id {
-            font-size: 13px;
-            color: #6b7280;
-            font-weight: 500;
-        }
-
-        .match-card .match-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #131b2e;
-            margin: 4px 0;
-        }
-
-        .match-card .match-detail {
-            font-size: 14px;
-            color: #4b5563;
-            line-height: 22px;
-        }
-
-        /* Success Page */
-        .success-icon {
-            font-size: 64px;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-
-        .success-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #131b2e;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-
-        .success-message {
-            font-size: 15px;
-            color: #4b5563;
-            line-height: 26px;
-            text-align: center;
-            max-width: 500px;
-            margin: 0 auto 20px;
-        }
-
-        .secured-badge {
-            text-align: center;
-            font-size: 12px;
-            color: #6b7280;
-            letter-spacing: 1px;
-            margin-top: 12px;
-        }
-
-        /* ============================================================
-                   FOOTER
-                   ============================================================ */
-        .footer {
-            background: #eaedff;
-            padding: 24px;
-            margin-top: auto;
-        }
-        .footer .footer-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .footer .footer-content .brand {
-            font-weight: 600;
-            color: #131b2e;
-            font-size: 14px;
-        }
-        .footer .footer-content .footer-links {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .footer .footer-content .footer-links a {
-            font-size: 13px;
-            color: #5a4138;
-            transition: color 0.3s ease;
-        }
-        .footer .footer-content .footer-links a:hover {
-            color: #a33900;
-        }
-        .footer .footer-content .copyright {
-            font-size: 13px;
-            color: #5a4138;
-        }
-
-        /* ============================================================
-                   MOBILE NAV
-                   ============================================================ */
-        .mobile-nav {
-            display: none;
-            flex-direction: column;
-            background: #ffffff;
-            padding: 16px 24px;
-            gap: 12px;
-            border-top: 1px solid #eaedff;
-        }
-        .mobile-nav.open {
-            display: flex;
-        }
-        .mobile-nav a {
-            color: #5a4138;
-            font-size: 16px;
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .mobile-nav a.active {
-            color: #a33900;
-            font-weight: 600;
-        }
-        .mobile-nav a:last-child {
-            border-bottom: none;
-        }
-
-        /* ============================================================
-                   RESPONSIVE
-                   ============================================================ */
-        @media (max-width: 768px) {
-            .navbar .nav-links {
-                display: none;
-            }
-            .menu-toggle {
-                display: block;
-            }
-
-            .form-card {
-                padding: 24px 20px;
-            }
-
-            .form-title {
-                font-size: 20px;
-            }
-
-            .steps .step-label {
-                font-size: 11px;
-            }
-
-            .btn-actions {
-                flex-direction: column;
-            }
-
-            .footer .footer-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 12px;
-            }
-            .footer .footer-content .footer-links {
-                justify-content: center;
-            }
-
-            .upload-area {
-                padding: 20px;
-            }
-            .upload-area .icon {
-                font-size: 32px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .navbar .auth-buttons .login-link {
-                font-size: 13px;
-            }
-            .navbar .auth-buttons .register-btn {
-                font-size: 13px;
-                padding: 6px 12px;
-            }
-
-            .form-page {
-                padding: 0 16px 40px;
-            }
-
-            .breadcrumb {
-                font-size: 12px;
-                padding: 12px 0 16px 0;
-            }
-
-            .form-card {
-                padding: 16px;
-            }
-
-            .form-title {
-                font-size: 18px;
-            }
-
-            .steps .step-number {
-                width: 30px;
-                height: 30px;
-                font-size: 12px;
-            }
-
-            .scan-box {
-                padding: 20px;
-            }
-            .scan-box .scan-icon {
-                font-size: 48px;
-            }
-            .btn-scan {
-                padding: 12px 24px;
-                font-size: 14px;
-            }
-
-            .success-icon {
-                font-size: 48px;
-            }
-            .success-title {
-                font-size: 20px;
-            }
+        /* Fix for injected Vanilla CSS Navbar/Footer inside Tailwind environment */
+        .navbar .container,
+        .footer .container {
+            max-width: 1280px !important;
+            margin: 0 auto !important;
+            padding: 0 1.5rem !important;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
         }
     </style>
 </head>
-<body>
+<body class="bg-surface-main min-h-screen flex flex-col font-sans text-on-surface">
 
-    <!-- ============================================================ -->
-    <!-- NAVBAR -->
-    <!-- ============================================================ -->
-    <header class="navbar">
-        <div class="container">
-            <div class="logo">
-                <a href="../mading/index.html">LostFound Connect</a>
-            </div>
+    <div id="app-navbar"></div>
 
-            <nav class="nav-links">
-                <a href="../mading/index.html">Beranda</a>
-                <a href="../tentang/index.html">Tentang Kami</a>
-                <a href="../bantuan/index.html">Pusat Bantuan</a>
-            </nav>
-
-            <div class="auth-buttons">
-                <a href="../auth/login.html" class="login-link">Masuk</a>
-                <button class="register-btn" onclick="window.location.href='login.html?mode=register'">Daftar Akun</button>
-            </div>
-
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="mobile-nav" id="mobileNav">
-            <a href="../mading/index.html">Beranda</a>
-            <a href="../tentang/index.html">Tentang Kami</a>
-            <a href="../bantuan/index.html">Pusat Bantuan</a>
-            <a href="../auth/login.html">Masuk</a>
-            <a href="login.html?mode=register" style="color:#a33900;font-weight:600;">Daftar Akun</a>
-        </div>
-    </header>
-
-    <!-- ============================================================ -->
-    <!-- FORM PAGE -->
-    <!-- ============================================================ -->
-    <main class="form-page">
-
-        <div class="container max-w-3xl mx-auto">
-
-            <!-- ============================================================ -->
-            <!-- BREADCRUMB -->
-            <!-- ============================================================ -->
-            <nav class="breadcrumb">
-                <a href="../mading/index.html">Beranda</a>
-                <span class="separator">›</span>
-                <span class="current">Lapor Temuan</span>
-            </nav>
-
-            <!-- ============================================================ -->
-            <!-- FORM CARD -->
-            <!-- ============================================================ -->
-            <div class="form-card">
-
-                <!-- Back Button -->
-                <a href="../mading/index.html" class="back-link">
-                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Kembali
-                </a>
-
-                <!-- ============================================================ -->
-                <!-- STEP 1: Formulir -->
-                <!-- ============================================================ -->
-                <div id="step1">
-                    <h1 class="form-title">Formulir Laporan Penemuan Barang</h1>
-                    <p class="form-subtitle">Langkah 1 dari 3: Pengisian Formulir</p>
-
-                    <!-- Steps -->
-                    <div class="steps">
-                        <span class="step-number active">1</span>
-                        <span class="step-line active"></span>
-                        <span class="step-number">2</span>
-                        <span class="step-line"></span>
-                        <span class="step-number">3</span>
-                    </div>
-
-                    <form id="formTemuan" onsubmit="submitStep1(event)">
-                        <div class="form-group">
-                            <label for="namaBarang">Nama/Judul Barang Temuan <span class="required">*</span></label>
-                            <input type="text" id="namaBarang" placeholder="Contoh: Kunci Motor Honda" required />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="kategori">Kategori Barang <span class="required">*</span></label>
-                            <select id="kategori" required>
-                                <option value="">Pilih Kategori</option>
-                                <option value="elektronik">Elektronik</option>
-                                <option value="dompet">Dompet / Tas</option>
-                                <option value="aksesoris">Aksesoris</option>
-                                <option value="kendaraan">Kendaraan</option>
-                                <option value="lainnya">Lainnya</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="lokasi">Lokasi Penemuan Spesifik (Kampus UNPER) <span class="required">*</span></label>
-                            <select id="lokasi" required>
-                                <option value="">Pilih Lokasi</option>
-                                <option value="gedung-a">Gedung A</option>
-                                <option value="gedung-b">Gedung B</option>
-                                <option value="gedung-c">Gedung C</option>
-                                <option value="perpustakaan">Perpustakaan</option>
-                                <option value="kantin">Kantin</option>
-                                <option value="parkir">Area Parkir</option>
-                                <option value="lainnya">Lainnya</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tanggal">Tanggal & Estimasi Waktu Ditemukan <span class="required">*</span></label>
-                            <input type="datetime-local" id="tanggal" required />
-                        </div>
-
-                        <div class="form-group">
-                            <label for="ciri">Ciri Spesifik Barang <span class="required">*</span></label>
-                            <textarea id="ciri" rows="3" placeholder="Contoh: Gantungan kunci berbentuk dompet kecil warna hitam, ada lepet pada bagian ring besi" required></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Unggah Foto Barang Fisik (1 Foto)</label>
-                            <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-                                <div class="icon">📷</div>
-                                <p>Klik untuk pilih file atau seret foto fisik barang di sini</p>
-                                <div class="file-name" id="fileName"></div>
-                            </div>
-                            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)" />
-                            <div class="hint">Format: JPG, PNG, JPEG (Maks 5MB)</div>
-                        </div>
-
-                        <button type="submit" class="btn-primary">Simpan Laporan & Lanjutkan</button>
-                    </form>
+    <main class="flex-grow w-full max-w-3xl mx-auto my-10 px-4">
+        <div class="bg-surface-card rounded-xl border border-surface-container shadow-sm p-8">
+            
+            <!-- Stepper (Shared) -->
+            <div id="globalStepper" class="flex flex-col items-center justify-center mb-8">
+                <div class="flex items-center gap-2 mb-2">
+                    <div id="node1" class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold transition-colors">1</div>
+                    <div id="line1" class="h-1 w-16 bg-surface-variant transition-colors"></div>
+                    <div id="node2" class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant font-bold transition-colors">2</div>
+                    <div id="line2" class="h-1 w-16 bg-surface-variant transition-colors"></div>
+                    <div id="node3" class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant font-bold transition-colors">3</div>
                 </div>
+                <p id="wizardProgressTxt" class="font-label-sm text-primary">Langkah 1 dari 3: Pengisian Formulir</p>
+            </div>
 
-                <!-- ============================================================ -->
-                <!-- STEP 2: Scan Barcode -->
-                <!-- ============================================================ -->
-                <div id="step2" class="hidden">
-                    <h1 class="form-title">Langkah 2 dari 3: Scan Barcode Validasi</h1>
-                    <p class="form-subtitle">Verifikasi laporan Anda di Pos Satpam</p>
-
-                    <!-- Steps -->
-                    <div class="steps">
-                        <span class="step-number done">✓</span>
-                        <span class="step-line active"></span>
-                        <span class="step-number active">2</span>
-                        <span class="step-line"></span>
-                        <span class="step-number">3</span>
-                    </div>
-
-                    <a href="#" class="back-link" onclick="goToStep(1)">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                        Kembali ke Langkah 1
+            <!-- ===================== STEP 1 ===================== -->
+            <div id="viewStep1">
+                <header class="mb-8 text-center relative">
+                    <a href="../dashboard/index.html" class="absolute left-0 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-700 transition-colors group">
+                        <span class="material-symbols-outlined text-[20px] transition-transform group-hover:-translate-x-1">arrow_back</span>
+                        <span class="font-['Hanken_Grotesk'] text-[14px] font-semibold hidden md:inline">Kembali</span>
                     </a>
-
-                    <div class="scan-box">
-                        <div class="scan-icon">📱</div>
-                        <p>
-                            <strong>Laporan Anda Berhasil Disimpan sebagai Draft!</strong><br /><br />
-                            Untuk mengaktifkan laporan ini, Anda diwajibkan segera membawa <span class="highlight">barang fisik temuan</span> ke Pos Satpam / Pusat Keamanan Kampus, lalu pindai <span class="highlight">Barcode Validasi Fisik</span> yang tertera di meja petugas.
-                        </p>
-                        <button class="btn-scan" onclick="simulateScan()">
-                            📷 Buka Kamera & Scan Barcode Pos
-                        </button>
-                        <p style="margin-top:12px;font-size:13px;color:#6b7280;">
-                            <a href="#" onclick="goToStep(3)" style="color:#a33900;font-weight:600;">Saya butuh bantuan petugas</a>
-                        </p>
+                    <h1 class="font-headline-md text-headline-md text-on-surface mb-2">Formulir Laporan Penemuan Barang</h1>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">Isi detail informasi untuk mendaftarkan penemuan objek fisik secara terpusat.</p>
+                </header>
+                
+                <form id="formStep1" class="space-y-4">
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface mb-1" for="itemName">Nama/Judul Barang Temuan</label>
+                        <input class="w-full border border-surface-container-highest rounded-lg p-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-main" id="itemName" name="itemName" placeholder="Contoh: Kunci Motor Honda" type="text">
                     </div>
-                </div>
-
-                <!-- ============================================================ -->
-                <!-- STEP 3: Match / Cocokkan -->
-                <!-- ============================================================ -->
-                <div id="step3" class="hidden">
-                    <h1 class="form-title">Laporan Diproses</h1>
-                    <p class="form-subtitle">Sistem sedang memverifikasi laporan Anda dengan database kami.</p>
-
-                    <!-- Steps -->
-                    <div class="steps">
-                        <span class="step-number done">✓</span>
-                        <span class="step-line active"></span>
-                        <span class="step-number done">✓</span>
-                        <span class="step-line active"></span>
-                        <span class="step-number active">3</span>
+                    
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface mb-1" for="itemCategory">Kategori Barang</label>
+                        <select class="w-full border border-surface-container-highest rounded-lg p-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-main appearance-none" id="itemCategory" name="itemCategory">
+                            <option disabled selected value="">Pilih Kategori</option>
+                            <option value="1">Elektronik</option>
+                            <option value="2">Dokumen</option>
+                            <option value="3">Kunci</option>
+                            <option value="4">Dompet/Tas</option>
+                        </select>
                     </div>
-
-                    <div style="margin:16px 0;padding:12px 16px;background:#f0fdf4;border-radius:8px;border-left:4px solid #10b981;">
-                        <p style="font-size:14px;color:#16a34a;font-weight:500;">✅ Sistem Mendeteksi Postingan Kehilangan yang Mirip!</p>
-                        <p style="font-size:13px;color:#4b5563;margin-top:4px;">Harap verifikasi apakah barang yang Anda temukan sesuai dengan laporan kehilangan di bawah ini.</p>
+                    
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface mb-1" for="itemLocation">Lokasi Penemuan Spesifik (Kampus UNPER)</label>
+                        <select class="w-full border border-surface-container-highest rounded-lg p-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-main appearance-none" id="itemLocation" name="itemLocation">
+                            <option disabled selected value="">Pilih Lokasi</option>
+                            <option value="1">Kantin Utama</option>
+                            <option value="2">Area Parkir A</option>
+                            <option value="3">Gedung Rektorat</option>
+                            <option value="4">Ruang Kelas Gedung B</option>
+                        </select>
                     </div>
-
-                    <div class="match-card">
-                        <div class="match-id">Laporan Kehilangan • ID: LF-2024-0524</div>
-                        <div class="match-title">Dompet Kulit Cokelat</div>
-                        <div class="match-detail">
-                            📍 Gedung Rektorat, Lantai 1<br />
-                            📅 24 Mei 2024
+                    
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface mb-1" for="itemDateTime">Tanggal & Estimasi Waktu Ditemukan</label>
+                        <input class="w-full border border-surface-container-highest rounded-lg p-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-main" id="itemDateTime" name="itemDateTime" type="datetime-local">
+                    </div>
+                    
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface mb-1" for="itemDescription">Ciri Spesifik Barang</label>
+                        <textarea class="w-full h-28 border border-surface-container-highest rounded-lg p-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors bg-surface-main resize-none" id="itemDescription" name="itemDescription" placeholder="Contoh: Gantungan kunci berbentuk dompet kecil warna hitam, ada lecet pada bagian ring besi" rows="4"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface mb-1">Unggah Foto Barang Fisik (1 Foto)</label>
+                        <div class="relative bg-surface-main border-2 border-dashed border-outline-variant rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-surface-dim transition-colors group">
+                            <input type="file" id="fImage" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*" onchange="previewFile(this)">
+                            <span class="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">photo_camera</span>
+                            <p id="fImageName" class="font-body-sm text-body-sm text-on-surface-variant">Klik untuk pilih file atau seret foto fisik barang di sini</p>
                         </div>
                     </div>
+                    
+                    <button type="submit" class="bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md py-3 w-full rounded-lg shadow-sm mt-6 flex items-center justify-center gap-2 transition-colors">
+                        Simpan Laporan & Lanjutkan
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </button>
+                </form>
+            </div>
 
-                    <div class="btn-actions">
-                        <button class="btn-success" onclick="confirmMatch(true)">
-                            ✅ Ya, Ini Barang yang Sama
-                        </button>
-                        <button class="btn-outline" onclick="confirmMatch(false)">
-                            ❌ Bukan, Ini Barang Berbeda
-                        </button>
-                    </div>
-                </div>
+            <!-- ===================== STEP 2 (SCAN BARCODE) ===================== -->
+            <div id="viewStep2" class="hidden flex-col items-center w-full">
+                
+                <div class="bg-surface-main rounded-xl p-8 border-2 border-dashed border-outline-variant flex flex-col items-center text-center w-full relative">
+                    <button onclick="backToStep1()" class="absolute left-6 top-6 flex items-center gap-1 text-slate-500 hover:text-primary transition-colors duration-200">
+                        <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                        <span class="font-body-sm font-medium">Kembali</span>
+                    </button>
 
-                <!-- ============================================================ -->
-                <!-- STEP 4: Konfirmasi Berhasil (Match) -->
-                <!-- ============================================================ -->
-                <div id="step4" class="hidden">
-                    <div class="success-icon">🎉</div>
-                    <h1 class="success-title">Konfirmasi Berhasil Disimpan!</h1>
-                    <p class="success-message">
-                        Terima kasih banyak! Laporan pencocokan Anda telah diteruskan langsung ke komputer petugas Satpam di loket utama. Petugas akan melakukan validasi fisik terakhir sebelum menghubungi pemilik asli barang tersebut.
+                    <span class="material-symbols-outlined text-primary text-[64px] mb-4 fill mt-8 md:mt-0">lock_open</span>
+                    
+                    <h1 class="font-headline-md text-headline-md text-on-surface mb-2">Laporan Anda Berhasil Disimpan sebagai Draft!</h1>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed max-w-md mx-auto mb-8">
+                        Untuk mengaktifkan laporan ini, Anda diwajibkan segera membawa barang fisik temuan ke Pos Satpam / Pusat Keamanan Kampus, lalu pindai Barcode Validasi Fisik yang tertera di meja petugas.
                     </p>
-                    <div style="background:#f0fdf4;border-radius:8px;padding:16px;margin:16px 0;border-left:4px solid #10b981;">
-                        <p style="font-size:14px;color:#16a34a;font-weight:500;">✅ Status Anda Saat Ini:</p>
-                        <p style="font-size:14px;color:#4b5563;line-height:22px;">
-                            Tugas Anda sebagai penemu telah selesai. Anda diperbolehkan meninggalkan posko keamanan. Terima kasih telah menjadi pahlawan kampus hari ini!
-                        </p>
+                    
+                    <!-- Real Camera Container -->
+                    <div id="qr-reader-container" class="hidden w-64 h-64 mx-auto mb-6 bg-inverse-surface rounded-xl border-4 border-primary relative overflow-hidden shadow-sm">
+                        <div id="qr-reader" style="width: 100%; height: 100%;"></div>
                     </div>
-                    <div class="btn-actions">
-                        <a href="../mading/index.html" class="btn-primary">🏠 Kembali ke Beranda</a>
+                    
+                    <!-- Mock Camera (Initial State) -->
+                    <div id="mock-camera" class="w-64 h-64 mx-auto mb-6 bg-inverse-surface rounded-xl border-4 border-primary relative overflow-hidden flex flex-col items-center justify-center shadow-sm">
+                        <div class="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white opacity-50"></div>
+                        <div class="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-white opacity-50"></div>
+                        <div class="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-white opacity-50"></div>
+                        <div class="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-white opacity-50"></div>
+                        <style>
+                            @keyframes laserScan { 0%, 100% { transform: translateY(-100px); } 50% { transform: translateY(100px); } }
+                            .animate-laser-scan { animation: laserScan 2s infinite ease-in-out; }
+                        </style>
+                        <div class="absolute left-0 right-0 h-0.5 bg-status-lost-bg shadow-[0_0_8px_rgba(244,63,94,0.8)] animate-laser-scan w-full z-10"></div>
+                        <div class="absolute inset-0 bg-secondary opacity-20" style="background-image: radial-gradient(circle at center, transparent 0%, #1e293b 100%);"></div>
+                        <span class="material-symbols-outlined text-white/30 text-5xl z-0">qr_code_scanner</span>
                     </div>
-                    <div class="secured-badge">🔒 TRANSACTION SECURED BY LOSTFOUND SYSTEM</div>
+                    
+                    <button id="btnStartScan" onclick="startCameraScan()" class="bg-primary text-on-primary font-label-md text-label-md py-3 px-6 rounded-lg flex items-center justify-center gap-2 mt-2 shadow-sm w-full max-w-[280px] hover:bg-primary-container transition-colors duration-200">
+                        <span class="material-symbols-outlined text-[20px]">document_scanner</span>
+                        Buka Kamera & Scan Barcode Pos
+                    </button>
+                    <button id="btnCancelScan" onclick="stopCameraScan()" class="hidden border-2 border-error text-error bg-transparent font-label-md text-label-md py-3 px-6 rounded-lg flex items-center justify-center gap-2 mt-2 shadow-sm w-full max-w-[280px] hover:bg-error-container hover:border-error transition-colors duration-200">
+                        <span class="material-symbols-outlined text-[20px]">cancel</span>
+                        Batalkan Scan
+                    </button>
+                    <button class="mt-4 text-on-surface-variant hover:text-primary font-body-sm text-body-sm transition-colors underline decoration-outline-variant underline-offset-4">
+                        Saya butuh bantuan petugas
+                    </button>
                 </div>
+            </div>
 
-                <!-- ============================================================ -->
-                <!-- STEP 5: Laporan Berhasil Disimpan (Mandiri) -->
-                <!-- ============================================================ -->
-                <div id="step5" class="hidden">
-                    <div class="success-icon">📋</div>
-                    <h1 class="success-title">Laporan Berhasil Disimpan!</h1>
-                    <p class="success-message">
-                        Terima kasih! Karena barang ini berbeda dengan laporan kehilangan saat ini, sistem telah mendaftarkan laporan Anda secara mandiri. Petugas Satpam akan melakukan konfirmasi fisik barang terlebih dahulu di loket posko sebelum menerbitkannya ke beranda umum ("Found Feed").
+            <!-- ===================== STEP 3 (HASIL PENCARIAN SYSTEM) ===================== -->
+            <div id="viewStep3" class="hidden flex-col items-center w-full">
+                
+                <div class="w-full mb-8 text-center">
+                    <h1 class="font-headline-lg text-headline-lg text-on-surface">Laporan Diproses</h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant mt-2">Sistem sedang memverifikasi laporan Anda dengan database kami.</p>
+                </div>
+                
+                <!-- This container will hold the dynamic match result (Either State 1 Match, or State 2 No Match) -->
+                <div id="matchResultContainer" class="w-full">
+                    <!-- State 1 Demo -->
+                    <section class="bg-surface-main rounded-xl shadow-sm border border-surface-container overflow-hidden flex flex-col">
+                        <div class="bg-status-found-bg/10 p-4 border-b border-status-found-bg/20 flex items-start gap-3">
+                            <span class="material-symbols-outlined text-status-found-text fill">check_circle</span>
+                            <div>
+                                <h2 class="font-label-md text-label-md text-status-found-text mb-1">Sistem Mendeteksi Postingan Kehilangan yang Mirip!</h2>
+                                <p class="font-body-sm text-body-sm text-on-surface-variant">Harap verifikasi apakah barang yang Anda temukan sesuai dengan laporan kehilangan di bawah ini.</p>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col md:flex-row gap-4">
+                            <div class="relative w-full md:w-1/3 aspect-square rounded-lg overflow-hidden bg-surface-container">
+                                <img src="https://via.placeholder.com/400?text=Barang+Hilang" class="object-cover w-full h-full">
+                            </div>
+                            <div class="w-full md:w-2/3 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <span class="px-2 py-1 bg-status-lost-bg/10 text-status-lost-text rounded font-label-sm text-label-sm border border-status-lost-bg/20">Laporan Kehilangan</span>
+                                    </div>
+                                    <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Dompet Kulit Cokelat</h3>
+                                    <ul class="space-y-2 mb-4">
+                                        <li class="flex items-start gap-2 text-on-surface-variant font-body-sm text-body-sm">
+                                            <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                            <span>Gedung Rektorat, Lantai 1</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="flex flex-col gap-2 mt-4">
+                                    <button onclick="simulateMatchConfirmed()" class="bg-primary hover:bg-primary-container text-on-primary rounded-lg py-2.5 w-full font-bold transition-colors">Ya, Ini Barang yang Sama</button>
+                                    <button onclick="simulateMatchRejected()" class="border-2 border-primary text-primary bg-transparent rounded-lg py-2.5 w-full font-semibold transition-colors">Bukan, Ini Barang Berbeda</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- ===================== SUCCESS MATCH ===================== -->
+            <div id="viewSuccessMatch" class="hidden text-center flex-col items-center justify-center p-8">
+                <div class="mb-6 flex justify-center relative">
+                    <div class="absolute inset-0 bg-status-found-bg/10 rounded-full scale-150 animate-ping opacity-25"></div>
+                    <span class="material-symbols-outlined text-status-found-text text-[64px] relative z-10 fill">check_circle</span>
+                </div>
+                <h1 class="font-headline-md text-headline-md text-on-surface mb-2">Konfirmasi Berhasil Disimpan!</h1>
+                <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-8 max-w-md mx-auto">
+                    Terima kasih banyak! Laporan pencocokan Anda telah diteruskan langsung ke komputer petugas Satpam di loket utama. Petugas akan melakukan validasi fisik terakhir sebelum menghubungi pemilik asli barang tersebut.
+                </p>
+                <div class="bg-surface-container-low border border-outline-variant/30 rounded-lg p-4 mb-8 text-left relative overflow-hidden w-full">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-status-found-bg"></div>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant">
+                        <span class="font-bold text-on-surface">Status Anda Saat Ini:</span> Tugas Anda sebagai penemu telah selesai. Anda diperbolehkan meninggalkan posko keamanan. Terima kasih telah menjadi pahlawan kampus hari ini!
                     </p>
-                    <div style="background:#f0fdf4;border-radius:8px;padding:16px;margin:16px 0;border-left:4px solid #10b981;">
-                        <p style="font-size:14px;color:#16a34a;font-weight:500;">✅ Status Anda Saat Ini:</p>
-                        <p style="font-size:14px;color:#4b5563;line-height:22px;">
-                            Tugas Anda sebagai penemu telah selesai. Anda diperbolehkan meninggalkan posko keamanan. Terima kasih telah membantu sesama warga kampus Universitas Perjuangan!
-                        </p>
-                    </div>
-                    <div class="btn-actions">
-                        <a href="../mading/index.html" class="btn-primary">🏠 Kembali ke Beranda</a>
-                        <a href="#" class="btn-outline">📋 Lihat Detail Laporan Saya</a>
-                    </div>
                 </div>
+                <button onclick="window.location.href='../dashboard/index.html'" class="w-full bg-primary hover:bg-primary-container text-on-primary font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
+                    Kembali ke Beranda
+                    <span class="material-symbols-outlined text-[20px]">home</span>
+                </button>
+            </div>
 
+            <!-- ===================== SUCCESS NO MATCH (MANDIRI) ===================== -->
+            <div id="viewSuccessMandiri" class="hidden text-center flex-col items-center justify-center p-8">
+                <div class="mb-6 flex justify-center relative">
+                    <div class="absolute inset-0 bg-status-found-bg/10 rounded-full scale-150 animate-ping opacity-25"></div>
+                    <span class="material-symbols-outlined text-status-found-text text-[64px] relative z-10 fill">check_circle</span>
+                </div>
+                <h1 class="font-headline-md text-headline-md text-on-surface mb-2">Laporan Berhasil Disimpan!</h1>
+                <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed max-w-md mx-auto mb-8">
+                    Terima kasih! Karena barang ini berbeda dengan laporan kehilangan saat ini, sistem telah mendaftarkan laporan Anda secara mandiri. Petugas Satpam akan melakukan konfirmasi fisik barang terlebih dahulu di loket posko sebelum menerbitkannya ke beranda umum ('Found Feed').
+                </p>
+                <div class="bg-status-found-bg/10 border border-status-found-bg/20 rounded-lg p-4 w-full text-center mb-6">
+                    <p class="font-body-sm text-body-sm text-status-found-text font-semibold">
+                        Tugas Anda sebagai penemu telah selesai. Anda diperbolehkan meninggalkan posko keamanan. Terima kasih telah membantu sesama warga kampus Universitas Perjuangan!
+                    </p>
+                </div>
+                <button onclick="window.location.href='../dashboard/index.html'" class="w-full bg-primary hover:bg-primary-container text-on-primary font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">home</span>
+                    Kembali ke Beranda
+                </button>
             </div>
 
         </div>
-
     </main>
 
-    <!-- ============================================================ -->
-    <!-- FOOTER -->
-    <!-- ============================================================ -->
-    <footer class="footer">
-        <div class="footer-content">
-            <span class="brand">LostFound Connect</span>
-            <div class="footer-links">
-                <a href="#">Kebijakan Privasi</a>
-                <a href="#">Syarat &amp; Ketentuan</a>
-                <a href="#">Kontak Kampus</a>
-            </div>
-            <span class="copyright">© 2026 Universitas Perjuangan Tasikmalaya</span>
-        </div>
-    </footer>
+    <div id="app-footer"></div>
 
-    <!-- ============================================================ -->
-    <!-- JAVASCRIPT -->
-    <!-- ============================================================ -->
+    <script src="../../assets/js/components_user.js"></script>
     <script>
-        (function() {
-            'use strict';
+        // Gunakan hostname dinamis agar API tetap jalan jika diakses via HP (IP lokal)
+        const API_URL = `http://${window.location.hostname}:8000/api/v1`;
+        let currentFoundItemId = null;
+        let selectedCategoryId = null;
 
-            // ============================================================
-            // MOBILE MENU TOGGLE
-            // ============================================================
-            var menuToggle = document.getElementById('menuToggle');
-            var mobileNav = document.getElementById('mobileNav');
+        function getAuthToken() {
+            return localStorage.getItem('token');
+        }
 
-            if (menuToggle && mobileNav) {
-                menuToggle.addEventListener('click', function() {
-                    mobileNav.classList.toggle('open');
-                });
-            }
-
-            var mobileLinks = mobileNav ? mobileNav.querySelectorAll('a') : [];
-            mobileLinks.forEach(function(link) {
-                link.addEventListener('click', function() {
-                    mobileNav.classList.remove('open');
-                });
-            });
-
-            // ============================================================
-            // FILE UPLOAD
-            // ============================================================
-            window.handleFileSelect = function(event) {
-                var file = event.target.files[0];
-                var fileName = document.getElementById('fileName');
-                if (file) {
-                    fileName.textContent = '📎 ' + file.name;
-                }
-            };
-
-            // ============================================================
-            // STEP NAVIGATION
-            // ============================================================
-            function goToStep(step) {
-                var steps = ['step1', 'step2', 'step3', 'step4', 'step5'];
-                steps.forEach(function(id) {
-                    document.getElementById(id).classList.add('hidden');
-                });
-                document.getElementById('step' + step).classList.remove('hidden');
-
-                // Scroll to top
-                document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-
-            window.goToStep = goToStep;
-
-            // ============================================================
-            // STEP 1: Submit Form
-            // ============================================================
-            window.submitStep1 = function(e) {
-                e.preventDefault();
-
-                var nama = document.getElementById('namaBarang').value.trim();
-                var kategori = document.getElementById('kategori').value;
-                var lokasi = document.getElementById('lokasi').value;
-                var tanggal = document.getElementById('tanggal').value;
-                var ciri = document.getElementById('ciri').value.trim();
-
-                // Validasi
-                if (!nama || !kategori || !lokasi || !tanggal || !ciri) {
-                    alert('❌ Semua field wajib diisi!');
-                    return;
-                }
-
-                // Simpan data ke localStorage (simulasi)
-                var reportData = {
-                    nama: nama,
-                    kategori: kategori,
-                    lokasi: lokasi,
-                    tanggal: tanggal,
-                    ciri: ciri,
-                    status: 'draft'
-                };
-                localStorage.setItem('laporanTemuan', JSON.stringify(reportData));
-
-                // Pindah ke step 2
-                goToStep(2);
-            };
-
-            // ============================================================
-            // STEP 2: Scan Barcode
-            // ============================================================
-            window.simulateScan = function() {
-                // Simulasi scan barcode berhasil
-                var btn = document.querySelector('.btn-scan');
-                var originalText = btn.innerHTML;
-                btn.innerHTML = '✅ Scan Berhasil!';
-                btn.style.background = '#10b981';
-                btn.disabled = true;
-
-                setTimeout(function() {
-                    goToStep(3);
-                }, 1500);
-            };
-
-            // ============================================================
-            // STEP 3: Confirm Match
-            // ============================================================
-            window.confirmMatch = function(isMatch) {
-                if (isMatch) {
-                    // Barang cocok -> Step 4 (Konfirmasi Berhasil)
-                    goToStep(4);
-                } else {
-                    // Barang berbeda -> Step 5 (Laporan Mandiri)
-                    goToStep(5);
-                }
-            };
-
-            // ============================================================
-            // NAV LINK ACTIVE STATE
-            // ============================================================
-            var navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
-            navLinks.forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    if (this.id === 'mobileLogout' || this.id === 'mobileLogin' ||
-                        this.id === 'mobileRegister' || this.id === 'mobileProfile') {
-                        return;
-                    }
-                    navLinks.forEach(function(l) {
-                        l.classList.remove('active');
+        async function fetchCategoriesAndLocations() {
+            try {
+                const headers = { 'Authorization': 'Bearer ' + getAuthToken() };
+                
+                const [catRes, locRes] = await Promise.all([
+                    fetch(`${API_URL}/categories`, { headers }),
+                    fetch(`${API_URL}/locations`, { headers })
+                ]);
+                
+                const catData = await catRes.json();
+                const locData = await locRes.json();
+                
+                const catSelect = document.getElementById('itemCategory');
+                if (catData.success) {
+                    catSelect.innerHTML = '<option disabled selected value="">Pilih Kategori</option>';
+                    catData.data.forEach(c => {
+                        catSelect.innerHTML += `<option value="${c.id}">${c.nama_kategori}</option>`;
                     });
-                    this.classList.add('active');
-                });
+                }
+                
+                const locSelect = document.getElementById('itemLocation');
+                if (locData.success) {
+                    locSelect.innerHTML = '<option disabled selected value="">Pilih Lokasi</option>';
+                    locData.data.forEach(l => {
+                        locSelect.innerHTML += `<option value="${l.id}">${l.nama_tempat}</option>`;
+                    });
+                }
+            } catch (err) {
+                console.error("Gagal mengambil data referensi:", err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!getAuthToken()) {
+                alert('Silakan login terlebih dahulu.');
+                window.location.href = '../auth/login.html';
+                return;
+            }
+            fetchCategoriesAndLocations();
+        });
+
+        function previewFile(input) {
+            if (input.files && input.files[0]) {
+                document.getElementById('fImageName').textContent = input.files[0].name;
+            } else {
+                document.getElementById('fImageName').textContent = 'Klik untuk pilih file atau seret foto fisik barang di sini';
+            }
+        }
+
+        function setStepState(stepNumber) {
+            const node1 = document.getElementById('node1');
+            const line1 = document.getElementById('line1');
+            const node2 = document.getElementById('node2');
+            const line2 = document.getElementById('line2');
+            const node3 = document.getElementById('node3');
+            
+            // Reset all first
+            [node1, node2, node3].forEach(n => {
+                n.className = "flex items-center justify-center w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant font-bold transition-colors";
+            });
+            [line1, line2].forEach(l => {
+                l.className = "h-1 w-16 bg-surface-variant transition-colors";
             });
 
-            console.log('✅ Lapor Temuan page loaded successfully!');
+            if (stepNumber >= 1) {
+                node1.className = "flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold transition-colors";
+            }
+            if (stepNumber >= 2) {
+                line1.className = "h-1 w-16 bg-primary transition-colors";
+                node2.className = "flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold transition-colors ring-4 ring-primary-fixed";
+                node1.className = "flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold transition-colors";
+                node1.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+            } else {
+                node1.innerHTML = '1';
+                node2.innerHTML = '2';
+            }
+            if (stepNumber >= 3) {
+                line2.className = "h-1 w-16 bg-primary transition-colors";
+                node3.className = "flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold transition-colors ring-4 ring-primary-fixed";
+                node2.className = "flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold transition-colors";
+                node2.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span>';
+                node3.innerHTML = '3';
+            } else {
+                node3.innerHTML = '3';
+            }
+        }
 
-        })();
+        document.getElementById('formStep1').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalBtnText = btn.innerHTML;
+            
+            // Form Validation (jika form tidak diisi lengkap saat di-test)
+            const judul = document.getElementById('itemName').value;
+            const catId = document.getElementById('itemCategory').value;
+            const locId = document.getElementById('itemLocation').value;
+            const dt = document.getElementById('itemDateTime').value;
+            const desc = document.getElementById('itemDescription').value;
+            const fotoInput = document.getElementById('fImage');
+
+            if (!judul || !catId || !locId || !dt || !desc) {
+                alert("Harap lengkapi semua isian teks/dropdown terlebih dahulu!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = 'Menyimpan Laporan...';
+            
+            const formData = new FormData();
+            formData.append('judul', judul);
+            formData.append('category_id', catId);
+            formData.append('location_id', locId);
+            formData.append('tanggal_lapor', dt);
+            formData.append('deskripsi', desc);
+            formData.append('deskripsi_rahasia', '-'); // Dummy untuk laporan temuan
+            formData.append('post_type', 'found');
+            
+            if (fotoInput.files.length > 0) {
+                formData.append('foto', fotoInput.files[0]);
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/items`, {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + getAuthToken() },
+                    body: formData
+                });
+                
+                const data = await res.json();
+                if (data.success) {
+                    currentFoundItemId = data.data.id;
+                    selectedCategoryId = catId;
+                    
+                    document.getElementById('viewStep1').classList.add('hidden');
+                    document.getElementById('viewStep2').classList.remove('hidden');
+                    document.getElementById('viewStep2').classList.add('flex');
+                    setStepState(2);
+                    document.getElementById('wizardProgressTxt').textContent = "Langkah 2 dari 3: Scan Barcode Validasi";
+                    window.scrollTo(0,0);
+                } else {
+                    alert('Gagal menyimpan: ' + (data.message || 'Terjadi kesalahan'));
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Terjadi kesalahan server saat menyimpan laporan.');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalBtnText;
+            }
+        });
+
+        function backToStep1() {
+            // Karena laporan sudah di-store, secara logis kembali ke step 1 seharusnya tidak disarankan tanpa mengupdate, 
+            // tapi kita biarkan sebagai navigasi visual saja.
+            stopCameraScan();
+            document.getElementById('viewStep2').classList.add('hidden');
+            document.getElementById('viewStep2').classList.remove('flex');
+            document.getElementById('viewStep1').classList.remove('hidden');
+            setStepState(1);
+            document.getElementById('wizardProgressTxt').textContent = "Langkah 1 dari 3: Pengisian Formulir";
+        }
+
+        let html5QrCode = null;
+
+        function startCameraScan() {
+            document.getElementById('mock-camera').classList.add('hidden');
+            document.getElementById('qr-reader-container').classList.remove('hidden');
+            
+            const btnStart = document.getElementById('btnStartScan');
+            const btnCancel = document.getElementById('btnCancelScan');
+            btnStart.classList.add('hidden');
+            btnCancel.classList.remove('hidden');
+
+            if (!html5QrCode) {
+                html5QrCode = new Html5Qrcode("qr-reader");
+            }
+
+            html5QrCode.start(
+                { facingMode: "environment" },
+                {
+                    fps: 10,
+                    qrbox: { width: 200, height: 200 }
+                },
+                (decodedText, decodedResult) => {
+                    // Berhasil scan!
+                    stopCameraScan();
+                    alert("QR Code Validasi Satpam berhasil dibaca: " + decodedText);
+                    simulateScan(); // Lanjut panggil API pencocokan
+                },
+                (errorMessage) => {
+                    // Akan terpanggil tiap frame jika belum ketemu QR, abaikan saja.
+                }
+            ).catch((err) => {
+                console.error("Camera start failed", err);
+                alert("Gagal mengakses kamera. Harap izinkan akses kamera di browser Anda.");
+                stopCameraScan();
+            });
+        }
+
+        function stopCameraScan() {
+            if (html5QrCode && html5QrCode.isScanning) {
+                html5QrCode.stop().then(() => {
+                    // camera stopped
+                }).catch((err) => {
+                    console.error("Camera stop failed", err);
+                });
+            }
+            
+            document.getElementById('mock-camera').classList.remove('hidden');
+            document.getElementById('qr-reader-container').classList.add('hidden');
+            
+            document.getElementById('btnStartScan').classList.remove('hidden');
+            document.getElementById('btnCancelScan').classList.add('hidden');
+        }
+
+        async function simulateScan() {
+            const btn = document.getElementById('btnStartScan');
+            const originalBtn = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Mencari Kecocokan...';
+            
+            try {
+                // Cari data "lost" di kategori yang sama
+                const judul = document.getElementById('itemName').value || '';
+                const res = await fetch(`${API_URL}/items?post_type=lost&category_id=${selectedCategoryId}&q=${encodeURIComponent(judul)}`, {
+                    headers: { 'Authorization': 'Bearer ' + getAuthToken() }
+                });
+                const data = await res.json();
+                
+                document.getElementById('viewStep2').classList.add('hidden');
+                document.getElementById('viewStep2').classList.remove('flex');
+                
+                if (data.success && data.data.data && data.data.data.length > 0) {
+                    // Match found! Ambil item pertama yang cocok
+                    const matchItem = data.data.data[0];
+                    renderMatch(matchItem);
+                    
+                    document.getElementById('viewStep3').classList.remove('hidden');
+                    document.getElementById('viewStep3').classList.add('flex');
+                    setStepState(3);
+                    document.getElementById('wizardProgressTxt').textContent = "Langkah 3 dari 3: Hasil Pencocokan Sistem";
+                } else {
+                    // No match found
+                    document.getElementById('globalStepper').classList.add('hidden');
+                    document.getElementById('viewSuccessMandiri').classList.remove('hidden');
+                    document.getElementById('viewSuccessMandiri').classList.add('flex');
+                }
+                window.scrollTo(0,0);
+            } catch (err) {
+                console.error(err);
+                alert("Gagal mencari data pencocokan dari server.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalBtn;
+            }
+        }
+        
+        function getStorageUrl(path) {
+            return path ? `http://localhost:8000/storage/${path}` : 'https://via.placeholder.com/400?text=Barang+Hilang';
+        }
+
+        function renderMatch(item) {
+            const container = document.getElementById('matchResultContainer');
+            container.innerHTML = `
+                <section class="bg-surface-main rounded-xl shadow-sm border border-surface-container overflow-hidden flex flex-col">
+                    <div class="bg-status-found-bg/10 p-4 border-b border-status-found-bg/20 flex items-start gap-3">
+                        <span class="material-symbols-outlined text-status-found-text fill">check_circle</span>
+                        <div>
+                            <h2 class="font-label-md text-label-md text-status-found-text mb-1">Sistem Mendeteksi Postingan Kehilangan yang Mirip!</h2>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">Harap verifikasi apakah barang yang Anda temukan sesuai dengan laporan kehilangan di bawah ini.</p>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col md:flex-row gap-4">
+                        <div class="relative w-full md:w-1/3 aspect-square rounded-lg overflow-hidden bg-surface-container">
+                            <img src="${getStorageUrl(item.foto)}" class="object-cover w-full h-full">
+                        </div>
+                        <div class="w-full md:w-2/3 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="px-2 py-1 bg-status-lost-bg/10 text-status-lost-text rounded font-label-sm text-label-sm border border-status-lost-bg/20">Laporan Kehilangan</span>
+                                </div>
+                                <h3 class="font-headline-md text-headline-md text-on-surface mb-2">${item.judul}</h3>
+                                <ul class="space-y-2 mb-4">
+                                    <li class="flex items-start gap-2 text-on-surface-variant font-body-sm text-body-sm">
+                                        <span class="material-symbols-outlined text-[18px]">location_on</span>
+                                        <span>${item.location ? item.location.nama_tempat : '-'}</span>
+                                    </li>
+                                    <li class="flex items-start gap-2 text-on-surface-variant font-body-sm text-body-sm mt-2">
+                                        <span class="material-symbols-outlined text-[18px]">description</span>
+                                        <span>${item.deskripsi}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="flex flex-col gap-2 mt-4">
+                                <button onclick="simulateMatchConfirmed()" class="bg-primary hover:bg-primary-container text-on-primary rounded-lg py-2.5 w-full font-bold transition-colors">Ya, Ini Barang yang Sama</button>
+                                <button onclick="simulateMatchRejected()" class="border-2 border-primary text-primary bg-transparent rounded-lg py-2.5 w-full font-semibold transition-colors">Bukan, Ini Barang Berbeda</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function simulateMatchConfirmed() {
+            document.getElementById('viewStep3').classList.add('hidden');
+            document.getElementById('viewStep3').classList.remove('flex');
+            document.getElementById('globalStepper').classList.add('hidden');
+            document.getElementById('viewSuccessMatch').classList.remove('hidden');
+            document.getElementById('viewSuccessMatch').classList.add('flex');
+            window.scrollTo(0,0);
+        }
+
+        function simulateMatchRejected() {
+            document.getElementById('viewStep3').classList.add('hidden');
+            document.getElementById('viewStep3').classList.remove('flex');
+            document.getElementById('globalStepper').classList.add('hidden');
+            document.getElementById('viewSuccessMandiri').classList.remove('hidden');
+            document.getElementById('viewSuccessMandiri').classList.add('flex');
+            window.scrollTo(0,0);
+        }
     </script>
-
+    <script src="../../assets/js/api.js"></script>
     <script src="../../assets/js/auth.js"></script>
 </body>
 </html>

@@ -291,89 +291,13 @@
     <div id="app-footer"></div>
 
     <script>
-        // 3 Data yang di-restore persis dengan screenshot terbaru Anda (Laptop, Botol, Dompet Kosong)
-        const mockDatabaseFeed = [
-            { 
-                id: 1, 
-                title: 'Laptop MacBook Pro 13"', 
-                type: 'lost', 
-                category: 'Elektronik', 
-                location: 'Gedung A, Ruang 302', 
-                date: '2026-06-23', 
-                timeLabel: '2 Jam lalu', 
-                desc: 'Tertinggal di Gedung A, Ruang 302 setelah kelas PBO selesai. Warna space grey dengan stiker dicover...', 
-                phone: '08123456789', 
-                avatar: 'AD', 
-                author: 'Ahmad D.', 
-                img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500' // Gambar Laptop
-            },
-            { 
-                id: 2, 
-                title: 'Botol Minum Corkcicle', 
-                type: 'found', 
-                category: 'Aksesoris', 
-                location: 'Kantin Utama', 
-                date: '2026-06-23', 
-                timeLabel: '5 Jam lalu', 
-                desc: 'Ditemukan di kantin utama meja nomor 12. Botol warna silver, kapasitas 600ml. Saat ini diamankan di...', 
-                phone: '08987654321', 
-                avatar: 'PT', 
-                author: 'Petugas T.', 
-                img: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=500' // Gambar Botol
-            },
-            { 
-                id: 3, 
-                title: 'Dompet Kulit Hitam', 
-                type: 'lost', 
-                category: 'Dompet / Tas', 
-                location: 'Area Parkir Motor Utara', 
-                date: '2026-06-22', 
-                timeLabel: '1 Hari lalu', 
-                desc: 'Hilang sekitar area parkir motor utara. Berisi KTP, KTM, dan beberapa kartu penting lainnya.', 
-                phone: '0857123456', 
-                avatar: 'BR', 
-                author: 'Budi R.', 
-                img: '' // SVG Placeholder 
-            }
-        ];
-
-        // Paksa reset data agar 3 item ini muncul (menghapus sisa uji coba sebelumnya)
-        localStorage.removeItem('globalFeed');
-        localStorage.setItem('globalFeed', JSON.stringify(mockDatabaseFeed));
-
         document.addEventListener('DOMContentLoaded', () => {
-            syncAuthenticationState();
-            renderGlobalFeedCards();
             
             window.addEventListener('click', () => {
                 const dropdown = document.getElementById('dropdownMenu');
                 if (dropdown) dropdown.classList.remove('open');
             });
         });
-
-        function syncAuthenticationState() {
-            if (localStorage.getItem('isLoggedIn') === null) {
-                localStorage.setItem('isLoggedIn', 'true');
-                localStorage.setItem('userName', 'Ahmad D.');
-                localStorage.setItem('userEmail', 'ahmad@unper.ac.id');
-            }
-
-            const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
-            const name = localStorage.getItem('userName') || 'Ahmad D.';
-            
-            const guestNav = document.getElementById('authNotLoggedIn');
-            const userNav = document.getElementById('authLoggedIn');
-
-            if (loggedIn) {
-                if (guestNav) guestNav.style.display = 'none';
-                if (userNav) userNav.classList.remove('hidden');
-                document.getElementById('userNameTxt').textContent = name;
-                document.getElementById('avatarName').textContent = name.substring(0,2).toUpperCase();
-            } else {
-                if (guestNav) guestNav.style.display = 'flex';
-                if (userNav) userNav.classList.add('hidden');
-            }
-        }
 
         
         function checkAuthenticationRoute(pageUrl) {
@@ -427,7 +351,7 @@
                 // Rendering Gambar Utama / Box Placeholder SVG Sesuai Gambar Figma
                 let imgUrl = item.foto;
                 if (imgUrl && !imgUrl.startsWith('http')) {
-                    imgUrl = 'http://127.0.0.1:8000/storage/' + imgUrl;
+                    imgUrl = `http://${window.location.hostname}:8000/storage/` + imgUrl;
                 }
                 
                 let imageTag = `<img src="${imgUrl}" alt="${item.judul}">`;
