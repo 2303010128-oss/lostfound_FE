@@ -539,47 +539,7 @@
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="container">
-            <div class="logo">LostFound Connect</div>
-            
-            <nav class="nav-center">
-                <a href="../mading/index.html" class="active">Beranda</a>
-                <a href="../tentang/index.html">Tentang Kami</a>
-                <a href="../bantuan/index.html">Pusat Bantuan</a>
-            </nav>
-
-            <div class="nav-right">
-                <div class="notification-bell" onclick="alert('Belum ada notifikasi baru.')">
-                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
-                    </svg>
-                </div>
-
-                <div id="authNotLoggedIn" style="display: flex; align-items: center; gap: 20px;">
-                    <a href="../auth/login.html" class="login-link">Masuk</a>
-                    <button class="register-btn" onclick="window.location.href='../auth/login.html?mode=register'">Daftar Akun</button>
-                </div>
-
-                <div class="user-dropdown hidden" id="authLoggedIn">
-                    <button class="user-btn" onclick="toggleDropdownMenu(event)">
-                        <div class="avatar" id="avatarName">AD</div>
-                        <span class="user-name" id="userNameTxt">Ahmad D.</span>
-                        <span class="chevron">▼</span>
-                    </button>
-                    <div class="dropdown-menu" id="dropdownMenu">
-                        <a href="../ringkasan/index.html" class="menu-item">📊 Ringkasan</a>
-                        <a href="../klaim/status.html" class="menu-item">📋 Klaim Saya</a>
-                        <a href="../riwayat/index.html" class="menu-item">⏳ Riwayat</a>
-                        <div class="divider"></div>
-                        <a href="../profil/index.html" class="menu-item">👤 Profil</a>
-                        <a href="#" class="menu-item danger" onclick="event.preventDefault(); logout();">Keluar</a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </header>
+    <div id="app-navbar"></div>
 
     <section class="hero">
         <div class="blob blob-1"></div>
@@ -705,11 +665,7 @@
             }
         }
 
-        function toggleDropdownMenu(e) {
-            e.stopPropagation();
-            document.getElementById('dropdownMenu').classList.toggle('open');
-        }
-
+        
         function checkAuthenticationRoute(pageUrl) {
             if (localStorage.getItem('isLoggedIn') === 'true') {
                 window.location.href = pageUrl;
@@ -817,6 +773,7 @@
         });
     </script>
     <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components_user.js"></script>
     <script src="../../assets/js/auth.js"></script>
 </body>
 </html>
