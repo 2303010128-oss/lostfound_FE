@@ -28,7 +28,7 @@ async function loadDashboardActivity() {
             // Kalkulasi Statistik
             const pendingClaims = claims.filter(c => ['pending', 'clarification_required'].includes(c.status_verif)).length;
             const activeItems = items.filter(i => i.visibility === 'private').length;
-            const returnedClaims = claims.filter(c => c.status_verif === 'approved').length;
+            const returnedClaims = claims.filter(c => c.status_verif === 'returned').length;
 
             // Injeksi ke UI Kartu Statistik
             if (document.getElementById('stat-klaim-pending')) document.getElementById('stat-klaim-pending').innerText = pendingClaims;
@@ -51,11 +51,14 @@ async function loadDashboardActivity() {
                 let statusClass = 'diverifikasi';
                 let statusText = 'Pending';
                 
-                if (claim.status_verif === 'approved') {
+                if (claim.status_verif === 'returned') {
+                    statusClass = 'diserahkan';
+                    statusText = 'Diserahkan';
+                } else if (claim.status_verif === 'approved') {
                     statusClass = 'diserahkan';
                     statusText = 'Disetujui';
                 } else if (claim.status_verif === 'rejected') {
-                    statusClass = 'diverifikasi'; // Gunakan class default untuk sementara
+                    statusClass = 'diverifikasi';
                     statusText = 'Ditolak';
                 } else {
                     statusText = 'Menunggu';
