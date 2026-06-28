@@ -558,8 +558,9 @@
                             id: c.id,
                             claimant: c.user ? c.user.nama_lengkap : 'Anonim',
                             desc: '"' + (c.bukti_teks || '') + '"',
-                            files: c.bukti_foto ? ['BUKTI_FOTO_TERLAMPIR'] : ['TIDAK_ADA_FOTO_LAMPIRAN'],
-                            foto_url: c.bukti_foto ? (c.bukti_foto.startsWith('http') ? c.bukti_foto : 'http://127.0.0.1:8000/storage/' + c.bukti_foto) : null,
+                            files: c.foto_bukti_pendukung ? ['BUKTI_FOTO_TERLAMPIR'] : ['TIDAK_ADA_FOTO_LAMPIRAN'],
+                            foto_url: c.foto_bukti_pendukung ? (c.foto_bukti_pendukung.startsWith('http') ? c.foto_bukti_pendukung : 'http://127.0.0.1:8000/storage/' + c.foto_bukti_pendukung) : null,
+                            foto_ktp: c.foto_ktp ? (c.foto_ktp.startsWith('http') ? c.foto_ktp : 'http://127.0.0.1:8000/storage/' + c.foto_ktp) : null,
                             warning: '',
                             reviewId: new Date(c.created_at).toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: 'numeric'}),
                             rawStatus: c.status_verif,
@@ -602,15 +603,24 @@
                 // Update Header
                 document.getElementById('headerSubtitle').innerText = item.claimant + ' (#CLM-' + item.id + ')';
 
-                // Build photos html
                 var photosHtml = '';
-                if (item.foto_url) {
-                    photosHtml = `
-                    <div class="container-11">
-                        <img class="background-border-2" src="${item.foto_url}" />
-                        <div class="container-12"><div class="text-wrapper-14">BUKTI_LAMPIRAN.JPG</div></div>
-                    </div>
-                    `;
+                if (item.foto_url || item.foto_ktp) {
+                    if (item.foto_url) {
+                        photosHtml += `
+                        <div class="container-11" style="margin-bottom:10px;">
+                            <img class="background-border-2" src="${item.foto_url}" />
+                            <div class="container-12"><div class="text-wrapper-14">BUKTI_PENDUKUNG.JPG</div></div>
+                        </div>
+                        `;
+                    }
+                    if (item.foto_ktp) {
+                        photosHtml += `
+                        <div class="container-11">
+                            <img class="background-border-2" src="${item.foto_ktp}" />
+                            <div class="container-12"><div class="text-wrapper-14">FOTO_KTP.JPG</div></div>
+                        </div>
+                        `;
+                    }
                 } else {
                     photosHtml = `<p style="font-size:14px; color:#64748b; font-style:italic;">Tidak ada lampiran foto.</p>`;
                 }
