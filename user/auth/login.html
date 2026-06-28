@@ -481,7 +481,7 @@
                     skipRedirect: true
                 });
 
-                if (result.response.ok && result.data.token) {
+                if (result.response.ok && result.data?.token) {
                     // Ambil objek profil dari API (result.data.data)
                     const userData = result.data.data || {};
                     const role = userData.role || 'student';
@@ -503,7 +503,7 @@
                         window.location.href = '../mading/index.html';
                     }
                 } else {
-                    alert('❌ ' + (result.data.message || 'Email atau kata sandi Anda salah.'));
+                    alert('❌ ' + (result.data?.message || 'Email atau kata sandi Anda salah.'));
                 }
             } catch (err) {
                 console.error('Error saat login:', err);

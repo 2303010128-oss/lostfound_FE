@@ -38,7 +38,10 @@ async function apiFetch(endpoint, options = {}) {
                     window.location.replace('/user/auth/login.html');
                 }
             }
-            return { response, data: null };
+            // Parse error message if possible
+            let errorData = null;
+            try { errorData = await response.json(); } catch(e) {}
+            return { response, data: errorData };
         }
 
         const data = await response.json();
