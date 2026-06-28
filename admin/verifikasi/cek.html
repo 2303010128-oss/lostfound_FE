@@ -648,6 +648,7 @@
 </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
     <link rel="stylesheet" href="../../assets/css/admin_header.css">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -677,37 +678,119 @@
     </main>
 
     
-    <!-- Modals -->
-    <div class="modal-overlay" id="modalSetuju">
-        <div class="modal-card">
-            <div class="modal-icon-wrapper modal-icon-success">✓</div>
-            <div class="modal-title">Pengajuan Klaim Disetujui!</div>
-            <div class="modal-desc">
-                Sistem berhasil memvalidasi kepemilikan barang. Kode Token Pengambilan Rahasia <strong id="modalSetujuToken" style="color:#0f172a;"></strong> telah resmi diterbitkan dan dikirimkan ke dashboard akun <strong id="modalSetujuNama" style="color:#0f172a;"></strong> beserta instruksi pengambilan di posko.
+    <!-- Modals (Exact Stitch Design Ported to Vanilla CSS) -->
+    
+    <style>
+        .tw-fixed { position: fixed; }
+        .tw-absolute { position: absolute; }
+        .tw-relative { position: relative; }
+        .tw-inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .tw-z-100 { z-index: 100; }
+        .tw-z-110 { z-index: 110; }
+        .tw-flex { display: flex; }
+        .tw-flex-col { flex-direction: column; }
+        .tw-items-center { align-items: center; }
+        .tw-justify-center { justify-content: center; }
+        .tw-p-4 { padding: 1rem; }
+        .tw-p-8 { padding: 2rem; }
+        .tw-bg-black-50 { background-color: rgba(0, 0, 0, 0.5); }
+        .tw-backdrop-blur { backdrop-filter: blur(4px); }
+        .tw-bg-white { background-color: #ffffff; }
+        .tw-max-w-md { max-width: 28rem; }
+        .tw-w-full { width: 100%; }
+        .tw-rounded-xl { border-radius: 0.75rem; }
+        .tw-rounded-lg { border-radius: 0.5rem; }
+        .tw-rounded-full { border-radius: 9999px; }
+        .tw-shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        .tw-shadow-lg-emerald { box-shadow: 0 10px 15px -3px rgba(167, 243, 208, 0.5); }
+        .tw-shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .tw-shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .tw-text-center { text-align: center; }
+        .tw-w-16 { width: 4rem; }
+        .tw-h-16 { height: 4rem; }
+        .tw-mx-auto { margin-left: auto; margin-right: auto; }
+        .tw-mb-6 { margin-bottom: 1.5rem; }
+        .tw-mb-3 { margin-bottom: 0.75rem; }
+        .tw-mb-4 { margin-bottom: 1rem; }
+        .tw-mb-8 { margin-bottom: 2rem; }
+        .tw-text-white { color: #ffffff; }
+        .tw-text-4xl { font-size: 2.25rem; }
+        .tw-font-bold { font-weight: 700; }
+        .tw-font-semibold { font-weight: 600; }
+        .tw-text-headline-sm { font-size: 1.25rem; font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; color: #131b2e; }
+        .tw-text-body-md { font-size: 1rem; line-height: 1.625; font-family: 'Inter', sans-serif; color: #5a4138; }
+        .tw-bg-slate-900 { background-color: #0f172a; transition: all 0.2s; cursor: pointer; border: none; }
+        .tw-bg-slate-900:hover { background-color: #1e293b; }
+        .tw-bg-inverse { background-color: #283044; transition: all 0.2s; cursor: pointer; border: none; }
+        .tw-bg-inverse:hover { opacity: 0.9; }
+        .tw-py-3-5 { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+        .tw-py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .tw-px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .tw-border-t-4 { border-top: 4px solid; }
+        .tw-border-error { border-color: #ba1a1a; }
+        .tw-border-tertiary { border: 1px solid rgba(0, 93, 168, 0.2); }
+        .tw-transition-all { transition: all 0.3s; }
+        .tw-animate-zoom { animation: modalZoom 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        @keyframes modalZoom {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .stitch-modal { display: none; }
+        .stitch-modal.active { display: flex !important; }
+    </style>
+
+    <!-- Modal 1: Setuju -->
+    <div class="tw-fixed tw-inset-0 tw-z-100 tw-flex tw-items-center tw-justify-center tw-p-4 stitch-modal" id="modalSetuju">
+        <div class="tw-absolute tw-inset-0 tw-bg-black-50 tw-backdrop-blur"></div>
+        <div class="tw-relative tw-z-110 tw-bg-white tw-max-w-md tw-w-full tw-rounded-xl tw-shadow-2xl tw-p-8 tw-animate-zoom">
+            <div class="tw-text-center">
+                <div class="tw-w-16 tw-h-16 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-mx-auto tw-mb-6 tw-shadow-lg-emerald" style="background:#10B981;">
+                    <span class="material-symbols-outlined tw-text-white tw-text-4xl tw-font-bold">check</span>
+                </div>
+                <h3 class="tw-text-headline-sm tw-mb-3">Pengajuan Klaim Disetujui!</h3>
+                <p class="tw-text-body-md tw-mb-8">
+                    Sistem berhasil memvalidasi kepemilikan barang. Kode Token Pengambilan Rahasia <span class="tw-font-bold" style="color:#131b2e;" id="modalSetujuToken"></span> telah resmi diterbitkan dan dikirimkan ke dashboard akun <span id="modalSetujuNama"></span> beserta instruksi pengambilan di posko.
+                </p>
+                <button class="tw-w-full tw-bg-slate-900 tw-text-white tw-py-3-5 tw-rounded-lg tw-font-semibold tw-shadow-md" onclick="window.location.href='../verifikasi/index.html'">
+                    Selesai & Kembali ke Antrean
+                </button>
             </div>
-            <button class="modal-btn" onclick="window.location.href='../verifikasi/index.html'">Selesai & Kembali ke Antrean</button>
         </div>
     </div>
 
-    <div class="modal-overlay" id="modalKlarifikasi">
-        <div class="modal-card">
-            <div class="modal-icon-wrapper modal-icon-warning">!</div>
-            <div class="modal-title">Instruksi Prosedur Lapangan Terkirim</div>
-            <div class="modal-desc">
-                Status pengajuan <strong id="modalKlarifikasiNama" style="color:#0f172a;"></strong> telah diubah menjadi <strong>"Butuh Klarifikasi"</strong>. Pesan catatan petugas yang Anda ketik di kotak input telah diteruskan ke akun mahasiswa.
+    <!-- Modal 2: Klarifikasi -->
+    <div class="tw-fixed tw-inset-0 tw-z-100 tw-flex tw-items-center tw-justify-center tw-p-4 stitch-modal" id="modalKlarifikasi">
+        <div class="tw-absolute tw-inset-0 tw-bg-black-50 tw-backdrop-blur"></div>
+        <div class="tw-relative tw-z-110 tw-bg-white tw-max-w-md tw-w-full tw-rounded-xl tw-shadow-lg tw-border-tertiary tw-p-8 tw-flex tw-flex-col tw-items-center tw-text-center tw-animate-zoom">
+            <div class="tw-w-16 tw-h-16 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-mb-6" style="background:rgba(0, 93, 168, 0.1);">
+                <span class="material-symbols-outlined tw-text-4xl" style="color:#005da8;">assignment_late</span>
             </div>
-            <button class="modal-btn" onclick="window.location.href='../verifikasi/index.html'">Selesai & Kembali ke Antrean</button>
+            <h3 class="tw-text-headline-sm tw-mb-4">Instruksi Prosedur Lapangan Terkirim</h3>
+            <p class="tw-text-body-md tw-mb-8">
+                Status pengajuan <span id="modalKlarifikasiNama"></span> telah diubah menjadi <span class="tw-font-semibold">"Butuh Klarifikasi"</span>. Pesan catatan petugas yang Anda ketik di kotak input telah diteruskan ke akun mahasiswa. Sistem telah mengaktifkan alarm spanduk "Urgent Action" di HP untuk menyuruhnya datang membawa dokumen pendukung.
+            </p>
+            <button class="tw-w-full tw-bg-slate-900 tw-text-white tw-py-3-5 tw-px-6 tw-rounded-xl tw-font-semibold tw-shadow-sm" onclick="window.location.href='../verifikasi/index.html'">
+                Selesai & Kembali ke Antrean
+            </button>
         </div>
     </div>
 
-    <div class="modal-overlay" id="modalTolak">
-        <div class="modal-card">
-            <div class="modal-icon-wrapper modal-icon-danger">✕</div>
-            <div class="modal-title">Klaim Resmi Ditolak permanen</div>
-            <div class="modal-desc">
-                Pengajuan klaim oleh <strong id="modalTolakNama" style="color:#0f172a;"></strong> ditutup dengan status 'Rejected / Bukti Palsu'. Alasan penolakan yang Anda ketik telah diarsipkan dalam log keamanan sistem.
+    <!-- Modal 3: Tolak -->
+    <div class="tw-fixed tw-inset-0 tw-z-100 tw-flex tw-items-center tw-justify-center tw-p-4 stitch-modal" id="modalTolak">
+        <div class="tw-absolute tw-inset-0 tw-bg-black-50 tw-backdrop-blur"></div>
+        <div class="tw-relative tw-z-110 tw-bg-white tw-max-w-md tw-w-full tw-rounded-xl tw-shadow-2xl tw-p-8 tw-border-t-4 tw-border-error tw-flex tw-flex-col tw-items-center tw-text-center tw-animate-zoom">
+            <div class="tw-w-16 tw-h-16 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-mb-6" style="background:rgba(186, 26, 26, 0.1);">
+                <span class="material-symbols-outlined tw-text-4xl tw-font-bold" style="color:#ba1a1a;">cancel</span>
             </div>
-            <button class="modal-btn" onclick="window.location.href='../verifikasi/index.html'">Selesai & Kembali ke Antrean</button>
+            <h3 class="tw-text-headline-sm tw-mb-4" style="color:#ba1a1a;">Klaim Resmi Ditolak permanen</h3>
+            <p class="tw-text-body-md tw-mb-8">
+                Pengajuan klaim oleh <strong id="modalTolakNama" style="color:#131b2e;"></strong> ditutup dengan status 'Rejected / Bukti Palsu'. Alasan penolakan yang Anda ketik telah diarsipkan dalam log keamanan sistem. Akun mahasiswa telah menerima notifikasi penolakan resmi.
+            </p>
+            <button class="tw-w-full tw-bg-inverse tw-text-white tw-py-3 tw-rounded-lg tw-font-semibold" onclick="window.location.href='../verifikasi/index.html'">
+                Selesai & Kembali ke Antrean
+            </button>
         </div>
     </div>
 
