@@ -1,4 +1,4 @@
-const BASE_URL = `https://lostfound-backend-pwtf.onrender.com/api/v1 `;
+const BASE_URL = `https://lostfound-backend-pwtf.onrender.com/api/v1`;
 
 // Fungsi otomatis untuk mengambil header (menyuntikkan Token dan format JSON)
 function getHeaders() {
