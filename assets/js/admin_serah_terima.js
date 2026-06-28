@@ -74,10 +74,18 @@ async function initHandover() {
                     <span class="material-symbols-outlined">check_circle</span>
                     Serah Terima Selesai!
                 `;
-                setTimeout(() => {
+                // Tampilkan Modal Sukses (Hapus hidden class)
+                const modalSukses = document.getElementById('modal-sukses-final');
+                if (modalSukses) {
+                    const pTag = modalSukses.querySelector('p.text-slate-500');
+                    if (pTag) {
+                        pTag.innerHTML = `Barang terkait dengan <strong>Token ${token}</strong> resmi ditutup secara permanen. Berkas bukti dokumentasi fisik telah berhasil dikunci ke dalam gudang server 'Arsip Laporan'.`;
+                    }
+                    modalSukses.classList.remove('hidden');
+                } else {
                     alert('🎉 Laporan Berhasil Ditutup & Diarsipkan.');
                     window.location.href = '../dashboard/index.html';
-                }, 1000);
+                }
             } else {
                 alert('❌ Serah terima gagal: ' + (data.message || 'Gagal diproses server.'));
                 submitBtn.innerHTML = `

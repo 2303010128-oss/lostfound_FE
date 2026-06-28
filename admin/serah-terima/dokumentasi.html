@@ -137,6 +137,36 @@
         </div>
     </main>
 
+    <!-- Success Modal -->
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm px-4 hidden" id="modal-sukses-final">
+        <div class="bg-white rounded-xl shadow-xl p-8 max-w-xl w-full text-center animate-in fade-in zoom-in duration-300">
+            <div class="mb-6 flex justify-center">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-emerald-500/20 rounded-full scale-150 animate-pulse"></div>
+                    <div class="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center relative z-10">
+                        <span class="material-symbols-outlined text-white text-4xl" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+                    </div>
+                </div>
+            </div>
+            <h2 class="font-headline text-2xl font-bold text-[#131b2e] mb-4">Kasus Berhasil Diselesaikan & Diarsipkan!</h2>
+            <p class="font-body text-base text-slate-500 mb-6">
+                Laporan resmi ditutup secara permanen. Berkas bukti dokumentasi fisik telah berhasil dikunci ke dalam gudang server 'Arsip Laporan'.
+            </p>
+            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-8 text-left">
+                <div class="flex gap-3">
+                    <span class="material-symbols-outlined text-slate-400 text-lg">info</span>
+                    <p class="text-sm text-slate-600">
+                        <span class="font-bold">SOP Fisik:</span> Pastikan Anda sudah memberikan barang fisik tersebut ke penerima.
+                    </p>
+                </div>
+            </div>
+            <button onclick="window.location.href='../dashboard/index.html'" class="w-full flex items-center justify-center gap-2 py-4 bg-slate-900 text-white rounded-lg font-bold text-lg hover:bg-black transition-colors shadow-lg">
+                <span class="material-symbols-outlined">home</span>
+                Selesai & Kembali ke Dashboard
+            </button>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="../../assets/js/auth.js"></script>
     <script src="../../assets/js/api.js"></script>
