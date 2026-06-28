@@ -134,6 +134,17 @@ window.handleRelease = function(itemId) {
     window.location.href = `detail.html?id=${itemId}`;
 };
 
+window.showSuccessReleaseModal = function(itemName) {
+    if (itemName) {
+        document.getElementById('successReleaseText').innerHTML = `Laporan fisik untuk <strong>'${itemName}'</strong> resmi diverifikasi. Status barang kini berubah menjadi 'Published' dan sudah tayang di halaman publik.`;
+    }
+    document.getElementById('successReleaseModal').style.display = 'flex';
+};
+
+window.closeSuccessReleaseModal = function() {
+    document.getElementById('successReleaseModal').style.display = 'none';
+};
+
 window.handleCancel = function(itemId, penemuName) {
     currentCancelId = itemId;
     document.getElementById('targetPenemu').innerText = penemuName;
@@ -179,7 +190,11 @@ window.executeCancellation = async function() {
 // Tutup popup saat mengklik luar kotak
 window.onclick = function(event) {
     const modal = document.getElementById('cancelModal');
+    const successModal = document.getElementById('successReleaseModal');
     if (event.target == modal) {
         closeCancelModal();
+    }
+    if (event.target == successModal) {
+        closeSuccessReleaseModal();
     }
 };
