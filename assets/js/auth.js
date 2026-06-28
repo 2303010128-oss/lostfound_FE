@@ -14,7 +14,7 @@ function requireAuth(allowedRoles = []) {
 
     // Sistem 1 Pintu: Jika belum login, semua dilempar ke login mahasiswa
     if (!token) {
-        window.location.replace(base + '/user/login.html');
+        window.location.replace(base + '/user/auth/login.html');
         return false;
     }
 
