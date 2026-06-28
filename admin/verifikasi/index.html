@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Verifikasi Klaim - LostFound Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -20,449 +22,191 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #F8FAFC; /* Latar belakang abu-abu sangat muda sesuai Figma */
+            background: #F8FAFC;
             min-height: 100vh;
             display: flex;
             color: #1E293B;
+            -webkit-font-smoothing: antialiased;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            cursor: pointer;
-            font-family: inherit;
-            border: none;
-            background: none;
-        }
-
-        input {
-            font-family: inherit;
-        }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; font-family: inherit; border: none; outline: none; background: none; }
         
-
-        /* ============================================================
-                   MAIN CONTENT AREA
-                   ============================================================ */
-        .main-content {
+        .main {
             margin-left: 260px;
-            flex: 1;
-            min-height: 100vh;
-            display: flex;
             flex-direction: column;
-            padding: 32px 40px;
-            gap: 24px;
-        }
-
-        /* Topbar Header */
-        .content-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-title h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #0F172A;
-            margin-bottom: 4px;
-        }
-
-        .header-title p {
-            font-size: 13px;
-            color: #64748B;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        /* Search Bar Kapsul Lonjong */
-        .search-box {
+            align-items: flex-start;
+            flex: 1;
+            flex-grow: 1;
+            z-index: 0;
             position: relative;
-            width: 320px;
-        }
-
-        .search-box svg {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
-            height: 16px;
-            color: #94A3B8;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 10px 14px 10px 40px;
-            border: 1px solid #E2E8F0;
-            border-radius: 20px;
-            font-size: 13px;
-            background: #FFFFFF;
-            outline: none;
-            color: #334155;
-        }
-
-        /* Profile Kanan Atas Placeholder CSS murni */
-        .top-profile-box {
             display: flex;
+            align-self: stretch;
+            min-height: 100vh;
+            background-color: #f8fafc;
+        }
+
+        .header {
             align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
-
-        .top-avatar-placeholder {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #CBD5E1;
+            padding: 16px 32px;
+            z-index: 1;
+            background-color: #ffffffcc;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-color: #e2e8f0;
+            backdrop-filter: blur(6px) brightness(100%);
+            -webkit-backdrop-filter: blur(6px) brightness(100%);
             display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .top-avatar-placeholder svg {
-            width: 18px;
-            height: 18px;
-            color: #475569;
-        }
-
-        .dropdown-arrow {
-            font-size: 10px;
-            color: #64748B;
-        }
-
-        /* ============================================================
-                   TABS NAVIGATION (GARIS BAWAH SEPERTI FIGMA)
-                   ============================================================ */
-        .tabs-navigation {
-            display: flex;
-            gap: 32px;
-            border-bottom: 1px solid #E2E8F0;
-            padding-bottom: 1px;
-        }
-
-        .tab-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 4px;
-            font-size: 14px;
-            font-weight: 500;
-            color: #64748B;
-            cursor: pointer;
             position: relative;
-        }
-
-        .tab-item svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-        }
-
-        .tab-item .count-badge {
-            font-size: 11px;
-            background: #F1F5F9;
-            color: #64748B;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-
-        /* Active Tab (Perlu Ditinjau) dengan garis bawah oranye */
-        .tab-item.active {
-            color: #E15B17;
-            font-weight: 600;
-        }
-
-        .tab-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #E15B17;
-        }
-
-        .tab-item.active .count-badge {
-            background: #FFEDD5;
-            color: #E15B17;
-        }
-
-        /* ============================================================
-                   TABLE CARD CONTAINER
-                   ============================================================ */
-        .data-card {
-            background: #FFFFFF;
-            border: 1px solid #E2E8F0;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01);
-            overflow: hidden;
-        }
-
-        .main-table {
+            align-self: stretch;
             width: 100%;
-            border-collapse: collapse;
+            flex: 0 0 auto;
         }
 
-        .main-table th {
-            background: #FFFFFF;
-            padding: 18px 24px;
-            text-align: left;
-            font-size: 11px;
-            font-weight: 600;
-            color: #64748B;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid #E2E8F0;
+        .div-4 { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; position: relative; flex: 0 0 auto; }
+        .text-wrapper-10 { font-weight: 700; color: #0f172a; font-size: 20px; line-height: 28px; position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; white-space: nowrap; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .text-wrapper-8 { font-weight: 400; color: #64748b; font-size: 12px; line-height: 16px; position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; white-space: nowrap; }
+
+        .div-5 { display: flex; flex-direction: column; align-items: flex-start; gap: 32px; padding: 32px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; z-index: 0; }
+
+        .horizontal-border {
+            display: flex; align-items: center; gap: 32px; padding: 0px 8px; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-bottom-width: 1px; border-bottom-style: solid; border-color: #e2e8f0;
         }
 
-        .main-table td {
-            padding: 16px 24px;
-            border-bottom: 1px solid #F1F5F9;
-            font-size: 13px;
-            color: #334155;
-            vertical-align: middle;
+        .tab-button {
+            display: inline-flex; padding: 0px 0px 16px; align-items: center; gap: 8px; position: relative; flex: 0 0 auto; border-bottom: 2px solid transparent; cursor: pointer; transition: 0.2s;
+        }
+        .tab-button.active { border-bottom-color: #ea580c; }
+        .tab-button.active .tab-title { color: #ea580c; }
+        .tab-button.active .tab-badge-wrapper { background-color: #fff7ed; color: #ea580c; }
+
+        .tab-title {
+            position: relative; display: flex; align-items: center; justify-content: center; width: fit-content; font-weight: 700; color: #94a3b8; font-size: 14px; text-align: center; line-height: 20px; white-space: nowrap; transition: 0.2s;
+        }
+        .tab-badge-wrapper {
+            display: inline-flex; flex-direction: column; align-items: center; padding: 2px 8px; position: relative; flex: 0 0 auto; background-color: #f1f5f9; border-radius: 9999px; color: #94a3b8; transition: 0.2s;
+        }
+        .tab-badge {
+            justify-content: center; text-align: center; line-height: 20px; position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; font-size: 10px; white-space: nowrap;
         }
 
-        .main-table tr:last-child td {
-            border-bottom: none;
+        .background-border-2 {
+            display: flex; flex-direction: column; align-items: flex-start; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; background-color: #ffffff; border-radius: 32px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0px 1px 2px #0000000d;
         }
 
-        .col-id {
-            color: #64748B;
-            font-weight: 500;
+        .table { display: flex; flex-direction: column; align-items: flex-start; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; overflow-x: auto; }
+        .table::-webkit-scrollbar { display: none; }
+        
+        .header-row {
+            align-items: flex-start; justify-content: space-between; background-color: #f8fafc80; border-bottom: 1px solid #f1f5f9; display: flex; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto;
         }
+        .cell { display: flex; flex-direction: column; padding: 20px 24px; position: relative; flex: 1; min-width: 120px; }
+        .cell.action { align-items: flex-end; }
+        .text-wrapper-15 { position: relative; display: flex; align-items: center; width: fit-content; margin-top: -1px; font-weight: 700; color: #94a3b8; font-size: 10px; letter-spacing: 2px; line-height: normal; white-space: nowrap; }
 
-        /* Boks Ikon Pengganti Gambar Produk */
-        .barang-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .body { display: flex; flex-direction: column; align-items: flex-start; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; margin-top: -1px; }
+        .row { display: flex; align-items: center; justify-content: space-between; position: relative; align-self: stretch; width: 100%; flex: 0 0 auto; border-bottom: 1px solid #f8fafc; transition: 0.1s; }
+        .row:hover { background-color: #f8fafc80; }
+        
+        .data { display: flex; flex-direction: column; padding: 24px; position: relative; flex: 1; min-width: 120px; }
+        .data.action { align-items: flex-end; }
+        
+        .text-wrapper-16 { font-size: 12px; font-weight: 700; color: #94a3b8; line-height: 16px; white-space: nowrap; }
+        .text-wrapper-17 { font-weight: 700; color: #0f172a; font-size: 14px; line-height: 20px; white-space: nowrap; margin-bottom: 4px; }
+        .text-wrapper-19 { font-weight: 500; color: #475569; font-size: 14px; line-height: 20px; white-space: nowrap; }
+        .text-wrapper-20 { font-weight: 400; color: #64748b; font-size: 12px; line-height: 16px; margin-bottom: 6px; }
 
-        .icon-container {
-            width: 40px;
-            height: 40px;
-            background: #F1F5F9;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .icon-container-box { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 12px; margin-right: 12px; flex-shrink: 0; }
+        .item-info { display: flex; align-items: center; }
 
-        .icon-container svg {
-            width: 20px;
-            height: 20px;
-        }
+        .background-border-3 { display: inline-flex; align-items: center; padding: 2px 8px; background-color: #f1f5f9; border-radius: 4px; border: 1px solid #e2e8f0; }
+        .text-wrapper-21 { font-weight: 700; color: #475569; font-size: 9px; letter-spacing: 0.5px; }
 
-        .barang-title {
-            font-weight: 600;
-            color: #0F172A;
-        }
+        .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 9999px; border: 1px solid; }
+        .status-badge.approved { background-color: #ecfdf5; border-color: #d1fae5; color: #047857; }
+        .status-badge.pending { background-color: #fff7ed; border-color: #ffedd5; color: #ea580c; }
+        .status-badge.clarify { background-color: #eff6ff; border-color: #dbeafe; color: #2563eb; }
+        .status-badge.rejected { background-color: #fef2f2; border-color: #fee2e2; color: #e11d48; }
 
-        /* Badge Status PENDING Krem Bulat */
-        .badge-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            background: #FEF3C7;
-            color: #D97706;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 12px;
-            letter-spacing: 0.5px;
-        }
+        .status-text { font-weight: 700; font-size: 10px; letter-spacing: 0.5px; }
 
-        .badge-status::before {
-            content: '•';
-            font-size: 14px;
-            margin-right: 2px;
-        }
+        .link-3 { display: inline-flex; gap: 8px; padding: 8px 16px; align-items: center; position: relative; border-radius: 12px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; overflow: hidden; }
+        .link-3.primary { background-color: #ea580c; box-shadow: 0px 4px 6px -4px #ea580c33, 0px 10px 15px -3px #ea580c33; color: #ffffff; }
+        .link-3.primary:hover { background-color: #c2410c; }
+        .link-3.secondary { background-color: #ffffff; border-color: #e2e8f0; color: #0f172a; }
+        .link-3.secondary:hover { background-color: #f8fafc; }
+        
+        .text-wrapper-22 { font-weight: 700; font-size: 12px; line-height: 16px; white-space: nowrap; }
 
-        /* Tombol Periksa Berkas Gelap */
-        .btn-check {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #0F172A;
-            color: #FFFFFF;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
+        .overlay { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; background-color: #f8fafc80; border-top: 1px solid #f1f5f9; }
+        .showing-of { font-size: 12px; color: #94a3b8; letter-spacing: 1.2px; }
+        .showing-of span.bold { font-weight: 700; color: #0f172a; }
+        
+        .pagination-controls { display: flex; gap: 8px; }
+        .page-btn { padding: 6px 12px; border-radius: 8px; border: 1px solid #e2e8f0; background: #ffffff; font-size: 12px; font-weight: 600; color: #334155; transition: 0.2s; }
+        .page-btn:hover:not(:disabled) { background: #f1f5f9; }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .btn-check:hover {
-            background: #1E293B;
-        }
-
-        .btn-check svg {
-            width: 14px;
-            height: 14px;
-            fill: none;
-            stroke: currentColor;
-            stroke-width: 2;
-        }
-
-        /* ============================================================
-                   PAGINATION
-                   ============================================================ */
-        .table-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 24px;
-            border-top: 1px solid #E2E8F0;
-        }
-
-        .showing-text {
-            font-size: 11px;
-            font-weight: 600;
-            color: #64748B;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .pagination-buttons {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 6px 12px;
-            border: 1px solid #E2E8F0;
-            border-radius: 6px;
-            background: #FFFFFF;
-            font-size: 12px;
-            font-weight: 500;
-            color: #64748B;
-            cursor: pointer;
-        }
-
-        .nav-btn:hover:not(:disabled) {
-            background: #F8FAFC;
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: default;
-        }
-
-        .page-indicator {
-            width: 28px;
-            height: 28px;
-            background: #0F172A;
-            color: #FFFFFF;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        /* Mobile Responsive */
-        .menu-toggle {
-            display: none;
-            color: #FFFFFF;
-            font-size: 22px;
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(15, 23, 42, 0.5);
-            z-index: 99;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); margin: 0; padding: 24px 0; border-radius: 0; }
-            .sidebar.open { transform: translateX(0); }
-            .sidebar-overlay.active { display: block; }
-            .main-content { margin-left: 0; padding: 20px; }
-            .menu-toggle { display: block; margin-right: 12px; color: #0F172A; }
-            .content-header { flex-direction: column; align-items: flex-start; gap: 16px; }
-            .search-box { width: 100%; }
-            .header-actions { width: 100%; justify-content: space-between; }
-        }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
     <link rel="stylesheet" href="../../assets/css/admin_header.css">
 </head>
 <body>
 
+    
+    <!-- SIDEBAR -->
     <div id="app-sidebar"></div>
 
-    <main class="main-content">
-        
-        <div id="app-header" data-title="Manajemen Klaim" data-breadcrumb="Verifikasi > <span>Manajemen Klaim</span>"></div>
-
-        <nav class="tabs-navigation">
-            <div class="tab-item active" id="tab-pending" onclick="filterTab('pending')">
-                <svg viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                Perlu Ditinjau
-                <span class="count-badge" id="countPending">3</span>
+    <div class="main">
+        <header class="header">
+            <div class="div-4">
+                <div class="text-wrapper-10">Manajemen Klaim</div>
+                <div class="text-wrapper-8">Kelola verifikasi berkas dan pantau pengambilan barang.</div>
             </div>
-            <div class="tab-item" id="tab-clarification" onclick="filterTab('clarification')">
-                <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                Butuh Klarifikasi
-                <span class="count-badge" id="countClarification">1</span>
-            </div>
-            <div class="tab-item" id="tab-ready" onclick="filterTab('ready')">
-                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
-                Siap Diambil
-                <span class="count-badge" id="countReady">2</span>
-            </div>
-        </nav>
+        </header>
 
-        <div class="data-card">
-            <table class="main-table">
-                <thead>
-                    <tr>
-                        <th style="width: 15%;">ID KLAIM</th>
-                        <th style="width: 35%;">NAMA BARANG</th>
-                        <th style="width: 20%;">NAMA PENGKLAIM</th>
-                        <th style="width: 15%;">TGL UPDATE</th>
-                        <th style="width: 15%;">STATUS</th>
-                        <th style="text-align: right; width: 15px;">TINDAKAN</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-
-            <div class="table-footer">
-                <div class="showing-text">
-                    SHOWING <span id="startEntry">1</span>-<span id="endEntry">3</span> OF <span id="totalEntries">3</span> ENTRIES
+        <div class="div-5">
+            <div class="horizontal-border">
+                <div class="tab-button active" onclick="setTab('pending')" id="tab-pending">
+                    <div class="tab-title">Perlu Ditinjau</div>
+                    <div class="tab-badge-wrapper"><div class="tab-badge" id="countPending">0</div></div>
                 </div>
-                <div class="pagination-buttons">
-                    <button class="nav-btn" id="prevPage">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 19l-7-7 7-7"/></svg>
-                        Prev
-                    </button>
-                    <div class="page-indicator" id="pageNumber">1</div>
-                    <button class="nav-btn" id="nextPage">
-                        Next
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7"/></svg>
-                    </button>
+                <div class="tab-button" onclick="setTab('clarification_required')" id="tab-clarification_required">
+                    <div class="tab-title">Butuh Klarifikasi</div>
+                    <div class="tab-badge-wrapper"><div class="tab-badge" id="countClarify">0</div></div>
+                </div>
+                <div class="tab-button" onclick="setTab('approved')" id="tab-approved">
+                    <div class="tab-title">Siap Diambil</div>
+                    <div class="tab-badge-wrapper"><div class="tab-badge" id="countApproved">0</div></div>
+                </div>
+            </div>
+
+            <div class="background-border-2">
+                <div class="table">
+                    <div class="header-row">
+                        <div class="cell" style="flex: 0.8"><div class="text-wrapper-15">ID KLAIM</div></div>
+                        <div class="cell" style="flex: 2"><div class="text-wrapper-15">NAMA BARANG</div></div>
+                        <div class="cell" style="flex: 1.5"><div class="text-wrapper-15">NAMA PENGKLAIM</div></div>
+                        <div class="cell" style="flex: 1.2"><div class="text-wrapper-15">TGL UPDATE</div></div>
+                        <div class="cell" style="flex: 1.2"><div class="text-wrapper-15">STATUS</div></div>
+                        <div class="cell action" style="flex: 1.2"><div class="text-wrapper-15">TINDAKAN</div></div>
+                    </div>
+                    <div class="body" id="tableBody">
+                        <!-- Data rows here -->
+                        <div style="padding:40px; text-align:center; color:#64748B;">Memuat data...</div>
+                    </div>
+                </div>
+                <div class="overlay">
+                    <p class="showing-of">SHOWING <span class="bold" id="startEntry">0</span>-<span class="bold" id="endEntry">0</span> OF <span class="bold" id="totalEntries">0</span> ENTRIES</p>
+                    <div class="pagination-controls">
+                        <button class="page-btn" id="btnPrev" onclick="prevPage()">Prev</button>
+                        <button class="page-btn" id="btnNext" onclick="nextPage()">Next</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+
 
     <!-- Injected Base Scripts -->
     <script src="../../assets/js/auth.js"></script>
