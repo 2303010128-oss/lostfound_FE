@@ -103,7 +103,7 @@
             }
 
             try {
-                let endpoint = type === 'klaim' ? `/claims/${id}` : `/admin/items/${id}`;
+                let endpoint = type === 'klaim' ? `/claims/${id}` : `/items/${id}`;
                 const res = await apiFetch(endpoint);
                 
                 if (!res.response.ok) throw new Error('Data tidak ditemukan');
