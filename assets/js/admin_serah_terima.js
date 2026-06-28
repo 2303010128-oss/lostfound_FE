@@ -44,12 +44,31 @@ async function initHandover() {
         submitBtn.disabled = true;
 
         try {
-            const result = await apiFetch('/handovers', {
-                method: 'POST',
-                body: JSON.stringify({ token_pengambilan: token })
-            });
+            const formData = new FormData();
+            formData.append('token_pengambilan', token);
 
-            if (result.response.ok) {
+            // Ambil gambar dari canvas jika ada
+            const webcamCanvas = document.getElementById('webcamCanvas');
+            if (webcamCanvas && webcamCanvas.style.display === 'block') {
+                const dataUrl = webcamCanvas.toDataURL('image/jpeg', 0.8);
+                const blob = await (await fetch(dataUrl)).blob();
+                formData.append('foto_serah_terima', blob, 'dokumentasi_serah_terima.jpg');
+            }
+
+            // Jangan gunakan JSON.stringify karena kita mengirim FormData
+            // Hapus Content-Type header default dari apiFetch agar browser set boundary otomatis
+            const headers = {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            };
+
+            const response = await fetch('http://127.0.0.1:8000/api/v1/handovers', {
+                method: 'POST',
+                headers: headers,
+                body: formData
+            });
+            const data = await response.json();
+
+            if (response.ok) {
                 submitBtn.classList.replace('bg-[#10B981]', 'bg-blue-600');
                 submitBtn.innerHTML = `
                     <span class="material-symbols-outlined">check_circle</span>
@@ -60,7 +79,7 @@ async function initHandover() {
                     window.location.href = '../dashboard/index.html';
                 }, 1000);
             } else {
-                alert('❌ Serah terima gagal: ' + (result.data.message || 'Token tidak valid.'));
+                alert('❌ Serah terima gagal: ' + (data.message || 'Gagal diproses server.'));
                 submitBtn.innerHTML = `
                     <span class="material-symbols-outlined">task_alt</span>
                     Selesaikan Serah Terima & Tutup Laporan
