@@ -79,10 +79,9 @@ window.handleApprove = async function() {
         const origTxt = btn.innerText;
         btn.innerText = 'Memproses...'; btn.disabled = true;
 
-        // Simulasi validasi (mengubah status ke published)
-        const result = await apiFetch(`/items/${currentItemId}`, {
-            method: 'PATCH',
-            body: JSON.stringify({ status: 'published' })
+        // Memanggil endpoint release khusus satpam
+        const result = await apiFetch(`/items/${currentItemId}/release`, {
+            method: 'PATCH'
         });
 
         if (result.response.ok) {
@@ -106,10 +105,8 @@ window.closeCancelModal = function() {
 window.executeCancellation = async function() {
     try {
         const btn = document.querySelector('.btn-modal-danger');
-        btn.innerText = 'Menghapus...'; btn.disabled = true;
-
-        // Simulasi membuang barang
-        const result = await apiFetch(`/items/${currentItemId}`, { method: 'DELETE' });
+        btn.innerText = 'Menolak...'; btn.disabled = true;
+        const result = await apiFetch(`/items/${currentItemId}/reject`, { method: 'PATCH' });
         
         if (result.response.ok) {
             alert('Laporan dibatalkan dan dihapus.');

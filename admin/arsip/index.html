@@ -28,6 +28,13 @@
         .search-container svg { width: 16px; height: 16px; stroke: #94a3b8; stroke-width: 2; fill: none; }
         .search-container input { border: none; outline: none; font-size: 13px; color: #0f172a; width: 100%; }
 
+        /* TABS */
+        .tabs-navigation { display: flex; gap: 32px; border-bottom: 1px solid #e2e8f0; margin-bottom: 24px; padding-bottom: 1px; }
+        .tab-item { display: flex; align-items: center; gap: 8px; padding: 12px 4px; font-size: 14px; font-weight: 500; color: #64748b; cursor: pointer; position: relative; }
+        .tab-item svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .tab-item.active { color: #0f172a; font-weight: 700; }
+        .tab-item.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: #ea580c; border-radius: 2px; }
+
         /* CARDS & TABLES */
         .stats-summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
         .summary-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; justify-content: space-between; align-items: flex-start; }
@@ -66,6 +73,7 @@
         .btn-view-action svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/admin_header.css">
 </head>
 <body>
 
@@ -74,21 +82,18 @@
 
     <!-- MAIN CONTENT AREA -->
     <main class="main-content">
-        <header class="page-header-row">
-            <div class="page-title-block">
-                <h1>Arsip & Riwayat Laporan</h1>
-                <p>Rekam jejak seluruh kasus klaim, penyerahan, dan penolakan.</p>
+        <div id="app-header" data-title="Arsip Laporan" data-breadcrumb="Arsip > <span>Riwayat Laporan</span>"></div>
+
+        <nav class="tabs-navigation">
+            <div class="tab-item active" id="tab-barang" onclick="switchTab('barang')">
+                <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Arsip Barang Temuan
             </div>
-            <div class="filter-search-group">
-                <select class="status-dropdown">
-                    <option>Semua Status</option>
-                </select>
-                <div class="search-container">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" placeholder="Cari ID, Nama, atau Barang...">
-                </div>
+            <div class="tab-item" id="tab-klaim" onclick="switchTab('klaim')">
+                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                Arsip Klaim
             </div>
-        </header>
+        </nav>
 
         <section class="stats-summary-grid">
             <div class="summary-card total-arsip">
@@ -150,70 +155,107 @@
     <script src="../../assets/js/components.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
+        let currentTab = 'barang';
+
+        window.switchTab = function(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            
+            if (tab === 'barang') {
+                document.querySelector('.summary-card.diserahkan .card-label').innerText = 'Dipublikasi';
+                document.querySelector('.summary-card.gagal .card-label').innerText = 'Ditolak';
+                document.querySelector('.summary-card.menunggu .card-label').innerText = 'Menunggu';
+            } else {
+                document.querySelector('.summary-card.diserahkan .card-label').innerText = 'Diserahkan';
+                document.querySelector('.summary-card.gagal .card-label').innerText = 'Ditolak / Batal';
+                document.querySelector('.summary-card.menunggu .card-label').innerText = 'Menunggu';
+            }
+            
+            loadData();
+        };
+
+        async function loadData() {
+            const tbody = document.getElementById('archiveTableBody');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Memuat data arsip...</td></tr>';
+            
             try {
-                const result = await window.apiFetch('/claims');
+                const endpoint = currentTab === 'barang' ? '/admin/items' : '/claims';
+                const result = await window.apiFetch(endpoint);
+                
                 if (result.response.ok) {
-                    let claims = [];
-                    if (Array.isArray(result.data)) claims = result.data;
-                    else if (result.data && Array.isArray(result.data.data)) claims = result.data.data;
-                    else if (result.data && result.data.data && Array.isArray(result.data.data.data)) claims = result.data.data.data;
+                    let dataList = [];
+                    if (Array.isArray(result.data)) dataList = result.data;
+                    else if (result.data && Array.isArray(result.data.data)) dataList = result.data.data;
+                    else if (result.data && result.data.data && Array.isArray(result.data.data.data)) dataList = result.data.data.data;
                     
-                    let diserahkan = 0, batal = 0, menunggu = 0;
+                    let sukses = 0, gagal = 0, tunggu = 0;
                     let html = '';
 
-                    claims.forEach(c => {
-                        if (c.status_verif === 'returned') diserahkan++;
-                        else if (c.status_verif === 'rejected') batal++;
-                        else menunggu++;
-
-                        // Setup Badge
-                        let badge = '';
-                        if (c.status_verif === 'returned') {
-                            badge = `<span class="status-badge badge-diserahkan">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#137333" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                                Diserahkan
-                            </span>`;
-                        } else if (c.status_verif === 'rejected') {
-                            badge = `<span class="status-badge badge-dibatalkan">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#c5221f" stroke-width="3"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line></svg>
-                                Dibatalkan
-                            </span>`;
+                    dataList.forEach(c => {
+                        let statusVal = currentTab === 'barang' ? c.status : c.status_verif;
+                        
+                        if (currentTab === 'barang') {
+                            if (c.visibility === 'public') sukses++;
+                            else if (statusVal === 'rejected') gagal++;
+                            else tunggu++;
                         } else {
-                            badge = `<span class="status-badge badge-menunggu">
-                                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#1a73e8" stroke-width="3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                Menunggu
-                            </span>`;
+                            if (statusVal === 'returned') sukses++;
+                            else if (statusVal === 'rejected') gagal++;
+                            else tunggu++;
                         }
 
-                        let dateStr = new Date(c.created_at).toLocaleString('id-ID', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'});
-                        let title = c.item ? c.item.judul : 'Barang';
+                        let badge = '';
+                        if (currentTab === 'barang' && c.visibility === 'public') {
+                            badge = `<span class="status-badge badge-diserahkan"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Dipublikasi</span>`;
+                        } else if (currentTab === 'klaim' && statusVal === 'returned') {
+                            badge = `<span class="status-badge badge-diserahkan"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg> Diserahkan</span>`;
+                        } else if (statusVal === 'rejected') {
+                            badge = `<span class="status-badge badge-dibatalkan"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line></svg> Ditolak</span>`;
+                        } else {
+                            badge = `<span class="status-badge badge-menunggu"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Menunggu</span>`;
+                        }
+
+                        let dateStr = new Date(c.created_at || c.tanggal_lapor).toLocaleString('id-ID', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'});
+                        let title = currentTab === 'barang' ? c.judul : (c.item ? c.item.judul : 'Barang');
                         let user = c.user ? c.user.nama_lengkap : 'Anonim';
+                        let idPrefix = currentTab === 'barang' ? 'ITM' : 'CLM';
+                        let linkUrl = currentTab === 'barang' ? `../antrean/detail.html?id=${c.id}` : `../verifikasi/cek.html?id=${c.id}`;
 
                         html += `<tr>
-                            <td class="id-cell">#CLM-${c.id}</td>
+                            <td class="id-cell">#${idPrefix}-${c.id}</td>
                             <td class="item-cell">${title}</td>
                             <td>${user}</td>
                             <td>${dateStr}</td>
                             <td>${badge}</td>
                             <td>
-                                <a href="../verifikasi/cek.html?id=${c.id}" class="btn-view-action" style="text-decoration: none; display:inline-flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
+                                <a href="${linkUrl}" class="btn-view-action" style="text-decoration: none; display:inline-flex; align-items:center; justify-content:center;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#94a3b8" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
                             </td>
                         </tr>`;
                     });
 
-                    if (html === '') html = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Belum ada riwayat arsip.</td></tr>';
-                    document.getElementById('archiveTableBody').innerHTML = html;
+                    if (html === '') {
+                        html = `<tr><td colspan="6" style="text-align: center; padding: 60px 20px; color: #64748b;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+                            <div style="font-size: 16px; font-weight: 600; color: #0f172a; margin-bottom: 8px;">Arsip Kosong</div>
+                            <div style="font-size: 13px;">Belum ada riwayat pada kategori ini.</div>
+                        </td></tr>`;
+                    }
+                    tbody.innerHTML = html;
 
-                    if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = claims.length;
-                    if(document.getElementById('stat-diserahkan')) document.getElementById('stat-diserahkan').innerText = diserahkan;
-                    if(document.getElementById('stat-batal')) document.getElementById('stat-batal').innerText = batal;
-                    if(document.getElementById('stat-menunggu')) document.getElementById('stat-menunggu').innerText = menunggu;
+                    if(document.getElementById('stat-total')) document.getElementById('stat-total').innerText = dataList.length;
+                    if(document.getElementById('stat-diserahkan')) document.getElementById('stat-diserahkan').innerText = sukses;
+                    if(document.getElementById('stat-batal')) document.getElementById('stat-batal').innerText = gagal;
+                    if(document.getElementById('stat-menunggu')) document.getElementById('stat-menunggu').innerText = tunggu;
                 }
             } catch (error) {
                 console.error(error);
-                document.getElementById('archiveTableBody').innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #dc2626;">Terjadi kesalahan saat memuat arsip.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #dc2626;">Terjadi kesalahan saat memuat arsip.</td></tr>';
             }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchTab('barang');
         });
     </script>
 </body>

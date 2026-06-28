@@ -90,6 +90,7 @@
         .page-btn.active { background: #c2410c; color: #ffffff; }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/admin_header.css">
 </head>
 <body>
 
@@ -98,24 +99,7 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-        <header class="page-header-row">
-            <div class="page-title-block">
-                <h1>Manajemen User</h1>
-                <p>Kelola akses, peran, dan status pengguna platform LostFound.</p>
-            </div>
-            <div class="header-actions">
-                <div class="search-bar">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#64748b" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <input type="text" placeholder="Cari Nama atau Email...">
-                </div>
-                <button class="icon-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#475569" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                </button>
-                <button class="icon-btn">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#475569" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                </button>
-            </div>
-        </header>
+        <div id="app-header" data-title="Manajemen User" data-breadcrumb="Settings > <span>Manajemen User</span>"></div>
 
         <!-- KARTU STATISTIK DENGAN EMOJI 3D BERWARNA -->
         <section class="stats-row">

@@ -9,7 +9,7 @@ async function loadDashboardActivity() {
     try {
         const [claimsResult, itemsResult] = await Promise.all([
             apiFetch('/claims'),
-            apiFetch('/items')
+            apiFetch('/admin/items')
         ]);
 
         if (claimsResult.response.ok && itemsResult.response.ok) {
@@ -26,8 +26,8 @@ async function loadDashboardActivity() {
             else if (itemsResult.data && itemsResult.data.data && Array.isArray(itemsResult.data.data.data)) items = itemsResult.data.data.data;
 
             // Kalkulasi Statistik
-            const pendingClaims = claims.filter(c => ['pending', 'reviewed', 'clarification'].includes(c.status_verif)).length;
-            const activeItems = items.filter(i => ['draft', 'published'].includes(i.status)).length;
+            const pendingClaims = claims.filter(c => ['pending', 'clarification_required'].includes(c.status_verif)).length;
+            const activeItems = items.filter(i => i.visibility === 'private').length;
             const returnedClaims = claims.filter(c => c.status_verif === 'returned').length;
 
             // Injeksi ke UI Kartu Statistik
@@ -51,11 +51,14 @@ async function loadDashboardActivity() {
                 let statusClass = 'diverifikasi';
                 let statusText = 'Pending';
                 
-                if (claim.status_verif === 'approved' || claim.status_verif === 'returned') {
+                if (claim.status_verif === 'returned') {
                     statusClass = 'diserahkan';
-                    statusText = claim.status_verif === 'returned' ? 'Diserahkan' : 'Disetujui';
+                    statusText = 'Diserahkan';
+                } else if (claim.status_verif === 'approved') {
+                    statusClass = 'diserahkan';
+                    statusText = 'Disetujui';
                 } else if (claim.status_verif === 'rejected') {
-                    statusClass = 'diverifikasi'; // Gunakan class default untuk sementara
+                    statusClass = 'diverifikasi';
                     statusText = 'Ditolak';
                 } else {
                     statusText = 'Menunggu';

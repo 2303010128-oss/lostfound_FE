@@ -39,12 +39,89 @@ async function loadSidebar() {
                 }
             }
         });
+
+        // Dynamic Badges Fetching
+        if (typeof window.apiFetch === 'function') {
+            try {
+                // Fetch Items
+                const itemsRes = await window.apiFetch('/admin/items?visibility=private');
+                if(itemsRes && itemsRes.data && itemsRes.data.data) {
+                    const pendingItems = itemsRes.data.data.filter(i => i.status_barang === 'pending' || i.status_barang === 'menunggu').length;
+                    const bAntrean = document.getElementById('badge-antrean');
+                    if(bAntrean && pendingItems > 0) {
+                        bAntrean.textContent = pendingItems;
+                        bAntrean.style.display = 'inline-block';
+                    }
+                }
+
+                // Fetch Claims
+                const claimsRes = await window.apiFetch('/claims');
+                if(claimsRes && claimsRes.data && claimsRes.data.data) {
+                    const pendingClaims = claimsRes.data.data.filter(c => c.status_verif === 'pending' || c.status_verif === 'menunggu').length;
+                    const bVerifikasi = document.getElementById('badge-verifikasi');
+                    if(bVerifikasi && pendingClaims > 0) {
+                        bVerifikasi.textContent = pendingClaims;
+                        bVerifikasi.style.display = 'inline-block';
+                    }
+                }
+            } catch(e) {
+                console.error('Gagal mengambil data antrean:', e);
+            }
+        }
     } catch (error) {
         console.error('Gagal memuat sidebar:', error);
+    }
+}
+
+async function loadHeader() {
+    const container = document.getElementById('app-header');
+    if (!container) return;
+
+    try {
+        const res = await fetch(getBasePath() + '/components/header_admin.html?v=' + new Date().getTime());
+        const html = await res.text();
+        container.innerHTML = html;
+
+        // Set Title from data attributes
+        const title = container.getAttribute('data-title') || 'Dashboard';
+        
+        const titleEl = document.getElementById('header-title');
+        if(titleEl) titleEl.textContent = title;
+
+        // Update profile info automatically
+        try {
+            const userStr = localStorage.getItem('user');
+            if (userStr) {
+                const user = JSON.parse(userStr);
+                const nameEl = document.getElementById('profileNameHeader');
+                const roleEl = document.getElementById('profileRoleHeader');
+                const avatarEl = document.querySelector('.avatar-initial');
+                
+                if (nameEl && user.nama_lengkap) nameEl.textContent = user.nama_lengkap;
+                
+                if (roleEl && user.role) {
+                    const roleNames = {
+                        'satpam': 'Petugas Keamanan',
+                        'admin': 'Super Admin',
+                        'mahasiswa': 'Mahasiswa'
+                    };
+                    roleEl.textContent = roleNames[user.role] || user.role;
+                }
+                
+                if (avatarEl && user.nama_lengkap) {
+                    avatarEl.textContent = user.nama_lengkap.charAt(0).toUpperCase();
+                }
+            }
+        } catch (e) {
+            console.error('Gagal memuat profil header:', e);
+        }
+    } catch (error) {
+        console.error('Gagal memuat header:', error);
     }
 }
 
 // Jalankan otomatis saat halaman dimuat
 document.addEventListener('DOMContentLoaded', () => {
     loadSidebar();
+    loadHeader();
 });

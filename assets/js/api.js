@@ -26,6 +26,18 @@ async function apiFetch(endpoint, options = {}) {
 
     try {
         const response = await fetch(url, config);
+        
+        if (response.status === 401) {
+            console.error('API Error: Unauthenticated. Redirecting to login.');
+            if (typeof logout === 'function') {
+                logout();
+            } else {
+                localStorage.clear();
+                window.location.replace('/user/login.html');
+            }
+            return { response, data: null };
+        }
+
         const data = await response.json();
         return { response, data };
     } catch (error) {

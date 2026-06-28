@@ -40,24 +40,6 @@
         /* === MAIN CONTENT === */
         .main-content { margin-left: 260px; padding: 32px 48px; width: calc(100% - 260px); display: flex; flex-direction: column; }
         
-        /* Header Top */
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
-        .page-title h1 { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
-        .breadcrumb { font-size: 13px; color: var(--text-gray); }
-        .breadcrumb span { color: var(--orange); }
-        
-        .header-right { display: flex; align-items: center; gap: 24px; }
-        .search-field { background: #f1f5f9; padding: 10px 16px; border-radius: 24px; width: 280px; display: flex; align-items: center; gap: 10px; color: var(--text-gray); }
-        .search-field input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; color: var(--text-dark); }
-        .search-field .material-symbols-outlined { font-size: 18px; }
-        
-        .icon-btn { cursor: pointer; }
-        
-        .header-admin { display: flex; align-items: center; gap: 12px; border-left: 1px solid var(--border-color); padding-left: 24px; }
-        .header-admin-text { text-align: right; }
-        .header-admin-text h4 { font-size: 13px; font-weight: 600; color: var(--text-dark); }
-        .header-admin-text p { font-size: 11px; color: var(--text-gray); }
-        .header-admin img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
         /* Grid Cards */
         .grid-config { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
@@ -123,8 +105,22 @@
 
         /* Footer */
         .footer-text { text-align: center; font-size: 12px; color: var(--text-light); padding-bottom: 24px;}
+
+        @media print {
+            body * { visibility: hidden; }
+            .id-badge, .id-badge * { visibility: visible; }
+            .id-badge { 
+                position: fixed !important; 
+                left: 50% !important; 
+                top: 2cm !important; 
+                transform: translateX(-50%) scale(var(--print-scale, 1.4)) !important; 
+                transform-origin: top center !important;
+                margin: 0 !important; 
+            }
+        }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/admin_header.css">
 </head>
 <body>
 
@@ -133,27 +129,7 @@
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-        <div class="header-top">
-            <div class="page-title">
-                <h1>Konfigurasi Sistem – Cetak QR</h1>
-                <p class="breadcrumb">Konfigurasi > <span>Cetak QR Code</span></p>
-            </div>
-            <div class="header-right">
-                <div class="search-field">
-                    <span class="material-symbols-outlined">search</span>
-                    <input type="text" placeholder="Cari pengaturan...">
-                </div>
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Bell.png" class="icon-3d icon-btn" alt="Notif">
-                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Question%20Mark.png" class="icon-3d icon-btn" alt="Help">
-                <div class="header-admin">
-                    <div class="header-admin-text">
-                        <h4 id="profileName">Admin Ventura</h4>
-                        <p id="profileRole">Super Admin</p>
-                    </div>
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&auto=format&fit=crop" alt="Admin">
-                </div>
-            </div>
-        </div>
+        <div id="app-header" data-title="Konfigurasi Sistem" data-breadcrumb="Konfigurasi > <span>Cetak QR Code</span>"></div>
 
         <div class="grid-config">
             <div class="card">
@@ -199,7 +175,13 @@
                 
                 <div class="form-group">
                     <label>Lokasi Penempatan</label>
-                    <select class="custom-select" id="locationSelect"><option>Memuat lokasi...</option></select>
+                    <div style="display:flex; gap: 8px;">
+                        <select class="custom-select" id="locationSelect" style="flex: 1;">
+                            <option>Memuat lokasi...</option>
+                        </select>
+                        <button onclick="addLocation()" style="background:var(--orange); color:white; border:none; padding:0 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:18px;" title="Tambah Lokasi Baru">+</button>
+                        <button onclick="deleteLocation()" style="background:#dc2626; color:white; border:none; padding:0 12px; border-radius:8px; cursor:pointer; font-weight:bold; font-size:18px;" title="Hapus Lokasi Terpilih">-</button>
+                    </div>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 28px;">
@@ -217,7 +199,7 @@
                     </div>
                 </div>
 
-                <button class="btn-primary">
+                <button class="btn-primary" id="btnPrintQR" onclick="printQR()">
                     <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Printer.png" class="icon-3d" alt="Print"> Cetak QR Code
                 </button>
                 <p class="btn-subtext">File akan diunduh dalam format PDF Siap Cetak</p>
@@ -257,7 +239,7 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="historyTableBody">
                     <tr>
                         <td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Belum ada riwayat pencetakan.</td>
                     </tr>
@@ -302,7 +284,7 @@
             } catch (e) { console.error('Gagal mengambil lokasi', e); }
 
             if (locations.length > 0) {
-                locSelect.innerHTML = locations.map(loc => `<option value="${loc.id}" data-name="${loc.nama_lokasi}">${loc.nama_lokasi}</option>`).join('');
+                locSelect.innerHTML = locations.map(loc => `<option value="${loc.id}" data-name="${loc.nama_tempat}">${loc.nama_tempat}</option>`).join('');
             } else {
                 locSelect.innerHTML = `<option value="LBY-01" data-name="Lobby Utama">Lobby Utama (Default)</option>`;
             }
@@ -317,7 +299,15 @@
                 
                 document.getElementById('previewLocationId').textContent = 'Location ID: ' + locCode;
                 document.getElementById('previewLocationName').textContent = locName;
-                document.getElementById('qrCodeImg').src = `https://api.qrserver.com/v1/create-qr-code/?size=${currentSize}x${currentSize}&data=LostFound-${locCode}`;
+                let pScale = 1.4;
+                let qrFetchSize = 300;
+                if(currentSize == 100) { pScale = 0.8; qrFetchSize = 200; }
+                if(currentSize == 200) { pScale = 2.7; qrFetchSize = 600; }
+                
+                document.documentElement.style.setProperty('--print-scale', pScale);
+                
+                const qrImg = document.getElementById('qrCodeImg');
+                qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrFetchSize}x${qrFetchSize}&data=LostFound-${locCode}`;
             };
 
             locSelect.addEventListener('change', updateQR);
@@ -335,6 +325,94 @@
 
             // Initialize
             updateQR();
+            // CRUD Lokasi
+            window.addLocation = async () => {
+                const nama = prompt('Masukkan nama lokasi penempatan baru (Contoh: "Gedung F"):');
+                if(!nama || nama.trim() === '') return;
+                try {
+                    const res = await window.apiFetch('/locations', { 
+                        method: 'POST', 
+                        body: JSON.stringify({ nama_tempat: nama }) 
+                    });
+                    if(res.response.ok) { 
+                        alert('Lokasi berhasil ditambahkan!'); 
+                        location.reload(); 
+                    } else { 
+                        alert('Gagal menambah lokasi.'); 
+                    }
+                } catch(e) { alert('Kesalahan jaringan.'); }
+            };
+
+            window.deleteLocation = async () => {
+                const opt = locSelect.options[locSelect.selectedIndex];
+                if(!opt || opt.value === 'LBY-01') return alert('Pilih lokasi yang valid untuk dihapus.');
+                if(!confirm(`⚠️ PERINGATAN: Yakin ingin menghapus lokasi "${opt.getAttribute('data-name')}" secara permanen?`)) return;
+                try {
+                    const res = await window.apiFetch('/locations/' + opt.value, { method: 'DELETE' });
+                    if(res.response.ok) { 
+                        alert('Lokasi berhasil dihapus!'); 
+                        location.reload(); 
+                    } else { 
+                        alert(res.data.message || 'Gagal menghapus lokasi.'); 
+                    }
+                } catch(e) { alert('Kesalahan jaringan.'); }
+            };
+            // History Management
+            const loadHistory = () => {
+                const history = JSON.parse(localStorage.getItem('qrPrintHistory') || '[]');
+                const tbody = document.getElementById('historyTableBody');
+                if(!tbody) return;
+                
+                if(history.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #64748b;">Belum ada riwayat pencetakan.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = history.map(h => `
+                    <tr>
+                        <td class="td-dark">${h.locName}</td>
+                        <td>${h.size}</td>
+                        <td>${h.date}</td>
+                        <td>Admin Ventura</td>
+                        <td><div class="status-pill"><div class="status-dot"></div>Berhasil</div></td>
+                        <td><a href="#" class="action-text" onclick="deleteHistory(${h.id}); return false;">Hapus</a></td>
+                    </tr>
+                `).join('');
+            };
+
+            window.printQR = () => {
+                const opt = locSelect.options[locSelect.selectedIndex];
+                if(!opt) return alert('Silakan pilih lokasi terlebih dahulu!');
+                
+                let sizeText = currentSize == 100 ? 'Small' : (currentSize == 150 ? 'Medium' : 'Large (A4)');
+                
+                const newHistory = {
+                    id: Date.now(),
+                    locName: opt.getAttribute('data-name'),
+                    size: sizeText,
+                    date: new Date().toLocaleString('id-ID', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute:'2-digit'})
+                };
+                
+                const history = JSON.parse(localStorage.getItem('qrPrintHistory') || '[]');
+                history.unshift(newHistory);
+                if(history.length > 10) history.pop();
+                
+                localStorage.setItem('qrPrintHistory', JSON.stringify(history));
+                loadHistory();
+                
+                // Trigger actual print
+                window.print();
+            };
+
+            window.deleteHistory = (id) => {
+                if(!confirm('Hapus catatan riwayat ini?')) return;
+                let history = JSON.parse(localStorage.getItem('qrPrintHistory') || '[]');
+                history = history.filter(h => h.id !== id);
+                localStorage.setItem('qrPrintHistory', JSON.stringify(history));
+                loadHistory();
+            };
+            
+            loadHistory();
         });
     </script>
 </body>
