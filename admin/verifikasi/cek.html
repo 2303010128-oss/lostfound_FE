@@ -529,9 +529,14 @@
 
             var claimId = getQueryParam('id');
             var item = null;
+            var isLoading = true;
 
             async function loadClaimData() {
-                if (!claimId) return;
+                if (!claimId) {
+                    isLoading = false;
+                    renderDetail();
+                    return;
+                }
                 try {
                     const result = await window.apiFetch('/claims/' + claimId);
                     if (result.response.ok && result.data && result.data.data) {
@@ -539,7 +544,7 @@
                         item = {
                             id: c.id,
                             claimant: c.user ? c.user.nama_lengkap : 'Anonim',
-                            desc: '"' + c.bukti_teks + '"',
+                            desc: '"' + (c.bukti_teks || '') + '"',
                             files: c.bukti_foto ? ['BUKTI_FOTO_TERLAMPIR'] : ['TIDAK_ADA_FOTO_LAMPIRAN'],
                             foto_url: c.bukti_foto ? (c.bukti_foto.startsWith('http') ? c.bukti_foto : 'http://127.0.0.1:8000/storage/' + c.bukti_foto) : null,
                             warning: '',
@@ -551,6 +556,7 @@
                 } catch (err) {
                     console.error('Gagal mengambil data detail klaim:', err);
                 }
+                isLoading = false;
                 renderDetail();
             }
 
@@ -561,11 +567,20 @@
             function renderDetail() {
                 var card = document.getElementById('detailCard');
 
+                if (isLoading) {
+                    card.innerHTML = `
+                        <div style="text-align:center; padding:40px;">
+                            <p style="color:#64748b; font-size:16px;">Memuat data...</p>
+                        </div>
+                    `;
+                    return;
+                }
+
                 if (!item) {
                     card.innerHTML = `
                         <div style="text-align:center; padding:40px;">
-                            <p style="color:#64748b; font-size:16px;">❌ Klaim tidak ditemukan.</p>
-                            <a href="../verifikasi/index.html" style="color:#a33900; font-weight:600; margin-top:12px; display:inline-block;">Kembali ke Verifikasi</a>
+                            <p style="color:#ef4444; font-size:16px; font-weight:600;">❌ Klaim tidak ditemukan atau ID tidak valid.</p>
+                            <a href="../verifikasi/index.html" style="color:#0f172a; font-weight:600; margin-top:12px; display:inline-block; border-bottom:1px solid #0f172a;">Kembali ke Verifikasi</a>
                         </div>
                     `;
                     return;
