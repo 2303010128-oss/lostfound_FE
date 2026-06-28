@@ -34,7 +34,7 @@ async function loadUserNavbar() {
     }
 }
 
-function checkAuthentication() {
+async function checkAuthentication() {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const guestNav = document.getElementById('authNotLoggedIn');
     const userNav = document.getElementById('authLoggedIn');
@@ -43,14 +43,35 @@ function checkAuthentication() {
         if (guestNav) guestNav.style.display = 'none';
         if (userNav) userNav.classList.remove('hidden');
 
-        const user = JSON.parse(localStorage.getItem('user'));
-        const name = user ? user.nama_lengkap : 'Mahasiswa';
+        // 1. Tampilkan dari localStorage dulu agar tidak ada lag visual
+        let user = JSON.parse(localStorage.getItem('user'));
+        let name = user ? user.nama_lengkap : 'Mahasiswa';
         
         const userNameTxt = document.getElementById('userNameTxt');
         const avatarName = document.getElementById('avatarName');
         
         if (userNameTxt) userNameTxt.textContent = name;
         if (avatarName) avatarName.textContent = name.substring(0, 2).toUpperCase();
+
+        // 2. Integrasikan ke API di latar belakang untuk mendapatkan data terbaru
+        if (typeof window.apiFetch === 'function') {
+            try {
+                const result = await window.apiFetch('/auth/profile');
+                if (result.response.ok) {
+                    const latestUser = result.data.data || result.data;
+                    if (latestUser && latestUser.nama_lengkap) {
+                        name = latestUser.nama_lengkap;
+                        if (userNameTxt) userNameTxt.textContent = name;
+                        if (avatarName) avatarName.textContent = name.substring(0, 2).toUpperCase();
+                        
+                        // Perbarui chace lokal
+                        localStorage.setItem('user', JSON.stringify(latestUser));
+                    }
+                }
+            } catch (err) {
+                console.error('Sinkronisasi profil gagal:', err);
+            }
+        }
     } else {
         if (guestNav) guestNav.style.display = 'flex';
         if (userNav) userNav.classList.add('hidden');
