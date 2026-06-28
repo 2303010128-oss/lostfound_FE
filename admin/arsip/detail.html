@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Arsip - Lost & Found Admin</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
+    <link rel="stylesheet" href="../../assets/css/admin_header.css">
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; margin: 0; display: flex; }
+        .font-headline { font-family: 'Hanken Grotesk', sans-serif; }
+        .main-content { margin-left: 260px; padding: 32px 48px; width: calc(100% - 260px); flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
+    </style>
+</head>
+<body class="text-[#131b2e]">
+
+    <div id="app-sidebar"></div>
+
+    <main class="main-content">
+        <div id="app-header" data-title="Detail Arsip" data-breadcrumb="Dashboard > Arsip > <span>Detail Laporan</span>"></div>
+
+        <button onclick="window.location.href='index.html'" class="group flex items-center gap-2 mb-8 mt-4 text-[#57657a] hover:text-[#a33900] transition-colors font-semibold text-sm w-fit">
+            <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">arrow_back</span>
+            Kembali ke Daftar Arsip
+        </button>
+
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 max-w-4xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div class="flex justify-between items-start mb-8 pb-6 border-b border-slate-100">
+                <div>
+                    <h1 class="text-2xl font-bold font-headline text-[#131b2e] mb-2" id="uiTitle">Memuat Data Arsip...</h1>
+                    <div class="flex items-center gap-3">
+                        <span class="text-[#57657a] text-sm" id="uiDate">...</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-500" id="uiStatus">...</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider block mb-1">Nomor Referensi</span>
+                    <span class="text-lg font-mono font-bold text-[#a33900]" id="uiRefNumber">...</span>
+                </div>
+            </div>
+
+            <!-- Info Utama -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400">Informasi Pengklaim / Pelapor</h3>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <p class="font-semibold text-[#131b2e]" id="uiUserName">...</p>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400">Barang Terkait</h3>
+                    <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                        <p class="font-semibold text-[#131b2e]" id="uiItemName">...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dokumentasi Serah Terima (Akan Muncul Jika Ada) -->
+            <div id="handoverSection" style="display:none;" class="mt-8 pt-8 border-t border-slate-100">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-[#a33900] mb-4 flex items-center gap-2">
+                    <span class="material-symbols-outlined">verified_user</span>
+                    Bukti Serah Terima Fisik
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <p class="text-sm text-slate-500 mb-2">Foto Dokumentasi Penerima:</p>
+                        <div class="aspect-video bg-slate-100 rounded-lg overflow-hidden border border-slate-200">
+                            <img id="uiHandoverPhoto" src="" class="w-full h-full object-cover" alt="Dokumentasi Serah Terima">
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-center space-y-4">
+                        <div class="bg-orange-50 p-4 rounded-lg border border-orange-100">
+                            <p class="text-xs text-[#a33900] font-semibold uppercase tracking-wider mb-1">Token Validasi</p>
+                            <p class="text-lg font-mono font-bold text-[#131b2e]" id="uiToken">...</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-lg border border-slate-100">
+                            <p class="text-xs text-slate-500 font-semibold uppercase tracking-wider mb-1">Waktu Penyerahan (Timestamp)</p>
+                            <p class="text-sm font-semibold text-[#131b2e]" id="uiHandoverDate">...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            const type = urlParams.get('type') || 'klaim'; // 'klaim' atau 'barang'
+
+            if (!id) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                let endpoint = type === 'klaim' ? `/claims/${id}` : `/admin/items/${id}`;
+                const res = await apiFetch(endpoint);
+                
+                if (!res.response.ok) throw new Error('Data tidak ditemukan');
+
+                const data = res.data.data || res.data;
+
+                if (type === 'klaim') {
+                    document.getElementById('uiTitle').innerText = 'Arsip Klaim & Serah Terima';
+                    document.getElementById('uiRefNumber').innerText = `CLM-${data.id}`;
+                    document.getElementById('uiDate').innerText = new Date(data.created_at).toLocaleString('id-ID');
+                    document.getElementById('uiStatus').innerText = data.status_verif;
+                    document.getElementById('uiUserName').innerText = data.user ? data.user.nama_lengkap : 'Anonim';
+                    document.getElementById('uiItemName').innerText = data.item ? data.item.judul : 'Barang tidak diketahui';
+
+                    if (data.status_verif === 'returned' && data.handover) {
+                        document.getElementById('handoverSection').style.display = 'block';
+                        document.getElementById('uiToken').innerText = data.token_pengambilan || 'TIDAK TERCATAT';
+                        document.getElementById('uiHandoverDate').innerText = new Date(data.handover.tanggal_serah_terima).toLocaleString('id-ID');
+                        
+                        const photoUrl = data.handover.foto_serah_terima ? 
+                            `http://127.0.0.1:8000/storage/${data.handover.foto_serah_terima}` : 
+                            'https://via.placeholder.com/400x300?text=Tidak+Ada+Foto';
+                        document.getElementById('uiHandoverPhoto').src = photoUrl;
+                    }
+                } else {
+                    // Arsip Barang (Misalnya dibatalkan/dihapus)
+                    document.getElementById('uiTitle').innerText = 'Arsip Laporan Penemuan';
+                    document.getElementById('uiRefNumber').innerText = `ITM-${data.id}`;
+                    document.getElementById('uiDate').innerText = new Date(data.created_at).toLocaleString('id-ID');
+                    document.getElementById('uiStatus').innerText = data.visibility;
+                    document.getElementById('uiUserName').innerText = data.user ? data.user.nama_lengkap : 'Sistem / Anonim';
+                    document.getElementById('uiItemName').innerText = data.judul;
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert('Gagal memuat detail arsip.');
+            }
+        });
+    </script>
+</body>
+</html>
