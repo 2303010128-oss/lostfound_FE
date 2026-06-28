@@ -16,6 +16,9 @@ async function initHandover() {
     document.getElementById('uiTimestamp').innerText = `TIMESTAMP: ${new Date().toISOString()}`;
 
     // Note: The item name could be fetched if we had a dedicated token preview endpoint.
+    
+    // Webcam logic
+    initWebcam();
     document.getElementById('uiItemName').innerText = "Barang (Validasi Token)";
 
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -72,6 +75,59 @@ async function initHandover() {
                 Selesaikan Serah Terima & Tutup Laporan
             `;
             submitBtn.disabled = false;
+        }
+    });
+}
+
+let stream = null;
+function initWebcam() {
+    const btnStartCamera = document.getElementById('btnStartCamera');
+    const btnCapturePhoto = document.getElementById('btnCapturePhoto');
+    const webcamVideo = document.getElementById('webcamVideo');
+    const webcamCanvas = document.getElementById('webcamCanvas');
+    const cameraPlaceholder = document.getElementById('cameraPlaceholder');
+    const recIndicator = document.getElementById('recIndicator');
+    const captureBtnText = document.getElementById('captureBtnText');
+
+    if (!btnStartCamera) return;
+
+    btnStartCamera.addEventListener('click', async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+            webcamVideo.srcObject = stream;
+            webcamVideo.style.display = 'block';
+            cameraPlaceholder.style.display = 'none';
+            recIndicator.style.display = 'flex';
+            webcamCanvas.style.display = 'none';
+            
+            btnStartCamera.style.display = 'none';
+            btnCapturePhoto.style.display = 'flex';
+            captureBtnText.innerText = 'Ambil Foto Penerima';
+        } catch (err) {
+            console.error("Error accessing webcam:", err);
+            alert("Gagal mengakses kamera. Pastikan Anda memberikan izin akses kamera ke browser.");
+        }
+    });
+
+    btnCapturePhoto.addEventListener('click', () => {
+        if (webcamVideo.style.display === 'block') {
+            // Take photo
+            const context = webcamCanvas.getContext('2d');
+            webcamCanvas.width = webcamVideo.videoWidth;
+            webcamCanvas.height = webcamVideo.videoHeight;
+            context.drawImage(webcamVideo, 0, 0, webcamCanvas.width, webcamCanvas.height);
+            
+            webcamVideo.style.display = 'none';
+            webcamCanvas.style.display = 'block';
+            recIndicator.style.display = 'none';
+            
+            captureBtnText.innerText = 'Ambil Ulang Foto Penerima';
+        } else {
+            // Retake photo
+            webcamCanvas.style.display = 'none';
+            webcamVideo.style.display = 'block';
+            recIndicator.style.display = 'flex';
+            captureBtnText.innerText = 'Ambil Foto Penerima';
         }
     });
 }
