@@ -437,33 +437,6 @@
             font-weight: 600;
             box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
         }
-
-        .modal-icon-success {
-            width: 74px;
-            height: 74px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px auto;
-            background: #ecfdf5;
-            color: #10B981;
-            font-size: 30px;
-        }
-
-        .btn-modal-success {
-            width: 100%;
-            background: #1e293b;
-            color: #ffffff;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 10px;
-        }
-        .btn-modal-success:hover {
-            background: #0f172a;
-        }
     </style>
     <link rel="stylesheet" href="../../assets/css/admin_sidebar.css">
     <link rel="stylesheet" href="../../assets/css/admin_header.css">
@@ -544,18 +517,6 @@
                 <button class="btn-modal-secondary" onclick="closeCancelModal()">Kembali / Tidak</button>
                 <button class="btn-modal-danger" onclick="executeCancellation()">Ya, Batalkan Permanen</button>
             </div>
-        </div>
-    </div>
-
-    <!-- KELOMPOK MODAL SUKSES RILIS -->
-    <div class="modal-overlay" id="successReleaseModal">
-        <div class="modal-card" style="border-bottom: 5px solid #10B981;">
-            <div class="modal-icon-success">✔️</div>
-            <h2>Barang Berhasil Diterbitkan!</h2>
-            <p id="successReleaseText">
-                Laporan fisik resmi diverifikasi. Status barang kini berubah menjadi 'Published' dan sudah tayang di halaman publik.
-            </p>
-            <button class="btn-modal-success" onclick="closeSuccessReleaseModal()">Selesai & Tutup</button>
         </div>
     </div>
 
