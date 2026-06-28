@@ -515,7 +515,7 @@
                 articleCard.className = 'post-card';
                 
                 articleCard.onclick = () => {
-                    window.location.href = `../barang/index.html?id=${item.id}`;
+                    checkAuthenticationRoute(`../barang/index.html?id=${item.id}`);
                 };
 
                 // Rendering Gambar Utama / Box Placeholder SVG Sesuai Gambar Figma

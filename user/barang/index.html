@@ -648,6 +648,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            requireAuth();
             // Sinkronisasi Sesi Navigasi Profil
             const sessionUser = localStorage.getItem('userName') || 'Ahmad D.';
             document.getElementById('navName').textContent = sessionUser;
