@@ -986,7 +986,10 @@
             // ============================================================
             // APPROVE / CLARIFY / REJECT
             // ============================================================
-            window.handleAction = async function(status) {
+            let pendingStatus = null;
+            let pendingNote = '';
+
+            window.handleAction = function(status) {
                 const noteEl = document.getElementById('verificationNote');
                 const note = noteEl ? noteEl.value : '';
                 
@@ -995,39 +998,73 @@
                     return;
                 }
 
+                pendingStatus = status;
+                pendingNote = note;
+
+                // Set dummy text for preview
+                const name = item ? item.claimant : 'User';
+                document.getElementById('modalSetujuNama').innerText = name;
+                document.getElementById('modalKlarifikasiNama').innerText = name;
+                document.getElementById('modalTolakNama').innerText = name;
+
+                if (status === 'approved') {
+                    document.getElementById('modalSetujuToken').innerText = 'LF-ORANGE-[AKAN DITERBITKAN]';
+                    document.getElementById('modalSetuju').classList.add('active');
+                } else if (status === 'clarification_required') {
+                    document.getElementById('modalKlarifikasi').classList.add('active');
+                } else if (status === 'rejected') {
+                    document.getElementById('modalTolak').classList.add('active');
+                }
+            };
+
+            window.submitDecision = async function() {
+                if (!pendingStatus) return;
+                
                 try {
                     const result = await window.apiFetch('/claims/' + claimId + '/verify', {
                         method: 'PATCH',
                         body: JSON.stringify({
-                            status_verif: status,
-                            catatan_evaluasi: note
+                            status_verif: pendingStatus,
+                            catatan_evaluasi: pendingNote
                         })
                     });
 
                     if (result.response.ok) {
-                        const updatedData = result.data.data || item;
-                        // Set modal names
-                        document.getElementById('modalSetujuNama').innerText = item.claimant;
-                        document.getElementById('modalKlarifikasiNama').innerText = item.claimant;
-                        document.getElementById('modalTolakNama').innerText = item.claimant;
-                        
-                        // Show success modal based on status
-                        if (status === 'approved') {
-                            document.getElementById('modalSetujuToken').innerText = updatedData.token_pengambilan || '-';
-                            document.getElementById('modalSetuju').classList.add('active');
-                        } else if (status === 'clarification_required') {
-                            document.getElementById('modalKlarifikasi').classList.add('active');
-                        } else if (status === 'rejected') {
-                            document.getElementById('modalTolak').classList.add('active');
-                        }
+                        window.location.href = '../verifikasi/index.html';
                     } else {
                         alert('Gagal memproses klaim: ' + (result.data.message || 'Error server'));
+                        document.querySelectorAll('.stitch-modal').forEach(m => m.classList.remove('active'));
                     }
                 } catch (err) {
                     console.error(err);
                     alert('Terjadi kesalahan jaringan.');
+                    document.querySelectorAll('.stitch-modal').forEach(m => m.classList.remove('active'));
                 }
             };
+
+            // Setup Modal Interactions
+            document.querySelectorAll('.stitch-modal').forEach(modal => {
+                // If clicking exactly on the overlay (backdrop), close the modal
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this || e.target.classList.contains('tw-absolute')) {
+                        this.classList.remove('active');
+                        pendingStatus = null;
+                    }
+                });
+                
+                // If clicking the button inside the modal, submit the decision
+                const btn = modal.querySelector('button');
+                if (btn) {
+                    // Remove existing inline onclick if any
+                    btn.removeAttribute('onclick');
+                    btn.addEventListener('click', function() {
+                        const originalText = this.innerText;
+                        this.innerText = 'Memproses...';
+                        this.disabled = true;
+                        window.submitDecision();
+                    });
+                }
+            });
 
             // ============================================================
             // INIT
