@@ -23,7 +23,7 @@ function requireAuth(allowedRoles = []) {
         if (role === 'satpam' || role === 'admin') {
             window.location.replace(base + '/admin/dashboard/index.html');
         } else {
-            window.location.replace(base + '/user/index.html'); 
+            window.location.replace(base + '/user/mading/index.html'); 
         }
         return false;
     }
@@ -37,5 +37,5 @@ function logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('userData');
     localStorage.removeItem('isLoggedIn');
-    window.location.replace(getAuthBasePath() + '/user/login.html');
+    window.location.replace(getAuthBasePath() + '/user/auth/login.html');
 }
