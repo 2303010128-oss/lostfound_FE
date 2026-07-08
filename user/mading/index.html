@@ -351,8 +351,7 @@
                 // Rendering Gambar Utama / Box Placeholder SVG Sesuai Gambar Figma
                 let imgUrl = item.foto;
                 if (imgUrl && !imgUrl.startsWith('http')) {
-                    let host = window.location.hostname || '127.0.0.1';
-                    imgUrl = `http://${host}:8000/storage/` + imgUrl;
+                    imgUrl = (window.STORAGE_URL || 'http://127.0.0.1:8000/storage/') + imgUrl;
                 }
                 
                 let imageTag = `<img src="${imgUrl}" alt="${item.judul}">`;
