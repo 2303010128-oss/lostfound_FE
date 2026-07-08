@@ -61,7 +61,8 @@ async function initHandover() {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             };
 
-            const response = await fetch('http://127.0.0.1:8000/api/v1/handovers', {
+            const API = typeof BASE_URL !== 'undefined' ? BASE_URL : 'http://127.0.0.1:8000/api/v1';
+            const response = await fetch(`${API}/handovers`, {
                 method: 'POST',
                 headers: headers,
                 body: formData
