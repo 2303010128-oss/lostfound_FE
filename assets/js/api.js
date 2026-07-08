@@ -1,4 +1,13 @@
-const BASE_URL = `https://lostfound-backend-pwtf.onrender.com/api/v1`;
+// Konfigurasi URL Backend (Otomatis menyesuaikan lingkungan Local / Production)
+const isProduction = window.location.hostname.includes('vercel.app') || window.location.hostname.includes('github.io');
+
+// TODO: Ganti URL Render di bawah ini dengan URL Render backend Anda yang sebenarnya jika sudah ada!
+const API_DOMAIN = isProduction 
+    ? 'https://your-backend-app-name.onrender.com' // <-- Ganti dengan URL Render asli
+    : 'http://127.0.0.1:8000';
+
+const BASE_URL = `${API_DOMAIN}/api/v1`;
+window.STORAGE_URL = `${API_DOMAIN}/storage/`;
 
 // Fungsi otomatis untuk mengambil header (menyuntikkan Token dan format JSON)
 function getHeaders() {
