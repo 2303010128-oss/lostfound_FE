@@ -81,7 +81,6 @@
     <main class="flex-grow w-full max-w-3xl mx-auto my-10 px-4">
         <div class="bg-surface-card rounded-xl border border-surface-container shadow-sm p-8">
             
-            <!-- Stepper (Shared) -->
             <div id="globalStepper" class="flex flex-col items-center justify-center mb-8">
                 <div class="flex items-center gap-2 mb-2">
                     <div id="node1" class="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-on-primary font-bold transition-colors">1</div>
@@ -93,10 +92,9 @@
                 <p id="wizardProgressTxt" class="font-label-sm text-primary">Langkah 1 dari 3: Pengisian Formulir</p>
             </div>
 
-            <!-- ===================== STEP 1 ===================== -->
             <div id="viewStep1">
                 <header class="mb-8 text-center relative">
-                    <a href="../dashboard/index.html" class="absolute left-0 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-700 transition-colors group">
+                    <a href="../mading/index.html" class="absolute left-0 top-1/2 -translate-y-1/2 inline-flex items-center gap-1.5 text-slate-500 hover:text-slate-700 transition-colors group">
                         <span class="material-symbols-outlined text-[20px] transition-transform group-hover:-translate-x-1">arrow_back</span>
                         <span class="font-['Hanken_Grotesk'] text-[14px] font-semibold hidden md:inline">Kembali</span>
                     </a>
@@ -158,7 +156,6 @@
                 </form>
             </div>
 
-            <!-- ===================== STEP 2 (SCAN BARCODE) ===================== -->
             <div id="viewStep2" class="hidden flex-col items-center w-full">
                 
                 <div class="bg-surface-main rounded-xl p-8 border-2 border-dashed border-outline-variant flex flex-col items-center text-center w-full relative">
@@ -174,12 +171,10 @@
                         Untuk mengaktifkan laporan ini, Anda diwajibkan segera membawa barang fisik temuan ke Pos Satpam / Pusat Keamanan Kampus, lalu pindai Barcode Validasi Fisik yang tertera di meja petugas.
                     </p>
                     
-                    <!-- Real Camera Container -->
                     <div id="qr-reader-container" class="hidden w-64 h-64 mx-auto mb-6 bg-inverse-surface rounded-xl border-4 border-primary relative overflow-hidden shadow-sm">
                         <div id="qr-reader" style="width: 100%; height: 100%;"></div>
                     </div>
                     
-                    <!-- Mock Camera (Initial State) -->
                     <div id="mock-camera" class="w-64 h-64 mx-auto mb-6 bg-inverse-surface rounded-xl border-4 border-primary relative overflow-hidden flex flex-col items-center justify-center shadow-sm">
                         <div class="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white opacity-50"></div>
                         <div class="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-white opacity-50"></div>
@@ -208,7 +203,6 @@
                 </div>
             </div>
 
-            <!-- ===================== STEP 3 (HASIL PENCARIAN SYSTEM) ===================== -->
             <div id="viewStep3" class="hidden flex-col items-center w-full">
                 
                 <div class="w-full mb-8 text-center">
@@ -216,9 +210,7 @@
                     <p class="font-body-md text-body-md text-on-surface-variant mt-2">Sistem sedang memverifikasi laporan Anda dengan database kami.</p>
                 </div>
                 
-                <!-- This container will hold the dynamic match result (Either State 1 Match, or State 2 No Match) -->
                 <div id="matchResultContainer" class="w-full">
-                    <!-- State 1 Demo -->
                     <section class="bg-surface-main rounded-xl shadow-sm border border-surface-container overflow-hidden flex flex-col">
                         <div class="bg-status-found-bg/10 p-4 border-b border-status-found-bg/20 flex items-start gap-3">
                             <span class="material-symbols-outlined text-status-found-text fill">check_circle</span>
@@ -254,7 +246,6 @@
                 </div>
             </div>
 
-            <!-- ===================== SUCCESS MATCH ===================== -->
             <div id="viewSuccessMatch" class="hidden text-center flex-col items-center justify-center p-8">
                 <div class="mb-6 flex justify-center relative">
                     <div class="absolute inset-0 bg-status-found-bg/10 rounded-full scale-150 animate-ping opacity-25"></div>
@@ -270,13 +261,12 @@
                         <span class="font-bold text-on-surface">Status Anda Saat Ini:</span> Tugas Anda sebagai penemu telah selesai. Anda diperbolehkan meninggalkan posko keamanan. Terima kasih telah menjadi pahlawan kampus hari ini!
                     </p>
                 </div>
-                <button onclick="window.location.href='../dashboard/index.html'" class="w-full bg-primary hover:bg-primary-container text-on-primary font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
+                <button onclick="window.location.href='../mading/index.html'" class="w-full bg-primary hover:bg-primary-container text-on-primary font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
                     Kembali ke Beranda
                     <span class="material-symbols-outlined text-[20px]">home</span>
                 </button>
             </div>
 
-            <!-- ===================== SUCCESS NO MATCH (MANDIRI) ===================== -->
             <div id="viewSuccessMandiri" class="hidden text-center flex-col items-center justify-center p-8">
                 <div class="mb-6 flex justify-center relative">
                     <div class="absolute inset-0 bg-status-found-bg/10 rounded-full scale-150 animate-ping opacity-25"></div>
@@ -291,7 +281,7 @@
                         Tugas Anda sebagai penemu telah selesai. Anda diperbolehkan meninggalkan posko keamanan. Terima kasih telah membantu sesama warga kampus Universitas Perjuangan!
                     </p>
                 </div>
-                <button onclick="window.location.href='../dashboard/index.html'" class="w-full bg-primary hover:bg-primary-container text-on-primary font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
+                <button onclick="window.location.href='../mading/index.html'" class="w-full bg-primary hover:bg-primary-container text-on-primary font-bold py-3 px-6 rounded-lg flex items-center justify-center gap-2">
                     <span class="material-symbols-outlined">home</span>
                     Kembali ke Beranda
                 </button>
@@ -304,7 +294,6 @@
 
     <script src="../../assets/js/components_user.js"></script>
     <script>
-        // Gunakan hostname dinamis agar API tetap jalan jika diakses via HP (IP lokal)
         const API_URL = `https://lostfound-backend-pwtf.onrender.com/api/v1`;
         let currentFoundItemId = null;
         let selectedCategoryId = null;
@@ -369,7 +358,6 @@
             const line2 = document.getElementById('line2');
             const node3 = document.getElementById('node3');
             
-            // Reset all first
             [node1, node2, node3].forEach(n => {
                 n.className = "flex items-center justify-center w-8 h-8 rounded-full bg-surface-variant text-on-surface-variant font-bold transition-colors";
             });
@@ -406,7 +394,6 @@
             const btn = e.target.querySelector('button[type="submit"]');
             const originalBtnText = btn.innerHTML;
             
-            // Form Validation (jika form tidak diisi lengkap saat di-test)
             const judul = document.getElementById('itemName').value;
             const catId = document.getElementById('itemCategory').value;
             const locId = document.getElementById('itemLocation').value;
@@ -428,7 +415,7 @@
             formData.append('location_id', locId);
             formData.append('tanggal_lapor', dt);
             formData.append('deskripsi', desc);
-            formData.append('deskripsi_rahasia', '-'); // Dummy untuk laporan temuan
+            formData.append('deskripsi_rahasia', '-');
             formData.append('post_type', 'found');
             
             if (fotoInput.files.length > 0) {
@@ -466,8 +453,6 @@
         });
 
         function backToStep1() {
-            // Karena laporan sudah di-store, secara logis kembali ke step 1 seharusnya tidak disarankan tanpa mengupdate, 
-            // tapi kita biarkan sebagai navigasi visual saja.
             stopCameraScan();
             document.getElementById('viewStep2').classList.add('hidden');
             document.getElementById('viewStep2').classList.remove('flex');
@@ -498,13 +483,11 @@
                     qrbox: { width: 200, height: 200 }
                 },
                 (decodedText, decodedResult) => {
-                    // Berhasil scan!
                     stopCameraScan();
                     alert("QR Code Validasi Satpam berhasil dibaca: " + decodedText);
-                    simulateScan(); // Lanjut panggil API pencocokan
+                    simulateScan(); 
                 },
                 (errorMessage) => {
-                    // Akan terpanggil tiap frame jika belum ketemu QR, abaikan saja.
                 }
             ).catch((err) => {
                 console.error("Camera start failed", err);
@@ -516,7 +499,6 @@
         function stopCameraScan() {
             if (html5QrCode && html5QrCode.isScanning) {
                 html5QrCode.stop().then(() => {
-                    // camera stopped
                 }).catch((err) => {
                     console.error("Camera stop failed", err);
                 });
@@ -536,7 +518,6 @@
             btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Mencari Kecocokan...';
             
             try {
-                // Cari data "lost" di kategori yang sama
                 const judul = document.getElementById('itemName').value || '';
                 const res = await fetch(`${API_URL}/items?post_type=lost&category_id=${selectedCategoryId}&q=${encodeURIComponent(judul)}`, {
                     headers: { 'Authorization': 'Bearer ' + getAuthToken() }
@@ -547,7 +528,6 @@
                 document.getElementById('viewStep2').classList.remove('flex');
                 
                 if (data.success && data.data.data && data.data.data.length > 0) {
-                    // Match found! Ambil item pertama yang cocok
                     const matchItem = data.data.data[0];
                     renderMatch(matchItem);
                     
@@ -556,7 +536,6 @@
                     setStepState(3);
                     document.getElementById('wizardProgressTxt').textContent = "Langkah 3 dari 3: Hasil Pencocokan Sistem";
                 } else {
-                    // No match found
                     document.getElementById('globalStepper').classList.add('hidden');
                     document.getElementById('viewSuccessMandiri').classList.remove('hidden');
                     document.getElementById('viewSuccessMandiri').classList.add('flex');
