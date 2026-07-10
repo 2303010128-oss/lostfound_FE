@@ -230,8 +230,14 @@
                             <span class="font-label-md text-label-md text-status-lost-text uppercase tracking-wider">PERNYATAAN HUKUM & AKUNTABILITAS AKUN</span>
                         </div>
                         <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
-                            Laporan ini akan diterbitkan menggunakan identitas resmi Anda. Setiap pelanggaran berupa pembuatan laporan palsu/fiktif akan dikenakan sanksi disiplin berat oleh Dewan Etik Akademik Universitas Perjuangan.
+                            Laporan ini akan diterbitkan menggunakan identitas resmi Anda sebagai <span class="font-semibold text-on-surface" id="dynamicNameLegal">Mahasiswa</span>. Setiap pelanggaran berupa pembuatan laporan palsu/fiktif akan dikenakan sanksi disiplin berat oleh Dewan Etik Akademik Universitas Perjuangan.
                         </p>
+                        
+                        <div class="flex items-center gap-2 bg-surface-main px-3 py-2 rounded-lg mb-4 border border-surface-container-high shadow-sm">
+                            <span class="material-symbols-outlined text-status-warning-text" style="font-size: 18px;">info</span>
+                            <span class="font-body-sm text-body-sm text-on-secondary-container">Sisa kuota laporan kehilangan aktif Anda: <span class="font-semibold">1 dari maksimal 2 laporan.</span></span>
+                        </div>
+                        
                         <label class="flex gap-3 cursor-pointer group">
                             <div class="flex-shrink-0 pt-0.5">
                                 <input id="chkLegal" class="w-4 h-4 rounded border-outline text-primary focus:ring-primary" type="checkbox" onchange="togglePublishBtn()"/>
@@ -383,7 +389,7 @@
     <div id="app-footer"></div>
 
     <script>
-        const API_URL = 'https://lostfound-backend-pwtf.onrender.com/api/v1';
+        const API_URL = typeof BASE_URL !== 'undefined' ? BASE_URL : 'http://127.0.0.1:8000/api/v1';
         let selectedClaimItemId = null;
         let submitMode = 'claim';
 
@@ -434,6 +440,12 @@
                 window.location.href = '/user/auth/login.html';
                 return;
             }
+            
+            // Set dynamic name in legal declaration
+            const userName = localStorage.getItem('userName') || 'Mahasiswa';
+            const nameEl = document.getElementById('dynamicNameLegal');
+            if (nameEl) nameEl.textContent = userName;
+            
             fetchCategoriesAndLocations();
         });
 

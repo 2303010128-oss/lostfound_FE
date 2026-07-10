@@ -124,7 +124,7 @@
                         document.getElementById('uiHandoverDate').innerText = new Date(data.handover.tanggal_serah_terima).toLocaleString('id-ID');
                         
                         const photoUrl = data.handover.foto_serah_terima ? 
-                            `http://127.0.0.1:8000/storage/${data.handover.foto_serah_terima}` : 
+                            (window.STORAGE_URL || 'http://127.0.0.1:8000/storage/') + data.handover.foto_serah_terima : 
                             'https://via.placeholder.com/400x300?text=Tidak+Ada+Foto';
                         document.getElementById('uiHandoverPhoto').src = photoUrl;
                     }

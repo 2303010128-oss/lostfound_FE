@@ -294,7 +294,12 @@
 
     <script src="../../assets/js/components_user.js"></script>
     <script>
+<<<<<<< HEAD
         const API_URL = `https://lostfound-backend-pwtf.onrender.com/api/v1`;
+=======
+        // Gunakan hostname dinamis agar API tetap jalan jika diakses via HP (IP lokal)
+        const API_URL = typeof BASE_URL !== 'undefined' ? BASE_URL : 'http://127.0.0.1:8000/api/v1';
+>>>>>>> d451a884eeab400db86fb2757a9f32db4f7231a8
         let currentFoundItemId = null;
         let selectedCategoryId = null;
 
